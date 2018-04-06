@@ -4,13 +4,18 @@
   "description": "The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "src/index.ts",
   "scripts": {
+    "bundle": "npm run-script rollup",
+    "clean": "rm -rf ./build/*",
     "compile": "tsc",
-    "bundle": "rollup -c",
-    "test": "./node_modules/.bin/mocha --opts mocha.opts"
+    "docs": "./node_modules/.bin/typedoc --out build/docs --mode modules ./src/**/*.ts",
+    "lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.ts' --force",
+    "rollup": "rollup -c",
+    "test": "npm run-script lint && npm run-script unittest",
+    "unittest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/srepollock/codename_finalregrets.git"
+    "url": "git+https://github.com/Goodgoodies/codename_finalregrets.git"
   },
   "keywords": [
     "typescript",
@@ -21,14 +26,15 @@
   "author": "Spencer Pollock <spencer@spollock.ca> (http://spollock.ca)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/srepollock/codename_finalregrets/issues"
+    "url": "https://github.com/Goodgoodies/codename_finalregrets/issues"
   },
-  "homepage": "https://github.com/srepollock/codename_finalregrets#readme",
+  "homepage": "https://github.com/Goodgoodies/codename_finalregrets#readme",
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/mocha": "^5.0.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-rollup": "^3.0.0",
@@ -39,12 +45,8 @@
     "rollup-plugin-typescript2": "^0.12.0",
     "ts-lint": "^4.5.1",
     "ts-node": "^5.0.1",
+    "typedoc": "^0.11.1",
     "typescript": "^2.8.1"
-  },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
   },
   "dependencies": {}
 }

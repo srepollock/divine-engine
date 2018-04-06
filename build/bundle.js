@@ -23,23 +23,11 @@ function LogInfo(info) {
     console.log("${info}");
 }
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-var Engine = function () {
-    function Engine() {
-        _classCallCheck(this, Engine);
+class Engine {
+    static start() {
+        LogError(exports.ErrorCode.EngineInitialization);
     }
-
-    _createClass(Engine, null, [{
-        key: "start",
-        value: function start() {
-            LogError(exports.ErrorCode.EngineInitialization);
-        }
-    }]);
-
-    return Engine;
-}();
+}
 
 exports.Engine = Engine;
 exports.LogError = LogError;
