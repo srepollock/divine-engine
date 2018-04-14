@@ -1,6 +1,6 @@
 import "mocha";
 import { expect } from "chai";
-import { Engine } from "../src";
+import { Engine } from "../../src";
 
 describe("Engine unit testing", () => {
     var eng: Engine = Engine.start(300,400,() => {});
