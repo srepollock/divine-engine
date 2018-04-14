@@ -2,16 +2,15 @@
   "name": "daemon-engine",
   "version": "0.0.1",
   "description": "The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
-  "main": "src/index.ts",
+  "main": "./lib/index.js",
   "scripts": {
-    "bundle": "npm run-script rollup",
+    "bundle": "./node_modules/.bin/rollup -c",
+    "build": "./node_modules/.bin/tsc",
     "clean": "rm -rf ./build/*",
-    "compile": "tsc",
     "docs": "./node_modules/.bin/typedoc --out build/docs --mode modules ./src/**/*.ts",
+    "fulltest": "npm run-script lint && npm run-script test",
     "lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.ts' --force",
-    "rollup": "rollup -c",
-    "test": "npm run-script lint && npm run-script unittest",
-    "unittest": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"
   },
   "repository": {
     "type": "git",

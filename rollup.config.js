@@ -5,11 +5,11 @@ export default {
     input: './src/index.ts',
     output: [
         {
-            file: './build/bundle.module.js',
+            file: './build/daemon.module.js',
             format: 'es'
         },
         {
-            file: './build/bundle.js',
+            file: './build/daemon.js',
             format: 'cjs',
         }
     ],
