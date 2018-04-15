@@ -6,7 +6,7 @@ describe("DObject unit testing", () => {
     var obj: DObject = new DObject();
     describe("id testing \"\"", () => {
         it("should be able to have an empty id", () => {
-            expect(obj.id).to.be.equal(undefined);
+            expect(obj.id).to.be.equal("");
         });
         it("should be able to set", () => {
             obj.id = "set";

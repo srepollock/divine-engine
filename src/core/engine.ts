@@ -1,42 +1,62 @@
 import { EngineConfiguration } from "./engineconfiguration";
 import { ErrorCode, LogError, LogInfo } from "./logging";
+import { GameWindow } from "./gamewindow";
+
+export class EngineArguments {
+    constructor(
+        public height: number = 0, 
+        public width: number = 0
+    ) {
+        this.height = height;
+        this.width = width;
+    }
+}
 
 export class Engine {
-    //#region Class Variables
-    private static instance: Engine;
-    private static started: boolean = false;
-    private static exit: boolean = false;
-    private height: number = 0;
-    private width: number = 0;
-    //#endregion
-    private constructor() {
-        if (Engine.instance != null)
-            LogError(ErrorCode.EnginePreviouslyInitialized, "engine has already\
-                been initialized")
-        if (!Engine.started)
-            LogError(ErrorCode.EngineStartedEarly, "engine running prior to \
-                constructor initialization");
-        Engine.instance = this;
+    private started: boolean = false;
+    private exit: boolean = false;
+    private _height: number = 0;
+    private _width: number = 0;
+    private _window: GameWindow | undefined = undefined;
+    public get getStarted(): boolean {
+        return this.started;
     }
-    public static start(height:number, width: number, ready:() => void): Engine {
+    public get height(): number {
+        return this._height;
+    }
+    public get width(): number {
+        return this._width;
+    }
+    public get window(): GameWindow | undefined {
+        if (this._window) return this._window;
+        LogError(ErrorCode.EngineWindowUndefined, 
+            "The engine's game window is not defined");
+        return undefined;
+    }
+    public constructor(args: EngineArguments) {
+        this._height = args.height;
+        this._width = args.width;
+    }
+    public start(): void {
         this.started = true;
-        new Engine();
+        if (!this._window) LogError(ErrorCode.EngineWindowUndefined, 
+            "The engine's game window is not defined");
+    }
+    public update(): void {
 
-        Engine.resize(height, width);
-        return this.instance;
     }
-    public static stop(): void {
-        Engine.exit = true;
+    public stop(): void {
+        this.exit = true;
     }
-    public static resize(height:number, width:number):void {
-        Engine.instance.height = height;
-        Engine.instance.width = width;
-        // TODO: Resize
-        /**
-         * if(!Window.resize()) {
-         *  LogError(ErrorCode.WindowResizeFailed);
-         * }
-         */
+    public resize(height:number, width:number): void {
+        if(this._window) {
+            this._height = height;
+            this._width = width;
+            this._window.resize(this._height, this._width);
+        } else {
+            LogError(ErrorCode.EngineWindowUndefined, 
+                "The engine's game window is not defined");
+        }
     }
 }
 

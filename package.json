@@ -7,7 +7,7 @@
     "bundle": "./node_modules/.bin/rollup -c",
     "build": "./node_modules/.bin/tsc",
     "clean": "rm -rf ./build/*",
-    "docs": "./node_modules/.bin/typedoc --out build/docs --mode modules ./src/**/*.ts",
+    "builddocs": "./node_modules/.bin/typedoc --out docs --mode modules ./src/**/*.ts",
     "fulltest": "npm run-script lint && npm run-script test",
     "lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.ts' --force",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"

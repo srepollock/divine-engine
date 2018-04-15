@@ -8,11 +8,11 @@ export class Transform {
     }
 }
 
-export class GameObject extends DObject {
+export class Entity extends DObject {
     constructor(
-        public id: string = "", 
+        id: string = "",
         public transform: Transform = new Transform(), 
-        public children: Array<GameObject> = new Array(),
+        public children: Array<Entity> = new Array(),
         public components: Array<Component> = new Array()
     ) {
         super(id);

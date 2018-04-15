@@ -9,5 +9,8 @@ describe("Flag component unit testing", () => {
     });
     it("should be set to 0,0", () => {
         expect(fc.location).to.deep.equal({x:0, y:0});
+    });
+    it("should be the first flag at 1", () => {
+        expect(fc.getFlagnumber()).to.equal(1);
     })
 });

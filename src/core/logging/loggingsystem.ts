@@ -1,7 +1,7 @@
 export enum ErrorCode {
     Error = 0, // General error
     EngineInitialization = 100, // Engine begins at EC100
-    EnginePreviouslyInitialized,
+    EngineWindowUndefined,
     EngineStartedEarly,
     EngineRunning,
     EngineStopping,
