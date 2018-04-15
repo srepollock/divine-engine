@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+    - "stable"
+branch:
+    only:
+    - master
+    - develop
+deploy:
+    provider: pages
+    skip-cleanup: true
+    github-token: 99e960a6a7e2a7aaea21b3d9bdd575dad7b446fa
+    keep-history: true
+    on:
+        branch: master
