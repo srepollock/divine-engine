@@ -12,3 +12,7 @@ deploy:
     keep-history: true
     on:
         branch: master
+notifications:
+    email:
+        on_success: change
+        on_failure: always
