@@ -1,5 +1,8 @@
 # Daemon Engine
 
+Master: [![Build Status](https://travis-ci.org/srepollock/daemon-engine.svg?branch=master)](https://travis-ci.org/srepollock/daemon-engine)
+Develop: [![Build Status](https://travis-ci.org/srepollock/daemon-engine.svg?branch=develop)](https://travis-ci.org/srepollock/daemon-engine)
+
 The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.
 
 ## Getting Started

@@ -13,13 +13,20 @@ export class EngineArguments {
 }
 
 export class Engine {
-    private started: boolean = false;
-    private exit: boolean = false;
+    private _started: boolean = false;
+    private _running: boolean = false;
+    private _exit: boolean = false;
     private _height: number = 0;
     private _width: number = 0;
     private _window: GameWindow | undefined = undefined;
-    public get getStarted(): boolean {
-        return this.started;
+    public get started(): boolean {
+        return this._started;
+    }
+    public get running(): boolean {
+        return this._running;
+    }
+    public get exit(): boolean {
+        return this._exit;
     }
     public get height(): number {
         return this._height;
@@ -38,15 +45,16 @@ export class Engine {
         this._width = args.width;
     }
     public start(): void {
-        this.started = true;
+        this._started = true;
         if (!this._window) LogError(ErrorCode.EngineWindowUndefined, 
             "The engine's game window is not defined");
+        this._running = true;
     }
     public update(): void {
 
     }
     public stop(): void {
-        this.exit = true;
+        this._exit = true;
     }
     public resize(height:number, width:number): void {
         if(this._window) {
