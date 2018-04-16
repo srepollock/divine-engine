@@ -6,7 +6,7 @@ describe("Engine unit testing", () => {
     describe("Engine initialization", () => {
         var eng: Engine = new Engine(new EngineArguments());
         it("should not have started", () => {
-            expect(eng.getStarted).to.be.false;
+            expect(eng.started).to.be.false;
         });
         it("should have height set to 0", () => {
             expect(eng.height).to.be.equal(0);
@@ -19,9 +19,11 @@ describe("Engine unit testing", () => {
         var eng: Engine = new Engine(new EngineArguments(400, 300));
         it("should start running when start is called", () => {
             eng.start();
-            expect(eng.getStarted).to.equal(true);
+            expect(eng.started).to.equal(true);
         });
-        it("should have ")
+        it("should be running", () => {
+            expect(eng.running).to.equal(true);
+        })
     });
 });
 
