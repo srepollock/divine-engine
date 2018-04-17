@@ -3,6 +3,53 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        "align": true,
+        "array-type": true,
+        "curly": [true, "ignore-same-line"],
+        "interface-name": false,
+        "jsdoc-format": true,
+        "max-classes-per-file": false,
+        "max-line-length": {
+            "options": [80]
+        },
+        "member-ordering": true,
+        "no-any": true,
+        "no-empty": false,
+        "no-empty-interface": false,
+        "no-reference": true,
+        "no-trailing-whitespace": [
+            true,
+            "ignore-comments",
+            "ignore-jsdoc"
+        ],
+        "no-unused-expression": false,
+        "no-var-keyword": true,
+        "no-var-requires": true,
+        "prefer-const": false,
+        "trailing-comma": true,
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            },
+            {
+                "call-signature": "onespace",
+                "index-signature": "onespace",
+                "parameter": "onespace",
+                "property-declaration": "onespace",
+                "variable-declaration": "onespace"
+            }
+        ],
+        "variable-name": [
+            true,
+            "allow-leading-underscore",
+            "allow-pascal-case"
+        ]
+    },
     "rulesDirectory": []
 }

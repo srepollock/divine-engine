@@ -1,10 +1,10 @@
-import "mocha";
 import { expect } from "chai";
+import "mocha";
 import { Engine, EngineArguments } from "../../src";
 
 describe("Engine unit testing", () => {
     describe("Engine initialization", () => {
-        var eng: Engine = new Engine(new EngineArguments());
+        let eng: Engine = new Engine(new EngineArguments());
         it("should not have started", () => {
             expect(eng.started).to.be.false;
         });
@@ -16,7 +16,7 @@ describe("Engine unit testing", () => {
         });
     });
     describe("Engine start", () => {
-        var eng: Engine = new Engine(new EngineArguments(400, 300));
+        let eng: Engine = new Engine(new EngineArguments(400, 300));
         it("should start running when start is called", () => {
             eng.start();
             expect(eng.started).to.equal(true);
