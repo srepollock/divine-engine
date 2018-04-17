@@ -1,6 +1,5 @@
-import { EngineConfiguration } from "./engineconfiguration";
-import { ErrorCode, LogError, LogInfo } from "./logging";
 import { GameWindow } from "./gamewindow";
+import { ErrorCode, LogError, LogInfo } from "./logging";
 
 export class EngineArguments {
     constructor(
@@ -46,8 +45,10 @@ export class Engine {
     }
     public start(): void {
         this._started = true;
-        if (!this._window) LogError(ErrorCode.EngineWindowUndefined, 
-            "The engine's game window is not defined");
+        if (!this._window) {
+            LogError(ErrorCode.EngineWindowUndefined, 
+                "The engine's game window is not defined");
+        }
         this._running = true;
     }
     public update(): void {
@@ -56,7 +57,7 @@ export class Engine {
     public stop(): void {
         this._exit = true;
     }
-    public resize(height:number, width:number): void {
+    public resize(height: number, width: number): void {
         if(this._window) {
             this._height = height;
             this._width = width;
