@@ -1,6 +1,9 @@
 export class GameWindow {
-    constructor(public title: string = "", private _height: number = 0, 
-        private _width: number = 0) {
+    constructor(
+        public title: string = "", 
+        private _height: number = 0, 
+        private _width: number = 0
+    ) {
         this.title = title;
         this._height = _height;
         this._width = _width;

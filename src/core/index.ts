@@ -1,4 +1,3 @@
-export * from "./engineconfiguration";
 export {Engine, EngineArguments} from "./engine";
 export {GameWindow} from "./gamewindow";
 export {DObject} from "./dobject";
