@@ -23,7 +23,7 @@ describe("Engine unit testing", () => {
         });
         it("should be running", () => {
             expect(eng.running).to.equal(true);
-        })
+        });
     });
 });
 

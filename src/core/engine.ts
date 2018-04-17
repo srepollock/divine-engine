@@ -3,7 +3,7 @@ import { ErrorCode, LogError, LogInfo } from "./logging";
 
 export class EngineArguments {
     constructor(
-        public height: number = 0, 
+        public height: number = 0,
         public width: number = 0
     ) {
         this.height = height;
@@ -35,7 +35,7 @@ export class Engine {
     }
     public get window(): GameWindow | undefined {
         if (this._window) return this._window;
-        LogError(ErrorCode.EngineWindowUndefined, 
+        LogError(ErrorCode.EngineWindowUndefined,
             "The engine's game window is not defined");
         return undefined;
     }
@@ -46,7 +46,7 @@ export class Engine {
     public start(): void {
         this._started = true;
         if (!this._window) {
-            LogError(ErrorCode.EngineWindowUndefined, 
+            LogError(ErrorCode.EngineWindowUndefined,
                 "The engine's game window is not defined");
         }
         this._running = true;
@@ -58,12 +58,12 @@ export class Engine {
         this._exit = true;
     }
     public resize(height: number, width: number): void {
-        if(this._window) {
+        if (this._window) {
             this._height = height;
             this._width = width;
             this._window.resize(this._height, this._width);
         } else {
-            LogError(ErrorCode.EngineWindowUndefined, 
+            LogError(ErrorCode.EngineWindowUndefined,
                 "The engine's game window is not defined");
         }
     }

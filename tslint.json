@@ -19,7 +19,7 @@
         "no-empty-interface": false,
         "no-reference": true,
         "no-trailing-whitespace": [
-            true,
+            false,
             "ignore-comments",
             "ignore-jsdoc"
         ],

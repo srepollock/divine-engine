@@ -4,7 +4,7 @@
   "description": "The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "./lib/index.js",
   "scripts": {
-    "prepublish": "npm run docs && npm test && npm run build && npm run bundle",
+    "prepare": "npm run docs && npm run build && npm run bundle && npm test",
     "bundle": "./node_modules/.bin/rollup -c",
     "build": "./node_modules/.bin/tsc",
     "clean": "rm -rf ./build/*",
