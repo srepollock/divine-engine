@@ -7,6 +7,30 @@ So you’d like to add to this project, that’s great! There are a few steps yo
 
 After you’ve read and followed these two pages, now you’re ready to get to work!
 
+## Conventions
+
+[none]
+
+### Naming Conventions
+
+[variable, function, class, class variable, class function, global variable, global function, static variable, static function]
+
+### Documentation
+
+[none]
+
+### Linting
+
+[none]
+
+## Branch
+
+When branching to work on your new feature, or to work on a hotfix, please create a branch with the name:
+
+`feature/[yourBranchName]`
+
+The feature name will be lowerCamelCase to reduce the amount of dashes and to keep in line with the naming functions of the project
+
 ## Committing
 
 Committing is essential to git and the best place to describe intermittent changes in your code. Committing is the quintessential element to git, and as I keep talking about it, you get the sense of how much I care about it. With this said, there is a template setup for commit messages that should be used when you fork and clone this project as from [Your Project](https://github.com/srepollock/daemon-engine/wiki/your-project) in the Wiki. The commit template is as follows:
