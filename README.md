@@ -26,7 +26,7 @@ Running the unit tests is simple when using node! All you need to call inside th
 npm test
 ```
 
-> Note: each test must be passing before submitting a pull-request. Travis-CI will check unit tests before allowing admins to merge. More in [contributing](# contributing)
+> Note: each test must be passing before submitting a pull-request. Travis-CI will check unit tests before allowing admins to merge. More in [contributing](https://github.com/srepollock/daemon-engine/CONTRIBUTING.md)
 
 ### Break down into end to end tests
 
