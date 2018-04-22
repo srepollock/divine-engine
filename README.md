@@ -21,7 +21,8 @@ Check out my tutorial on setting up a Typescript library, the first part of the 
 ## Running the tests
 
 Running the unit tests is simple when using node! All you need to call inside the project folder is:
-```
+
+```sh
 npm test
 ```
 
@@ -29,7 +30,7 @@ npm test
 
 ### Break down into end to end tests
 
-The engine runs these unit tests on all core components. Through the methodology described in the [proposal](https://github.com/Goodgoodies/daemon-engine/wiki), unit tests are crucial to the development of this project. Test cases are written before development, then functionality is written and tests are run to debug. This will ensure rigorous testing of the engines components and structure for a complete product.
+The engine runs these unit tests on all core components. Through the methodology described in the [proposal](https://github.com/Goodgoodies/daemon-engine/wiki/proposal), unit tests are crucial to the development of this project. Test cases are written before development, then functionality is written and tests are run to debug. This will ensure rigorous testing of the engines components and structure for a complete product.
 
 ### And coding style tests
 
@@ -48,7 +49,7 @@ Reference: [mocha-tslint](https://github.com/t-sauer/mocha-tslint)
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING](https://github.com/srepollock/daemon-engine/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
@@ -62,4 +63,4 @@ See also the list of [contributors](https://github.com/Goodgoodies/daemon-engine
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/srepollock/daemon-engine/blob/master/LICENSE.md) file for details
