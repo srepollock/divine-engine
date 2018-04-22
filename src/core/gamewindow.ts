@@ -1,21 +1,26 @@
+import { BrowserWindow } from "electron";
+import { ErrorCode, LogError } from ".";
 export class GameWindow {
-    constructor(
-        public title: string = "", 
-        private _height: number = 0, 
-        private _width: number = 0
-    ) {
-        this.title = title;
-        this._height = _height;
-        this._width = _width;
+    private browserWindow: Electron.BrowserWindow;
+    private _title: string;
+    constructor(title: string) {
+        let remote = require("electron").remote;
+        this._title = title;
+        this.browserWindow = remote.getCurrentWindow();
     }
     public get height(): number {
-        return this._height;
+        return this.browserWindow.getContentSize()[1];
+    }
+    public get title(): string {
+        return this._title;
     }
     public get width(): number {
-        return this._width;
+        return this.browserWindow.getContentSize()[0];
     }
     public resize(height: number, width: number): void {
-        this._height = height;
-        this._width = width;
+        this.browserWindow.setSize(width, height);
+    }
+    public close(): void {
+        this.browserWindow.close();
     }
 }
