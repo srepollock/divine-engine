@@ -1,0 +1,11 @@
+# npm files
+node_modules/
+
+# Rollup cache
+.rpt2_cache/
+
+# Typescript build files
+lib/
+
+# Visual Studio Code
+.vscode/
