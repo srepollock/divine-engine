@@ -1,6 +1,6 @@
 {
   "name": "daemon-engine",
-  "version": "0.0.2",
+  "version": "0.1.1",
   "description": "The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "./lib/daemon.js",
   "types": "./lib/index.d.ts",
@@ -56,8 +56,9 @@
   "babel": {
     "presets": [
       [
-        "env", {
-        "modules": false
+        "env",
+        {
+          "modules": false
         }
       ]
     ],
