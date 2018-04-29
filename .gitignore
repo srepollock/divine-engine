@@ -5,6 +5,8 @@ node_modules/
 .rpt2_cache/
 
 # Typescript build files
+build/
+dist/
 lib/
 
 # Visual Studio Code
