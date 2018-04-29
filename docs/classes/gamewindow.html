@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GameWindow | daemon-engine</title>
+	<title>GameWindow | Daemon Engine API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">daemon-engine</a>
+					<a href="../index.html" class="title">Daemon Engine API</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,13 +53,10 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_core_gamewindow_.html">&quot;core/gamewindow&quot;</a>
-				</li>
-				<li>
-					<a href="_core_gamewindow_.gamewindow.html">GameWindow</a>
+					<a href="gamewindow.html">GameWindow</a>
 				</li>
 			</ul>
 			<h1>Class GameWindow</h1>
@@ -84,28 +81,29 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_core_gamewindow_.gamewindow.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="gamewindow.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_gamewindow_.gamewindow.html#_height" class="tsd-kind-icon">_height</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="_core_gamewindow_.gamewindow.html#_width" class="tsd-kind-icon">_width</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_core_gamewindow_.gamewindow.html#title" class="tsd-kind-icon">title</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="gamewindow.html#_title" class="tsd-kind-icon">_title</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="gamewindow.html#browserwindow" class="tsd-kind-icon">browser<wbr>Window</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_core_gamewindow_.gamewindow.html#height" class="tsd-kind-icon">height</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="_core_gamewindow_.gamewindow.html#width" class="tsd-kind-icon">width</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="gamewindow.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="gamewindow.html#title" class="tsd-kind-icon">title</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="gamewindow.html#width" class="tsd-kind-icon">width</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_core_gamewindow_.gamewindow.html#resize" class="tsd-kind-icon">resize</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="gamewindow.html#close" class="tsd-kind-icon">close</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="gamewindow.html#resize" class="tsd-kind-icon">resize</a></li>
 							</ul>
 						</section>
 					</div>
@@ -117,61 +115,45 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Game<wbr>Window<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span>, _height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, _width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_core_gamewindow_.gamewindow.html" class="tsd-signature-type">GameWindow</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Game<wbr>Window<span class="tsd-signature-symbol">(</span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gamewindow.html" class="tsd-signature-type">GameWindow</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L1">core/gamewindow.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L5">core/gamewindow.ts:5</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> title: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;&quot;</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _height: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> _width: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<h5>title: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_core_gamewindow_.gamewindow.html" class="tsd-signature-type">GameWindow</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="gamewindow.html" class="tsd-signature-type">GameWindow</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_height" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _height</h3>
-					<div class="tsd-signature tsd-kind-icon">_height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="_title" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _title</h3>
+					<div class="tsd-signature tsd-kind-icon">_title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L2">core/gamewindow.ts:2</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L5">core/gamewindow.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
-					<a name="_width" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _width</h3>
-					<div class="tsd-signature tsd-kind-icon">_width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="browserwindow" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> browser<wbr>Window</h3>
+					<div class="tsd-signature tsd-kind-icon">browser<wbr>Window<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">BrowserWindow</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L3">core/gamewindow.ts:3</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="title" class="tsd-anchor"></a>
-					<h3>title</h3>
-					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L2">core/gamewindow.ts:2</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L4">core/gamewindow.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -188,10 +170,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L8">core/gamewindow.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L11">core/gamewindow.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="title" class="tsd-anchor"></a>
+					<h3>title</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> title<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L14">core/gamewindow.ts:14</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -205,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L11">core/gamewindow.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L17">core/gamewindow.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -216,6 +215,23 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="close" class="tsd-anchor"></a>
+					<h3>close</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">close<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L23">core/gamewindow.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="resize" class="tsd-anchor"></a>
 					<h3>resize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -225,7 +241,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/b684f31/src/core/gamewindow.ts#L14">core/gamewindow.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/gamewindow.ts#L20">core/gamewindow.ts:20</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -247,81 +263,78 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_components_flagcomponent_.html">"components/flagcomponent"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_components_index_.html">"components/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_core_component_.html">"core/component"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_core_dobject_.html">"core/dobject"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_core_engine_.html">"core/engine"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_core_engineconfiguration_.html">"core/engineconfiguration"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_core_entity_.html">"core/entity"</a>
-					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="../modules/_core_gamewindow_.html">"core/gamewindow"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="../modules/_core_index_.html">"core/index"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_core_logging_index_.html">"core/logging/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_core_logging_loggingsystem_.html">"core/logging/loggingsystem"</a>
+						<a href="../index.html"><em>Globals</em></a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dobject.html" class="tsd-kind-icon">DObject</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="engine.html" class="tsd-kind-icon">Engine</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="enginearguments.html" class="tsd-kind-icon">Engine<wbr>Arguments</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="entity.html" class="tsd-kind-icon">Entity</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="flagcomponent.html" class="tsd-kind-icon">Flag<wbr>Component</a>
+					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_core_gamewindow_.gamewindow.html" class="tsd-kind-icon">Game<wbr>Window</a>
+					<li class="current tsd-kind-class">
+						<a href="gamewindow.html" class="tsd-kind-icon">Game<wbr>Window</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_core_gamewindow_.gamewindow.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="gamewindow.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_core_gamewindow_.gamewindow.html#_height" class="tsd-kind-icon">_height</a>
+								<a href="gamewindow.html#_title" class="tsd-kind-icon">_title</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
-								<a href="_core_gamewindow_.gamewindow.html#_width" class="tsd-kind-icon">_width</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_core_gamewindow_.gamewindow.html#title" class="tsd-kind-icon">title</a>
+								<a href="gamewindow.html#browserwindow" class="tsd-kind-icon">browser<wbr>Window</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_core_gamewindow_.gamewindow.html#height" class="tsd-kind-icon">height</a>
+								<a href="gamewindow.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="_core_gamewindow_.gamewindow.html#width" class="tsd-kind-icon">width</a>
+								<a href="gamewindow.html#title" class="tsd-kind-icon">title</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="gamewindow.html#width" class="tsd-kind-icon">width</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_core_gamewindow_.gamewindow.html#resize" class="tsd-kind-icon">resize</a>
+								<a href="gamewindow.html#close" class="tsd-kind-icon">close</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="gamewindow.html#resize" class="tsd-kind-icon">resize</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="transform.html" class="tsd-kind-icon">Transform</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/component.html" class="tsd-kind-icon">Component</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/system.html" class="tsd-kind-icon">System</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../index.html#logerror" class="tsd-kind-icon">Log<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../index.html#loginfo" class="tsd-kind-icon">Log<wbr>Info</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
