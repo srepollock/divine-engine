@@ -5,11 +5,12 @@ export default {
     input: './src/index.ts',
     output: [
         {
-            file: './build/daemon.module.js',
-            format: 'es'
+            file: './lib/daemon.module.js',
+            format: 'umd',
+            name: 'daemon'
         },
         {
-            file: './build/daemon.js',
+            file: './lib/daemon.js',
             format: 'cjs',
         }
     ],

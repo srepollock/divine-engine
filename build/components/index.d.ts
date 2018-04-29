@@ -1,1 +1,0 @@
-export { FlagComponent } from "./flagcomponent";

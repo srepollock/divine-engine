@@ -1,5 +1,6 @@
-import {Component} from "./component";
-import {DObject} from "./dobject";
+import { Component } from "./component";
+import { DObject } from "./dobject";
+import { LogInfo } from "./logging";
 
 export class Transform {
     constructor(public x: number = 0, public y: number = 0) {
@@ -29,5 +30,10 @@ export class Entity extends DObject {
         let comp = this.components!.find((comp) => comp.id! === type);
         if (comp !== undefined) return true;
         else return false;
+    }
+    public toString(): string {
+        let objectString = `Entity [id:${this.id}]`;
+        LogInfo(objectString);
+        return objectString;
     }
 }
