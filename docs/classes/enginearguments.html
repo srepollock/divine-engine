@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;core/engineconfiguration&quot; | daemon-engine</title>
+	<title>EngineArguments | Daemon Engine API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">daemon-engine</a>
+					<a href="../index.html" class="title">Daemon Engine API</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,30 +53,97 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="_core_engineconfiguration_.html">&quot;core/engineconfiguration&quot;</a>
+					<a href="enginearguments.html">EngineArguments</a>
 				</li>
 			</ul>
-			<h1>External module &quot;core/engineconfiguration&quot;</h1>
+			<h1>Class EngineArguments</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">EngineArguments</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Classes</h3>
+							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-external-module"><a href="../classes/_core_engineconfiguration_.engineconfiguration.html" class="tsd-kind-icon">Engine<wbr>Configuration</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="enginearguments.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#width" class="tsd-kind-icon">width</a></li>
 							</ul>
 						</section>
 					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Engine<wbr>Arguments<span class="tsd-signature-symbol">(</span>height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="enginearguments.html" class="tsd-signature-type">EngineArguments</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/engine.ts#L4">core/engine.ts:4</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> height: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> width: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="enginearguments.html" class="tsd-signature-type">EngineArguments</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="height" class="tsd-anchor"></a>
+					<h3>height</h3>
+					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/engine.ts#L6">core/engine.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="width" class="tsd-anchor"></a>
+					<h3>width</h3>
+					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/c54cecf/src/core/engine.ts#L7">core/engine.ts:7</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -84,53 +151,62 @@
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Internals</span>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_components_flagcomponent_.html">"components/flagcomponent"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_components_index_.html">"components/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_component_.html">"core/component"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_dobject_.html">"core/dobject"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_engine_.html">"core/engine"</a>
-					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="_core_engineconfiguration_.html">"core/engineconfiguration"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_entity_.html">"core/entity"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_gamewindow_.html">"core/gamewindow"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_core_index_.html">"core/index"</a>
-					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_core_logging_index_.html">"core/logging/index"</a>
-					</li>
-					<li class=" tsd-kind-external-module tsd-is-external">
-						<a href="_core_logging_loggingsystem_.html">"core/logging/loggingsystem"</a>
+						<a href="../index.html"><em>Globals</em></a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module">
-						<a href="../classes/_core_engineconfiguration_.engineconfiguration.html" class="tsd-kind-icon">Engine<wbr>Configuration</a>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="dobject.html" class="tsd-kind-icon">DObject</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="engine.html" class="tsd-kind-icon">Engine</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="enginearguments.html" class="tsd-kind-icon">Engine<wbr>Arguments</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="enginearguments.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#height" class="tsd-kind-icon">height</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#width" class="tsd-kind-icon">width</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="entity.html" class="tsd-kind-icon">Entity</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="flagcomponent.html" class="tsd-kind-icon">Flag<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="gamewindow.html" class="tsd-kind-icon">Game<wbr>Window</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="transform.html" class="tsd-kind-icon">Transform</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/component.html" class="tsd-kind-icon">Component</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/system.html" class="tsd-kind-icon">System</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../index.html#logerror" class="tsd-kind-icon">Log<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="../index.html#loginfo" class="tsd-kind-icon">Log<wbr>Info</a>
 					</li>
 				</ul>
 			</nav>

@@ -76,21 +76,45 @@ All issues are welcome, I just ask you please give information on what the issue
 ## Pull Requests
 
 Have you added a new feature that has been requested? Have you fixed an issue sitting on the [issues](https://github.com/srepollock/daemon-engine/issues) page? Have you fixed your own issue? Well now you want to submit a pull request I reckon. If that’s the case, you’ve come to the right place. The Daemon engine has a few rules put in place to ensure quick pull requests for new features to test and develop. As long as you have been following the [commit messages](https://github.com/srepollock/daemon-engine/CONTRIBUTING.md#Committing) you will be setup to write a great pull request.
-When writing a pull request a basic template is setup for quick reading and approving (hopefully):
+There are two forms of pull requests, and this is to better document what has happened between different releases for the engine. There is the *master* pull requests and the *develop* pull request.
+The following is the *develop* pull request, as this is the most common:
 
 ```md
 # [Major Feature/Change]
 
-	[Describe the major feature/change in the project. Why is it necessary? What makes it so important it has to be added into the project? What does this version do differently?]
+    [Describe the major feature/change in the project. Why is it necessary? What makes it so important it has to be added into the project? What does this version do differently?]
 
 # How to use
 
-	[What is it we are now using in the project? How do others use this amazing new feature/change themselves?]
+    [What is it we are now using in the project? How do others use this amazing new feature/change themselves?]
 
 # Resources
 
-	[What resources did you use to make this change?]
+    [What resources did you use to make this change?]
 ```
 
+The next is the *master* pull request that has more information on specfics in the project:
+
+```md
+Title:
+    [Release Version] - [Release Date]
+
+Description:
+# Summary
+
+    [Describe the major feature/change in the project. Why is it necessary? What makes it so important it has to be added into the project? What does this version do differently?]
+
+# New Features
+
+    [Talk of the new features added into this project with this pull request. What has changed since the last version? What is new? How is it different? Perhaps it would be easiest to reference direct commits here?]
+
+# Fixes
+
+    [What is it we are now using in the project? How do others use this amazing new feature/change themselves?]
+
+# Resources
+
+    [What resources did you use to make this change?]
+```
 
 If you follow these as the guides you’re all set up to make some incredible additions to the project!
