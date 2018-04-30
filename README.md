@@ -9,6 +9,10 @@ The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest 
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
+### Documentation
+
+Before you begin with the project, check out the Daemon Engine's [API documentation](http://spollock.ca/daemon-engine/docs) and learn what the engine has that you don't have to write. Also be sure to checkout the [wiki](https://github.com/srepollock/daemon-engine/wiki) for additional information on the engine.
+
 ### Prerequisites
 
 **Install NodeJS and npm**
@@ -16,7 +20,19 @@ Check out my tutorial on setting up a Typescript library, the first part of the 
 
 ### Installing
 
-[TBD]
+To use the Daemon Engine, first setup a new NodeJS project
+
+`mkdir temp-project && cd temp-project && npm init`
+
+> Note: (use `npm init -y` for a basic setup).
+
+Next install Typescript and the Daemon Engine
+
+`npm i -D typescript daemon-engine`
+
+Next, choose your platform you wish to deploy on: Angular2, Electron or setup a basic Webpage with a canvas.
+
+Now you're all set and ready to go!
 
 ## Running the tests
 
@@ -37,10 +53,6 @@ The engine runs these unit tests on all core components. Through the methodology
 [TBD]
 Reference: [mocha-tslint](https://github.com/t-sauer/mocha-tslint)
 
-## Deployment
-
-[TBD]
-
 ## Built With
 
 * [NodeJS](https://nodejs.org/en/)
@@ -57,7 +69,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-**Spencer Pollock** - *Initial work* - [GitHub Profile](https://github.com/srepollock)
+[**Spencer Pollock**](https://github.com/srepollock)
 
 See also the list of [contributors](https://github.com/Goodgoodies/daemon-engine/contributors) who participated in this project.
 
