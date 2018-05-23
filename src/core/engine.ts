@@ -1,7 +1,16 @@
 import { GameWindow } from "./gamewindow";
 import { ErrorCode, LogError, LogInfo } from "./logging";
 
+/**
+ * Engine arguments for setup.
+ */
 export class EngineArguments {
+    /**
+     * Engine arguments for a base setup. When defining engine parameters, using
+     * this object and setting it in a project can provide quick initialization.
+     * @param height 
+     * @param width 
+     */
     constructor(
         public height: number = 0,
         public width: number = 0
@@ -11,62 +20,140 @@ export class EngineArguments {
     }
 }
 
+/**
+ * The Game Engine class.
+ */
 export class Engine {
-    private _started: boolean = false;
-    private _running: boolean = false;
-    private _exit: boolean = false;
+    private static _instance: Engine | undefined = undefined;
+    private static _started: boolean = false;
+    private static _running: boolean = false;
+    private static _exit: boolean = false;
     private _height: number = 0;
     private _width: number = 0;
     private _window: GameWindow | undefined = undefined;
-    public get started(): boolean {
-        return this._started;
+    /**
+     * Gets the engine's started variable.
+     * @returns boolean
+     */
+    public static get started(): boolean {
+        return Engine._started;
     }
-    public get running(): boolean {
-        return this._running;
+    /**
+     * Gets the engine's running variable.
+     * @returns boolean
+     */
+    public static get running(): boolean {
+        return Engine._running;
     }
-    public get exit(): boolean {
-        return this._exit;
+    /**
+     * Get's the engine's exit variable.
+     * @returns boolean
+     */
+    public static get exit(): boolean {
+        return Engine._exit;
     }
-    public get height(): number {
-        return this._height;
+    /**
+     * Gets the current game window's height.
+     * @returns number
+     */
+    public static get height(): number {
+        if (this._instance) return this._instance._height;
+        else return -1;
     }
-    public get width(): number {
-        return this._width;
+    /**
+     * Gets the current game window's width.
+     * @returns number
+     */
+    public static get width(): number {
+        if (this._instance) return this._instance._width;
+        else return -1;
     }
+    /**
+     * Gets the engines current window object.
+     * @returns GameWindow
+     */
     public get window(): GameWindow | undefined {
         if (this._window) return this._window;
         LogError(ErrorCode.EngineWindowUndefined,
             "The engine's game window is not defined");
         return undefined;
     }
-    public constructor(args: EngineArguments) {
-        this._height = args.height;
-        this._width = args.width;
-    }
-    public start(): void {
-        this._started = true;
-        if (!this._window) {
-            LogError(ErrorCode.EngineWindowUndefined,
-                "The engine's game window is not defined");
+    /**
+     * Initializes an Engine object.
+     */
+    private constructor() {
+        if (Engine._instance !== undefined) {
+            LogError(ErrorCode.EngineInstanceNotNull, 
+                "Engine already has an instance in the class");
+            Engine._exit = true; // NOTE: Immediately close
         }
-        this._running = true;
+        if (!Engine._started) {
+            LogError(ErrorCode.EngineStartedEarly, 
+                "The engine instance must be started from the start function");
+        }
+        Engine._instance = this;
     }
-    public update(): void {
+    /**
+     * This is the both the intialization and startup of the game engine. The
+     * engine can only be setup and started through this function.
+     * @param  {EngineArguments} args
+     * @param  {()=>void} mainLoop
+     * @returns void
+     */
+    public static start(args: EngineArguments, ready: () => void): void {
+        Engine._started = true;
+        new Engine();
 
+        Engine._running = true;
+        ready();
     }
-    public stop(): void {
-        this._exit = true;
+    public static update(): void {
+        /** TODO: Does this need to be running on a thread? Or can it be 
+         * something else? This will depend on my engine architecture
+         */
     }
-    public resize(height: number, width: number): void {
-        if (this._window) {
-            this._height = height;
-            this._width = width;
-            this._window.resize(this._height, this._width);
+    /**
+     * This stops the engine and calls the shutdown. Once the engine is stopped
+     * a new engine will need to be setup through the start function.
+     * @see Engine.start
+     * @returns void
+     */
+    public static stop(): void {
+        Engine._exit = true;
+        Engine._running = false;
+        Engine._started = false;
+        Engine.shutdown();
+    }
+    /**
+     * Set's the engines instance as undefined. This is internally called by the
+     * engine's stop function.
+     * @returns void
+     */
+    private static shutdown(): void {
+        this._instance = undefined;
+    }
+    /**
+     * Resizes the game window. The engine has full control over the game window
+     * and will be used as an intermediary between the game window and function
+     * calls by developers.
+     * @param  {number} height
+     * @param  {number} width
+     * @returns void
+     */
+    public static resize(height: number, width: number): void {
+        if (this._instance) {
+            if (this._instance._window) {
+                this._instance._height = height;
+                this._instance._width = width;
+                this._instance._window.resize(this._instance._height, 
+                    this._instance._width);
+            } else {
+                LogError(ErrorCode.EngineWindowUndefined,
+                    "The engine's game window is not defined");
+            }
         } else {
-            LogError(ErrorCode.EngineWindowUndefined,
-                "The engine's game window is not defined");
+            LogError(ErrorCode.EngineInstanceNull, 
+                "The engine's instance is set to null");
         }
     }
 }
-
-export default Engine;

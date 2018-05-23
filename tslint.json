@@ -27,7 +27,7 @@
             "ignore-jsdoc"
         ],
         "no-unused-expression": false,
-        "no-var-keyword": true,
+        "no-var-keyword": false,
         "no-var-requires": true,
         "prefer-const": false,
         "trailing-comma": true,

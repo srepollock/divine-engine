@@ -1,20 +1,20 @@
 {
-  "name": "daemon-engine",
-  "version": "0.1.4",
-  "description": "The Daemon Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
-  "main": "./lib/daemon.js",
+  "name": "divine-engine",
+  "version": "0.0.1",
+  "description": "The Divine Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
+  "main": "./lib/divine.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "prepare": "npm run clean && npm run build && npm run bundle && npm test && npm run docs",
+    "prepare": "npm run clean && npm run build && npm run bundle && npm run docs",
     "bundle": "./node_modules/.bin/rollup -c",
     "build": "./node_modules/.bin/tsc",
     "clean": "rm -rf ./build/* ./lib/*",
-    "docs": "./node_modules/.bin/typedoc --name Daemon\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
+    "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/srepollock/daemon-engine.git"
+    "url": "git+https://github.com/srepollock/divine-engine.git"
   },
   "keywords": [
     "typescript",
@@ -24,23 +24,23 @@
   "author": "Spencer Pollock <spencer@spollock.ca> (http://spollock.ca)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/srepollock/daemon-engine/issues"
+    "url": "https://github.com/srepollock/divine-engine/issues"
   },
-  "homepage": "http://spollock.ca/daemon-engine",
+  "homepage": "http://spollock.ca/divine-engine",
   "devDependencies": {
-    "@types/chai": "^4.1.2",
-    "@types/mocha": "^5.0.0",
+    "@types/chai": "^4.1.3",
+    "@types/mocha": "^5.2.0",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-rollup": "^3.0.0",
     "chai": "^4.1.2",
-    "electron": "^1.8.4",
-    "mocha": "^5.1.0",
+    "electron": "^2.0.0",
+    "mocha": "^5.1.1",
     "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-typescript2": "^0.12.0",
     "ts-lint": "^4.5.1",
     "ts-node": "^5.0.1",
@@ -48,8 +48,8 @@
     "typedoc": "^0.11.1"
   },
   "dependencies": {
-    "npm": "^6.0.0",
-    "typescript": "^2.8.1"
+    "npm": "6.0.0",
+    "typescript": "^2.8.3"
   },
   "babel": {
     "presets": [

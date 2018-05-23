@@ -1,20 +1,25 @@
 export enum ErrorCode {
     Error = 0, // General error
     EngineInitialization = 100, // Engine begins at EC100
+    EngineInstanceNull,
+    EngineInstanceNotNull,
     EngineWindowUndefined,
     EngineStartedEarly,
     EngineRunning,
     EngineStopping,
     EnginePausing,
     BrowserWindowUndefined = 200, // BrowserWindow begins at EC200
-    BrowserWindowDidNotClose
+    BrowserWindowDidNotClose,
+    EntityInitialization = 300, // Entity begins at EC300
+    EntityAlreadyHasComponent,
+    EntityComponentNotFound
 }
 /**
  * @param  {ErrorCode} ec
  * @param  {string} info?
  */
 export function LogError(ec: ErrorCode, info?: string): string {
-    const errorString = `Error Code:${ec} Information: ${info}`;
+    const errorString = `Error Code: ${ec} Information: ${info}`;
     console.error(errorString);
     return errorString;
 }
