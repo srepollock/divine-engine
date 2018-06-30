@@ -50,10 +50,9 @@ The engine runs these unit tests on all core components. Through the methodology
 
 ### And coding style tests
 
-[TBD]
-Reference: [mocha-tslint](https://github.com/t-sauer/mocha-tslint)
+Coding styles must be followed in this project. To ensure that users are following the standards, all pull requests will be run with the linting standards described in the [tslint.json](https://github.com/srepollock/divine-engine/blob/master/tslint.json) file.
 
-## Built With
+### Built With
 
 * [NodeJS](https://nodejs.org/en/)
 * [npm](https://www.npmjs.com/)

@@ -127,14 +127,6 @@ export class Engine {
         }
     }
     /**
-     * Set's the engines instance as undefined. This is internally called by the
-     * engine's stop function.
-     * @returns void
-     */
-    private static shutdown(): void {
-        this._instance = undefined;
-    }
-    /**
      * Resizes the game window. The engine has full control over the game window
      * and will be used as an intermediary between the game window and function
      * calls by developers.
@@ -157,5 +149,13 @@ export class Engine {
             LogError(ErrorCode.EngineInstanceNull, 
                 "The engine's instance is set to null");
         }
+    }
+    /**
+     * Set's the engines instance as undefined. This is internally called by the
+     * engine's stop function.
+     * @returns void
+     */
+    private static shutdown(): void {
+        this._instance = undefined;
     }
 }

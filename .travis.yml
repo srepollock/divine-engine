@@ -1,6 +1,10 @@
 language: node_js
 node_js:
     - "stable"
+script:
+    - npm run bundle
+    - npm run lint
+    - npm test
 branch:
     only:
     - master
