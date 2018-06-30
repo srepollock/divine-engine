@@ -9,7 +9,7 @@ After you’ve read and followed these two pages, now you’re ready to get to w
 
 ## Conventions
 
-[none]
+For bracket conventions, this project will use the [K&R indentation styles](https://en.wikipedia.org/wiki/Indentation_style#K&R). The project will have TypeScript lint implemented to run when merging a pull request into the master branch as well, so that all conventions will be followed. The rest of the conventions will be for coding styles to give developers all the tools they need.
 
 ### Naming Conventions
 
@@ -17,11 +17,11 @@ After you’ve read and followed these two pages, now you’re ready to get to w
 
 ### Documentation
 
-[none]
+The documentation is built using TypeDocs on Travis-CI checking, and use the JSDoc format. For all project comments, please follow JSDocumetation standards.
 
 ### Linting
 
-[none]
+The project will also run linting checks based on the TSLint file found in the root directory. Lint checks run each Travis-CI run as well.
 
 ## Branch
 
