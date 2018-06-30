@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Entity, FlagComponent, SoundComponent, Transform } from "../../src";
+import { Entity, FlagComponent, LogInfo, Transform } from "../../src";
 
 describe("Entity unit testing", () => {
     describe("Empty Entity object", () => {
@@ -79,9 +79,10 @@ describe("Entity unit testing", () => {
             go5.addComponent(new FlagComponent(new Transform(0, 0)));
             expect(go5.hasComponent("FlagComponent")).to.be.true;
         });
-        it("should get the entities component that equals 2", () => {
-            expect(go5.getComponent("FlagComponent")).to
-                .have.property("flagnumber", 2);
+        it("should get the entities component that equals 1", () => {
+            let comp = go5.getComponent("FlagComponent") as FlagComponent;
+            LogInfo("" + comp.getFlagnumber());
+            expect(comp.getFlagnumber()).to.equal(4);
         });
         it("should add multiple components to the entity");
     });

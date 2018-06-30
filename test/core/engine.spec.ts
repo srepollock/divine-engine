@@ -4,13 +4,13 @@ import { Engine, EngineArguments } from "../../src";
 
 describe("Engine unit testing", () => {
     let engArgs: EngineArguments = new EngineArguments(0, 0);
-    beforeEach(() => {
-        Engine.start(engArgs, () => Engine.update());
-    });
-    afterEach(() => {
-        Engine.stop();
-    });
     describe("Engine initialization", () => {
+        before(() => {
+            Engine.start(engArgs, () => Engine.update());
+        });
+        after(() => {
+            Engine.stop();
+        });
         it("should have started", () => {
             expect(Engine.started).to.be.true;
         });
@@ -22,6 +22,9 @@ describe("Engine unit testing", () => {
         });
     });
     describe("Engine start and running", () => {
+        before(() => {
+            Engine.start(engArgs, () => Engine.update());
+        });
         it("should start running when start is called", () => {
             expect(Engine.started).to.be.true;
         });

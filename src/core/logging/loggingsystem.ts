@@ -5,6 +5,7 @@ export enum ErrorCode {
     EngineInstanceNotNull,
     EngineWindowUndefined,
     EngineStartedEarly,
+    EngineStart,
     EngineRunning,
     EngineStopping,
     EnginePausing,

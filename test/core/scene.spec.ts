@@ -29,9 +29,9 @@ describe("Scene unit tests", () => {
     });
     describe("Scene with entity initializations", () => {
         let scene2: Scene = new Scene(entityArray);
-        // it("should have an entity array with 3 entities in it", () => {
-        //     expect(scene2.entityArray).to.have.lengthOf(3);
-        // });
+        it("should have an entity array with 3 entities in it", () => {
+            expect(scene2.entityArray).to.have.lengthOf(3);
+        });
     });
     describe("Scene with a scene manager", () => {
         let scene3: Scene = new Scene(); // NOTE: add a scene manager here

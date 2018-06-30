@@ -1,5 +1,5 @@
 import { GameWindow } from "./gamewindow";
-import { ErrorCode, LogError, LogInfo } from "./logging";
+import { ErrorCode, LogError } from "./logging";
 
 /**
  * Engine arguments for setup.
@@ -105,12 +105,11 @@ export class Engine {
         new Engine();
 
         Engine._running = true;
+        LogError(ErrorCode.EngineStart, "Engine started");
         ready();
     }
     public static update(): void {
-        /** TODO: Does this need to be running on a thread? Or can it be 
-         * something else? This will depend on my engine architecture
-         */
+        LogError(ErrorCode.EngineRunning, "Engine is running");
     }
     /**
      * This stops the engine and calls the shutdown. Once the engine is stopped
@@ -119,10 +118,13 @@ export class Engine {
      * @returns void
      */
     public static stop(): void {
-        Engine._exit = true;
-        Engine._running = false;
-        Engine._started = false;
-        Engine.shutdown();
+        if (this._instance !== undefined) {
+            Engine._exit = true;
+            Engine._running = false;
+            Engine._started = false;
+            LogError(ErrorCode.EngineStopping, "Engine is stopping.");
+            Engine.shutdown();
+        }
     }
     /**
      * Set's the engines instance as undefined. This is internally called by the

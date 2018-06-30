@@ -12,6 +12,7 @@ rollup.config.js
 # Typescript build files
 build/tsbuild/
 src/
+test/
 tsconfig.json
 tslint.json
 
