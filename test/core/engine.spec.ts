@@ -3,26 +3,38 @@ import "mocha";
 import { Engine, EngineArguments } from "../../src";
 
 describe("Engine unit testing", () => {
+    let engArgs: EngineArguments = new EngineArguments(0, 0);
     describe("Engine initialization", () => {
-        let eng: Engine = new Engine(new EngineArguments());
-        it("should not have started", () => {
-            expect(eng.started).to.be.false;
+        before(() => {
+            Engine.start(engArgs, () => Engine.update());
+        });
+        after(() => {
+            Engine.stop();
+        });
+        it("should have started", () => {
+            expect(Engine.started).to.be.true;
         });
         it("should have height set to 0", () => {
-            expect(eng.height).to.be.equal(0);
+            expect(Engine.height).to.be.equal(0);
         });
         it("should have width set to 0", () => {
-            expect(eng.width).to.be.equal(0);
+            expect(Engine.width).to.be.equal(0);
         });
     });
-    describe("Engine start", () => {
-        let eng: Engine = new Engine(new EngineArguments(400, 300));
+    describe("Engine start and running", () => {
+        before(() => {
+            Engine.start(engArgs, () => Engine.update());
+        });
         it("should start running when start is called", () => {
-            eng.start();
-            expect(eng.started).to.equal(true);
+            expect(Engine.started).to.be.true;
         });
         it("should be running", () => {
-            expect(eng.running).to.equal(true);
+            expect(Engine.running).to.be.true;
+        });
+        it("should stop when stop is called", () => {
+            Engine.stop();
+            expect(Engine.running).to.be.false;
+            expect(Engine.started).to.be.false;
         });
     });
 });

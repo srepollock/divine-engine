@@ -1,2 +1,2 @@
-import {DObject} from "./dobject";
+import { DObject } from "./dobject";
 export interface Component extends DObject {}

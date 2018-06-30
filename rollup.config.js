@@ -5,13 +5,13 @@ export default {
     input: './src/index.ts',
     output: [
         {
-            file: './lib/daemon.module.js',
-            format: 'umd',
-            name: 'daemon'
+            file: './lib/divine.js',
+            format: 'cjs',
         },
         {
-            file: './lib/daemon.js',
-            format: 'cjs',
+            file: './lib/divine.module.js',
+            format: 'umd',
+            name: 'daemon'
         }
     ],
     plugins: [
