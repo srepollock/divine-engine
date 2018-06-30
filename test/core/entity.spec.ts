@@ -1,85 +1,89 @@
 import { expect } from "chai";
 import "mocha";
-import { Entity } from "../../src";
-import { FlagComponent } from "../../src";
-import { Transform } from "../../src";
+import { Entity, FlagComponent, LogInfo, Transform } from "../../src";
 
 describe("Entity unit testing", () => {
     describe("Empty Entity object", () => {
-        let go: Entity = new Entity();
+        let go1: Entity = new Entity();
         it("should have an empty id", () => {
-            expect(go.id).to.be.equal("");
+            expect(go1.id).to.be.equal("");
         });
         it("should be set to 0,0 coordinates", () => {
-            expect(go.transform).to.be.deep.equal({x: 0, y: 0});
+            expect(go1.transform).to.be.deep.equal({x: 0, y: 0});
         });
         it("should have no components", () => {
-            expect(go.components).to.be.an("array").that.is.empty;
+            expect(go1.components).to.be.an("array").that.is.empty;
         });
         it("should have no children", () => {
-            expect(go.children).to.be.an("array").that.is.empty;
+            expect(go1.children).to.be.an("array").that.is.empty;
         });
         it("should be able to print the object with toString()", () => {
-            expect(go).respondsTo("toString");
+            expect(go1).respondsTo("toString");
         });
     });
     describe("Entity object with id", () => {
-        let go: Entity = new Entity("template");
+        let go2: Entity = new Entity("template");
         it("should have an id: \"template\"", () => {
-            expect(go.id).to.be.equal("template");
+            expect(go2.id).to.be.equal("template");
         });
         it("should be set to 0,0 coordinates", () => {
-            expect(go.transform).to.be.deep.equal({x: 0, y: 0});
+            expect(go2.transform).to.be.deep.equal({x: 0, y: 0});
         });
         it("should have no components", () => {
-            expect(go.components).to.be.an("array").that.is.empty;
+            expect(go2.components).to.be.an("array").that.is.empty;
         });
         it("should have no children", () => {
-            expect(go.children).to.be.an("array").that.is.empty;
+            expect(go2.children).to.be.an("array").that.is.empty;
         });
     });
     describe("Entity object with id and new coordinates", () => {
-        let go: Entity = new Entity("template", {x: 11, y: 23});
+        let go3: Entity = new Entity("template", {x: 11, y: 23});
         it("should have an empty id", () => {
-            expect(go.id).to.be.equal("template");
+            expect(go3.id).to.be.equal("template");
         });
         it("should be set to 11,23 coordinates", () => {
-            expect(go.transform).to.be.deep.equal({x: 11, y: 23});
+            expect(go3.transform).to.be.deep.equal({x: 11, y: 23});
         });
         it("should have no components", () => {
-            expect(go.components).to.be.an("array").that.is.empty;
+            expect(go3.components).to.be.an("array").that.is.empty;
         });
         it("should have no children", () => {
-            expect(go.children).to.be.an("array").that.is.empty;
+            expect(go3.children).to.be.an("array").that.is.empty;
         });
     });
     describe("Entity object with id, new coordinates, and 1 component", () => {
-        let go: Entity = new Entity("template", 
+        let go4: Entity = new Entity("template", 
             {x: 30, y: -10}, 
             [], 
             [new FlagComponent(new Transform(0, 0))]
         );
         it("should have an empty id", () => {
-            expect(go.id).to.be.equal("template");
+            expect(go4.id).to.be.equal("template");
         });
         it("should be set to 30,-10 coordinates", () => {
-            expect(go.transform).to.be.deep.equal({x: 30, y: -10});
+            expect(go4.transform).to.be.deep.equal({x: 30, y: -10});
         });
         it("should have a component", () => {
-            expect(go.components).to.be.an("array").that.is.not.empty;
+            expect(go4.components).to.be.an("array").that.is.not.empty;
         });
         it("should be a flag component", () => {
-            expect(go.hasComponent("FlagComponent")).to.be.true;
+            expect(go4.hasComponent("FlagComponent")).to.be.true;
         });
         it("should have no children", () => {
-            expect(go.children).to.be.an("array").that.is.empty;
+            expect(go4.children).to.be.an("array").that.is.empty;
         });
     });
-    describe("add components to object", () => {
-        let go: Entity = new Entity();
-        it("should insert a new component", () => {
-            go.addComponents(new FlagComponent(new Transform(0, 0)));
-            expect(go.hasComponent("FlagComponent")).to.be.true;
+    describe("Add components to object", () => {
+        let go5: Entity = new Entity();
+        it("should add a new component", () => {
+            go5.addComponent(new FlagComponent(new Transform(0, 0)));
+            expect(go5.hasComponent("FlagComponent")).to.be.true;
         });
+        it("should get the entities component that equals 1", () => {
+            let comp = go5.getComponent("FlagComponent") as FlagComponent;
+            LogInfo("" + comp.getFlagnumber());
+            expect(comp.getFlagnumber()).to.equal(4);
+        });
+        it("should add multiple components to the entity");
     });
 });
