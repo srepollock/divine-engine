@@ -1,3 +1,4 @@
+
 export enum ErrorCode {
     Error = 0, // General error
     EngineInitialization = 100, // Engine begins at EC100
@@ -15,19 +16,33 @@ export enum ErrorCode {
     EntityAlreadyHasComponent,
     EntityComponentNotFound
 }
-/**
- * @param  {ErrorCode} ec
- * @param  {string} info?
- */
-export function LogError(ec: ErrorCode, info?: string): string {
-    const errorString = `Error Code: ${ec} Information: ${info}`;
-    console.error(errorString);
-    return errorString;
+
+export interface LogInterface {
+    debug(code: ErrorCode, ...info: any[]): void;
+    warn(code: ErrorCode, ...info: any[]): void;
+    error(code: ErrorCode, ...info: any[]): void;
+    info(code: ErrorCode, ...info: any[]): void;
 }
-/**
- * @param  {string} info
- */
-export function LogInfo(info: string): string {
-    console.log(`Information: ${info}`);
-    return info;
+
+export class ErrorSystem implements LogInterface {
+    public debug(ec: ErrorCode, ...info: any[]): string {
+        const errorString = `Error Code: ${ec} Information: ${info}`;
+        console.error(errorString);
+        return errorString;
+    }
+    public warn(ec: ErrorCode, ...info: any[]): string {
+        const errorString = `Error Code: ${ec} Information: ${info}`;
+        console.error(errorString);
+        return errorString;
+    }
+    public error(ec: ErrorCode, ...info: any[]): string {
+        const errorString = `Error Code: ${ec} Information: ${info}`;
+        console.error(errorString);
+        return errorString;
+    }
+    public info(ec: ErrorCode, ...info: any[]): string {
+        const errorString = `Error Code: ${ec} Information: ${info}`;
+        console.error(errorString);
+        return errorString;
+    }
 }
