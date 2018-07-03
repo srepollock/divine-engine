@@ -1,5 +1,7 @@
 import { GameWindow } from "./gamewindow";
-import { ErrorCode, LogError } from "./logging";
+import { ErrorCode } from "./logging";
+import { LogError } from "./logging/errorsystem";
+import { MessageSystem } from "./messagesystem";
 
 /**
  * Engine arguments for setup.
@@ -28,6 +30,7 @@ export class Engine {
     private static _started: boolean = false;
     private static _running: boolean = false;
     private static _exit: boolean = false;
+    private messageSystem: MessageSystem;
     private _height: number = 0;
     private _width: number = 0;
     private _window: GameWindow | undefined = undefined;
@@ -74,7 +77,7 @@ export class Engine {
      */
     public get window(): GameWindow | undefined {
         if (this._window) return this._window;
-        LogError(ErrorCode.EngineWindowUndefined,
+        LogError(ErrorCode.EngineWindowUndefined, 
             "The engine's game window is not defined");
         return undefined;
     }
@@ -82,8 +85,13 @@ export class Engine {
      * Initializes an Engine object.
      */
     private constructor() {
+        this.messageSystem = new MessageSystem();
+        if (this.messageSystem !== undefined) {
+            LogError(ErrorCode.MessageSystemInitialization);
+            Engine._exit = true;
+        }
         if (Engine._instance !== undefined) {
-            LogError(ErrorCode.EngineInstanceNotNull, 
+            (ErrorCode.EngineInstanceNotNull, 
                 "Engine already has an instance in the class");
             Engine._exit = true; // NOTE: Immediately close
         }
