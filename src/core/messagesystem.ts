@@ -103,6 +103,14 @@ export class Message {
     public get JSON(): JSON {
         return JSON.parse(this._data);
     }
+
+    /**
+     * Returns the object.
+     */
+    public getObject(): object {
+        let object: object = this.JSON;
+        return object;
+    }
 }
 
 /**
