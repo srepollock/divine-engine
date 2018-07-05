@@ -1,8 +1,52 @@
 import { expect } from "chai";
 import "mocha";
-import { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage } from "../../src";
+import { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, RenderComponent, RenderSystemMessage, TestMessage } from "../../src";
 
 describe("Message System unit testing", () => {
+    describe("Messages", () => {
+        it("should be able to be created empty", () => {
+            let message: Message = new Message();
+            expect(message.JSONString).to.equal("{}");
+        });
+        it("should take multiple strings of data as input", () => {
+            let message: TestMessage = new TestMessage("1");
+            expect(message.JSONString).to.equal(
+                JSON.stringify({data: "1"}));
+        });
+        it("should save data as a string in JSON format", () => {
+            let message: TestMessage = new TestMessage("1");
+            expect(message).to.haveOwnProperty("data");
+        });
+        it("should export as a JSON string", () => {
+            let message: TestMessage = new TestMessage("1");
+            expect(message.JSONString).to.equal("{\"data\":\"1\"}");
+        });
+        it("should export as a JSON object", () => {
+            let message: TestMessage = new TestMessage("1");
+            expect(message.JSON).to.be.a("Object");
+        });
+        it("should be able to get properties of TestMessage", () => {
+            let message: TestMessage = new TestMessage(100);
+            expect(message.data).to.equal(100);
+        });
+        it("should be able to get the properties of a RenderMessage", () => {
+            let message: RenderSystemMessage = new RenderSystemMessage(1, 
+                new RenderComponent("1"));
+            expect(message.entityID).to.equal(1);
+            expect(message.renderableComponent).to.deep
+                .equal(new RenderComponent("1"));
+        });
+        it("should be able to get the properties of a PhysicsMessage", () => {
+            let message: PhysicsSystemMessage = new PhysicsSystemMessage(1);
+            expect(message.entityID).to.equal(1);
+        });
+        it("should be able to get properties of MouseInputMessage", () => {
+            let message: MouseInputMessage = new MouseInputMessage(11, 23, 96);
+            expect(message.entityID).to.be.equal(11);
+            expect(message.x).to.equal(23);
+            expect(message.y).to.equal(96);
+        });
+    });
     describe("Message system", () => {
         var data: string = "";
         var data2: string = "";
