@@ -6,28 +6,59 @@ export enum ErrorCode {
     EngineInstanceNotNull,
     EngineWindowUndefined,
     EngineStartedEarly,
-    EngineStart,
-    EngineRunning,
-    EngineStopping,
-    EnginePausing,
     MessageSystemInitialization = 200, // MessageSystem
     BrowserWindowUndefined = 300, // BrowserWindow begins
     BrowserWindowDidNotClose,
     EntityInitialization = 400, // Entity begins
+    EntityParentUndefined,
+    EntityAlreadyHasChild,
     EntityAlreadyHasComponent,
+    EntityChildNotFound,
     EntityComponentNotFound
 }
-
-export function LogError(ec: ErrorCode, data: string = ""): string {
+/**
+ * Logs information to the console.
+ * @param  {string} data
+ * @returns void
+ */
+export function Log(data: string): void {
+    const information: string = "${data}";
+    console.log(information);
+}
+/**
+ * Error logging to the console. This is when the engine may begin to break or
+ * cease running.
+ * @param  {ErrorCode} ec
+ * @param  {string=""} data
+ * @returns string
+ */
+export function LogError(ec: ErrorCode, data: string = ""): void {
     const errorString = `Error Code: ${ec} Information: ${data}`;
     console.error(errorString);
-    return errorString;
+}
+/**
+ * Prints infromation to the console for the developer.
+ * @param  {string=""} data
+ * @returns string
+ */
+export function LogInfo(data: string = ""): void {
+    const errorString = `Information: ${data}`;
+    console.info(errorString);
 }
 
-export function LogInfo(data: string = ""): string {
-    const errorString = `Information: ${data}`;
-    console.error(errorString);
-    return errorString;
+/**
+ * Prints the information in the debug log when debug has been activated through
+ * the engine arguments. This is for extra information from the system on manual
+ * functions and tasks. There will be a long console log as everthting will be 
+ * printed directly to the console.
+ * 
+ * **Verbose must be on. Only available in Chromium browsers with V8.**
+ * @param  {string} data
+ * @returns string
+ */
+export function LogDebug(data: string): void {
+    const debugInformation: string = "${data}";
+    console.debug(debugInformation);
 }
 
 // export interface LogInterface {

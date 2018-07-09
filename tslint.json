@@ -9,6 +9,7 @@
         "no-console": false,
         "curly": [true, "ignore-same-line"],
         "eofline": false,
+        "import-spacing": false,
         "interface-name": false,
         "jsdoc-format": true,
         "max-classes-per-file": false,

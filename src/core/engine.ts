@@ -1,6 +1,6 @@
 import { GameWindow } from "./gamewindow";
 import { ErrorCode } from "./logging";
-import { LogError } from "./logging/errorsystem";
+import { LogDebug, LogError, LogInfo } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
 
 /**
@@ -86,11 +86,11 @@ export class Engine {
      */
     private constructor() {
         this.messageSystem = new MessageSystem();
-        if (this.messageSystem !== undefined) {
+        if (this.messageSystem === undefined) {
             LogError(ErrorCode.MessageSystemInitialization);
             Engine._exit = true;
         }
-        if (Engine._instance !== undefined) {
+        if (Engine._instance === undefined) {
             (ErrorCode.EngineInstanceNotNull, 
                 "Engine already has an instance in the class");
             Engine._exit = true; // NOTE: Immediately close
@@ -113,11 +113,11 @@ export class Engine {
         new Engine();
 
         Engine._running = true;
-        LogError(ErrorCode.EngineStart, "Engine started");
+        LogInfo("Engine started");
         ready();
     }
     public static update(): void {
-        LogError(ErrorCode.EngineRunning, "Engine is running");
+        LogDebug("Engine is running");
     }
     /**
      * This stops the engine and calls the shutdown. Once the engine is stopped
@@ -130,7 +130,7 @@ export class Engine {
             Engine._exit = true;
             Engine._running = false;
             Engine._started = false;
-            LogError(ErrorCode.EngineStopping, "Engine is stopping.");
+            LogDebug("Engine is stopping.");
             Engine.shutdown();
         }
     }

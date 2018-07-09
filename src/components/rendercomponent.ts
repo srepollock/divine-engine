@@ -1,7 +1,7 @@
-import { Component } from "../core";
+import { Component } from "../core/component";
 
-export class RenderComponent implements Component {
-    constructor(public id: string) {
-        this.id = id;
+export class RenderComponent extends Component {
+    constructor(tag: string) {
+        super(tag);
     }
 }

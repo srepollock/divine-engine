@@ -23,6 +23,7 @@ export class Transform {
  * and game object creation.
  */
 export class Entity extends DObject {
+    private _parent?: Entity;
     /**
      * Entity constructor
      * @param id Entity's id for object uniqueness. Defaults to "".
@@ -36,15 +37,67 @@ export class Entity extends DObject {
      * @see Component
      */
     constructor(
-        id: string = "",
+        tag: string = "",
         public transform: Transform = new Transform(), 
         public children: Array<Entity> = new Array(),
         public components: Array<Component> = new Array()
     ) {
-        super(id);
+        super(tag);
         this.transform = transform;
         this.children = children;
         this.components = components;
+    }
+    /**
+     * Gets the parent entity object.
+     * @returns Entity undefined if error.
+     */
+    public get parent(): Entity | undefined {
+        if (this._parent === undefined) {
+            LogError(ErrorCode.EntityParentUndefined, "${this.id} has no \
+                parent");
+            return undefined;
+        } else {
+            return this._parent;
+        }
+    }
+    /**
+     * Sets parent object of entity.
+     * @param  {Entity} entity
+     */
+    public setParent(entity: Entity): void {
+        this._parent = entity;
+    }
+    /**
+     * Removes the parent from the entity.
+     * @returns void
+     */
+    public removeParent(): void {
+        this._parent = undefined;
+    }
+    
+    /**
+     * Adds a child to the array
+     * @param  {Entity} entity
+     * @returns void
+     */
+    public addChild(entity: Entity): void {
+        if (!this.hasChild(entity.id)) {
+            entity.setParent(this);
+            this.children!.push(entity);
+        } else {
+            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already \
+                has child ${entity.id}");
+        }
+    }
+    /**
+     * Add multiple children to the object.
+     * @param  {Array<Entity>} entities
+     * @returns void
+     */
+    public addChildren(entities: Array<Entity>): void {
+        entities.forEach((entity) => {
+            this.addChild(entity);
+        });
     }
     /**
      * Add a component to the entity. There can only be one instance of a 
@@ -81,14 +134,47 @@ export class Entity extends DObject {
         }
     }
     /**
+     * Checks if the entity has the child or not.
+     * @param  {string} id Entity unique id
+     * @returns boolean
+     */
+    public hasChild(id: string): boolean {
+        let entity = this.children.find((e) => e.id === id);
+        if (entity !== undefined) return true;
+        else return false;
+    }
+    /**
      * Checks if the entity has the component or not.
      * @param  {string} type Component class name
      * @returns boolean
      */
     public hasComponent(type: string): boolean {
-        let comp = this.components!.find((comp) => comp.id! === type);
+        let comp = this.components!.find((comp) => comp.tag! === type);
         if (comp !== undefined) return true;
         else return false;
+    }
+    /**
+     * Gets child entity from children.
+     * TODO: This should be handled in hasChild(string). There needs to be 
+     * another way of doing this.
+     * @param  {string} id
+     * @returns Entity
+     */
+    public getChild(id: string): Entity | undefined {
+        let entity = this.children!.find((entity) => entity.id === id);
+        if (entity !== undefined) { 
+            return entity!;
+        } else {
+            LogError(ErrorCode.EntityChildNotFound, "Component not found");
+            return undefined;
+        }
+    }
+    /**
+     * Gets all the children from the object.
+     * @returns Array
+     */
+    public getChildren(): Array<Entity> {
+        return this.children;
     }
     /**
      * Gets the component named that is attached to the entity.
@@ -96,7 +182,7 @@ export class Entity extends DObject {
      * @returns Component
      */
     public getComponent(type: string): Component | undefined {
-        let comp = this.components!.find((comp) => comp.id! === type);
+        let comp = this.components!.find((comp) => comp.tag! === type);
         if (comp !== undefined) { 
             return comp!;
         } else {

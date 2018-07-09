@@ -1,8 +1,8 @@
 import { Component, EventType, Message, MessageSystem } from "../core";
 
-export class MessageReceiverComponent implements Component {
-    constructor(public id: string, private messageSystem: MessageSystem) {
-        this.id = id;
+export class MessageReceiverComponent extends Component {
+    constructor(tag: string, private messageSystem: MessageSystem) {
+        super(tag);
         this.messageSystem = messageSystem;
     }
     public sendMessage(type: EventType | string, message: Message) {
