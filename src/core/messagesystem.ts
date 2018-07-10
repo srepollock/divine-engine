@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { RenderComponent } from "src/components/rendercomponent";
+import { RenderComponent } from "../components/rendercomponent";
 import { ErrorCode } from "./logging";
 
 /**

@@ -5,7 +5,7 @@
   "main": "./lib/divine.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "prepare": "npm run clean && npm run build && npm run bundle && npm run docs",
+    "prepare": "npm run build && npm run bundle && npm run docs",
     "bundle": "./node_modules/.bin/rollup -c",
     "build": "./node_modules/.bin/tsc",
     "clean": "rm -rf ./build/* ./lib/*",
@@ -43,16 +43,16 @@
     "node": "^10.6.0",
     "rollup": "^0.62.0",
     "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.12.0",
     "semver": "^5.5.0",
     "ts-node": "^7.0.0",
+    "tsc-watch": "^1.0.22",
     "tslint": "^5.10.0",
     "typedoc": "^0.11.1"
   },
   "dependencies": {
-    "levelup": "^3.1.0",
-    "lodash": "^4.17.10",
     "typescript": "^2.9.2"
   },
   "babel": {

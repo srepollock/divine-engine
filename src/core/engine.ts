@@ -14,13 +14,13 @@ export class EngineArguments {
      * @param width 
      */
     constructor(
-        public debug: boolean = false,
         public height: number = 0,
-        public width: number = 0
+        public width: number = 0,
+        public debug: boolean = false
     ) {
-        this.debug = debug;
         this.height = height;
         this.width = width;
+        this.debug = debug;
     }
 }
 

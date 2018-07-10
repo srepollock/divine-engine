@@ -1,5 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import babel from 'rollup-plugin-babel';
+import { builtinModules } from 'module';
 
 export default {
     input: './src/index.ts',
@@ -15,6 +16,7 @@ export default {
         }
     ],
     plugins: [
+        builtins(),
         typescript(),
         babel()
     ]

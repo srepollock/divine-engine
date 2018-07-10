@@ -51,14 +51,14 @@ export function LogInfo(data: string = ""): void {
  * the engine arguments. This is for extra information from the system on manual
  * functions and tasks. There will be a long console log as everthting will be 
  * printed directly to the console.
- * 
+ * DEBUG: THis needs to have a boolean to debug mode
  * **Verbose must be on. Only available in Chromium browsers with V8.**
  * @param  {string} data
  * @returns string
  */
 export function LogDebug(data: string): void {
     const debugInformation: string = "${data}";
-    console.debug(debugInformation);
+    console.log(debugInformation);
 }
 
 // export interface LogInterface {
