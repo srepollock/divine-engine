@@ -1,5 +1,3 @@
-import { BrowserWindow } from "electron";
-import { ErrorCode, LogError } from ".";
 export class GameWindow {
     private browserWindow: Electron.BrowserWindow;
     private _title: string;

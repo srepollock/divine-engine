@@ -7,7 +7,7 @@ describe("Engine unit testing", () => {
     \"width\": 0, \"debug\": false}");
     describe("Engine initialization", () => {
         before(() => {
-            Engine.start(engArgs, () => Engine.update());
+            Engine.start(engArgs);
         });
         after(() => {
             Engine.stop();
@@ -24,7 +24,7 @@ describe("Engine unit testing", () => {
     });
     describe("Engine start and running", () => {
         before(() => {
-            Engine.start(engArgs, () => Engine.update());
+            Engine.start(engArgs);
         });
         it("should start running when start is called", () => {
             expect(Engine.started).to.be.true;
@@ -32,10 +32,17 @@ describe("Engine unit testing", () => {
         it("should be running", () => {
             expect(Engine.running).to.be.true;
         });
-        it("should stop when stop is called", () => {
+        it("should stop when stop is called but still running", () => {
             Engine.stop();
             expect(Engine.running).to.be.false;
             expect(Engine.started).to.be.false;
+            expect(Engine.instance).to.not.be.undefined;
+        });
+        it("should restart running when play is pressed", () => {
+            Engine.play();
+            expect(Engine.running).to.be.true;
+            expect(Engine.started).to.be.true;
+            expect(Engine.instance).to.not.be.undefined;
         });
     });
 });

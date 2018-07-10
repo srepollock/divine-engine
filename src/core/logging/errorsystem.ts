@@ -1,11 +1,13 @@
 
 export enum ErrorCode {
     Error = 0, // General error
+    WindowUndefined,
     EngineInitialization = 100, // Engine begins
     EngineInstanceNull,
     EngineInstanceNotNull,
     EngineWindowUndefined,
     EngineStartedEarly,
+    EngineNotRunning,
     MessageSystemInitialization = 200, // MessageSystem
     BrowserWindowUndefined = 300, // BrowserWindow begins
     BrowserWindowDidNotClose,
