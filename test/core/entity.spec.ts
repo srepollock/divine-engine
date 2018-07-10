@@ -3,18 +3,15 @@ import "mocha";
 import { Entity, FlagComponent, LogInfo, Transform } from "../../src";
 
 describe("Entity unit testing", () => {
-    var entity: Entity | undefined;
+    var entity: Entity;
     beforeEach(() => {
         entity = new Entity();
-    });
-    afterEach(() => {
-        entity = undefined;
     });
     describe("Child entity objects", () => {
         it("should be instantiated with a parent ID", () => {
             let child: Entity = new Entity();
             child.setParent(entity);
-            expect(child.parent.id).to.equal(entity.id);
+            expect(child.parent!.id).to.equal(entity.id);
         });
         it("should have 1 child entity object", () => {
             let child = new Entity();
@@ -26,7 +23,7 @@ describe("Entity unit testing", () => {
             let child = new Entity();
             child.setParent(entity);
             entity.addChild(child);
-            expect(entity.getChildren()[0].parent.id).to.equal(entity.id);
+            expect(entity.getChildren()[0].parent!.id).to.equal(entity.id);
         });
     });
     describe("Empty Entity object", () => {

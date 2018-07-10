@@ -30,11 +30,11 @@ describe("Message System unit testing", () => {
             expect(message.data).to.equal(100);
         });
         it("should be able to get the properties of a RenderMessage", () => {
-            let message: RenderSystemMessage = new RenderSystemMessage(1, 
-                new RenderComponent("1"));
+            let rc: RenderComponent = new RenderComponent("1");
+            let message: RenderSystemMessage = new RenderSystemMessage(1, rc);
             expect(message.entityID).to.equal(1);
             expect(message.renderableComponent).to.deep
-                .equal(new RenderComponent("1"));
+                .equal(rc);
         });
         it("should be able to get the properties of a PhysicsMessage", () => {
             let message: PhysicsSystemMessage = new PhysicsSystemMessage(1);

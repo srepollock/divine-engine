@@ -14,9 +14,11 @@ export class EngineArguments {
      * @param width 
      */
     constructor(
+        public debug: boolean = false,
         public height: number = 0,
         public width: number = 0
     ) {
+        this.debug = debug;
         this.height = height;
         this.width = width;
     }
@@ -132,30 +134,6 @@ export class Engine {
             Engine._started = false;
             LogDebug("Engine is stopping.");
             Engine.shutdown();
-        }
-    }
-    /**
-     * Resizes the game window. The engine has full control over the game window
-     * and will be used as an intermediary between the game window and function
-     * calls by developers.
-     * @param  {number} height
-     * @param  {number} width
-     * @returns void
-     */
-    public static resize(height: number, width: number): void {
-        if (this._instance) {
-            if (this._instance._window) {
-                this._instance._height = height;
-                this._instance._width = width;
-                this._instance._window.resize(this._instance._height, 
-                    this._instance._width);
-            } else {
-                LogError(ErrorCode.EngineWindowUndefined,
-                    "The engine's game window is not defined");
-            }
-        } else {
-            LogError(ErrorCode.EngineInstanceNull, 
-                "The engine's instance is set to null");
         }
     }
     /**

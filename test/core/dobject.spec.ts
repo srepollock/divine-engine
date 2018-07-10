@@ -3,13 +3,10 @@ import "mocha";
 import { DObject } from "../../src";
 
 describe("DObject unit testing", () => {
-    var obj: DObject | undefined;
+    var obj: DObject;
     describe("empty object instantiation", () => {
         beforeEach(() => {
             obj = new DObject();
-        });
-        afterEach(() => {
-            obj = undefined;
         });
         it("should have an id", () => {
             expect(obj.id).to.not.equal("");
@@ -21,9 +18,6 @@ describe("DObject unit testing", () => {
     describe("", () => {
         beforeEach(() => {
             obj = new DObject("player");
-        });
-        afterEach(() => {
-            obj = undefined;
         });
         it("should have an id of \"player \"", () => {
             expect(obj.tag).to.equal("player");
