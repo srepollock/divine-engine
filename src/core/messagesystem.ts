@@ -104,7 +104,7 @@ export class Message {
     }
 }
 
-/**
+/** 
  * Testing message for empty messages.
  */
 export class TestMessage extends Message {

@@ -1,6 +1,7 @@
 import typescript from 'rollup-plugin-typescript2';
 import babel from 'rollup-plugin-babel';
-import { builtinModules } from 'module';
+import builtins from "rollup-plugin-node-builtins";
+import globals from "rollup-plugin-node-globals";
 
 export default {
     input: './src/index.ts',
@@ -16,6 +17,7 @@ export default {
         }
     ],
     plugins: [
+        globals(),
         builtins(),
         typescript(),
         babel()

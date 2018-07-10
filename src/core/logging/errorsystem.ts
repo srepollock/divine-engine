@@ -57,7 +57,7 @@ export function LogInfo(data: string = ""): void {
  * @returns string
  */
 export function LogDebug(data: string): void {
-    const debugInformation: string = "${data}";
+    const debugInformation: string = `${data}`;
     console.log(debugInformation);
 }
 
