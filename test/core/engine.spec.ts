@@ -3,14 +3,10 @@ import "mocha";
 import { Engine, EngineArguments } from "../../src";
 
 describe("Engine unit testing", () => {
-    let engArgs: EngineArguments = JSON.parse("{\"height\": 0, \
-    \"width\": 0, \"debug\": false}");
+    let engArgs: EngineArguments = JSON.parse("{\"title\": \"\", \"height\": 0, \"width\": 0, \"debug\": false}");
     describe("Engine initialization", () => {
         before(() => {
             Engine.start(engArgs);
-        });
-        after(() => {
-            Engine.stop();
         });
         it("should have started", () => {
             expect(Engine.started).to.be.true;
@@ -20,6 +16,10 @@ describe("Engine unit testing", () => {
         });
         it("should have width set to 0", () => {
             expect(Engine.width).to.be.equal(0);
+        });
+        it("should shutdown and close on shutdown", () => {
+            Engine.shutdown();
+            expect(Engine.instance).to.be.undefined;
         });
     });
     describe("Engine start and running", () => {
@@ -32,10 +32,11 @@ describe("Engine unit testing", () => {
         it("should be running", () => {
             expect(Engine.running).to.be.true;
         });
-        it("should stop when stop is called but still running", () => {
+        it("should stop running the main loop when stop is called; must create a new isntance", 
+            () => {
             Engine.stop();
             expect(Engine.running).to.be.false;
-            expect(Engine.started).to.be.false;
+            expect(Engine.started).to.be.true;
             expect(Engine.instance).to.not.be.undefined;
         });
         it("should restart running when play is pressed", () => {
@@ -43,6 +44,24 @@ describe("Engine unit testing", () => {
             expect(Engine.running).to.be.true;
             expect(Engine.started).to.be.true;
             expect(Engine.instance).to.not.be.undefined;
+        });
+        it("should pause the scene; running time is the same after a 5000ms sleep", () => {
+            Engine.pause();
+            expect(Engine.running).to.be.false; // Not running but,
+            expect(Engine.started).to.be.true; // still "on"
+            let time = Engine.now;
+            expect(Engine.now).to.equal(time);
+            setTimeout(() => {}, 5000);
+            expect(Engine.now).to.equal(time);
+        });
+        it("should resume the scene", () => {
+            Engine.play();
+            expect(Engine.running).to.be.true;
+            let time = Engine.now;
+            setTimeout(() => {}, 5000);
+            expect(Engine.now).not.to.equal(time); // Should be a new frame
+            setTimeout(() => {}, 5000);
+            expect(Engine.now).not.to.equal(time); // Should be a new frame
         });
     });
 });

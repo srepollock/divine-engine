@@ -24,7 +24,7 @@ export enum ErrorCode {
  * @returns void
  */
 export function Log(data: string): void {
-    const information: string = "${data}";
+    const information: string = `${data}`;
     console.log(information);
 }
 /**

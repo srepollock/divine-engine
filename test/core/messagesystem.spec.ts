@@ -82,8 +82,7 @@ describe("Message System unit testing", () => {
             messageSystem.on(EventType.SoundSystem, messageDataVariableSave);
             expect(messageSystem.eventNames()).to.have.length(3);
         });
-        it("should add 5 different listeners and remove 1 listener of differnt \
-                types", () => {
+        it("should add 5 different listeners and remove 1 listener of differnt types", () => {
             messageSystem.on(EventType.PhysicsSystem, messageDataVariableSave);
             messageSystem.on(EventType.RenderSystem, messageDataVariableSave);
             messageSystem.on(EventType.IOSystem, messageDataVariableSave);
@@ -125,8 +124,8 @@ describe("Message System unit testing", () => {
                 new PhysicsSystemMessage("1"));
             expect(data).to.equal("");
         });
-        it("should send 2 types (EventType.MouseInputMessage and \
-            EventType.Entity) and receive only EventType.Entity", () => {
+        it("should send 2 types (EventType.MouseInputMessage and EventType.Entity) and receive only EventType.Entity", 
+            () => {
             messageSystem.on(EventType.Entity, messageDataVariableSave);
             messageSystem.emit(EventType.Entity, 
                 new EntityMessage(1));
@@ -136,8 +135,7 @@ describe("Message System unit testing", () => {
             expect(data).to.not.equal(
                 new MouseInputMessage(1, 10, 10).JSONString);
         });
-        it("should send and receive a message of EventType.Entity to two entity\
-            listeners", () => {
+        it("should send and receive a message of EventType.Entity to two entity listeners", () => {
             messageSystem.on(EventType.Entity, messageDataVariableSave);
             messageSystem.on(EventType.Entity, messageDataVariableSave2);
             messageSystem.emit(EventType.Entity, new EntityMessage("1"));
