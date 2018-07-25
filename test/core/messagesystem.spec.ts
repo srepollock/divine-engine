@@ -5,13 +5,13 @@ import { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, Ph
 describe("Message System unit testing", () => {
     describe("Messages", () => {
         it("should be able to be created empty", () => {
-            let message: Message = new Message();
-            expect(message.JSONString).to.equal("{}");
+            let message: Message = new Message("");
+            expect(message.JSONString).to.equal("{\"entityID\":\"\"}");
         });
         it("should take multiple strings of data as input", () => {
             let message: TestMessage = new TestMessage("1");
             expect(message.JSONString).to.equal(
-                JSON.stringify({data: "1"}));
+                JSON.stringify({entityID: "1"}));
         });
         it("should save data as a string in JSON format", () => {
             let message: TestMessage = new TestMessage("1");
@@ -19,30 +19,30 @@ describe("Message System unit testing", () => {
         });
         it("should export as a JSON string", () => {
             let message: TestMessage = new TestMessage("1");
-            expect(message.JSONString).to.equal("{\"data\":\"1\"}");
+            expect(message.JSONString).to.equal("{\"entityID\":\"1\"}");
         });
         it("should export as a JSON object", () => {
             let message: TestMessage = new TestMessage("1");
             expect(message.JSON).to.be.a("Object");
         });
         it("should be able to get properties of TestMessage", () => {
-            let message: TestMessage = new TestMessage(100);
-            expect(message.data).to.equal(100);
+            let message: TestMessage = new TestMessage("100");
+            expect(message.entityID).to.equal("100");
         });
         it("should be able to get the properties of a RenderMessage", () => {
             let rc: RenderComponent = new RenderComponent("1");
-            let message: RenderSystemMessage = new RenderSystemMessage(1, rc);
-            expect(message.entityID).to.equal(1);
+            let message: RenderSystemMessage = new RenderSystemMessage("1", rc);
+            expect(message.entityID).to.equal("1");
             expect(message.renderableComponent).to.deep
                 .equal(rc);
         });
         it("should be able to get the properties of a PhysicsMessage", () => {
-            let message: PhysicsSystemMessage = new PhysicsSystemMessage(1);
-            expect(message.entityID).to.equal(1);
+            let message: PhysicsSystemMessage = new PhysicsSystemMessage("1");
+            expect(message.entityID).to.equal("1");
         });
         it("should be able to get properties of MouseInputMessage", () => {
-            let message: MouseInputMessage = new MouseInputMessage(11, 23, 96);
-            expect(message.entityID).to.be.equal(11);
+            let message: MouseInputMessage = new MouseInputMessage("11", 23, 96);
+            expect(message.entityID).to.be.equal("11");
             expect(message.x).to.equal(23);
             expect(message.y).to.equal(96);
         });
@@ -109,13 +109,13 @@ describe("Message System unit testing", () => {
             
             messageSystem.on(EventType.RenderSystem, messageDataVariableSave);
             messageSystem.emit(EventType.RenderSystem, 
-                new MouseInputMessage(1, 1, 1));
-            expect(data).to.equal(new MouseInputMessage(1, 1, 1).JSONString);
+                new MouseInputMessage("1", 1, 1));
+            expect(data).to.equal(new MouseInputMessage("1", 1, 1).JSONString);
             messageSystem.emit(EventType.RenderSystem, 
-                new MouseInputMessage(1, 2, 4));
+                new MouseInputMessage("1", 2, 4));
             messageSystem.emit(EventType.RenderSystem, 
-                new MouseInputMessage(1, 81, 81));
-            expect(data).to.equal(new MouseInputMessage(1, 81, 81).JSONString);
+                new MouseInputMessage("1", 81, 81));
+            expect(data).to.equal(new MouseInputMessage("1", 81, 81).JSONString);
         });
         it("is receiving render messages and emitting physics messages", () => {
             
@@ -128,12 +128,12 @@ describe("Message System unit testing", () => {
             () => {
             messageSystem.on(EventType.Entity, messageDataVariableSave);
             messageSystem.emit(EventType.Entity, 
-                new EntityMessage(1));
-            expect(data).to.equal(new EntityMessage(1).JSONString);
+                new EntityMessage("1"));
+            expect(data).to.equal(new EntityMessage("1").JSONString);
             messageSystem.emit(EventType.IOSystem, 
-                new MouseInputMessage(1, 10, 10));
+                new MouseInputMessage("1", 10, 10));
             expect(data).to.not.equal(
-                new MouseInputMessage(1, 10, 10).JSONString);
+                new MouseInputMessage("1", 10, 10).JSONString);
         });
         it("should send and receive a message of EventType.Entity to two entity listeners", () => {
             messageSystem.on(EventType.Entity, messageDataVariableSave);
@@ -195,7 +195,6 @@ describe("Message System unit testing", () => {
         });
         it("can remove all listeners of one event type of two even types", 
             () => {
-            
             messageSystem.on(EventType.RenderSystem, messageDataVariableSave);
             messageSystem.on(EventType.RenderSystem, messageDataVariableSave);
             messageSystem.on(EventType.PhysicsSystem, messageDataVariableSave);

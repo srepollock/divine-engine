@@ -11,7 +11,7 @@
     "clean": "rm -rf ./build/* ./lib/*",
     "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
     "lint": "./node_modules/.bin/tslint ./src/**/*.ts -c tslint.json",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts --inspect-brk=1123"
   },
   "repository": {
     "type": "git",

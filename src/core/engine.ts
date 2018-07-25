@@ -1,7 +1,8 @@
-import { GameWindow } from "./gamewindow";
+import { request } from "http";
 import { ErrorCode } from "./logging";
-import { Log, LogError } from "./logging/errorsystem";
+import { Log, LogDebug, LogError } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
+import { Window } from "./window";
 
 export enum Client {
     Browser,
@@ -24,12 +25,14 @@ export class EngineArguments {
         public height: number = 0,
         public width: number = 0,
         public fps: number = 60,
+        public rootElementId: string = "",
         public debug: boolean = false
     ) {
         this.title = title;
         this.height = height;
         this.width = width;
         this.fps = fps;
+        this.rootElementId = rootElementId;
         this.debug = debug;
     }
 }
@@ -42,6 +45,7 @@ export class Engine {
     private static _started: boolean = false;
     private static _running: boolean = false;
     private static _exit: boolean = false;
+    private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
     private _messageSystem: MessageSystem;
     private _client: Client;
@@ -52,9 +56,13 @@ export class Engine {
     private _height: number = 0;
     private _startTime: number;
     private _width: number = 0;
-    private _window: GameWindow | undefined = undefined;
+    private _window: Window | undefined = undefined;
     public static get instance(): Engine | undefined {
-        return Engine._instance;
+        if (Engine._instance !== undefined) {
+            return Engine._instance;
+        }
+        LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
+        return undefined; 
     }
     /**
      * Gets the engine's started variable.
@@ -78,28 +86,21 @@ export class Engine {
         return Engine._exit;
     }
     public static get now(): number {
-        if (Engine._instance !== undefined) {
-            return Engine._instance!._now;
-        }
-        LogError(ErrorCode.EngineInstanceNull, "Engine instance null on \
-            Engine.now() getter");
-        return -1;
+        return Engine._instance!._now;
     }
     /**
      * Gets the current game window's height.
      * @returns number
      */
     public static get height(): number {
-        if (this._instance) return this._instance._height;
-        else return -1;
+        return this._instance!._height;
     }
     /**
      * Gets the current game window's width.
      * @returns number
      */
     public static get width(): number {
-        if (this._instance) return this._instance._width;
-        else return -1;
+        return this._instance!._width;
     }
     /**
      * Returns game client
@@ -109,10 +110,17 @@ export class Engine {
         return this._client;
     }
     /**
-     * Gets the engines current window object.
-     * @returns GameWindow
+     * Returns the HTMLElement (or the contianer) for the game.
+     * @returns HTMLElement
      */
-    public get window(): GameWindow | undefined {
+    public get container(): HTMLElement | null {
+        return Engine._instance!._container;
+    }
+    /**
+     * Gets the engines current window object.
+     * @returns Window
+     */
+    public get window(): Window | undefined {
         if (this._window) return this._window;
         LogError(ErrorCode.EngineWindowUndefined, 
             "The engine's game window is not defined");
@@ -139,13 +147,19 @@ export class Engine {
             Engine._exit = true;
         }
         Engine._instance = this;
-        this._client = Client.Browser;
+        // Set Client TODO: should this be in a build script?
+        this._client = Client.Browser; 
         if (typeof(window) !== "undefined") { // We are in the browser
             const w = (window as any);
             if (w.process !== undefined && w.process.versions !== undefined 
                 && w.process.versions.electron !== undefined) {
                 this._client = Client.Electron;
             }
+        }
+        //
+        if (typeof(document) !== "undefined") {
+            if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
+            else this._container = document.getElementsByTagName("body")[0];
         }
         this._startTime = Date.now();
         this._last = this._startTime;
@@ -160,8 +174,8 @@ export class Engine {
     public static start(args: EngineArguments): void {
         Engine._started = true;
         new Engine(args);
-        new GameWindow();
-        GameWindow.title = args.title;
+        Window.start(this._instance!);
+        Window.title = args.title;
         Engine._running = true;
         Log("Engine started");
         Engine.play();
@@ -184,6 +198,7 @@ export class Engine {
             Engine.start(this._instance!._engineArguments); // Restart the engine
         }
         Engine._running = true; // Start running
+        Engine._instance!._last = this._instance!.timestamp(); // Sets the last timestep to now (for the first frame)
         Engine._instance!.frame(); // Call the first frame update
     }
     /**
@@ -213,10 +228,11 @@ export class Engine {
      * @returns void
      */
     public frame(): void {
-        Log("Ran frame");
-        if (Engine._running) {
+        if (!Engine._running) {
+            return;
+        } else {
             this._now = this.timestamp();
-            if (this._now > this._last + 1000) { // update every second
+            if (this._now > (this._last + 1000)) { // update every second
                 this._fps = 0.25 * this._framesThisSecond; // new FPS
                 let delta: number = (this._now - this._last) / 1000;
                 this.update(delta);
@@ -224,8 +240,8 @@ export class Engine {
                 this._framesThisSecond = 0;
             }
             this._framesThisSecond++;
+            // requestAnimationFrame(this.frame.bind(this));
         }
-        // this.frame(); // DEBUG: Goes infinite
     }
     /**
      * Main update loop. Calls all other system updates.

@@ -7,6 +7,7 @@ export enum ErrorCode {
     EngineInstanceNotNull,
     EngineWindowUndefined,
     EngineStartedEarly,
+    EngineRunning,
     EngineNotRunning,
     MessageSystemInitialization = 200, // MessageSystem
     BrowserWindowUndefined = 300, // BrowserWindow begins

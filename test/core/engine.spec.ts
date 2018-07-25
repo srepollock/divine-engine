@@ -3,7 +3,7 @@ import "mocha";
 import { Engine, EngineArguments } from "../../src";
 
 describe("Engine unit testing", () => {
-    let engArgs: EngineArguments = JSON.parse("{\"title\": \"\", \"height\": 0, \"width\": 0, \"debug\": false}");
+    let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
     describe("Engine initialization", () => {
         before(() => {
             Engine.start(engArgs);
