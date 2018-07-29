@@ -5,5 +5,5 @@ export { Entity, Transform } from "./entity";
 export * from "./logging";
 export * from "./messagesystem";
 export { Scene } from "./scene";
-export { Window } from "./window";
+export { GameWindow } from "./gamewindow";
 

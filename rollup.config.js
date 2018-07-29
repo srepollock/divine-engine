@@ -13,7 +13,7 @@ export default {
         {
             file: './lib/divine.module.js',
             format: 'umd',
-            name: 'daemon'
+            name: 'divine'
         }
     ],
     plugins: [

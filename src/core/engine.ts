@@ -1,12 +1,13 @@
 import { request } from "http";
+import { GameWindow } from "./gamewindow";
 import { ErrorCode } from "./logging";
 import { Log, LogDebug, LogError } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
-import { Window } from "./window";
 
 export enum Client {
-    Browser,
-    Electron
+    CLI, // Mocha tests
+    Browser, // Web
+    Electron // Desktop
 }
 
 /**
@@ -56,7 +57,7 @@ export class Engine {
     private _height: number = 0;
     private _startTime: number;
     private _width: number = 0;
-    private _window: Window | undefined = undefined;
+    private _gameWindow: GameWindow | undefined = undefined;
     public static get instance(): Engine | undefined {
         if (Engine._instance !== undefined) {
             return Engine._instance;
@@ -117,11 +118,11 @@ export class Engine {
         return Engine._instance!._container;
     }
     /**
-     * Gets the engines current window object.
-     * @returns Window
+     * Gets the engines current GameWindow object.
+     * @returns GameWindow
      */
-    public get window(): Window | undefined {
-        if (this._window) return this._window;
+    public get gameWindow(): GameWindow | undefined {
+        if (this._gameWindow) return this._gameWindow;
         LogError(ErrorCode.EngineWindowUndefined, 
             "The engine's game window is not defined");
         return undefined;
@@ -136,7 +137,7 @@ export class Engine {
             LogError(ErrorCode.MessageSystemInitialization);
             Engine._exit = true;
         }
-        if (Engine._instance === undefined) {
+        if (Engine._instance !== undefined) {
             (ErrorCode.EngineInstanceNotNull, 
                 "Engine already has an instance in the class");
             Engine._exit = true; // NOTE: Immediately close
@@ -148,8 +149,8 @@ export class Engine {
         }
         Engine._instance = this;
         // Set Client TODO: should this be in a build script?
-        this._client = Client.Browser; 
-        if (typeof(window) !== "undefined") { // We are in the browser
+        this._client = Client.Browser; // Always CLI first
+        if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
             if (w.process !== undefined && w.process.versions !== undefined 
                 && w.process.versions.electron !== undefined) {
@@ -157,7 +158,7 @@ export class Engine {
             }
         }
         //
-        if (typeof(document) !== "undefined") {
+        if (typeof(document) !== "undefined" && this._client === Client.Browser) {
             if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
             else this._container = document.getElementsByTagName("body")[0];
         }
@@ -174,8 +175,8 @@ export class Engine {
     public static start(args: EngineArguments): void {
         Engine._started = true;
         new Engine(args);
-        Window.start(this._instance!);
-        Window.title = args.title;
+        GameWindow.start(this._instance!);
+        GameWindow.title = args.title;
         Engine._running = true;
         Log("Engine started");
         Engine.play();

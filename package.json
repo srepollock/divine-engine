@@ -11,7 +11,7 @@
     "clean": "rm -rf ./build/* ./lib/*",
     "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
     "lint": "./node_modules/.bin/tslint ./src/**/*.ts -c tslint.json",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts --inspect-brk=1123"
+    "test": "./node_modules/.bin/mocha --opts mocha.opts"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
   "homepage": "http://spollock.ca/divine-engine",
   "devDependencies": {
     "@types/chai": "^4.1.4",
+    "@types/jsdom": "^11.0.6",
     "@types/mocha": "^5.2.4",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -39,6 +40,7 @@
     "babel-preset-es2015-rollup": "^3.0.0",
     "chai": "^4.1.2",
     "electron": "^2.0.4",
+    "jsdom": "^11.11.0",
     "mocha": "^5.2.0",
     "node": "^10.6.0",
     "rollup": "^0.62.0",
@@ -52,6 +54,7 @@
     "typedoc": "^0.11.1"
   },
   "dependencies": {
+    "jsdom-global": "^3.0.2",
     "typescript": "^2.9.2"
   },
   "babel": {
