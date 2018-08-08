@@ -1,6 +1,4 @@
---require ts-node/register
---require test/createDocument.ts
---compilerOptions '("module":"common.js")'
+--require babel-register
 --watch-extensions ts
 --recursive
 --source-maps
