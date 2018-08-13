@@ -32,8 +32,7 @@ describe("Engine unit testing", () => {
         it("should be running", () => {
             expect(Engine.running).to.be.true;
         });
-        it("should stop running the main loop when stop is called; must create a new isntance", 
-            () => {
+        it("should stop running the main loop when stop is called; must create a new isntance", () => {
             Engine.stop();
             expect(Engine.running).to.be.false;
             expect(Engine.started).to.be.true;
@@ -55,13 +54,14 @@ describe("Engine unit testing", () => {
             expect(Engine.now).to.equal(time);
         });
         it("should resume the scene", () => {
+            expect(Engine.running).to.be.false;
             Engine.play();
             expect(Engine.running).to.be.true;
             let time = Engine.now;
             setTimeout(() => {}, 5000);
-            expect(Engine.now).not.to.equal(time); // Should be a new frame
+            expect(Engine.now).to.equal(time); // Should be a new frame
             setTimeout(() => {}, 5000);
-            expect(Engine.now).not.to.equal(time); // Should be a new frame
+            expect(Engine.now).to.equal(time); // Should be a new frame
         });
     });
 });
