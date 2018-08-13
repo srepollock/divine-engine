@@ -55,7 +55,7 @@ export class GameWindow {
         GameWindow._title = title;
         if (Engine.instance!.client === Client.Electron) {
             GameWindow._browserWindow!.setTitle(GameWindow._title);
-        } else if (Engine.instance!.client === Client.Browser) {
+        } else if (Engine.instance!.client === Client.Browser && typeof(document) !== "undefined") {
             document.title = GameWindow._title;
         } else { 
             process.title = GameWindow._title;

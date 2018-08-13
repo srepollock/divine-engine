@@ -4,6 +4,9 @@ node_modules/
 # Rollup cache
 .rpt2_cache/
 
+# Istanbul cache
+.nyc_output/
+
 # Typescript build files
 build/
 dist/

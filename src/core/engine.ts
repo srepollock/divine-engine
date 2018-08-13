@@ -1,4 +1,3 @@
-import { request } from "http";
 import { GameWindow } from "./gamewindow";
 import { ErrorCode } from "./logging";
 import { Log, LogDebug, LogError } from "./logging/errorsystem";
@@ -157,10 +156,13 @@ export class Engine {
                 this._client = Client.Electron;
             }
         }
-        //
-        if (typeof(document) !== "undefined" && this._client === Client.Browser) {
-            if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
-            else this._container = document.getElementsByTagName("body")[0];
+        if (typeof(document) === "undefined") {
+            LogError(ErrorCode.DocumentUndefined, "Document has not been defined");
+        } else {
+            if (typeof(document) !== "undefined" && this._client === Client.Browser) {
+                if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
+                else this._container = document.getElementsByTagName("body")[0];
+            }
         }
         this._startTime = Date.now();
         this._last = this._startTime;

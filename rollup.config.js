@@ -20,6 +20,9 @@ export default {
         globals(),
         builtins(),
         typescript(),
-        babel()
+        babel({
+            babelrc: false,
+            presets: [['@babel/preset-env', { modules: false }]]
+        })
     ]
 }

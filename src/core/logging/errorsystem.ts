@@ -2,6 +2,7 @@
 export enum ErrorCode {
     Error = 0, // General error
     WindowUndefined,
+    DocumentUndefined,
     EngineInitialization = 100, // Engine begins
     EngineInstanceNull,
     EngineInstanceNotNull,
