@@ -59,9 +59,9 @@ describe("Engine unit testing", () => {
             expect(Engine.running).to.be.true;
             let time = Engine.now;
             setTimeout(() => {}, 5000);
-            expect(Engine.now).to.equal(time); // Should be a new frame
+            expect(Engine.now).not.to.equal(time); // Should be a new frame
             setTimeout(() => {}, 5000);
-            expect(Engine.now).to.equal(time); // Should be a new frame
+            expect(Engine.now).not.to.equal(time); // Should be a new frame
         });
     });
 });
