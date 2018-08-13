@@ -1,2 +1,2 @@
---require babel-register
+--require ./test/setupBabel.js
 ./test/**/*.spec.ts
