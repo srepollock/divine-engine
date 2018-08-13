@@ -1,6 +1,2 @@
 --require babel-register
---watch-extensions ts
---recursive
---source-maps
---inline-diffs
 ./test/**/*.spec.ts
