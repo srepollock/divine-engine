@@ -1,2 +1,2 @@
---require ./test/setupBabel.js
+--require ./test/setupTests.js
 ./test/**/*.spec.ts
