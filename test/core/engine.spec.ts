@@ -1,6 +1,24 @@
 import { expect } from "chai";
+import "lodash";
 import "mocha";
+import { puppeteer } from "puppeteer";
 import { Engine, EngineArguments } from "../../src";
+let globalVariables = global;
+
+var global = global;
+
+// puppeteer options
+const opts = {
+    headless: false,
+    slowMo: 100,
+    timeout: 10000
+};
+
+// expose variables
+before (async () => {
+    global.expect = expect;
+    global.browser = await puppeteer.launch(opts);
+});
 
 describe("Engine unit testing", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
@@ -64,6 +82,13 @@ describe("Engine unit testing", () => {
             expect(Engine.now).not.to.equal(time); // Should be a new frame
         });
     });
+});
+
+// close browser and reset global variables
+after (() => {
+    global.browser.close();
+    global.browser = globalVariables.browser;
+    global.expect = globalVariables.expect;
 });
 
 // describe("Engine unit testing", () => {
