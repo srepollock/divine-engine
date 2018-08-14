@@ -1,3 +1,5 @@
+import { BrowserView } from "electron";
+import {Browser} from "puppeteer";
 import { GameWindow } from "./gamewindow";
 import { ErrorCode } from "./logging";
 import { Log, LogDebug, LogError } from "./logging/errorsystem";
@@ -26,6 +28,7 @@ export class EngineArguments {
         public width: number = 0,
         public fps: number = 60,
         public rootElementId: string = "",
+        public browser: Browser | null = null,
         public debug: boolean = false
     ) {
         this.title = title;
@@ -33,6 +36,7 @@ export class EngineArguments {
         this.width = width;
         this.fps = fps;
         this.rootElementId = rootElementId;
+        this.browser = browser;
         this.debug = debug;
     }
 }
@@ -159,7 +163,7 @@ export class Engine {
         if (typeof(document) === "undefined") {
             LogError(ErrorCode.DocumentUndefined, "Document has not been defined");
         } else {
-            if (typeof(document) !== "undefined" && this._client === Client.Browser) {
+            if (this._client === Client.Browser) {
                 if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
                 else this._container = document.getElementsByTagName("body")[0];
             }

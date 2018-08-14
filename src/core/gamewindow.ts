@@ -1,4 +1,3 @@
-
 import { Client, Engine } from "./engine";
 import { Log } from "./logging";
 
@@ -57,7 +56,7 @@ export class GameWindow {
             GameWindow._browserWindow!.setTitle(GameWindow._title);
         } else if (Engine.instance!.client === Client.Browser && typeof(document) !== "undefined") {
             document.title = GameWindow._title;
-        } else { 
+        } else {
             process.title = GameWindow._title;
         }
     }

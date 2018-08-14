@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import "lodash";
 import "mocha";
-import { puppeteer } from "puppeteer";
+import puppeteer from "puppeteer";
+import { Browser } from "puppeteer";
 import { Engine, EngineArguments } from "../../src";
-let globalVariables = global;
-
-var global = global;
+var browser: Browser;
+let constBrowser: Browser = browser;
 
 // puppeteer options
 const opts = {
@@ -16,12 +16,11 @@ const opts = {
 
 // expose variables
 before (async () => {
-    global.expect = expect;
-    global.browser = await puppeteer.launch(opts);
+    browser = await puppeteer.launch(opts);
 });
 
 describe("Engine unit testing", () => {
-    let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
+    let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false, browser}));
     describe("Engine initialization", () => {
         before(() => {
             Engine.start(engArgs);
@@ -86,9 +85,8 @@ describe("Engine unit testing", () => {
 
 // close browser and reset global variables
 after (() => {
-    global.browser.close();
-    global.browser = globalVariables.browser;
-    global.expect = globalVariables.expect;
+    browser.close();
+    browser = constBrowser;
 });
 
 // describe("Engine unit testing", () => {
