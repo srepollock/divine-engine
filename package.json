@@ -1,18 +1,19 @@
 {
   "name": "divine-engine",
   "version": "0.0.1",
-  "description": "The Divine Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
+  "description": "The Divine Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "./lib/divine.js",
   "types": "./lib/index.d.ts",
   "scripts": {
     "prepare": "npm run build && npm run bundle && npm run docs",
     "bundle": "./node_modules/.bin/rollup -c",
     "build": "./node_modules/.bin/tsc",
+    "build-tests": "./node_modules/.bin/tsc --p test/helperfiles",
     "clean": "rm -rf ./build/* ./lib/*",
     "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
     "lint": "./node_modules/.bin/tslint ./src/**/*.ts -c tslint.json",
-    "test": "./node_modules/.bin/mocha --opts mocha.opts",
-    "unit-test": "./node_modules/.bin/nyc ./node_modules/.bin/mocha --opts mocha.opts"
+    "test": "npm run-script build-tests && ./node_modules/.bin/mocha --opts mocha.opts",
+    "unit-test": "npm run-script build-tests && ./node_modules/.bin/nyc ./node_modules/.bin/mocha --opts mocha.opts"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "@types/chai": "^4.1.4",
     "@types/jsdom": "^11.0.6",
     "@types/mocha": "^5.2.5",
+    "@types/node": "^10.7.1",
     "@types/puppeteer": "^1.6.0",
     "chai": "^4.1.2",
     "electron": "^2.0.7",

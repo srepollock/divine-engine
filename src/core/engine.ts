@@ -28,7 +28,6 @@ export class EngineArguments {
         public width: number = 0,
         public fps: number = 60,
         public rootElementId: string = "",
-        public browser: Browser | null = null,
         public debug: boolean = false
     ) {
         this.title = title;
@@ -36,7 +35,6 @@ export class EngineArguments {
         this.width = width;
         this.fps = fps;
         this.rootElementId = rootElementId;
-        this.browser = browser;
         this.debug = debug;
     }
 }

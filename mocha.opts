@@ -1,2 +1,2 @@
---require ./test/setupTests.js
+--require ./test/helperfiles/setupTests.js
 ./test/**/*.spec.ts

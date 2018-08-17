@@ -1,26 +1,15 @@
 import { expect } from "chai";
+import fs from "fs";
+import { JSDOM } from "jsdom";
 import "lodash";
 import "mocha";
 import puppeteer from "puppeteer";
-import { Browser } from "puppeteer";
+import { Browser, Page } from "puppeteer";
+import * as Divine from "../../lib/divine";
 import { Engine, EngineArguments } from "../../src";
-var browser: Browser;
-let constBrowser: Browser = browser;
-
-// puppeteer options
-const opts = {
-    headless: false,
-    slowMo: 100,
-    timeout: 10000
-};
-
-// expose variables
-before (async () => {
-    browser = await puppeteer.launch(opts);
-});
 
 describe("Engine unit testing", () => {
-    let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false, browser}));
+    let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
     describe("Engine initialization", () => {
         before(() => {
             Engine.start(engArgs);
@@ -83,10 +72,36 @@ describe("Engine unit testing", () => {
     });
 });
 
-// close browser and reset global variables
-after (() => {
-    browser.close();
-    browser = constBrowser;
+describe("Chrome testing", () => {
+    var browser: Browser;
+    var page: Page;
+    let constBrowser: Browser = browser;
+
+    // Puppeteer options
+    const opts = {
+        // headless: false,
+        // slowMo: 100,
+        // timeout: 10000
+    };
+    // NOTE: Timeout for mocha is capped at 2000ms. This much be overridden with .timeout(n) after the arrow function
+    // expose variables
+    before (async () => {
+        browser = await puppeteer.launch(opts);
+        let content: string = fs.readFileSync(__dirname + "/../helperfiles/testPage.html", "utf-8");
+        page = await browser.newPage(); 
+        page.setContent(content);
+    });
+    
+    it("should be instatiable", async () => {
+        var Engine = await page.evaluate(() => Divine.Engine).catch((e) => { console.log(e); });
+        expect(Engine.started).to.be.true; // BUG: Undefined
+    });
+
+    // close browser and reset global variables
+    after (() => {
+        browser.close();
+        browser = constBrowser;
+    });
 });
 
 // describe("Engine unit testing", () => {
