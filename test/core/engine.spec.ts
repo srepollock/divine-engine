@@ -1,3 +1,4 @@
+import { fail } from "assert";
 import { expect } from "chai";
 import fs from "fs";
 import { JSDOM } from "jsdom";
@@ -5,7 +6,7 @@ import "lodash";
 import "mocha";
 import puppeteer from "puppeteer";
 import { Browser, Page } from "puppeteer";
-import * as Divine from "../../lib/divine";
+import * as Divine from "../../lib/divine.es";
 import { Engine, EngineArguments } from "../../src";
 
 describe("Engine unit testing", () => {
@@ -79,22 +80,35 @@ describe("Chrome testing", () => {
 
     // Puppeteer options
     const opts = {
-        // headless: false,
-        // slowMo: 100,
-        // timeout: 10000
+        headless: false,
+        slowMo: 100,
+        timeout: 10000
     };
     // NOTE: Timeout for mocha is capped at 2000ms. This much be overridden with .timeout(n) after the arrow function
     // expose variables
     before (async () => {
         browser = await puppeteer.launch(opts);
         let content: string = fs.readFileSync(__dirname + "/../helperfiles/testPage.html", "utf-8");
-        page = await browser.newPage(); 
-        page.setContent(content);
+        page = await browser.newPage();
+        await page.goto(`data:text/html,` + content, { waitUntil: "networkidle2" });
+        // await page.setContent(content); // BUG: Not waiting for the page content to be loaded
     });
     
-    it("should be instatiable", async () => {
-        var Engine = await page.evaluate(() => Divine.Engine).catch((e) => { console.log(e); });
-        expect(Engine.started).to.be.true; // BUG: Undefined
+    it("should be started and running", async () => {
+        let started = await page.evaluate(() => {
+                return Divine.Engine.started;
+            }
+        ).catch((e) => { console.log(e); });
+        if (typeof(started) === "undefined") {
+            fail("Started undefined");
+        }
+        expect(started).to.equal("true"); // BUG: Undefined .started? (File still runs)
+        expect(
+            await page.evaluate(() =>  {
+                    return Object.getOwnPropertyNames(Divine.Engine.running);
+                }
+            ).catch((e) => { console.log(e); })
+        ).to.be.true;
     });
 
     // close browser and reset global variables

@@ -40,7 +40,7 @@ export class EngineArguments {
 }
 
 /**
- * The Game Engine class.
+ * The Divine Game Engine class.
  */
 export class Engine {
     private static _instance: Engine | undefined = undefined;
