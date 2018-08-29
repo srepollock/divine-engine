@@ -14,7 +14,7 @@
     "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
     "lint": "./node_modules/.bin/tslint ./src/**/*.ts -c tslint.json",
     "test": "npm run-script build-tests && ./node_modules/.bin/mocha --opts mocha.opts",
-    "unit-test": "npm run-script build-tests && ./node_modules/.bin/nyc ./node_modules/.bin/mocha --opts mocha.opts"
+    "unit-test": "npm run-script build-tests && ./node_modules/.bin/nyc ./node_modules/.bin/mocha --opts mocha.opts ./test/browser/*.spec.ts"
   },
   "repository": {
     "type": "git",
