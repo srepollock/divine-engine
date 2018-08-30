@@ -6,6 +6,7 @@ export enum ErrorCode {
     EngineInitialization = 100, // Engine begins
     EngineInstanceNull,
     EngineInstanceNotNull,
+    EngineClientNotSet,
     EngineWindowUndefined,
     EngineStartedEarly,
     EngineRunning,

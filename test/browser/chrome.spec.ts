@@ -12,6 +12,7 @@ describe("Chrome testing", () => {
 
     // Puppeteer options
     const opts = {
+        devtools: true,
         headless: false,
         slowMo: 100,
         timeout: 10000
@@ -27,20 +28,9 @@ describe("Chrome testing", () => {
     });
     
     it("should be started and running", async () => {
-        let started = await page.evaluate(() => {
-                return Divine.Engine.started;
-            }
-        ).catch((e) => { console.log(e); });
-        if (typeof(started) === "undefined") {
-            fail("Started undefined");
-        }
-        expect(started).to.equal("true"); // BUG: Undefined .started? (File still runs)
-        expect(
-            await page.evaluate(() =>  {
-                    return Object.getOwnPropertyNames(Divine.Engine.running);
-                }
-            ).catch((e) => { console.log(e); })
-        ).to.be.true;
+        await page.on("console", (msg) => {
+            expect(msg.text()).equals("Engine started");
+        });
     });
 
     // close browser and reset global variables

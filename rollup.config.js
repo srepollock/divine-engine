@@ -26,7 +26,7 @@ export default {
         commonjs(),
         babel({
             babelrc: false,
-            plugins: ["env", {"modules": false}],
+            presets: [["@babel/preset-env", {"modules": false}]],
             runtimeHelpers: true
         })
     ]

@@ -1,4 +1,2 @@
 --require ./test/helperfiles/setupTests.js
 --timeout 15000
-./test/components/*.spec.ts
-./test/core/*.spec.ts

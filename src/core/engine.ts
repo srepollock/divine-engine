@@ -6,7 +6,7 @@ import { Log, LogDebug, LogError } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
 
 export enum Client {
-    CLI, // Mocha tests
+    Console, // Mocha tests
     Browser, // Web
     Electron // Desktop
 }
@@ -65,6 +65,13 @@ export class Engine {
         }
         LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
         return undefined; 
+    }
+    /**
+     * Gets the engine's client type.
+     * @returns Client
+     */
+    public static get client(): Client {
+        return Engine._instance!.client;
     }
     /**
      * Gets the engine's started variable.
@@ -150,7 +157,7 @@ export class Engine {
         }
         Engine._instance = this;
         // Set Client TODO: should this be in a build script?
-        this._client = Client.Browser; // Always CLI first
+        this._client = Client.Console; // Always CLI first
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
             if (w.process !== undefined && w.process.versions !== undefined 
@@ -158,13 +165,10 @@ export class Engine {
                 this._client = Client.Electron;
             }
         }
-        if (typeof(document) === "undefined") {
-            LogError(ErrorCode.DocumentUndefined, "Document has not been defined");
-        } else {
-            if (this._client === Client.Browser) {
-                if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
-                else this._container = document.getElementsByTagName("body")[0];
-            }
+        if (typeof(document) !== "undefined") {
+            this._client = Client.Browser;
+            if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
+            else this._container = document.getElementsByTagName("body")[0];
         }
         this._startTime = Date.now();
         this._last = this._startTime;
@@ -204,7 +208,11 @@ export class Engine {
         }
         Engine._running = true; // Start running
         Engine._instance!._last = this._instance!.timestamp(); // Sets the last timestep to now (for the first frame)
-        Engine._instance!.frame(); // Call the first frame update
+        // Call the first frame update
+        if (this.client === Client.Browser) Engine._instance!.browserFrame();
+        else if (this.client === Client.Electron) Engine._instance!.electronFrame();
+        else if (this.client === Client.Console) Engine._instance!.consoleFrame();
+        else LogError(ErrorCode.EngineClientNotSet, "Client has not been set by the engine.");
     }
     /**
      * Pauses the engine running.
@@ -229,26 +237,6 @@ export class Engine {
         this._instance = undefined;
     }
     /**
-     * Main game loop.
-     * @returns void
-     */
-    public frame(): void {
-        if (!Engine._running) {
-            return;
-        } else {
-            this._now = this.timestamp();
-            if (this._now > (this._last + 1000)) { // update every second
-                this._fps = 0.25 * this._framesThisSecond; // new FPS
-                let delta: number = (this._now - this._last) / 1000;
-                this.update(delta);
-                this._last = this._now;
-                this._framesThisSecond = 0;
-            }
-            this._framesThisSecond++;
-            // requestAnimationFrame(this.frame.bind(this));
-        }
-    }
-    /**
      * Main update loop. Calls all other system updates.
      * @returns void
      */
@@ -261,6 +249,80 @@ export class Engine {
         // this.soundSystem.update(delta); // NOTE: Sound messages handled
         // this.renderSystem.update(delta); // NOTE: Render system udpated.
         // NOTE: How do I do this?
+        // DEBUG: This is a debug fuction to waste time;---
+        var start = Date.now();
+        while (Date.now() < start + delta) {
+
+        }
+        // ---
+    }
+    /**
+     * 3 Game loops??
+     * There are 3 game loops in this engine for the purposes of unit testing and multiple client usage. As this engine
+     * will be run in different environments, I want to set it up to unit test in each and different clients use
+     * different loops. So there.
+     * TODO: Update this discription before release.
+     */
+    /**
+     * Browser game loop.
+     * @returns void
+     */
+    private browserFrame(): void {
+        if (!Engine._running) return;
+        else {
+            this._now = this.timestamp();
+            if (this._now > (this._last + 1000)) { // update every second
+                this._fps = 0.25 * this._framesThisSecond; // new FPS
+                let delta: number = (this._now - this._last) / 1000;
+                this.update(delta);
+                this._last = this._now;
+                this._framesThisSecond = 0;
+            }
+            this._framesThisSecond++;
+            requestAnimationFrame(this.browserFrame.bind(this));
+        }
+    }
+    /**
+     * Electron game loop.
+     * @returns void
+     */
+    private electronFrame(): void {
+        if (!Engine._running) return;
+        else {
+            this._now = this.timestamp();
+            if (this._now > (this._last + 1000)) { // update every second
+                this._fps = 0.25 * this._framesThisSecond; // new FPS
+                let delta: number = (this._now - this._last) / 1000;
+                this.update(delta);
+                this._last = this._now;
+                this._framesThisSecond = 0;
+            }
+            this._framesThisSecond++;
+            window.requestAnimationFrame(this.browserFrame.bind(this));
+        }
+    }
+    /**
+     * Gets the hour time in milliseconds.
+     * @returns number
+     */
+    private hrtimeMs(): number {
+        let time = process.hrtime();
+        return time[0] * 1000 + time[1] / 1000000;
+    }
+    /**
+     * Console game loop.
+     * @returns void
+     */
+    private consoleFrame(): void {
+        if (!Engine._running) return;
+        else {
+            // setTimeout(this.consoleFrame, 1000 / this._fps);
+            setTimeout(() => this.consoleFrame(), 1000 / this._fps); // DEBUG: Goes infinite unless stopped externally
+            this._now = this.hrtimeMs();
+            let delta = (this._now - this._last) / 1000;
+            this.update(delta); // game logic would go here
+            this._last = this._now;
+        }
     }
     /**
      * Sets the engine arguments to the engine. This is setup at initial run

@@ -13,8 +13,8 @@
     "clean": "rm -rf ./build/* ./dist/* ./lib/*",
     "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
     "lint": "./node_modules/.bin/tslint ./src/**/*.ts -c tslint.json",
-    "test": "npm run-script build-tests && ./node_modules/.bin/mocha --opts mocha.opts",
-    "unit-test": "npm run-script build-tests && ./node_modules/.bin/nyc ./node_modules/.bin/mocha --opts mocha.opts ./test/browser/*.spec.ts"
+    "test": "./node_modules/.bin/mocha --opts mocha.opts ./test/components/*.spec.ts ./test/core/*.spec.ts",
+    "unit-test": "npm run-script build-tests && ./node_modules/.bin/nyc ./node_modules/.bin/mocha --opts mocha.opts ./test/browser/*.spec.ts ./test/components/*.spec.ts ./test/core/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -32,28 +32,28 @@
   },
   "homepage": "http://spollock.ca/divine-engine",
   "devDependencies": {
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/plugin-proposal-class-properties": "^7.0.0-rc.1",
-    "@babel/plugin-transform-arrow-functions": "^7.0.0-rc.1",
-    "@babel/plugin-transform-runtime": "^7.0.0-rc.1",
-    "@babel/preset-env": "^7.0.0-rc.1",
-    "@babel/preset-typescript": "^7.0.0-rc.1",
-    "@babel/register": "^7.0.0-rc.1",
-    "@babel/runtime": "^7.0.0-rc.1",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-transform-arrow-functions": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
     "@types/chai": "^4.1.4",
     "@types/jsdom": "^11.0.6",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.7.1",
+    "@types/node": "^10.9.3",
     "@types/puppeteer": "^1.6.0",
     "chai": "^4.1.2",
-    "electron": "^2.0.7",
+    "electron": "^2.0.8",
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
-    "node": "^10.8.0",
+    "node": "^10.9.0",
     "nyc": "^12.0.2",
     "puppeteer": "^1.7.0",
     "rollup": "^0.62.0",
-    "rollup-plugin-babel": "^4.0.0-beta.8",
+    "rollup-plugin-babel": "^4.0.2",
     "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.2.1",
@@ -64,7 +64,7 @@
     "typedoc": "^0.11.1"
   },
   "dependencies": {
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.3"
   },
   "nyc": {
     "extension": [
