@@ -1,13 +1,12 @@
-import { BrowserView } from "electron";
-import {Browser} from "puppeteer";
 import { GameWindow } from "./gamewindow";
 import { ErrorCode } from "./logging";
 import { Log, LogDebug, LogError } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
 
+
 export enum Client {
     Console, // Mocha tests
-    Browser, // Web
+    Browser, // Web/Mobile
     Electron // Desktop
 }
 
@@ -241,20 +240,13 @@ export class Engine {
      * @returns void
      */
     public update(delta: number): void {
-        Log(`Update loop | delta = ${delta}`);
+        // LogDebug(`Update loop | delta = ${delta}`);
         // TODO: Implement the systems and uncomment here
         // this.ioSystem.update(delta); // NOTE: IO messages
         // this.sceneManager.update(delta); // NOTE: Calls scene update
         // this.physicsSystem.update(delta); // NOTE: Physics messages handled
         // this.soundSystem.update(delta); // NOTE: Sound messages handled
         // this.renderSystem.update(delta); // NOTE: Render system udpated.
-        // NOTE: How do I do this?
-        // DEBUG: This is a debug fuction to waste time;---
-        var start = Date.now();
-        while (Date.now() < start + delta) {
-
-        }
-        // ---
     }
     /**
      * 3 Game loops??
@@ -317,7 +309,7 @@ export class Engine {
         if (!Engine._running) return;
         else {
             // setTimeout(this.consoleFrame, 1000 / this._fps);
-            setTimeout(() => this.consoleFrame(), 1000 / this._fps); // DEBUG: Goes infinite unless stopped externally
+            setTimeout(() => this.consoleFrame(), 1000 / this._fps); // NOTE: Goes infinite unless stopped externally
             this._now = this.hrtimeMs();
             let delta = (this._now - this._last) / 1000;
             this.update(delta); // game logic would go here

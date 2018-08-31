@@ -14,7 +14,6 @@ describe("Engine unit testing", () => {
         });
         it("should set the source of the engine context (console, browser, electron)", () => {
             expect(Engine.client).to.equal(0); // 0 as it is the index in the Client enum
-            // NOTE: Should I use .toString() on it?
         });
         it("should have height set to 0", () => {
             expect(Engine.height).to.be.equal(0);
@@ -23,6 +22,7 @@ describe("Engine unit testing", () => {
             expect(Engine.width).to.be.equal(0);
         });
         it("should shutdown and close on shutdown", () => {
+            // This prints an error message to the console, and it should.
             Engine.shutdown();
             expect(Engine.instance).to.be.undefined;
         });
