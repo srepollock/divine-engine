@@ -10,7 +10,6 @@
     "build": "tsc",
     "build-tests": "tsc --p test/helperfiles",
     "clean": "rm -rf build/* dist/* lib/*",
-    "commit": "npx git-cz",
     "docs": "typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none src/**/*.ts",
     "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
@@ -22,7 +21,7 @@
     "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts",
     "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts",
-    "test:nyc": "nyc -- npm run-script test"
+    "test:nyc": "nyc -- npm test"
   },
   "repository": {
     "type": "git",
@@ -79,6 +78,7 @@
       ".tsx"
     ],
     "exclude": [
+      "test/helperfiles",
       "**/*.d.ts",
       "**/*.spec.ts",
       "dist",
