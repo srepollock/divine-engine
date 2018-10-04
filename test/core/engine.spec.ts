@@ -74,4 +74,14 @@ describe("Engine unit testing", () => {
             Engine.stop();
         });
     });
+    it("should initialize the subsystems on startup", () => {
+        expect(true);
+        Engine.start(EngineArguments);
+        // NOTE: Order is important
+        expect(Engine.instance.messageSystem).to.not.be.undefined;
+        expect(Engine.instance.ioSystem).to.not.be.undefined;
+        expect(Engine.instance.renderSystem).to.not.be.undefined;
+        expect(Engine.instance.physicsSystem).to.not.be.undefined;
+        expect(Engine.instance.physicsSystem).to.not.be.undefined;
+    });
 });
