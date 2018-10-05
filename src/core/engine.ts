@@ -244,6 +244,12 @@ export class Engine {
      * @returns void
      */
     public update(delta: number): void {
+        /**
+         * NOTE:
+         * Wait for message worker
+         * 
+         */
+        let worker = new Worker("");
         // LogDebug(`Update loop | delta = ${delta}`);
         // TODO: Implement the systems and uncomment here
         // this.ioSystem.update(delta); // NOTE: IO messages

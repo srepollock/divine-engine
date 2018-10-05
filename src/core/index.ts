@@ -1,9 +1,9 @@
 export { Component } from "./component";
 export { DObject } from "./dobject";
-export { Engine } from "./engine";
-export { EngineArguments } from "./engine";
+export { Engine, EngineArguments } from "./engine";
 export { Entity, Transform } from "./entity";
+export { GameWindow } from "./gamewindow";
 export * from "./logging";
+export { MessageReceiver } from "./messagereceiver";
 export * from "./messagesystem";
 export { Scene } from "./scene";
-export { GameWindow } from "./gamewindow";
