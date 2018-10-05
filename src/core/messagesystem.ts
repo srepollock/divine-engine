@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
+import { guid } from ".";
 import { RenderComponent } from "../components/rendercomponent";
 import { ErrorCode } from "./logging";
-
 /**
  * Message system
  */
@@ -76,17 +76,13 @@ export enum EventType {
  * on it's message type. Listeners have a specific format based on interface.
  */
 export class Message {    
-    public entityID: string = "";
-    /**
-     * List of any objects that will be JSON stringified. They will be stored 
-     * as a string to be parsed out for reading by each system.
-     * 
-     * NOTE: There may be some networking capabilities because of this later.
-     * Something with streams.
-     * @param  {any[]} ...data
-     */
-    constructor(entityID: string) {
-        this.entityID = entityID;
+    // Unique message ID. Parse the current time to a hash.
+    private _id: string;
+    constructor() {
+        this._id = guid();
+    }
+    public get id(): string {
+        return this._id;
     }
     /**
      * Returns the data as a JSON string object.
@@ -108,8 +104,8 @@ export class Message {
  * Testing message for empty messages.
  */
 export class TestMessage extends Message {
-    constructor(entityID: string, public data?: string | number) {
-        super(entityID);
+    constructor( public data?: string | number) {
+        super();
         this.data = data;
     }
 }
@@ -126,8 +122,8 @@ export class TestMessage extends Message {
  * All entity messages must extend this interface.
  */
 export class EntityMessage extends Message {
-    constructor(entityID: string) {
-        super(entityID);
+    constructor() {
+        super();
     }
 }
 
@@ -136,8 +132,8 @@ export class EntityMessage extends Message {
  * All error messages must extend this interface.
  */
 export class ErrorSystemMessage extends Message {
-    constructor(entityID: string, public errorCode: ErrorCode, public data: string | undefined ) {
-        super(entityID);
+    constructor( public errorCode: ErrorCode, public data: string | undefined ) {
+        super();
         this.errorCode = errorCode;
         this.data = data;
     }
@@ -148,8 +144,8 @@ export class ErrorSystemMessage extends Message {
  * All io messages must extend this class.
  */
 export class IOSystemMessage extends Message {
-    constructor(entityID: string) {
-        super(entityID);
+    constructor() {
+        super();
     }
 }
 
@@ -158,8 +154,8 @@ export class IOSystemMessage extends Message {
  * All physics messages must extend this interface.
  */
 export class PhysicsSystemMessage extends Message {
-    constructor(entityID: string) {
-        super(entityID);
+    constructor() {
+        super();
     }
 }
 
@@ -168,9 +164,9 @@ export class PhysicsSystemMessage extends Message {
  * All render messages must extend this interface.
  */
 export class RenderSystemMessage extends Message {
-    constructor(entityID: string, 
+    constructor( 
         public renderableComponent: RenderComponent) {
-        super(entityID);
+        super();
         this.renderableComponent = renderableComponent;
     }
 }
@@ -180,8 +176,8 @@ export class RenderSystemMessage extends Message {
  * All sound messages must extend this interface.
  */
 export class SoundSystemMessage extends Message {
-    constructor(entityID: string) {
-        super(entityID);
+    constructor() {
+        super();
     }
 }
 /**             ----------------
@@ -192,8 +188,8 @@ export class SoundSystemMessage extends Message {
  * Key input message interface.
  */
 export class KeyInputMessage extends IOSystemMessage {
-    constructor(entityID: string, public code: string) {
-        super(entityID);
+    constructor( public code: string) {
+        super();
         this.code = code;
     }
 }
@@ -201,9 +197,9 @@ export class KeyInputMessage extends IOSystemMessage {
  * Mouse input message interface.
  */
 export class MouseInputMessage extends IOSystemMessage {
-    constructor(entityID: string, public x: number, 
+    constructor( public x: number, 
         public y: number) {
-        super(entityID);
+        super();
         this.x = x;
         this.y = y;
     }
@@ -212,9 +208,9 @@ export class MouseInputMessage extends IOSystemMessage {
  * Touch input message interface.
  */
 export class TouchInputMessage extends IOSystemMessage {
-    constructor(entityID: string, public x: number, 
+    constructor( public x: number, 
         public y: number) {
-        super(entityID);
+        super();
         this.x = x;
         this. y = y;
     }

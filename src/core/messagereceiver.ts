@@ -1,11 +1,11 @@
 import { Message } from "..";
 
 export interface MessageReceiver {
-    subscriptions: Array<string>;
-    currentMesage: Message;
-    sendMessage(): void;
+    _subscriptions: Array<string>;
+    _currentMessage: Message;
+    sendMessage(event: string, data: string): void;
     pollMessage(): Message;
-    addSubscription(): void;
-    removeSubscription(): void;
-    basicMessageHandler(): void;
+    addSubscription(event: string): void;
+    removeSubscription(event: string): void;
+    basicMessageHandler(message: Message): void;
 }

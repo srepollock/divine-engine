@@ -2,7 +2,7 @@ import { GameWindow } from "./gamewindow";
 import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
-
+import { Scene } from "./scene";
 
 export enum Client {
     Console, // Mocha tests
@@ -59,15 +59,16 @@ export class Engine {
     private _now: number = 0;
     private _last: number = 0;
     private _height: number = 0;
+    private _scene: Scene | undefined = undefined;
     private _startTime: number;
     private _width: number = 0;
     private _gameWindow: GameWindow | undefined = undefined;
-    public static get instance(): Engine | undefined {
+    public static get instance(): Engine {
         if (Engine._instance !== undefined) {
             return Engine._instance;
         }
         LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
-        return undefined; 
+        throw ErrorCode.EngineInstanceNull;
     }
     /**
      * Gets the engine's client type.
@@ -97,6 +98,10 @@ export class Engine {
     public static get exit(): boolean {
         return Engine._exit;
     }
+    /**
+     * Gets the engine's current time.
+     * @returns number
+     */
     public static get now(): number {
         return Engine._instance!._now;
     }
@@ -137,6 +142,24 @@ export class Engine {
         LogError(ErrorCode.EngineWindowUndefined, 
             "The engine's game window is not defined");
         return undefined;
+    }
+    /**
+     * Gets the engine's Message System
+     * @returns MessageSystem
+     */
+    public get messageSystem(): MessageSystem {
+        return this._messageSystem;
+    }
+    /**
+     * Returns current scene
+     * @returns Scene
+     */
+    public get scene(): Scene {
+        if (this._scene !== undefined) {
+            return this._scene;
+        }
+        LogError(ErrorCode.SceneUndefined, "Scene is undefined");
+        throw ErrorCode.SceneUndefined;
     }
     /**
      * Initializes an Engine object.

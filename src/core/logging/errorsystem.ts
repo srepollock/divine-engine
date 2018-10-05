@@ -1,9 +1,9 @@
 
 export enum ErrorCode {
-    Error = 0, // General error
+    Error = 0, // General Errors
     WindowUndefined,
     DocumentUndefined,
-    EngineInitialization = 100, // Engine begins
+    EngineInitialization = 100, // Engine Errors
     EngineInstanceNull,
     EngineInstanceNotNull,
     EngineClientNotSet,
@@ -11,10 +11,11 @@ export enum ErrorCode {
     EngineStartedEarly,
     EngineRunning,
     EngineNotRunning,
-    MessageSystemInitialization = 200, // MessageSystem
-    BrowserWindowUndefined = 300, // BrowserWindow begins
+    MessageSystemInitialization = 200, // MessageSystem Errors
+    BrowserWindowUndefined = 300, // BrowserWindow Errors
     BrowserWindowDidNotClose,
-    EntityInitialization = 400, // Entity begins
+    SceneUndefined = 400, // Scene Errors
+    EntityInitialization = 500, // Entity Errors
     EntityParentUndefined,
     EntityAlreadyHasChild,
     EntityAlreadyHasComponent,

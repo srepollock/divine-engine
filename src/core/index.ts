@@ -3,6 +3,7 @@ export { DObject } from "./dobject";
 export { Engine, EngineArguments } from "./engine";
 export { Entity, Transform } from "./entity";
 export { GameWindow } from "./gamewindow";
+export * from "./helperfunctions";
 export * from "./logging";
 export { MessageReceiver } from "./messagereceiver";
 export * from "./messagesystem";
