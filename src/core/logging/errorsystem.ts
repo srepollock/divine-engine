@@ -2,6 +2,7 @@
 export enum ErrorCode {
     Error = 0, // General Errors
     WindowUndefined,
+    GameWindowUndefined,
     DocumentUndefined,
     EngineInitialization = 100, // Engine Errors
     EngineInstanceNull,

@@ -9,7 +9,7 @@ describe("Window unit tests", () => {
         // expect(Window.instance.webWorker).to.equal(undefined);
     });
     it("should have a reference to the engine", () => {
-        expect(GameWindow).to.respondTo("update");
+        expect(Engine.instance.gameWindow).to.respondTo("update");
     });
     it("should create a web worker", () => {
         // expect(Window).to.haveOwnProperty("_webWorker");
@@ -18,13 +18,13 @@ describe("Window unit tests", () => {
         expect(GameWindow).itself.to.respondTo("refresh");
     });
     it("should refresh the web worker", () => {
-        GameWindow.refresh();
+        Engine.instance.gameWindow.refresh();
         expect(GameWindow).itself.to.respondTo("refresh");
     });
     it("should kill the web worker on shutdown", () => {
-        expect(GameWindow.instance).to.not.equal(undefined);
-        GameWindow.shutdown();
-        expect(GameWindow.instance).to.equal(undefined);
+        expect(GameWindow.started).to.not.equal(true);
+        Engine.instance.gameWindow.shutdown();
+        expect(GameWindow.started).to.equal(false);
     });
     Engine.stop();
 });

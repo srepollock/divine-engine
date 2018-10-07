@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
-import { guid } from ".";
 import { RenderComponent } from "../components/rendercomponent";
+import { guid } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 /**
  * Message system
@@ -215,3 +215,6 @@ export class TouchInputMessage extends IOSystemMessage {
         this. y = y;
     }
 }
+
+export { MessageSystem as default };
+

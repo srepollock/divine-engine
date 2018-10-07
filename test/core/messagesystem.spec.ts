@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, RenderComponent, RenderSystemMessage, TestMessage } from "../../src";
+import RenderComponent, { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, RenderSystemMessage, TestMessage } from "../../src";
 
 describe("Message System unit testing", () => {
     describe("Messages", () => {

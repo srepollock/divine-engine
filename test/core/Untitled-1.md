@@ -1,3 +1,0 @@
-# MCU Engine
-
-Let me see something, because Something special is coming...

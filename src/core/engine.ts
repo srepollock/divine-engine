@@ -1,15 +1,10 @@
-import { GameWindow } from "./gamewindow";
+import GameWindow from "./gamewindow";
+import { Client } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
-import { MessageSystem } from "./messagesystem";
+import MessageSystem from "./messagesystem";
 import { Scene } from "./scene";
-
-export enum Client {
-    Console, // Mocha tests
-    Browser, // Web/Mobile
-    Electron // Desktop
-}
-
+import Window from "./window";
 /**
  * Engine arguments for setup.
  */
@@ -137,11 +132,18 @@ export class Engine {
      * Gets the engines current GameWindow object.
      * @returns GameWindow
      */
-    public get gameWindow(): GameWindow | undefined {
+    public get gameWindow(): Window {
         if (this._gameWindow) return this._gameWindow;
         LogError(ErrorCode.EngineWindowUndefined, 
             "The engine's game window is not defined");
-        return undefined;
+        throw ErrorCode.EngineWindowUndefined;
+    }
+    /**
+     * Sets the engine's game window
+     * @param  {GameWindow} gw
+     */
+    public set gameWindow(gw: Window) {
+        this._gameWindow = gw as GameWindow;
     }
     /**
      * Gets the engine's Message System
@@ -209,8 +211,9 @@ export class Engine {
     public static start(args: EngineArguments): void {
         Engine._started = true;
         new Engine(args);
-        GameWindow.start(this._instance!);
-        GameWindow.title = args.title;
+        Engine.instance.gameWindow = new GameWindow(Engine.instance.client);
+        Engine.instance.gameWindow.start(this.instance.container!);
+        Engine.instance.gameWindow.title = args.title;
         Engine._running = true;
         Log("Engine started");
         Engine.play();
@@ -272,7 +275,7 @@ export class Engine {
          * Wait for message worker
          * 
          */
-        let worker = new Worker("");
+        // let work = new Worker(""); // TODO: Worker path goes here
         // LogDebug(`Update loop | delta = ${delta}`);
         // TODO: Implement the systems and uncomment here
         // this.ioSystem.update(delta); // NOTE: IO messages
@@ -363,3 +366,4 @@ export class Engine {
         return new Date().getTime();
     }
 }
+

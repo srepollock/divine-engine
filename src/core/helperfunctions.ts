@@ -9,3 +9,12 @@ export function guid(): string {
             }  
     return `${s4() + s4()}-${s4() + s4()}-${s4() + s4()}-${s4() + s4()}`;
 }
+
+/**
+ * Client
+ */
+export enum Client {
+    Console, // Mocha tests
+    Browser, // Web/Mobile
+    Electron // Desktop
+}

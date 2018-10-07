@@ -1,6 +1,7 @@
-import { guid, Message, MessageReceiver, TestMessage } from ".";
 import { Engine } from "./engine";
-import { EventType } from "./messagesystem";
+import { guid } from "./helperfunctions";
+import MessageReceiver from "./messagereceiver";
+import { EventType, Message, TestMessage } from "./messagesystem";
 /**
  * All objects begin passed as messages in the message system extend this 
  * object. They are ID'd on their string. The engine creates unique ID's for
@@ -65,3 +66,6 @@ export class DObject implements MessageReceiver {
         Engine.instance.messageSystem.emit(EventType.IOSystem, message);
     }
 }
+
+export { DObject as default };
+

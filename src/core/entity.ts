@@ -1,5 +1,5 @@
-import { Component } from "./component";
-import { DObject } from "./dobject";
+import Component from "./component";
+import DObject from "./dobject";
 import { ErrorCode, LogError, LogInfo } from "./logging";
 
 /**
@@ -200,3 +200,5 @@ export class Entity extends DObject {
         return objectString;
     }
 }
+
+export { Entity as default };
