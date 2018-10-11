@@ -1,0 +1,24 @@
+{
+    "title": "blankscene",
+    "entityArray": [
+        {
+            "tag": "camera",
+            "transform": {
+                
+            },
+            "components": [
+                {
+
+                }
+            ],
+            "children": [
+                {
+
+                }
+            ]
+        },
+        {
+            "tag": "player"
+        }
+    ] 
+}

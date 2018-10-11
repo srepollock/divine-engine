@@ -4,8 +4,8 @@ node_js:
 script:
     - npm run-script bundle
     - npm run-script lint
-    - npm run-script unit-test
-branch:
+    - npm run-script test:all
+branches:
     only:
     - master
     - develop

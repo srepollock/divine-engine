@@ -76,9 +76,9 @@ describe("Entity unit testing", () => {
     });
     describe("Entity object with tag, new coordinates, and 1 component", () => {
         let go4: Entity = new Entity("template", 
-            {x: 30, y: -10}, 
-            [], 
-            [new FlagComponent(new Transform(0, 0))]
+            {x: 30, y: -10},
+            [new FlagComponent(new Transform(0, 0))],
+            []
         );
         it("should have an empty tag", () => {
             expect(go4.tag).to.be.equal("template");
