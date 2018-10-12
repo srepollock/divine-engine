@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { Scene } from "./scene";
 
 /**
  * Unique message ID.
@@ -26,6 +27,14 @@ export enum Client {
  */
 export function readJSONFile(filename: string): string {
     return fs.readFileSync(filename, "utf8");
+}
+/**
+ * Loads a JSON file and returns it as a string
+ * @param  {string} filename
+ * @returns Scene
+ */
+export function readJSONFileAsScene(filename: string): Scene {
+    return Object.assign(new Scene(), readJSONFile(filename));
 }
 /**
  * Writes data to a file.

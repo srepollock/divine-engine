@@ -1,8 +1,8 @@
 import DObject from "./dobject";
 import { Entity } from "./entity";
-import { readJSONFile, writeJSONFile } from "./helperfunctions";
-import { ErrorCode, LogError } from "./logging";
-import { Scene } from "./scene";
+import { readJSONFile } from "./helperfunctions";
+import { ErrorCode, Log, LogError } from "./logging";
+import Scene from "./scene";
 
 // REVIEW: Should this be an interface and have a class that is the MainSceneManager?
 export class SceneManager extends DObject {
@@ -62,6 +62,7 @@ export class SceneManager extends DObject {
      * @returns void
      */
     public loadScene(filename: string): Scene {
+        Log("Loading scene from file");
         this.scene = this.buildSceneFromData(readJSONFile(filename));
         return this.scene;
     }
@@ -98,7 +99,7 @@ export class SceneManager extends DObject {
      */
     private writeSceneToFile(scene: Scene): void {
         let sceneData = JSON.stringify(scene);
-        writeJSONFile(scene.title, sceneData);
+        // writeJSONFile(scene.title, sceneData);
     }
 }
 

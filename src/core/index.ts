@@ -5,6 +5,6 @@ export { GameWindow } from "./gamewindow";
 export * from "./helperfunctions";
 export * from "./logging";
 export * from "./messagesystem";
-export { Scene } from "./scene";
+export * from "./scene";
 export { SceneManager } from "./scenemanager";
 

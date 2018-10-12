@@ -74,7 +74,6 @@ export class Entity extends DObject {
     public removeParent(): void {
         this._parent = undefined;
     }
-    
     /**
      * Adds a child to the array
      * @param  {Entity} entity

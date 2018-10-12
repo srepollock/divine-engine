@@ -3,7 +3,7 @@ import { Client } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
 import MessageSystem from "./messagesystem";
-import { Scene } from "./scene";
+import Scene from "./scene";
 import { SceneManager } from "./scenemanager";
 import Window from "./window";
 /**

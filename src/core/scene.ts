@@ -1,6 +1,5 @@
 import Entity from "./entity";
-
-export class Scene {
+exprt; class Scene {
     // NOTE: tslint:disable-next-line:semicolon
     private _entityArray: Array<Entity> = new Array<Entity>();
     private _title: string = "";
