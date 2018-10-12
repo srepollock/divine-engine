@@ -4,6 +4,7 @@ import { guid } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 /**
  * Message system
+ * TODO: Should there be a que for the engine?
  */
 export class MessageSystem extends EventEmitter {
     /**
@@ -33,6 +34,21 @@ export class MessageSystem extends EventEmitter {
             count += this.listenerCount(element);
         });
         return count;
+    }
+    /**
+     * Shutsdown the message system.
+     * @returns void
+     */
+    public shutdown(): void {
+        this.cleanup();
+    }
+    /**
+     * Cleans up the Message system.
+     * @returns void
+     */
+    private cleanup(): void {
+        // REVIEW: Unsubscribe all listeners
+        // REVIEW: Remove all messages in the cue
     }
 }
 

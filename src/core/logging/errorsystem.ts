@@ -4,6 +4,9 @@ export enum ErrorCode {
     WindowUndefined,
     GameWindowUndefined,
     DocumentUndefined,
+    ErrorLoadingFile,
+    ReadJSONFile,
+    WriteJSONFile,
     EngineInitialization = 100, // Engine Errors
     EngineInstanceNull,
     EngineInstanceNotNull,
@@ -16,6 +19,8 @@ export enum ErrorCode {
     BrowserWindowUndefined = 300, // BrowserWindow Errors
     BrowserWindowDidNotClose,
     SceneUndefined = 400, // Scene Errors
+    SceneNameUndefined,
+    SceneManagerUndefined,
     EntityInitialization = 500, // Entity Errors
     EntityParentUndefined,
     EntityAlreadyHasChild,

@@ -39,13 +39,13 @@ export class Entity extends DObject {
     constructor(
         tag: string = "",
         public transform: Transform = new Transform(), 
-        public children: Array<Entity> = new Array(),
-        public components: Array<Component> = new Array()
+        public components: Array<Component> = new Array(),
+        public children: Array<Entity> = new Array()
     ) {
         super(tag);
         this.transform = transform;
-        this.children = children;
         this.components = components;
+        this.children = children;
     }
     /**
      * Gets the parent entity object.
@@ -202,3 +202,4 @@ export class Entity extends DObject {
 }
 
 export { Entity as default };
+

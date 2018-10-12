@@ -4,6 +4,7 @@ import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
 import MessageSystem from "./messagesystem";
 import { Scene } from "./scene";
+import { SceneManager } from "./scenemanager";
 import Window from "./window";
 /**
  * Engine arguments for setup.
@@ -26,6 +27,7 @@ export class EngineArguments {
         public width: number = 0,
         public fps: number = 60,
         public rootElementId: string = "",
+        public sceneManager: SceneManager = new SceneManager(),
         public debug: boolean = false
     ) {
         this.title = title;
@@ -33,6 +35,7 @@ export class EngineArguments {
         this.width = width;
         this.fps = fps;
         this.rootElementId = rootElementId;
+        this.sceneManager = sceneManager;
         this.debug = debug;
     }
 }
@@ -41,6 +44,7 @@ export class EngineArguments {
  * The Divine Game Engine class.
  */
 export class Engine {
+    // TODO: Sort this alphabetically
     private static _instance: Engine | undefined = undefined;
     private static _started: boolean = false;
     private static _running: boolean = false;
@@ -55,36 +59,16 @@ export class Engine {
     private _last: number = 0;
     private _height: number = 0;
     private _scene: Scene | undefined = undefined;
+    private _sceneManager: SceneManager | undefined = undefined;
     private _startTime: number;
     private _width: number = 0;
     private _gameWindow: GameWindow | undefined = undefined;
-    public static get instance(): Engine {
-        if (Engine._instance !== undefined) {
-            return Engine._instance;
-        }
-        LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
-        throw ErrorCode.EngineInstanceNull;
-    }
     /**
      * Gets the engine's client type.
      * @returns Client
      */
     public static get client(): Client {
         return Engine._instance!.client;
-    }
-    /**
-     * Gets the engine's started variable.
-     * @returns boolean
-     */
-    public static get started(): boolean {
-        return Engine._started;
-    }
-    /**
-     * Gets the engine's running variable.
-     * @returns boolean
-     */
-    public static get running(): boolean {
-        return Engine._running;
     }
     /**
      * Get's the engine's exit variable.
@@ -94,6 +78,24 @@ export class Engine {
         return Engine._exit;
     }
     /**
+     * Gets the current game window's height.
+     * @returns number
+     */
+    public static get height(): number {
+        return this._instance!._height;
+    }
+    /**
+     * Get the engine's instance.
+     * @returns Engine
+     */
+    public static get instance(): Engine {
+        if (Engine._instance !== undefined) {
+            return Engine._instance;
+        }
+        LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
+        throw ErrorCode.EngineInstanceNull;
+    }
+    /**
      * Gets the engine's current time.
      * @returns number
      */
@@ -101,11 +103,18 @@ export class Engine {
         return Engine._instance!._now;
     }
     /**
-     * Gets the current game window's height.
-     * @returns number
+     * Gets the engine's running variable.
+     * @returns boolean
      */
-    public static get height(): number {
-        return this._instance!._height;
+    public static get running(): boolean {
+        return Engine._running;
+    }
+    /**
+     * Gets the engine's started variable.
+     * @returns boolean
+     */
+    public static get started(): boolean {
+        return Engine._started;
     }
     /**
      * Gets the current game window's width.
@@ -127,6 +136,21 @@ export class Engine {
      */
     public get container(): HTMLElement | null {
         return Engine._instance!._container;
+    }
+    /**
+     * Sets the engine's arguments
+     * @param  {EngineArguments} engineArguments
+     * @returns EngineArguments
+     */
+    public set engineArguments(engineArguments: EngineArguments) {
+        this._engineArguments = engineArguments;
+    }
+    /**
+     * Returns this engine's arguements
+     * @returns EngineArguments
+     */
+    public get engineArguments(): EngineArguments {
+        return this._engineArguments;
     }
     /**
      * Gets the engines current GameWindow object.
@@ -164,12 +188,31 @@ export class Engine {
         throw ErrorCode.SceneUndefined;
     }
     /**
+     * Gets the scene manager.
+     * @returns SceneManager
+     */
+    public get sceneManager(): SceneManager {
+        if (this._sceneManager !== undefined) return this._sceneManager;
+        else {
+            LogError(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend");
+            throw ErrorCode.SceneManagerUndefined;
+        }
+    }
+    /**
+     * Sets the engines scene manager
+     * @param  {SceneManager} sceneManager
+     */
+    public set sceneManager(sceneManager: SceneManager) {
+        this._sceneManager = sceneManager;
+    }
+    /**
      * Initializes an Engine object.
      */
     private constructor(args: EngineArguments) {
         this.setEngineArguments(args);
         this._messageSystem = new MessageSystem();
         if (this._messageSystem === undefined) {
+            // NOTE: Because the message system is so critical, it must be started if the engine is to run.
             LogError(ErrorCode.MessageSystemInitialization);
             Engine._exit = true;
         }
@@ -216,6 +259,15 @@ export class Engine {
         Engine.instance.gameWindow.title = args.title;
         Engine._running = true;
         Log("Engine started");
+        /**
+         * NOTE: Start subsystems. This is where the rest of the systems `.start()` functions get called. 
+         * 
+         * They are held in reference by the engine. As it will shut everything down as well.
+         */
+        // NOTE: Default SceneManager is defined in default EngineArguments
+        Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
+        // REVIEW: this should NOT be hardset.
+        Engine.instance._scene = Engine.instance.sceneManager.loadScene("blankscene");
         Engine.play();
     }
     /**
@@ -237,7 +289,7 @@ export class Engine {
         }
         Engine._running = true; // Start running
         Engine._instance!._last = this._instance!.timestamp(); // Sets the last timestep to now (for the first frame)
-        // Call the first frame update
+        // Call the first frame update - End of the function
         if (this.client === Client.Browser) Engine._instance!.browserFrame();
         else if (this.client === Client.Electron) Engine._instance!.electronFrame();
         else if (this.client === Client.Console) Engine._instance!.consoleFrame();
@@ -256,6 +308,7 @@ export class Engine {
      * @returns void
      */
     public static shutdown(): void {
+        Engine.instance.cleanup();
         Engine._started = false;
         Engine._exit = true;
         if (Engine._instance!._client === Client.Electron) {
@@ -264,6 +317,15 @@ export class Engine {
             win.close();
         }       
         this._instance = undefined;
+    }
+    /**
+     * Call's system shutdown files.
+     * Call in reverese order of startup.
+     * @returns void
+     */
+    public cleanup(): void {
+        Engine.instance.sceneManager.shutdown();
+        Engine.instance.messageSystem.shutdown();
     }
     /**
      * Main update loop. Calls all other system updates.
@@ -362,6 +424,10 @@ export class Engine {
         this._engineArguments = args;
         this._fps = this._engineArguments.fps;
     }
+    /**
+     * Gets the current timestamp.
+     * @returns number
+     */
     private timestamp(): number {
         return new Date().getTime();
     }

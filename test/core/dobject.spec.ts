@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import "mocha";
-import { DObject, Engine, EngineArguments, Log, Message } from "../../src";
+import { DObject, Engine, EngineArguments, Entity, EventType, Log, Message, Transform } from "../../src";
 
 describe("DObject unit testing", () => {
-    var obj: DObject;
     describe("empty object instantiation", () => {
+        var obj: DObject;
         beforeEach(() => {
             obj = new DObject();
         });
@@ -15,7 +15,8 @@ describe("DObject unit testing", () => {
             expect(obj.tag).to.equal("");
         });
     });
-    describe("", () => {
+    describe("filled out object instantiation", () => {
+        var obj: DObject;
         beforeEach(() => {
             obj = new DObject("player");
         });
@@ -23,9 +24,14 @@ describe("DObject unit testing", () => {
             expect(obj.tag).to.equal("player");
         });
     });
-    describe("message receiving", () => {
+    describe("dobject's receiving messages", () => {
+        var ent: Entity;
         before(() => {
             Engine.start(new EngineArguments());
+        });
+        beforeEach(() => {
+            ent = new Entity("player", new Transform());
+            ent.addSubscription(EventType.Entity);
         });
         it("should be able to send messages", () => {
             var dm: Message;
@@ -33,11 +39,11 @@ describe("DObject unit testing", () => {
                 dm = message;
                 Log(message.JSONString);
             });
-            obj.sendMessage("test", "Test Message Error");
+            ent.sendMessage("test", "Test Message Error");
             expect(dm).to.not.be.null;
         });
         it("should be able to receive messages", () => {
-            Engine.scene.addEntity(obj);
+            Engine.instance.scene.addEntity(ent);
             var dm: Message;
             Engine.instance.messageSystem.on("test", (message: Message) => {
                 dm = message;
