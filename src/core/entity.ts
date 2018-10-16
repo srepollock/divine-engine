@@ -1,5 +1,5 @@
-import Component from "./component";
-import DObject from "./dobject";
+import { Component } from "./component";
+import { DObject } from "./dobject";
 import { ErrorCode, LogError, LogInfo } from "./logging";
 
 /**
@@ -198,7 +198,13 @@ export class Entity extends DObject {
         LogInfo(objectString);
         return objectString;
     }
+    /**
+     * Udpates the current object
+     * @param  {number} delta
+     * @returns void
+     */
+    public update(delta: number): void {
+        
+    }
 }
-
-export { Entity as default };
 

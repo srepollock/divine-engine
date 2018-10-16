@@ -1,4 +1,4 @@
-import Component from "../core/component";
+import { Component } from "../core/component";
 import { Transform } from "../core/entity";
 
 export class FlagComponent extends Component {

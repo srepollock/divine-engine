@@ -1,6 +1,6 @@
 import { Client } from "./helperfunctions";
 
-export default interface Window {
+export interface Window {
     container: HTMLElement | undefined;
     browserWindow: Electron.BrowserWindow | undefined;
     screen: Electron.Screen | undefined;

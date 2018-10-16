@@ -21,7 +21,8 @@
     "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts",
     "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts",
-    "test:nyc": "nyc -- npm test"
+    "test:nyc": "nyc -- npm test",
+    "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
   },
   "repository": {
     "type": "git",
@@ -63,6 +64,7 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.12.0",
     "ts-node": "^7.0.1",
@@ -70,6 +72,7 @@
     "typedoc": "^0.11.1"
   },
   "dependencies": {
+    "tsc-watch": "^1.0.30",
     "typescript": "^3.1.3"
   },
   "nyc": {

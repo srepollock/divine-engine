@@ -1,8 +1,8 @@
-import DObject from "./dobject";
+import { DObject } from "./dobject";
 import { Entity } from "./entity";
 import { readJSONFile } from "./helperfunctions";
 import { ErrorCode, Log, LogError } from "./logging";
-import Scene from "./scene";
+import { Scene } from "./scene";
 
 // REVIEW: Should this be an interface and have a class that is the MainSceneManager?
 export class SceneManager extends DObject {
@@ -49,13 +49,6 @@ export class SceneManager extends DObject {
         return scene;
     }
     /**
-     * Calls this classes clenaup funciton. Shutsdown the class. Called on Engine shutdown.
-     * @returns void
-     */
-    public shutdown(): void {
-        this.cleanup();
-    }
-    /**
      * Scene to load
      * NOTE: SCENE NAMES MUST BE THE SAME AS THE FILENAMES
      * @param  {string} filename Name of the scene.
@@ -65,6 +58,13 @@ export class SceneManager extends DObject {
         Log("Loading scene from file");
         this.scene = this.buildSceneFromData(readJSONFile(filename));
         return this.scene;
+    }
+    /**
+     * Calls this classes clenaup funciton. Shutsdown the class. Called on Engine shutdown.
+     * @returns void
+     */
+    public shutdown(): void {
+        this.cleanup();
     }
     /**
      * Scene to unload. This is only called in this classes loadScene method.

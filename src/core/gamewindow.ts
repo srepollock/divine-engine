@@ -1,6 +1,6 @@
 import { Client } from "./helperfunctions";
 import { ErrorCode, Log, LogError } from "./logging";
-import Window from "./window";
+import { Window } from "./window";
 
 export class GameWindow implements Window { 
     private static _started: boolean = true;

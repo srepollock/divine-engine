@@ -2,6 +2,7 @@ import typescript from 'rollup-plugin-typescript2';
 import babel from 'rollup-plugin-babel';
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
+import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import pkg from "./package.json";
 
@@ -14,14 +15,20 @@ export default {
             name: 'Divine'
         },
         {
+            file: "./lib/divine.cjs.js",
+            format: 'cjs',
+            name: 'Divine'
+        },
+        {
             file: pkg.module,
             format: 'es',
             name: 'Divine'
-        }
+        },
     ],
     plugins: [
         globals(),
         builtins(),
+        resolve(),
         typescript(),
         commonjs(),
         babel({
@@ -29,5 +36,8 @@ export default {
             presets: [["@babel/preset-env", {"modules": false}]],
             runtimeHelpers: true
         })
-    ]
+    ],
+    watch: {
+        include: 'src/**'
+    }
 }

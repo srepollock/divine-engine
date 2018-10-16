@@ -47,8 +47,7 @@ export class MessageSystem extends EventEmitter {
      * @returns void
      */
     private cleanup(): void {
-        // REVIEW: Unsubscribe all listeners
-        // REVIEW: Remove all messages in the cue
+        this.removeAllListeners();
     }
 }
 
@@ -202,6 +201,8 @@ export class SoundSystemMessage extends Message {
  */
 /**
  * Key input message interface.
+ * For listeners, use 'keydown', 'keypress', 'keyup' events, just like standard
+ * Javascript
  */
 export class KeyInputMessage extends IOSystemMessage {
     constructor( public code: string) {
@@ -231,6 +232,3 @@ export class TouchInputMessage extends IOSystemMessage {
         this. y = y;
     }
 }
-
-export { MessageSystem as default };
-

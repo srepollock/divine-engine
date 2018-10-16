@@ -1,6 +1,6 @@
 import { Message } from "./messagesystem";
 
-export default interface MessageReceiver {
+export interface MessageReceiver {
     _subscriptions: Array<string>;
     _currentMessage: Message;
     sendMessage(event: string, data: string): void;

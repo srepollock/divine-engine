@@ -1,11 +1,11 @@
-import GameWindow from "./gamewindow";
+import { GameWindow } from "./gamewindow";
 import { Client } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
-import MessageSystem from "./messagesystem";
-import Scene from "./scene";
+import { MessageSystem } from "./messagesystem";
+import { Scene } from "./scene";
 import { SceneManager } from "./scenemanager";
-import Window from "./window";
+import { Window } from "./window";
 /**
  * Engine arguments for setup.
  */
@@ -331,20 +331,18 @@ export class Engine {
      * Main update loop. Calls all other system updates.
      * @returns void
      */
-    public update(delta: number): void {
+    private update(delta: number): void {
         /**
          * NOTE:
          * Wait for message worker
          * 
          */
-        // let work = new Worker(""); // TODO: Worker path goes here
         // LogDebug(`Update loop | delta = ${delta}`);
-        // TODO: Implement the systems and uncomment here
-        // this.ioSystem.update(delta); // NOTE: IO messages
-        // this.sceneManager.update(delta); // NOTE: Calls scene update
-        // this.physicsSystem.update(delta); // NOTE: Physics messages handled
-        // this.soundSystem.update(delta); // NOTE: Sound messages handled
-        // this.renderSystem.update(delta); // NOTE: Render system udpated.
+        // this._ioSystem.update(delta); // NOTE: IO messages
+        // this._scene.update(delta); // NOTE: Calls scene update
+        // this._physicsSystem.update(delta); // NOTE: Physics messages handled
+        // this._soundSystem.update(delta); // NOTE: Sound messages handled
+        // this._renderSystem.update(delta); // NOTE: Render system udpated.
     }
     /**
      * 3 Game loops??
