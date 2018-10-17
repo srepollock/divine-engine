@@ -7,6 +7,7 @@ export enum ErrorCode {
     ErrorLoadingFile,
     ReadJSONFile,
     WriteJSONFile,
+    FileContentsNotRead,
     EngineInitialization = 100, // Engine Errors
     EngineInstanceNull,
     EngineInstanceNotNull,

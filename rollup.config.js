@@ -8,6 +8,26 @@ import pkg from "./package.json";
 
 export default {
     input: './src/index.ts',
+    external: [
+        "'fs'"
+    ],
+    plugins: [
+        globals(),
+        builtins({
+            fs: true
+        }),
+        resolve(),
+        typescript(),
+        commonjs(),
+        babel({
+            babelrc: false,
+            presets: [["@babel/preset-env", {"modules": false}]],
+            runtimeHelpers: true
+        })
+    ],
+    watch: {
+        include: 'src/**/*.ts'
+    },
     output: [
         {
             file: pkg.main,
@@ -25,19 +45,4 @@ export default {
             name: 'Divine'
         },
     ],
-    plugins: [
-        globals(),
-        builtins(),
-        resolve(),
-        typescript(),
-        commonjs(),
-        babel({
-            babelrc: false,
-            presets: [["@babel/preset-env", {"modules": false}]],
-            runtimeHelpers: true
-        })
-    ],
-    watch: {
-        include: 'src/**'
-    }
 }

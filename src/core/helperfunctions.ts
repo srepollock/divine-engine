@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { ErrorCode, LogError } from "./logging";
 import { Scene } from "./scene";
 
 /**
@@ -26,7 +27,20 @@ export enum Client {
  * @returns string
  */
 export function readJSONFile(filename: string): string {
-    return fs.readFileSync(filename, "utf8");
+    // return fs.readFileSync(filename, "utf8");
+    var output: string | undefined;
+    fs.readFile(filename, (err, data) => {
+        if (err) {
+            LogError(ErrorCode.ReadJSONFile, `Error writing ${filename}`);
+            throw ErrorCode.ReadJSONFile;
+        }
+        output = data.toString("utf8");
+    });
+    if (!output) {
+        LogError(ErrorCode.FileContentsNotRead, `Output string not set from data.toString()`);
+        throw ErrorCode.FileContentsNotRead;
+    }
+    return output;
 }
 /**
  * Loads a JSON file and returns it as a string
@@ -44,5 +58,9 @@ export function readJSONFileAsScene(filename: string): Scene {
  * @returns void
  */
 export function writeJSONFile(filename: string, data: string): void {
-    fs.writeFileSync(filename, data);
+    fs.writeFile(filename, data, "utf8", (err) => {
+        if (err) {
+            LogError(ErrorCode.WriteJSONFile, `Error writing ${filename}`);
+        }
+    });
 }
