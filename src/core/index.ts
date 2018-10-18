@@ -6,6 +6,6 @@ export * from "./helperfunctions";
 export * from "./logging";
 export * from "./messagesystem";
 export * from "./scene";
-export { SceneManager } from "./scenemanager";
+export * from "./scenemanager";
 
 // TODO: Fix this file to export everything unless  

@@ -4,8 +4,15 @@ import { readJSONFile } from "./helperfunctions";
 import { ErrorCode, Log, LogError } from "./logging";
 import { Scene } from "./scene";
 
+export interface SceneManager {
+    buildScene(entities?: Array<Entity>, filename?: string): Scene;
+    loadScene(filename: string): Scene;
+    shutdown(): void;
+    unloadScene(filename: string): void;
+}
+
 // REVIEW: Should this be an interface and have a class that is the MainSceneManager?
-export class SceneManager extends DObject {
+export class BaseSceneManager extends DObject implements SceneManager {
     private _scene: Scene | undefined = undefined;
     /**
      * Returns the Scene object.

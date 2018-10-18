@@ -4,7 +4,7 @@ import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
 import { MessageSystem } from "./messagesystem";
 import { Scene } from "./scene";
-import { SceneManager } from "./scenemanager";
+import { BaseSceneManager, SceneManager } from "./SceneManager";
 import { Window } from "./window";
 /**
  * Engine arguments for setup.
@@ -27,7 +27,7 @@ export class EngineArguments {
         public width: number = 0,
         public fps: number = 60,
         public rootElementId: string = "",
-        public sceneManager: SceneManager = new SceneManager(),
+        public sceneManager: SceneManager = new BaseSceneManager(),
         public debug: boolean = false
     ) {
         this.title = title;
@@ -200,7 +200,7 @@ export class Engine {
     }
     /**
      * Sets the engines scene manager
-     * @param  {SceneManager} sceneManager
+     * @param  {SceneManager} BaseSceneManager
      */
     public set sceneManager(sceneManager: SceneManager) {
         this._sceneManager = sceneManager;
@@ -264,7 +264,7 @@ export class Engine {
          * 
          * They are held in reference by the engine. As it will shut everything down as well.
          */
-        // NOTE: Default SceneManager is defined in default EngineArguments
+        // NOTE: Default BaseSceneManager is defined in default EngineArguments
         Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
         // REVIEW: this should NOT be hardset.
         Engine.instance._scene = Engine.instance.sceneManager.loadScene("blankscene");
