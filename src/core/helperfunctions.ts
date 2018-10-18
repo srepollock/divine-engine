@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import { ErrorCode, LogError } from "./logging";
 import { Scene } from "./scene";
 
@@ -29,13 +28,14 @@ export enum Client {
 export function readJSONFile(filename: string): string {
     // return fs.readFileSync(filename, "utf8");
     var output: string | undefined;
-    fs.readFile(filename, (err, data) => {
-        if (err) {
-            LogError(ErrorCode.ReadJSONFile, `Error writing ${filename}`);
-            throw ErrorCode.ReadJSONFile;
-        }
-        output = data.toString("utf8");
-    });
+    // REVIEW: Issue #37
+    // fs.readFile(filename, (err, data) => {
+    //     if (err) {
+    //         LogError(ErrorCode.ReadJSONFile, `Error writing ${filename}`);
+    //         throw ErrorCode.ReadJSONFile;
+    //     }
+    //     output = data.toString("utf8");
+    // });
     if (!output) {
         LogError(ErrorCode.FileContentsNotRead, `Output string not set from data.toString()`);
         throw ErrorCode.FileContentsNotRead;
@@ -58,9 +58,10 @@ export function readJSONFileAsScene(filename: string): Scene {
  * @returns void
  */
 export function writeJSONFile(filename: string, data: string): void {
-    fs.writeFile(filename, data, "utf8", (err) => {
-        if (err) {
-            LogError(ErrorCode.WriteJSONFile, `Error writing ${filename}`);
-        }
-    });
+    // REVIEW: Issue #37
+    // fs.writeFile(filename, data, "utf8", (err) => {
+    //     if (err) {
+    //         LogError(ErrorCode.WriteJSONFile, `Error writing ${filename}`);
+    //     }
+    // });
 }

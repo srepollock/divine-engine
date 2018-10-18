@@ -1,8 +1,9 @@
+import { DObject } from "./dobject";
 import { GameWindow } from "./gamewindow";
 import { Client } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 import { Log, LogError } from "./logging/errorsystem";
-import { MessageSystem } from "./messagesystem";
+import { EventType, Message, MessageSystem } from "./messagesystem";
 import { Scene } from "./scene";
 import { BaseSceneManager, SceneManager } from "./SceneManager";
 import { Window } from "./window";
@@ -194,7 +195,8 @@ export class Engine {
     public get sceneManager(): SceneManager {
         if (this._sceneManager !== undefined) return this._sceneManager;
         else {
-            LogError(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend");
+            LogError(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend when calling get \
+                function");
             throw ErrorCode.SceneManagerUndefined;
         }
     }
@@ -431,3 +433,19 @@ export class Engine {
     }
 }
 
+/** 
+ * TODO: Prototype Entity messaging functions
+ * REVIEW: Could this go somewhere else? How should I make this easy to edit? Could I possibly place this in another 
+ * file and use it in there then impor that? Or is that yet another dependency issue? Review under issue 37.
+ */
+DObject.prototype.sendMessage = (event: string, data: Message) => {
+    // REVIEW: MessageSystem??
+    Engine.instance.messageSystem.emit(event, data);
+};
+DObject.prototype.addSubscription = (event: string, handler: () => {}) => {
+    DObject.prototype._subscriptions.push(event);
+    Engine.instance.messageSystem.on(event, handler);
+};
+DObject.prototype.basicMessageHandler = (message: Message) => {
+    Engine.instance.messageSystem.emit(EventType.IOSystem, message); // NOTE: This is just logging a file.
+};

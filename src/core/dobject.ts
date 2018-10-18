@@ -1,7 +1,6 @@
-import { Engine } from "./engine";
 import { guid } from "./helperfunctions";
 import { MessageReceiver } from "./messagereceiver";
-import { EventType, Message, TestMessage } from "./messagesystem";
+import { Message, TestMessage } from "./messagesystem";
 
 /**
  * All objects begin passed as messages in the message system extend this 
@@ -20,28 +19,25 @@ export class DObject implements MessageReceiver {
     public get guid(): string {
         return this._guid;
     }
-    public get currentMesage(): Message {
-        return this._currentMessage;
-    }
-    public sendMessage(event: string, data: string): void {
-        // REVIEW: MessageSystem??
-        Engine.instance.messageSystem.emit(event, data);
-    }
     /**
-     * Gets messages from the message system
-     * // REVIEW: With a message queue manager is this needed?
-     * @returns Message
-     */
-    public pollMessage(): Message {
-        return this._currentMessage;
-    }
-    /**
-     * Adds subscription to the list
+     * Adds a subscription type to the DObject to recieve messages from the Message System
+     * REVIEW: This is defined as a prototype function in Engine.ts
      * @param  {string} event
+     * @param {callback} handler A callback on how to handle the message
      * @returns void
      */
-    public addSubscription(event: string): void {
-        this._subscriptions.push(event);
+    public addSubscription(event: string, handler: () => {}): void {
+
+    }
+    /**
+     * Sends a mesage to the MessageSystem.
+     * REVIEW: This is defined as a prototype function in Engine.ts
+     * @param  {string} event
+     * @param  {Message} data
+     * @returns void
+     */
+    public sendMessage(event: string, data: Message): void {
+        
     }
     /**
      * Removes all subscriptions of type "event"
@@ -59,12 +55,12 @@ export class DObject implements MessageReceiver {
         }
     }
     /**
-     * Basic message handler
+     * Basic message handler.
+     * REVIEW: This is defined as a prototype function in Engine.ts
      * @param  {Message} message
      * @returns void
      */
     public basicMessageHandler(message: Message): void {
-        Engine.instance.messageSystem.emit(EventType.IOSystem, message);
+        
     }
 }
-

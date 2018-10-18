@@ -15,14 +15,12 @@ export default {
             presets: [["@babel/preset-env", {"modules": false}]],
             runtimeHelpers: true
         }),
-        commonjs(),
+        builtins(),
         resolve({
             preferBuiltins: true,
             browser: true
         }),
-        builtins({
-            fs: true 
-        }),
+        commonjs(),
         globals({
             process: true,
             global: true,
