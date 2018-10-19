@@ -26,7 +26,6 @@ export enum Client {
  * @returns string
  */
 export function readJSONFile(filename: string): string {
-    // return fs.readFileSync(filename, "utf8");
     var output: string | undefined;
     // REVIEW: Issue #37
     // fs.readFile(filename, (err, data) => {
@@ -36,7 +35,7 @@ export function readJSONFile(filename: string): string {
     //     }
     //     output = data.toString("utf8");
     // });
-    if (!output) {
+    if (!output) { // REVIEW: This should have some more handling in it...
         LogError(ErrorCode.FileContentsNotRead, `Output string not set from data.toString()`);
         throw ErrorCode.FileContentsNotRead;
     }

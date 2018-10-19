@@ -1,4 +1,3 @@
-
 export enum ErrorCode {
     OK = 0,
     EngineFailed = 1,
@@ -38,8 +37,8 @@ export enum ErrorCode {
  * @returns void
  */
 export function Log(data: string): void {
-    const errorString = `Info || ${data}`;
-    console.log("\x1b[32m", errorString, "\x1b[0m");
+    const errorString = `Info\t|| ${data}`;
+    console.log("\t", "\x1b[32m", errorString, "\x1b[0m");
 }
 /**
  * Used for logging critical information to the console.
@@ -49,8 +48,8 @@ export function Log(data: string): void {
  * @returns void
  */
 export function LogCritical(ec: ErrorCode, data: string): void {
-    const errorString = `Critical!! || ${ec}:${data}`;
-    console.error("\x1b[30m", "\x1b[41m", errorString, "\x1b[0m");
+    const errorString = `Critical!!\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
+    console.error("\t", "\x1b[30m", "\x1b[41m", errorString, "\x1b[0m");
 }
 /**
  * Prints Debug infomration to the log. This should be used for debugging purposes.
@@ -59,8 +58,8 @@ export function LogCritical(ec: ErrorCode, data: string): void {
  * @returns string
  */
 export function LogDebug(data: string): void {
-    const debugInformation: string = `Debug || ${data}`;
-    console.log("\x1b[37m", "\x1b[44m", debugInformation, "\x1b[0m");
+    const debugInformation: string = `Debug\t|| ${data}`;
+    console.log("\t", "\x1b[34m", debugInformation, "\x1b[0m");
 }
 /**
  * Error logging to the console. This is when the engine may begin to break or
@@ -70,8 +69,8 @@ export function LogDebug(data: string): void {
  * @returns string
  */
 export function LogError(ec: ErrorCode, data: string = ""): void {
-    const errorString = `Error || ${ec}:${data}`;
-    console.error("\x1b[31m", errorString, "\x1b[0m");
+    const errorString = `Error\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
+    console.error("\t", "\x1b[31m", errorString, "\x1b[0m");
 }
 /**
  * Warning message to the console. When something could start to go wrong
@@ -80,6 +79,6 @@ export function LogError(ec: ErrorCode, data: string = ""): void {
  * @returns void
  */
 export function LogWarning(ec: ErrorCode, data: string): void {
-    const errorString = `Warning! || ${ec}:${data}`;
-    console.log("\x1b[40m", "\x1b[33m", errorString, "\x1b[0m");
+    const errorString = `Warn!!\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
+    console.log("\t", "\x1b[38m", errorString, "\x1b[0m");
 }

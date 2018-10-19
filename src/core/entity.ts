@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import { DObject } from "./dobject";
-import { ErrorCode, LogError, LogInfo } from "./logging";
+import { ErrorCode, Log, LogError } from "./logging";
 
 /**
  * The entity objects position.
@@ -194,7 +194,7 @@ export class Entity extends DObject {
      */
     public toString(): string {
         let objectString = `Entity [id:${this.guid}]`;
-        LogInfo(objectString);
+        Log(objectString);
         return objectString;
     }
     /**

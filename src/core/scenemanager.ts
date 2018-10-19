@@ -1,7 +1,7 @@
 import { DObject } from "./dobject";
 import { Entity } from "./entity";
-import { readJSONFile } from "./helperfunctions";
-import { ErrorCode, Log, LogError } from "./logging";
+import { readJSONFile, writeJSONFile } from "./helperfunctions";
+import { ErrorCode, Log, LogDebug, LogError } from "./logging";
 import { Scene } from "./scene";
 
 export interface SceneManager {
@@ -62,8 +62,9 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * @returns void
      */
     public loadScene(filename: string): Scene {
-        Log("Loading scene from file");
+        LogDebug(`Loading scene from file ${filename}`);
         this.scene = this.buildSceneFromData(readJSONFile(filename));
+        Log(JSON.stringify(this.scene));
         return this.scene;
     }
     /**
@@ -105,8 +106,9 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * @returns void
      */
     private writeSceneToFile(scene: Scene): void {
+        LogDebug(`Writing scene ${scene.title} to file`);
         let sceneData = JSON.stringify(scene);
-        // writeJSONFile(scene.title, sceneData);
+        writeJSONFile(scene.title, sceneData);
     }
 }
 
