@@ -53,8 +53,7 @@ export class Entity extends DObject {
      */
     public get parent(): Entity | undefined {
         if (this._parent === undefined) {
-            LogError(ErrorCode.EntityParentUndefined, "${this.guid} has no \
-                parent");
+            LogError(ErrorCode.EntityParentUndefined, "${this.guid} has no parent");
             return undefined;
         } else {
             return this._parent;

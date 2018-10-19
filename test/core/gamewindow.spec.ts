@@ -3,7 +3,7 @@ import "mocha";
 import { Engine, EngineArguments, GameWindow } from "../../src";
 
 describe("Window unit tests", () => {
-    let engArgs: EngineArguments = JSON.parse(JSON.stringify({title: " ", width: 0, height: 0, debug: false}));
+    let engArgs: EngineArguments = JSON.parse(JSON.stringify({title: " ", width: 0, height: 0,  debug: false}));
     Engine.start(engArgs);
     it("should start and create a web worker", () => {
         // expect(Window.instance.webWorker).to.equal(undefined);

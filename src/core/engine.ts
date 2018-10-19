@@ -2,7 +2,7 @@ import { DObject } from "./dobject";
 import { GameWindow } from "./gamewindow";
 import { Client } from "./helperfunctions";
 import { ErrorCode } from "./logging";
-import { Log, LogError } from "./logging/errorsystem";
+import { Log, LogCritical, LogError } from "./logging/errorsystem";
 import { EventType, Message, MessageSystem } from "./messagesystem";
 import { Scene } from "./scene";
 import { BaseSceneManager, SceneManager } from "./SceneManager";
@@ -11,6 +11,13 @@ import { Window } from "./window";
  * Engine arguments for setup.
  */
 export class EngineArguments {
+    public title: string;
+    public height: number;
+    public width: number;
+    public fps: number;
+    public rootElementId: string;
+    public sceneManager: SceneManager | undefined;
+    public debug: boolean;
     /**
      * Engine arguments for a base setup. When defining engine parameters, using
      * this object and setting it in a project can provide quick initialization.
@@ -22,22 +29,27 @@ export class EngineArguments {
      * @param  {string=""} publicrootElementId
      * @param  {boolean=false} publicdebug
      */
-    constructor(
-        public title: string = "",
-        public height: number = 0,
-        public width: number = 0,
-        public fps: number = 60,
-        public rootElementId: string = "",
-        public sceneManager: SceneManager = new BaseSceneManager(),
-        public debug: boolean = false
+    constructor({title, height, width, fps, rootElementId, sceneManager, debug}: {
+            title?: string,
+            height?: number,
+            width?: number,
+            fps?: number,
+            rootElementId?: string,
+            sceneManager?: SceneManager,
+            debug?: boolean
+        } = {}
     ) {
-        this.title = title;
-        this.height = height;
-        this.width = width;
-        this.fps = fps;
-        this.rootElementId = rootElementId;
-        this.sceneManager = sceneManager;
-        this.debug = debug;
+        this.title = (title) ? title : "";
+        this.height = (height ? height : 0);
+        this.width = (width) ? width : 0;
+        this.fps = (fps) ? fps : 60;
+        this.rootElementId = (rootElementId) ? rootElementId : "";
+        this.sceneManager = (sceneManager) ? sceneManager : undefined; /*
+             REVIEW: This scenemanager will be their own how? */
+        this.debug = (debug) ? debug : false;
+    }
+    public toString(): string {
+        return JSON.stringify(`${this.title}, ${this.width}x${this.height}, ${this.fps}, ${this.sceneManager}`);
     }
 }
 
@@ -195,14 +207,14 @@ export class Engine {
     public get sceneManager(): SceneManager {
         if (this._sceneManager !== undefined) return this._sceneManager;
         else {
-            LogError(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend when calling get \
-                function");
+            LogCritical(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend when calling get"
+                + " function.");
             throw ErrorCode.SceneManagerUndefined;
         }
     }
     /**
      * Sets the engines scene manager
-     * @param  {SceneManager} BaseSceneManager
+     * @param  {SceneManager} SceneManager
      */
     public set sceneManager(sceneManager: SceneManager) {
         this._sceneManager = sceneManager;
@@ -255,6 +267,7 @@ export class Engine {
      */
     public static start(args: EngineArguments): void {
         Engine._started = true;
+        Log(args.toString());
         new Engine(args);
         Engine.instance.gameWindow = new GameWindow(Engine.instance.client);
         Engine.instance.gameWindow.start(this.instance.container!);
@@ -267,9 +280,20 @@ export class Engine {
          * They are held in reference by the engine. As it will shut everything down as well.
          */
         // NOTE: Default BaseSceneManager is defined in default EngineArguments
-        Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
+        if (Engine.instance.engineArguments.sceneManager !== undefined) {
+            Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
+        } else {
+            Engine.instance.sceneManager = new BaseSceneManager("assets/blanscene.json");
+        }
         // REVIEW: this should NOT be hardset.
-        Engine.instance._scene = Engine.instance.sceneManager.loadScene("blankscene");
+        try {
+            Log("before");
+            Engine.instance._scene = (Engine.instance.sceneManager as BaseSceneManager).loadScene("blankscene");
+            Log("after");
+        } catch (e) {
+            console.trace(e);
+            throw ErrorCode.SceneManagerUndefined;
+        }
         Engine.play();
     }
     /**

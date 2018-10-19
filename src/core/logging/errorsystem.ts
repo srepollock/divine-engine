@@ -1,13 +1,9 @@
 
 export enum ErrorCode {
-    Error = 0, // General Errors
-    WindowUndefined,
-    GameWindowUndefined,
+    OK = 0,
+    EngineFailed = 1,
+    Error, // General Errors
     DocumentUndefined,
-    ErrorLoadingFile,
-    ReadJSONFile,
-    WriteJSONFile,
-    FileContentsNotRead,
     EngineInitialization = 100, // Engine Errors
     EngineInstanceNull,
     EngineInstanceNotNull,
@@ -27,16 +23,44 @@ export enum ErrorCode {
     EntityAlreadyHasChild,
     EntityAlreadyHasComponent,
     EntityChildNotFound,
-    EntityComponentNotFound
+    EntityComponentNotFound,
+    WindowUndefined, // Window Errors
+    GameWindowUndefined,
+    ErrorLoadingFile, // Helper Function Errors
+    ReadJSONFile,
+    WriteJSONFile,
+    FileContentsNotRead,
 }
+// NOTE: https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
 /**
- * Logs information to the console.
- * @param  {string} data
+ * Used for logging general information to the console.
+ * @param  {string} data 
  * @returns void
  */
 export function Log(data: string): void {
-    const information: string = `${data}`;
-    console.log(information);
+    const errorString = `Info || ${data}`;
+    console.log("\x1b[32m", errorString, "\x1b[0m");
+}
+/**
+ * Used for logging critical information to the console.
+ * Output is in red.
+ * @param  {ErrorCode} ec 
+ * @param  {string} data
+ * @returns void
+ */
+export function LogCritical(ec: ErrorCode, data: string): void {
+    const errorString = `Critical!! || ${ec}:${data}`;
+    console.error("\x1b[30m", "\x1b[41m", errorString, "\x1b[0m");
+}
+/**
+ * Prints Debug infomration to the log. This should be used for debugging purposes.
+ * REVIEW: In the future, perhpas this should use a NodeJS environment variable?
+ * @param  {string} data
+ * @returns string
+ */
+export function LogDebug(data: string): void {
+    const debugInformation: string = `Debug || ${data}`;
+    console.log("\x1b[37m", "\x1b[44m", debugInformation, "\x1b[0m");
 }
 /**
  * Error logging to the console. This is when the engine may begin to break or
@@ -46,60 +70,16 @@ export function Log(data: string): void {
  * @returns string
  */
 export function LogError(ec: ErrorCode, data: string = ""): void {
-    const errorString = `Error Code: ${ec} Information: ${data}`;
-    console.error(errorString);
+    const errorString = `Error || ${ec}:${data}`;
+    console.error("\x1b[31m", errorString, "\x1b[0m");
 }
 /**
- * Prints infromation to the console for the developer.
- * @param  {string=""} data
- * @returns string
- */
-export function LogInfo(data: string = ""): void {
-    const errorString = `Information: ${data}`;
-    console.info(errorString);
-}
-
-/**
- * Prints the information in the debug log when debug has been activated through
- * the engine arguments. This is for extra information from the system on manual
- * functions and tasks. There will be a long console log as everthting will be 
- * printed directly to the console.
- * DEBUG: THis needs to have a boolean to debug mode
- * **Verbose must be on. Only available in Chromium browsers with V8.**
+ * Warning message to the console. When something could start to go wrong
+ * @param  {ErrorCode} ec
  * @param  {string} data
- * @returns string
+ * @returns void
  */
-export function LogDebug(data: string): void {
-    const debugInformation: string = `${data}`;
-    console.log(debugInformation);
+export function LogWarning(ec: ErrorCode, data: string): void {
+    const errorString = `Warning! || ${ec}:${data}`;
+    console.log("\x1b[40m", "\x1b[33m", errorString, "\x1b[0m");
 }
-
-// export interface LogInterface {
-//     debug(code: ErrorCode, ...info: any[]): void;
-//     warn(code: ErrorCode, ...info: any[]): void;
-//     error(code: ErrorCode, ...info: any[]): void;
-//     info(code: ErrorCode, ...info: any[]): void;
-// }
-
-// export class ErrorSystem implements LogInterface {
-//     public debug(ec: ErrorCode, ...info: any[]): string {
-//         const errorString = `Error Code: ${ec} Information: ${info}`;
-//         console.error(errorString);
-//         return errorString;
-//     }
-//     public warn(ec: ErrorCode, ...info: any[]): string {
-//         const errorString = `Error Code: ${ec} Information: ${info}`;
-//         console.error(errorString);
-//         return errorString;
-//     }
-//     public error(ec: ErrorCode, ...info: any[]): string {
-//         const errorString = `Error Code: ${ec} Information: ${info}`;
-//         console.error(errorString);
-//         return errorString;
-//     }
-//     public info(ec: ErrorCode, ...info: any[]): string {
-//         const errorString = `Error Code: ${ec} Information: ${info}`;
-//         console.error(errorString);
-//         return errorString;
-//     }
-// }
