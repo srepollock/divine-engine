@@ -1,7 +1,6 @@
 import { Client } from "./helperfunctions";
 import { ErrorCode, Log, LogError } from "./logging";
 import { Window } from "./window";
-
 export class GameWindow implements Window { 
     private static _started: boolean = true;
     public container: HTMLElement | undefined;
@@ -120,6 +119,3 @@ export class GameWindow implements Window {
         return this.title;
     }
 }
-
-export { GameWindow as default };
-

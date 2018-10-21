@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import RenderComponent, { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, RenderSystemMessage, TestMessage } from "../../src";
+import { EntityMessage, EventType, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, RenderComponent, RenderSystemMessage, TestMessage } from "../../src";
 
 describe("Message System unit testing", () => {
     describe("Messages", () => {
@@ -46,20 +46,22 @@ describe("Message System unit testing", () => {
     describe("Message system", () => {
         var data: string = "";
         var data2: string = "";
-        var messageSystem: MessageSystem = new MessageSystem();
         function messageDataVariableSave(message: Message) {
             data = message.JSONString;
         }
         function messageDataVariableSave2(message: Message) {
             data2 = message.JSONString;
         }
+        beforeEach(() => {
+            MessageSystem.initialize();
+        });
         afterEach(() => {
             data = "";
             data2 = "";
-            messageSystem = new MessageSystem();
+            MessageSystem.shutdown();
         });
         it("should add new listener of EventType.RenderSystem", () => {
-            messageSystem.on(EventType.RenderSystem, messageDataVariableSave);
+            MessageSystem.on(EventType.RenderSystem, messageDataVariableSave);
             expect(messageSystem.listenerCount(EventType.RenderSystem)).to
                 .equal(1);
         });

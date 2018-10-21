@@ -53,6 +53,7 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.0",
     "@types/puppeteer": "^1.9.0",
+    "@types/three": "^0.93.4",
     "chai": "^4.2.0",
     "electron": "^2.0.11",
     "mocha": "^5.2.0",
@@ -67,6 +68,8 @@
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.12.0",
+    "three": "^0.97.0",
+    "three.js": "^0.77.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typedoc": "^0.11.1"

@@ -1,9 +1,9 @@
-import { DObject } from "./dobject";
 import { GameWindow } from "./gamewindow";
 import { Client } from "./helperfunctions";
 import { ErrorCode } from "./logging";
 import { Log, LogCritical, LogError } from "./logging/errorsystem";
-import { EventType, Message, MessageSystem } from "./messagesystem";
+import { MessageSystem } from "./messagesystem/messagesystem";
+import { RenderSystem } from "./render/rendersystem";
 import { Scene } from "./scene";
 import { BaseSceneManager, SceneManager } from "./SceneManager";
 import { Window } from "./window";
@@ -70,7 +70,6 @@ export class Engine {
     private static _exit: boolean = false;
     private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
-    private _messageSystem: MessageSystem;
     private _client: Client;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
@@ -80,6 +79,7 @@ export class Engine {
     private _scene: Scene | undefined = undefined;
     private _sceneManager: SceneManager | undefined = undefined;
     private _startTime: number;
+    private _renderSystem: RenderSystem | undefined = undefined;
     private _width: number = 0;
     private _gameWindow: GameWindow | undefined = undefined;
     /**
@@ -189,11 +189,15 @@ export class Engine {
         this._gameWindow = gw as GameWindow;
     }
     /**
-     * Gets the engine's Message System
-     * @returns MessageSystem
+     * Get's the engine's Render System
+     * @returns RenderSystem
      */
-    public get messageSystem(): MessageSystem {
-        return this._messageSystem;
+    public get renderSystem(): RenderSystem {
+        if (this._renderSystem !== undefined) {
+            return this._renderSystem;
+        }
+        LogCritical(ErrorCode.RenderSystemUndefined, "Render system is undefined");
+        throw ErrorCode.RenderSystemUndefined;
     }
     /**
      * Returns current scene
@@ -230,8 +234,8 @@ export class Engine {
      */
     private constructor(args: EngineArguments) {
         this.setEngineArguments(args);
-        this._messageSystem = new MessageSystem();
-        if (this._messageSystem === undefined) {
+        MessageSystem.initialize();
+        if (MessageSystem.instance === undefined) {
             // NOTE: Because the message system is so critical, it must be started if the engine is to run.
             LogError(ErrorCode.MessageSystemInitialization);
             Engine._exit = true;
@@ -247,7 +251,7 @@ export class Engine {
             Engine._exit = true;
         }
         Engine._instance = this;
-        // Set Client TODO: should this be in a build script?
+        // Set Client NOTE: should this be in a build script?
         this._client = Client.Console; // Always CLI first
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
@@ -255,11 +259,12 @@ export class Engine {
                 && w.process.versions.electron !== undefined) {
                 this._client = Client.Electron;
             }
-        }
-        if (typeof(document) !== "undefined") {
-            this._client = Client.Browser;
-            if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId);
-            else this._container = document.getElementsByTagName("body")[0];
+            if (typeof(document) !== "undefined") {
+                this._client = Client.Browser;
+                if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId); 
+                // TODO: Container is not being set...
+                else this._container = document.getElementsByTagName("body")[0];
+            }
         }
         this._startTime = Date.now();
         this._last = this._startTime;
@@ -282,28 +287,29 @@ export class Engine {
         Log("Engine started");
         /**
          * NOTE: Start subsystems. This is where the rest of the systems `.start()` functions get called. 
-         * 
+         * REVIEW: Message system started in Constructor
          * They are held in reference by the engine. As it will shut everything down as well.
          */
+        // Render System
+        this.instance._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
+        this.instance._renderSystem.initialize();
         // REVIEW: Load files in from relative path?
-        try {
-            Log("before");
-            // NOTE: Default BaseSceneManager is defined in default EngineArguments
-            // NOTE: Always use the initial scene defined.
-            if (Engine.instance.engineArguments.sceneManager !== undefined) {
-                Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
-            } else {
-                Engine.instance.sceneManager = new BaseSceneManager();
-            }
-            // NOTE: If/else the scene is defined.
-            (Engine.instance.engineArguments.scene !== "") ? 
-                Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene) :
-                Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene);
-            Log("after");
-        } catch (e) {
-            console.trace(e);
-            throw ErrorCode.SceneManagerUndefined;
+        // Scene Manager
+        
+        Log("before");
+        // NOTE: Default BaseSceneManager is defined in default EngineArguments
+        // NOTE: Always use the initial scene defined.
+        if (Engine.instance.engineArguments.sceneManager !== undefined) {
+            Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
+        } else {
+            Engine.instance.sceneManager = new BaseSceneManager();
         }
+        // NOTE: If/else the scene is defined.
+        (Engine.instance.engineArguments.scene !== "") ? 
+            Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene) :
+            Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene);
+        Log("after");
+        // 
         Engine.play();
     }
     /**
@@ -360,8 +366,14 @@ export class Engine {
      * @returns void
      */
     public cleanup(): void {
-        Engine.instance.sceneManager.shutdown();
-        Engine.instance.messageSystem.shutdown();
+        try {
+            Engine.instance.sceneManager.shutdown();
+            MessageSystem.instance!.shutdown();
+            Engine.instance.renderSystem.shutdown();
+        } catch (e) {
+            console.trace(e);
+            LogCritical(ErrorCode.EngineCleanupFailed, `Cleanup on ${this} failed`);
+        }
     }
     /**
      * Main update loop. Calls all other system updates.
@@ -374,6 +386,7 @@ export class Engine {
          * 
          */
         // LogDebug(`Update loop | delta = ${delta}`);
+        this._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
         // this._ioSystem.update(delta); // NOTE: IO messages
         // this._scene.update(delta); // NOTE: Calls scene update
         // this._physicsSystem.update(delta); // NOTE: Physics messages handled
@@ -466,20 +479,3 @@ export class Engine {
         return new Date().getTime();
     }
 }
-
-/** 
- * TODO: Prototype Entity messaging functions
- * REVIEW: Could this go somewhere else? How should I make this easy to edit? Could I possibly place this in another 
- * file and use it in there then impor that? Or is that yet another dependency issue? Review under issue 37.
- */
-DObject.prototype.sendMessage = (event: string, data: Message) => {
-    // REVIEW: MessageSystem??
-    Engine.instance.messageSystem.emit(event, data);
-};
-DObject.prototype.addSubscription = (event: string, handler: () => {}) => {
-    DObject.prototype._subscriptions.push(event);
-    Engine.instance.messageSystem.on(event, handler);
-};
-DObject.prototype.basicMessageHandler = (message: Message) => {
-    Engine.instance.messageSystem.emit(EventType.IOSystem, message); // NOTE: This is just logging a file.
-};

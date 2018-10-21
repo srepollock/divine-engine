@@ -1,19 +1,19 @@
 import { expect } from "chai";
-import { Engine, EngineArguments, SceneManager } from "../../src";
+import { BaseSceneManager, Engine, EngineArguments, SceneManager } from "../../src";
 
 describe("SceneManager class unit tests", () => {
-    var sm: SceneManager = new SceneManager();
+    var sm: SceneManager = new BaseSceneManager();
     it("should be able to be created as empty", () => {
         expect(sm).to.not.be.undefined;
     });
     it("should have an empty scene loaded initially", () => {
-        expect(sm.scene).to.be.undefined;
+        expect(sm.getScene()).to.be.undefined;
     });
     it("should unload the previous scene when loading the scene", () => {
-        expect(sm.scene).to.be.undefined; // NOTE: The scene should be undefined from the previous test
+        expect(sm.getScene()).to.be.undefined; // NOTE: The scene should be undefined from the previous test
         sm.loadScene("../assets/blankscene.json");
-        expect(sm.scene).to.not.be.undefined;
-        expect(sm.scene.title).to.equal("blankscene");
+        expect(sm.getScene()).to.not.be.undefined;
+        expect(sm.getScene().title).to.equal("blankscene");
     });
     describe("engine's scene manager", () => {
         before(() => {

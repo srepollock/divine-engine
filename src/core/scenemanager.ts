@@ -1,13 +1,14 @@
 import { DObject } from "./dobject";
 import { Entity } from "./entity";
-import { readJSONFile, writeJSONFile } from "./helperfunctions";
-import { ErrorCode, Log, LogDebug, LogError } from "./logging";
+import { ErrorCode, LogCritical, LogError } from "./logging";
 import { Scene } from "./scene";
 
 export interface SceneManager {
     buildScene(entities?: Array<Entity>, filename?: string): Scene;
     loadScene(filename: string): Scene;
     shutdown(): void;
+    getScene(): Scene;
+    setScene(scene: Scene): void;
     unloadScene(filename: string): void;
 }
 
@@ -15,10 +16,20 @@ export interface SceneManager {
 export class BaseSceneManager extends DObject implements SceneManager {
     private _scene: Scene | undefined = undefined;
     /**
+     * Load scene 
+     * @param  {string} filename?
+     */
+    constructor(filename?: string) {
+        super("scenemanager");
+        if (filename !== undefined) {
+            this.loadScene(filename);
+        }
+    }
+    /**
      * Returns the Scene object.
      * @returns Scene | undefined
      */
-    public get scene(): Scene {
+    public getScene(): Scene {
         if (this._scene !== undefined) return this._scene;
         else {
             LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
@@ -29,19 +40,9 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * While this says it can take undefined, it will throw a LogError saying the scene is undefined
      * @param  {Scene} scene 
      */
-    public set scene(scene: Scene) {
+    public setScene(scene: Scene) {
         if (scene !== undefined) this._scene = scene;
         else LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
-    }
-    /**
-     * Load scene 
-     * @param  {string} filename?
-     */
-    constructor(filename?: string) {
-        super("scenemanager");
-        if (filename !== undefined) {
-            this.loadScene(filename);
-        }
     }
     /**
      * Creates a scene from a list of entities. If a filename is specified the scene will be written to a file.
@@ -62,17 +63,25 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * @returns void
      */
     public loadScene(filename: string): Scene {
-        LogDebug(`Loading scene from file ${filename}`);
-        this.scene = this.buildSceneFromData(readJSONFile(filename));
-        Log(JSON.stringify(this.scene));
-        return this.scene;
+        // REVIEW: This needs to read from file.
+        // LogDebug(`Loading scene from file ${filename}`);
+        // this._scene = this.buildSceneFromData();
+        // Log(JSON.stringify(this._scene));
+        // return this._scene;
+        return new Scene(); // DEBUG: This should not be a new Scene but one loaded from file.
     }
     /**
      * Calls this classes clenaup funciton. Shutsdown the class. Called on Engine shutdown.
+     * // NOTE: This function may throw an error
      * @returns void
      */
     public shutdown(): void {
-        this.cleanup();
+        try {
+            this.cleanup();
+        } catch (e) {
+            console.trace(e);
+            throw new Error(`${ErrorCode.SceneUndefined}`);
+        }
     }
     /**
      * Scene to unload. This is only called in this classes loadScene method.
@@ -92,10 +101,15 @@ export class BaseSceneManager extends DObject implements SceneManager {
     }
     /**
      * Cleansup the class before shutdown.
+     * NOTE: This function may throw an error if the scene is undefined.
      * @returns void
      */
     private cleanup(): void {
-        this.scene.shutdown();
+        if (this._scene !== undefined) this._scene.shutdown();
+        else {
+            LogCritical(ErrorCode.SceneUndefined, "Scene is undfined on BaseSceneManager.cleanup");
+            throw new Error(`${ErrorCode.SceneUndefined}`);
+        }
     }
     /**
      * Writes the given scene to a file.
@@ -106,9 +120,10 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * @returns void
      */
     private writeSceneToFile(scene: Scene): void {
-        LogDebug(`Writing scene ${scene.title} to file`);
-        let sceneData = JSON.stringify(scene);
-        writeJSONFile(scene.title, sceneData);
+        // REVIEW: This needs to write to file.
+        // LogDebug(`Writing scene ${scene.title} to file`);
+        // let sceneData = JSON.stringify(scene);
+        // writeJSONFile(scene.title, sceneData);
     }
 }
 
