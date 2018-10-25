@@ -60,7 +60,7 @@ Coding styles must be followed in this project. To ensure that users are followi
 
 ## Contributing
 
-Please read [CONTRIBUTING](https://github.com/srepollock/divine-engine/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING](https://github.com/srepollock/divine-engine/blob/master/.github/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
