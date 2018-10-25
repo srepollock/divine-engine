@@ -4,7 +4,12 @@ import { Engine, EngineArguments, GameWindow } from "../../src";
 
 describe("Window unit tests", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({title: " ", width: 0, height: 0,  debug: false}));
-    Engine.start(engArgs);
+    before(() => {
+        Engine.start(engArgs);
+    });
+    after(() => {
+        Engine.stop();
+    });
     it("should start and create a web worker", () => {
         // expect(Window.instance.webWorker).to.equal(undefined);
     });
@@ -15,14 +20,14 @@ describe("Window unit tests", () => {
         // expect(Window).to.haveOwnProperty("_webWorker");
     });
     it("should have a refresh function", () => {
-        expect(GameWindow).itself.to.respondTo("refresh");
+        expect(Engine.instance.gameWindow).itself.to.respondTo("refresh");
     });
     it("should refresh the web worker", () => {
         Engine.instance.gameWindow.refresh();
-        expect(GameWindow).itself.to.respondTo("refresh");
+        expect(Engine.instance.gameWindow).itself.to.respondTo("refresh");
     });
     it("should kill the web worker on shutdown", () => {
-        expect(GameWindow.started).to.not.equal(true);
+        expect(GameWindow.started).to.equal(true);
         Engine.instance.gameWindow.shutdown();
         expect(GameWindow.started).to.equal(false);
     });

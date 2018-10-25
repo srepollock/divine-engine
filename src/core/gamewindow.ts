@@ -1,4 +1,4 @@
-import { Client } from "./helperfunctions";
+import { Client } from "./helper";
 import { ErrorCode, Log, LogError } from "./logging";
 import { Window } from "./window";
 export class GameWindow implements Window { 

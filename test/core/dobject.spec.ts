@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { DObject, Engine, EngineArguments, Entity, EventType, Log, Message, Transform } from "../../src";
+import { DObject, Engine, EngineArguments, Entity, EventType, Message, MessageSystem, TestMessage, Transform } from "../../src";
 
 describe("DObject unit testing", () => {
     describe("empty object instantiation", () => {
@@ -31,25 +31,21 @@ describe("DObject unit testing", () => {
         });
         beforeEach(() => {
             ent = new Entity("player", new Transform());
-            ent.addSubscription(EventType.Entity);
+            MessageSystem.addListener(EventType.Entity, ent);
+        });
+        after(() => {
+            Engine.stop();
         });
         it("should be able to send messages", () => {
             var dm: Message;
-            Engine.instance.messageSystem.on("test", (message: Message) => {
-                dm = message;
-                Log(message.JSONString);
-            });
-            ent.sendMessage("test", "Test Message Error");
+            MessageSystem.addListener("Test", ent);
+            MessageSystem.sendMessage("test", new TestMessage("Test Message Error"));
             expect(dm).to.not.be.null;
         });
         it("should be able to receive messages", () => {
             Engine.instance.scene.addEntity(ent);
-            var dm: Message;
-            Engine.instance.messageSystem.on("test", (message: Message) => {
-                dm = message;
-                Log(message.JSONString);
-            });
-            expect(dm).to.not.be.null;
+            MessageSystem.addListener("test", ent);
+            expect(ent).to.not.be.null;
         });
     });
 });

@@ -1,11 +1,12 @@
+import { BaseSceneManager, SceneManager } from "../scene";
 import { GameWindow } from "./gamewindow";
-import { Client } from "./helperfunctions";
+import { Client, guid } from "./helper";
 import { ErrorCode } from "./logging";
 import { Log, LogCritical, LogError } from "./logging/errorsystem";
-import { MessageSystem } from "./messagesystem/messagesystem";
+import { IMessageHandler } from "./messagesystem";
+import { Message, MessageSystem } from "./messagesystem/messagesystem";
 import { RenderSystem } from "./render/rendersystem";
 import { Scene } from "./scene";
-import { BaseSceneManager, SceneManager } from "./SceneManager";
 import { Window } from "./window";
 /**
  * Engine arguments for setup.
@@ -62,26 +63,7 @@ export class EngineArguments {
 /**
  * The Divine Game Engine class.
  */
-export class Engine {
-    // TODO: Sort this alphabetically
-    private static _instance: Engine | undefined = undefined;
-    private static _started: boolean = false;
-    private static _running: boolean = false;
-    private static _exit: boolean = false;
-    private _container: HTMLElement | null = null;
-    private _engineArguments: EngineArguments = new EngineArguments();
-    private _client: Client;
-    private _fps: number = 0;
-    private _framesThisSecond: number = 0;
-    private _now: number = 0;
-    private _last: number = 0;
-    private _height: number = 0;
-    private _scene: Scene | undefined = undefined;
-    private _sceneManager: SceneManager | undefined = undefined;
-    private _startTime: number;
-    private _renderSystem: RenderSystem | undefined = undefined;
-    private _width: number = 0;
-    private _gameWindow: GameWindow | undefined = undefined;
+export class Engine implements IMessageHandler {
     /**
      * Gets the engine's client type.
      * @returns Client
@@ -127,6 +109,13 @@ export class Engine {
      */
     public static get running(): boolean {
         return Engine._running;
+    }
+    /**
+     * Gets the scene from the Engine's scene manager.
+     * @returns Scene
+     */
+    public static get scene(): Scene {
+        return Engine._instance!.scene;
     }
     /**
      * Gets the engine's started variable.
@@ -189,6 +178,13 @@ export class Engine {
         this._gameWindow = gw as GameWindow;
     }
     /**
+     * Gets the engine's guid.
+     * @returns string
+     */
+    public get guid(): string {
+        return this._guid;
+    }
+    /**
      * Get's the engine's Render System
      * @returns RenderSystem
      */
@@ -200,12 +196,12 @@ export class Engine {
         throw ErrorCode.RenderSystemUndefined;
     }
     /**
-     * Returns current scene
+     * Returns current scene manager's scene.
      * @returns Scene
      */
     public get scene(): Scene {
-        if (this._scene !== undefined) {
-            return this._scene;
+        if (this._sceneManager!.getScene() !== undefined) {
+            return this._sceneManager!.getScene();
         }
         LogError(ErrorCode.SceneUndefined, "Scene is undefined");
         throw ErrorCode.SceneUndefined;
@@ -229,28 +225,49 @@ export class Engine {
     public set sceneManager(sceneManager: SceneManager) {
         this._sceneManager = sceneManager;
     }
+    private static _instance: Engine | undefined = undefined;
+    private static _started: boolean = false;
+    private static _running: boolean = false;
+    private static _exit: boolean = false;
+    private _container: HTMLElement | null = null;
+    private _engineArguments: EngineArguments = new EngineArguments();
+    private _client: Client;
+    private _guid: string;
+    private _fps: number = 0;
+    private _framesThisSecond: number = 0;
+    private _now: number = 0;
+    private _last: number = 0;
+    private _height: number = 0;
+    private _scene: Scene | undefined = undefined;
+    private _sceneManager: SceneManager | undefined = undefined;
+    private _startTime: number;
+    private _renderSystem: RenderSystem | undefined = undefined;
+    private _width: number = 0;
+    private _gameWindow: GameWindow | undefined = undefined;
     /**
      * Initializes an Engine object.
      */
     private constructor(args: EngineArguments) {
+        this._guid = guid();
         this.setEngineArguments(args);
         MessageSystem.initialize();
         if (MessageSystem.instance === undefined) {
             // NOTE: Because the message system is so critical, it must be started if the engine is to run.
-            LogError(ErrorCode.MessageSystemInitialization);
+            LogCritical(ErrorCode.MessageSystemInitialization, 
+                "Engine called MessageSystem.initialization and it failed");
             Engine._exit = true;
         }
         if (Engine._instance !== undefined) {
-            (ErrorCode.EngineInstanceNotNull, 
+            LogCritical(ErrorCode.EngineInstanceNotNull, 
                 "Engine already has an instance in the class");
-            Engine._exit = true; // NOTE: Immediately close
+            Engine._exit = true;
         }
         if (!Engine._started) {
-            LogError(ErrorCode.EngineStartedEarly, 
+            LogCritical(ErrorCode.EngineStartedEarly, 
                 "The engine instance must be started from the start function");
             Engine._exit = true;
         }
-        Engine._instance = this;
+        Engine._instance = this; // NOTE: Sets the engine instance.
         // Set Client NOTE: should this be in a build script?
         this._client = Client.Console; // Always CLI first
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
@@ -278,7 +295,7 @@ export class Engine {
      */
     public static start(args: EngineArguments): void {
         Engine._started = true;
-        Log(args.toString());
+        Log("Engine Arguments:" + args.toString());
         new Engine(args);
         Engine.instance.gameWindow = new GameWindow(Engine.instance.client);
         Engine.instance.gameWindow.start(this.instance.container!);
@@ -296,7 +313,6 @@ export class Engine {
         // REVIEW: Load files in from relative path?
         // Scene Manager
         
-        Log("before");
         // NOTE: Default BaseSceneManager is defined in default EngineArguments
         // NOTE: Always use the initial scene defined.
         if (Engine.instance.engineArguments.sceneManager !== undefined) {
@@ -308,8 +324,6 @@ export class Engine {
         (Engine.instance.engineArguments.scene !== "") ? 
             Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene) :
             Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene);
-        Log("after");
-        // 
         Engine.play();
     }
     /**
@@ -361,15 +375,24 @@ export class Engine {
         this._instance = undefined;
     }
     /**
+     * Message handler.
+     * @param  {Message} message
+     * @returns void
+     */
+    public onMessage(message: Message): void {
+
+    }
+    /**
      * Call's system shutdown files.
      * Call in reverese order of startup.
      * @returns void
      */
-    public cleanup(): void {
+    private cleanup(): void {
         try {
             Engine.instance.sceneManager.shutdown();
             MessageSystem.instance!.shutdown();
             Engine.instance.renderSystem.shutdown();
+            Engine._instance = undefined; // NOTE: This is always last
         } catch (e) {
             console.trace(e);
             LogCritical(ErrorCode.EngineCleanupFailed, `Cleanup on ${this} failed`);

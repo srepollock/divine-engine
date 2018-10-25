@@ -1,16 +1,8 @@
-import { DObject } from "./dobject";
-import { Entity } from "./entity";
-import { ErrorCode, LogCritical, LogError } from "./logging";
-import { Scene } from "./scene";
-
-export interface SceneManager {
-    buildScene(entities?: Array<Entity>, filename?: string): Scene;
-    loadScene(filename: string): Scene;
-    shutdown(): void;
-    getScene(): Scene;
-    setScene(scene: Scene): void;
-    unloadScene(filename: string): void;
-}
+import { DObject } from "../core/dobject";
+import { Entity } from "../core/entity";
+import { ErrorCode, LogCritical, LogError } from "../core/logging";
+import { Scene } from "../core/scene";
+import { SceneManager } from "./scenemanager";
 
 // REVIEW: Should this be an interface and have a class that is the MainSceneManager?
 export class BaseSceneManager extends DObject implements SceneManager {
@@ -23,6 +15,8 @@ export class BaseSceneManager extends DObject implements SceneManager {
         super("scenemanager");
         if (filename !== undefined) {
             this.loadScene(filename);
+        } else {
+            this.loadScene("blankscene"); // REVIEW: This should not be hardset
         }
     }
     /**
@@ -32,7 +26,7 @@ export class BaseSceneManager extends DObject implements SceneManager {
     public getScene(): Scene {
         if (this._scene !== undefined) return this._scene;
         else {
-            LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
+            LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene getter.");
             throw ErrorCode.SceneUndefined;
         }
     }
@@ -40,24 +34,22 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * While this says it can take undefined, it will throw a LogError saying the scene is undefined
      * @param  {Scene} scene 
      */
-    public setScene(scene: Scene) {
+    public setScene(scene: Scene): void {
         if (scene !== undefined) this._scene = scene;
         else LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
     }
     /**
-     * Creates a scene from a list of entities. If a filename is specified the scene will be written to a file.
+     * Creates a scene with a filename and entities if defiend.
+     * @param  {string} filename
      * @param  {Array<Entity>} entities?
      * @returns Scene
      */
-    public buildScene(entities?: Array<Entity>, filename?: string): Scene {
-        var scene: Scene;
-        if (entities !== undefined) scene = new Scene(entities);
-        else { scene = new Scene(); }
-        if (filename !== undefined ) { this.writeSceneToFile(scene); }
-        return scene;
+    public buildScene(filename: string, entities?: Array<Entity>): Scene {
+        if (entities !== undefined) return  new Scene(filename, entities);
+        else return new Scene(filename);
     }
     /**
-     * Scene to load
+     * Trys to load a scene from a file. If no scene is read, throws a Critical error.
      * NOTE: SCENE NAMES MUST BE THE SAME AS THE FILENAMES
      * @param  {string} filename Name of the scene.
      * @returns void
@@ -68,7 +60,9 @@ export class BaseSceneManager extends DObject implements SceneManager {
         // this._scene = this.buildSceneFromData();
         // Log(JSON.stringify(this._scene));
         // return this._scene;
-        return new Scene(); // DEBUG: This should not be a new Scene but one loaded from file.
+        this._scene = new Scene(filename);
+        // TODO: Throws a critical error if scene not read.
+        return this._scene;
     }
     /**
      * Calls this classes clenaup funciton. Shutsdown the class. Called on Engine shutdown.
@@ -80,7 +74,8 @@ export class BaseSceneManager extends DObject implements SceneManager {
             this.cleanup();
         } catch (e) {
             console.trace(e);
-            throw new Error(`${ErrorCode.SceneUndefined}`);
+            LogCritical(ErrorCode.SceneManagerCleanupFailed, "Engine's cleanup failed. The engine did not garbage "
+                + "collect properly.");
         }
     }
     /**
@@ -88,8 +83,9 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * @param  {string} filename
      * @returns void
      */
-    public unloadScene(filename: string): void {
+    public unloadScene(filename: string): Scene {
         // REVIEW: What needs to be unloaded? Should the entities be sent on from here?
+        return new Scene(filename); // REVIEW: Should try to load the scene from file first.
     }
     /**
      * Builds the scene class from the JSON string. Uses Object.assign from ES6.
@@ -97,7 +93,7 @@ export class BaseSceneManager extends DObject implements SceneManager {
      * @returns Scene
      */
     private buildSceneFromData(data: string): Scene {
-        return Object.assign(new Scene(), data);
+        return Object.assign(new Scene(""), data);
     }
     /**
      * Cleansup the class before shutdown.

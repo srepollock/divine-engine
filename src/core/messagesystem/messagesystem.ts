@@ -1,20 +1,21 @@
-import { RenderComponent } from "../../components/rendercomponent";
-import { guid } from "../helperfunctions";
+import { guid, Point } from "../helper";
 import { System } from "../isystem";
-import { ErrorCode, Log, LogCritical, LogWarning } from "../logging";
+import { ErrorCode, Log, LogCritical, LogDebug, LogWarning } from "../logging";
 import { IMessageHandler } from "./imessagehandler";
 import { MessageReceiver } from "./messagereceiver";
+
+
 /**
  * Message system
  * TODO: Should there be a que for the engine? [10/22] YES
  * TODO: [10/22] reworking things...
  */
 export class MessageSystem implements System {
-    public static set subscriptions(subscriptions: {[guid: string]: IMessageHandler[]}) {
-        MessageSystem._subscriptions = subscriptions;
+    public static set listeners(Listeners: {[type: string]: IMessageHandler[]}) {
+        MessageSystem._listeners = Listeners;
     }
-    public static get subscriptions(): {[guid: string]: IMessageHandler[]} {
-        return MessageSystem._subscriptions;
+    public static get listeners(): {[type: string]: IMessageHandler[]} {
+        return MessageSystem._listeners;
     }
     /**
      * Returns the MessageSystem's instance.
@@ -28,14 +29,14 @@ export class MessageSystem implements System {
         }
     }
     private static _instance: MessageSystem | undefined;
-    private static _subscriptions: {[guid: string]: IMessageHandler[]};
+    private static _listeners: {[type: string]: Array<IMessageHandler>} = {};
     private static _normalQueueMessagePerUpdate: number = 10;
     private static _normalMessageQueue: MessageReceiver[] = [];
     /**
      * Message system constructor.
      */
     private constructor() {
-        
+
     }
     /**
      * Initializes the message system.
@@ -43,10 +44,137 @@ export class MessageSystem implements System {
      */
     public static initialize(): void {
         MessageSystem._instance = new MessageSystem();
+        this.removeAllListeners();
     }
+    /**
+     * Returns the count of all listeners in the system.
+     * @returns number
+     */
+    public static allListeners(): number {
+        return -1;
+    }
+    /**
+     * @param  {EventType} et
+     * @param  {IMessageHandler} handler
+     * @returns void
+     */
+    public static addListener(type: EventType | string, handler: IMessageHandler): void {
+        if (MessageSystem._listeners[type] === undefined ) {
+            MessageSystem._listeners[type] = new Array<IMessageHandler>(); // REVIEW: What is this doing?
+        } else {
+            LogWarning(ErrorCode.FailedAddingListener, 
+                `Event ${type} is already being handled, not creating new index.`);
+        }
+        if ( MessageSystem._listeners[type] !== undefined 
+            && MessageSystem._listeners[type].indexOf(handler) !== -1 ) {
+            LogWarning(ErrorCode.DuplicateListener, 
+                `Attempting to add a duplicate handler to code:${type}. Listener not added.`);
+        } else if (MessageSystem._listeners[type] !== undefined) {
+            LogDebug(`Added ${type} and handler: ${JSON.stringify(handler)}`);
+            MessageSystem._listeners[type].push( handler );
+        } else {
+            LogCritical(ErrorCode.ListenerUndefined, "");
+        }
+    }
+    /**
+     * Total number of Listeners on the engine.
+     * @returns number
+     */
+    public static allListenerCount(): number {
+        var count: number = 0;
+        for (let i in MessageSystem.listeners) {
+            if (i !== undefined) {
+                for (let k in MessageSystem.listeners[i]) {
+                    if (MessageSystem.listeners[i][k] !== undefined) {
+                        Log(`${JSON.stringify(MessageSystem.listeners[i][k])} is defined`);
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    /**
+     * Number of listeners on the the engine listening to the type of event specified.
+     * @param  {EventType} type
+     * @returns number
+     */
+    public static listenerCount(type: EventType): number {
+        var count: number = 0;
+        for (let i in MessageSystem.listeners) {
+            if (i !== undefined && i === type) { // DEBUG: i should be the EventType
+                for (let k of MessageSystem.listeners[i]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+    /**
+     * Remove the Listener of type with the handler, based on GUID.
+     * If you think you may want to remove the listener, please hold onto the handler.
+     * @param  {EventType} type
+     * @param  {IMessageHandler} handler
+     * @returns void
+     */
+    public static removeListener(type: EventType, handler: IMessageHandler): void {
+        if ( MessageSystem._listeners[type] === undefined ) {
+            LogWarning(ErrorCode.UnsubscribeFailed, 
+                `Cannot unsubscribe handler from code: ${type} Because that code is not subscribed to`);
+            return;
+        }
+        let nodeIndex = MessageSystem._listeners[type].indexOf( handler );
+        if ( nodeIndex !== -1 ) {
+            MessageSystem._listeners[type].splice( nodeIndex, 1 ); // REVIEW: This doesn't work
+        }
+    }
+    /**
+     * Send a new message to the system. There needs to be either an EventType 
+     * or a string. Recommended to make an enumerator list to define your
+     * own classes. The message needs to extends from the base Message class.
+     * @param type 
+     * @param message 
+     */
+    public static sendMessage(type: EventType | string, message: Message): void {
+        Log(`Message posted: ${message}`);
+        let handlers = MessageSystem._listeners[type];
+        if ( handlers === undefined ) {
+            return;
+        }
+            for ( let h of handlers ) {
+            if ( message.priority === Priority.Hgih ) {
+                h.onMessage( message );
+            } else {
+                MessageSystem._normalMessageQueue.push( new MessageReceiver( message, h ) );
+            }
+        }
+    }
+    /**
+     * Removes all Listeners from the list.
+     * @returns void
+     */
+    public static removeAllListeners(type?: EventType): void {
+        if (type !== undefined) {
+            for (let i in MessageSystem.listeners) {
+                if (i !== undefined && i === type) {
+                    MessageSystem.listeners[i] = [];
+                }
+            }
+        } else {
+            MessageSystem.listeners = {};
+        }
+    }
+    /**
+     * Begins the message system. REVIEW: is this needed?
+     * @returns void
+     */
     public start(): void {
 
     }
+    /**
+     * Stops the message system. REVIEW: is this needed?
+     * @returns void
+     */
     public stop(): void {
 
     }
@@ -73,73 +201,11 @@ export class MessageSystem implements System {
         }
     }
     /**
-     * Returns the count of all listeners in the system.
-     * @returns number
-     */
-    public allSubscriptions(): number {
-        return -1;
-    }
-    /**
      * Cleans up the Message system.
      * @returns void
      */
     public cleanup(): void {
-        this.removeAllSubscriptions();
-    }
-    /**
-     * @param  {EventType} et
-     * @param  {IMessageHandler} handler
-     * @returns void
-     */
-    public addSubscription(type: EventType, handler: IMessageHandler): void {
-        if ( MessageSystem._subscriptions[type] !== undefined ) {
-            MessageSystem._subscriptions[type] = [];
-        }
-        if ( MessageSystem._subscriptions[type].indexOf( handler ) !== -1 ) {
-            LogWarning(ErrorCode.DuplicateSubscription, 
-                `Attempting to add a duplicate handler to code:${type}. Subscription not added.`);
-        } else {
-            MessageSystem._subscriptions[type].push( handler );
-        }
-    }
-    public removeSubscriptions(type: EventType, handler: IMessageHandler): void {
-        if ( MessageSystem._subscriptions[type] === undefined ) {
-            LogWarning(ErrorCode.UnsubscribeFailed, 
-                `Cannot unsubscribe handler from code: ${type} Because that code is not subscribed to`);
-            return;
-        }
-        let nodeIndex = MessageSystem._subscriptions[type].indexOf( handler );
-        if ( nodeIndex !== -1 ) {
-            MessageSystem._subscriptions[type].splice( nodeIndex, 1 );
-        }
-    }
-    /**
-     * Send a new message to the system. There needs to be either an EventType 
-     * or a string. Recommended to make an enumerator list to define your
-     * own classes. The message needs to extends from the base Message class.
-     * @param type 
-     * @param message 
-     */
-    public sendMessage(type: EventType | string, message: Message): void {
-        Log(`Message posted: ${message}`);
-        let handlers = MessageSystem._subscriptions[type];
-        if ( handlers === undefined ) {
-            return;
-        }
-            for ( let h of handlers ) {
-            if ( message.priority === Priority.Hgih ) {
-                h.onMessage( message );
-            } else {
-                MessageSystem._normalMessageQueue.push( new MessageReceiver( message, h ) );
-            }
-        }
-    }
-    /**
-     * Removes all subscriptions from the list.
-     * @returns void
-     */
-    private removeAllSubscriptions(): void {
-        MessageSystem.subscriptions = {};
+        MessageSystem.removeAllListeners();
     }
 }
 
@@ -196,10 +262,12 @@ export class Message {
     private _id: string;
     private _sender: any;
     private _priority: Priority;
-    constructor(sender: any, priority: Priority) {
+    private _data: string;
+    constructor(sender: any, priority: Priority, data: string = "") {
         this._id = guid();
         this._sender = sender;
         this._priority = priority;
+        this._data = data;
     }
     public get id(): string {
         return this._id;
@@ -209,6 +277,9 @@ export class Message {
     }
     public get priority(): Priority {
         return this._priority;
+    }
+    public get data(): string {
+        return this._data;
     }
     /**
      * Returns the data as a JSON string object.
@@ -230,9 +301,8 @@ export class Message {
  * Testing message for empty messages.
  */
 export class TestMessage extends Message {
-    constructor( public data?: string | number) {
-        super("TestMessage", Priority.Low);
-        this.data = data;
+    constructor(data?: string) {
+        super("TestMessage", Priority.Low, data);
     }
 }
 
@@ -248,20 +318,8 @@ export class TestMessage extends Message {
  * All entity messages must extend this interface.
  */
 export class EntityMessage extends Message {
-    constructor() {
-        super("EntityMessage", Priority.Normal);
-    }
-}
-
-/**
- * Error system message interface. 
- * All error messages must extend this interface.
- */
-export class ErrorSystemMessage extends Message {
-    constructor( public errorCode: ErrorCode, public data: string | undefined ) {
-        super("ErrorSystemMessage", Priority.Urgent);
-        this.errorCode = errorCode;
-        this.data = data;
+    constructor(data?: string) {
+        super("EntityMessage", Priority.Normal, data);
     }
 }
 
@@ -270,8 +328,8 @@ export class ErrorSystemMessage extends Message {
  * All io messages must extend this class.
  */
 export class IOSystemMessage extends Message {
-    constructor() {
-        super("IOSystemMessage", Priority.Normal);
+    constructor(data?: string) {
+        super("IOSystemMessage", Priority.Normal, data);
     }
 }
 
@@ -280,8 +338,8 @@ export class IOSystemMessage extends Message {
  * All physics messages must extend this interface.
  */
 export class PhysicsSystemMessage extends Message {
-    constructor() {
-        super("PhysicsSystemMessage", Priority.Urgent);
+    constructor(data?: string) {
+        super("PhysicsSystemMessage", Priority.Urgent, data);
     }
 }
 
@@ -290,10 +348,8 @@ export class PhysicsSystemMessage extends Message {
  * All render messages must extend this interface.
  */
 export class RenderSystemMessage extends Message {
-    constructor( 
-        public renderableComponent: RenderComponent) {
-        super("RenderSystemMessage", Priority.Urgent);
-        this.renderableComponent = renderableComponent;
+    constructor(data?: string) {
+        super("RenderSystemMessage", Priority.Urgent, data);
     }
 }
 
@@ -302,8 +358,8 @@ export class RenderSystemMessage extends Message {
  * All sound messages must extend this interface.
  */
 export class SoundSystemMessage extends Message {
-    constructor() {
-        super("SoundSystemMessage", Priority.Normal);
+    constructor(data?: string) {
+        super("SoundSystemMessage", Priority.Normal, data);
     }
 }
 /**             ----------------
@@ -325,11 +381,8 @@ export class KeyInputMessage extends IOSystemMessage {
  * Mouse input message interface.
  */
 export class MouseInputMessage extends IOSystemMessage {
-    constructor( public x: number, 
-        public y: number) {
-        super();
-        this.x = x;
-        this.y = y;
+    constructor(x: number, y: number) {
+        super(JSON.stringify(new Point(x, y)));
     }
 }
 /**

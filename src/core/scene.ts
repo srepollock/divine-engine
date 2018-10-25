@@ -1,5 +1,6 @@
+import { DObject } from "./dobject";
 import { Entity } from "./entity";
-export class Scene {
+export class Scene extends DObject {
     // NOTE: tslint:disable-next-line:semicolon
     private _entityArray: Array<Entity> = new Array<Entity>();
     private _title: string = "";
@@ -12,7 +13,9 @@ export class Scene {
     public get title(): string {
         return this._title;
     }
-    constructor(entities?: Array<Entity>) {
+    constructor(title: string, entities?: Array<Entity>) {
+        super("scene");
+        this._title = title;
         if (entities !== undefined) {
             this._entityArray = entities;
         }

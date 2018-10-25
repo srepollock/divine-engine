@@ -1,13 +1,16 @@
 import { expect } from "chai";
 import "lodash";
 import "mocha";
-import { Engine, EngineArguments } from "../../src";
+import { Engine, EngineArguments, MessageSystem } from "../../src";
 
 describe("Engine unit testing", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
     describe("Engine initialization", () => {
         before(() => {
             Engine.start(engArgs);
+        });
+        after(() => {
+            Engine.stop();
         });
         it("should have started", () => {
             expect(Engine.started).to.be.true;
@@ -26,13 +29,13 @@ describe("Engine unit testing", () => {
             Engine.shutdown();
             expect(Engine.instance).to.be.undefined;
         });
-        after(() => {
-            Engine.stop();
-        });
     });
     describe("Engine start and running", () => {
         before(() => {
             Engine.start(engArgs);
+        });
+        after(() => {
+            Engine.stop();
         });
         it("should start running when start is called", () => {
             expect(Engine.started).to.be.true;
@@ -70,18 +73,16 @@ describe("Engine unit testing", () => {
             setTimeout(() => {}, 5000);
             expect(Engine.now).not.to.equal(Date.now()); // Should be a new frame
         });
-        after(() => {
-            Engine.stop();
-        });
     });
     it("should initialize the subsystems on startup", () => {
         expect(true);
         Engine.start(new EngineArguments());
         // NOTE: Order is important
-        expect(Engine.instance.messageSystem).to.not.be.undefined;
+        expect(MessageSystem.instance).to.not.be.undefined;
         // expect(Engine.instance.ioSystem).to.not.be.undefined;
         // expect(Engine.instance.renderSystem).to.not.be.undefined;
         // expect(Engine.instance.physicsSystem).to.not.be.undefined;
         // expect(Engine.instance.physicsSystem).to.not.be.undefined;
+        Engine.stop();
     });
 });

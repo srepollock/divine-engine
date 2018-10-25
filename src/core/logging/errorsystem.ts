@@ -14,14 +14,17 @@ export enum ErrorCode {
     EngineCleanupFailed,
     MessageSystemInitialization = 200, // MessageSystem Errors
     MessageSystemUndefined,
-    DuplicateSubscription,
+    DuplicateListener,
     UnsubscribeFailed,
     MessageRecieverNotFound,
+    FailedAddingListener,
+    ListenerUndefined,
     BrowserWindowUndefined = 300, // BrowserWindow Errors
     BrowserWindowDidNotClose,
     SceneUndefined = 400, // Scene Errors
     SceneNameUndefined,
     SceneManagerUndefined,
+    SceneManagerCleanupFailed,
     EntityInitialization = 500, // Entity Errors
     EntityParentUndefined,
     EntityAlreadyHasChild,
@@ -91,6 +94,6 @@ export function LogError(ec: ErrorCode, data: string = ""): void {
  * @returns void
  */
 export function LogWarning(ec: ErrorCode, data: string): void {
-    const errorString = `Warn!!\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
-    console.log("\t", "\x1b[38m", errorString, "\x1b[0m");
+    const errorString = `Warn\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
+    console.log("\t", "\x1b[33m", errorString, "\x1b[0m");
 }

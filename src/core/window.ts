@@ -1,4 +1,4 @@
-import { Client } from "./helperfunctions";
+import { Client } from "./helper";
 
 export interface Window {
     container: HTMLElement | undefined;

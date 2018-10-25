@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Engine } from "../engine";
-import { Client } from "../helperfunctions";
+import { Client } from "../helper";
 import { System } from "../isystem";
 export class RenderSystem implements System {
     public camera: any | undefined;
