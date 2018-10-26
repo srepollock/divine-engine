@@ -20,7 +20,7 @@
     "prepare": "npm run build && npm run bundle && npm run docs",
     "preunit-test": "npm run-script build-tests",
     "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts --exit",
-    "test:all": "mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts",
+    "test:all": "mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts --exit",
     "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
   },
