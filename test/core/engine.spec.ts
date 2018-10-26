@@ -7,10 +7,13 @@ describe("Engine unit testing", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
     describe("Engine initialization", () => {
         before(() => {
+            // NOTE: Called here as ther is no after() in chai...
+            Engine.stop();
+            Engine.shutdown();
             Engine.start(engArgs);
         });
-        after(() => {
-            Engine.stop();
+        it("should not throw an exception on getting the instance", () => {
+            expect(() => {Engine.instance; }).to.not.throw();
         });
         it("should have started", () => {
             expect(Engine.started).to.be.true;
@@ -24,18 +27,15 @@ describe("Engine unit testing", () => {
         it("should have width set to 0", () => {
             expect(Engine.width).to.be.equal(0);
         });
-        it("should shutdown and close on shutdown", () => {
-            // This prints an error message to the console, and it should.
+        it("should shutdown and close on Engine.shutdown()", () => {
             Engine.shutdown();
             expect(Engine.instance).to.be.undefined;
         });
     });
     describe("Engine start and running", () => {
-        before(() => {
-            Engine.start(engArgs);
-        });
-        after(() => {
-            Engine.stop();
+        beforeEach(() => {
+                Engine.shutdown();
+                Engine.start(engArgs);
         });
         it("should start running when start is called", () => {
             expect(Engine.started).to.be.true;
@@ -65,17 +65,17 @@ describe("Engine unit testing", () => {
             expect(Engine.now).to.equal(time);
         });
         it("should resume the scene", () => {
-            expect(Engine.running).to.be.false;
-            Engine.play();
             expect(Engine.running).to.be.true;
+            Engine.pause();
+            expect(Engine.running).to.be.false;
             setTimeout(() => {}, 5000);
-            expect(Engine.now).not.to.equal(Date.now()); // Should be a new frame
+            expect(Engine.now).to.not.equal(new Date().getTime()); // Should not be a new frame
+            Engine.play();
             setTimeout(() => {}, 5000);
-            expect(Engine.now).not.to.equal(Date.now()); // Should be a new frame
+            expect(Engine.now).to.not.equal(new Date().getTime()); // Should be a new frame
         });
     });
     it("should initialize the subsystems on startup", () => {
-        expect(true);
         Engine.start(new EngineArguments());
         // NOTE: Order is important
         expect(MessageSystem.instance).to.not.be.undefined;
@@ -85,4 +85,5 @@ describe("Engine unit testing", () => {
         // expect(Engine.instance.physicsSystem).to.not.be.undefined;
         Engine.stop();
     });
-});
+})
+;

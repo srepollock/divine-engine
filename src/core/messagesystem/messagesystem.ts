@@ -99,7 +99,7 @@ export class MessageSystem implements System {
      * @param  {EventType} type
      * @returns number
      */
-    public static listenerCount(type: EventType): number {
+    public static listenerCount(type: EventType | string): number {
         var count: number = 0;
         for (let i in MessageSystem.listeners) {
             if (i !== undefined && i === type) { // DEBUG: i should be the EventType
@@ -117,7 +117,7 @@ export class MessageSystem implements System {
      * @param  {IMessageHandler} handler
      * @returns void
      */
-    public static removeListener(type: EventType, handler: IMessageHandler): void {
+    public static removeListener(type: EventType | string, handler: IMessageHandler): void {
         if ( MessageSystem._listeners[type] === undefined ) {
             LogWarning(ErrorCode.UnsubscribeFailed, 
                 `Cannot unsubscribe handler from code: ${type} Because that code is not subscribed to`);
@@ -153,7 +153,7 @@ export class MessageSystem implements System {
      * Removes all Listeners from the list.
      * @returns void
      */
-    public static removeAllListeners(type?: EventType): void {
+    public static removeAllListeners(type?: EventType | string): void {
         if (type !== undefined) {
             for (let i in MessageSystem.listeners) {
                 if (i !== undefined && i === type) {

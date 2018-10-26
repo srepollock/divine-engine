@@ -12,24 +12,19 @@ describe("SceneManager class unit tests", () => {
     it("should unload the previous scene when loading the scene", () => {
         expect(sm.getScene()).to.not.be.undefined; // NOTE: The scene should be undefined from the previous test
         let scene = sm.getScene();
-        sm.loadScene("../assets/blankscene.json");
+        sm.loadScene("blankscene");
         expect(sm.getScene()).to.not.be.undefined;
         expect(sm.getScene().title).to.equal("blankscene");
         expect(sm.getScene()).to.not.equal(scene); // NOTE: Does not equal the old scene.
     });
     describe("engine's scene manager", () => {
         before(() => {
+            Engine.stop();
+            Engine.shutdown();
             Engine.start(new EngineArguments());
         });
-        after(() => {
-            Engine.stop();
-        });
         it("should have loaded the blank scene for the engine on start", () => {
-            try {
-                expect(Engine.scene.title).to.equal("blankscene");
-            } catch (e) {
-                console.trace(e);
-            }
+            expect(Engine.scene.title).to.equal("");
         });
         it("should load a new scene", () => {
             Engine.instance.sceneManager.loadScene("testscene");

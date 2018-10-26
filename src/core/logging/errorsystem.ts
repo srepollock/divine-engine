@@ -61,10 +61,10 @@ export function Log(data: string): void {
  * @param  {string} data
  * @returns void
  */
-export function LogCritical(ec: ErrorCode, data: string): void {
+export function LogCritical(ec: ErrorCode, data: string): Error {
     const errorString = `Critical!!\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
     console.error("\t", "\x1b[30m", "\x1b[41m", errorString, "\x1b[0m");
-    throw new Error(`${ec}`);
+    throw new Error(errorString);
 }
 /**
  * Prints Debug infomration to the log. This should be used for debugging purposes.
@@ -72,9 +72,10 @@ export function LogCritical(ec: ErrorCode, data: string): void {
  * @param  {string} data
  * @returns string
  */
-export function LogDebug(data: string): void {
+export function LogDebug(data: string): string {
     const debugInformation: string = `Debug\t|| ${data}`;
     console.log("\t", "\x1b[34m", debugInformation, "\x1b[0m");
+    return debugInformation;
 }
 /**
  * Error logging to the console. This is when the engine may begin to break or
@@ -83,9 +84,10 @@ export function LogDebug(data: string): void {
  * @param  {string=""} data
  * @returns string
  */
-export function LogError(ec: ErrorCode, data: string = ""): void {
+export function LogError(ec: ErrorCode, data: string = ""): string {
     const errorString = `Error\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
     console.error("\t", "\x1b[31m", errorString, "\x1b[0m");
+    return errorString;
 }
 /**
  * Warning message to the console. When something could start to go wrong
@@ -93,7 +95,8 @@ export function LogError(ec: ErrorCode, data: string = ""): void {
  * @param  {string} data
  * @returns void
  */
-export function LogWarning(ec: ErrorCode, data: string): void {
+export function LogWarning(ec: ErrorCode, data: string): string {
     const errorString = `Warn\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
     console.log("\t", "\x1b[33m", errorString, "\x1b[0m");
+    return errorString;
 }

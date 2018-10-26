@@ -2,33 +2,6 @@ import { Client } from "./helper";
 import { ErrorCode, Log, LogError } from "./logging";
 import { Window } from "./window";
 export class GameWindow implements Window { 
-    private static _started: boolean = true;
-    public container: HTMLElement | undefined;
-    public browserWindow: Electron.BrowserWindow | undefined = undefined;
-    public screen: Electron.Screen | undefined;
-    public client: Client;
-    private _title: string = "";
-    constructor(client: Client, container?: HTMLElement) {
-        if (!GameWindow._started) GameWindow._started = true;
-        // else {
-        //     LogError(ErrorCode.GameWindowUndefined, "Game window already started");
-        //     throw ErrorCode.GameWindowUndefined;
-        // }
-        this.client = client;
-        if (this.client === Client.Electron) {
-            var remote = require("electron").remote;
-            this.browserWindow = remote.getCurrentWindow();
-            this.screen = remote.screen;
-        } else if (this.client === Client.Browser) {
-            if (container !== undefined) {
-                this.container = container;
-            } else {
-                this.container = undefined;
-                LogError(ErrorCode.BrowserWindowUndefined, "Container undefiend in GameWindow");
-                throw ErrorCode.BrowserWindowUndefined;
-            }
-        }
-    }
     /**
      * Get's the height of the window
      * @returns number
@@ -62,6 +35,33 @@ export class GameWindow implements Window {
             document.title = this._title;
         } else {
             process.title = this._title;
+        }
+    }
+    private static _started: boolean = true;
+    public container: HTMLElement | undefined;
+    public browserWindow: Electron.BrowserWindow | undefined = undefined;
+    public screen: Electron.Screen | undefined;
+    public client: Client;
+    private _title: string = "";
+    constructor(client: Client, container?: HTMLElement) {
+        if (!GameWindow._started) GameWindow._started = true;
+        // else {
+        //     LogError(ErrorCode.GameWindowUndefined, "Game window already started");
+        //     throw ErrorCode.GameWindowUndefined;
+        // }
+        this.client = client;
+        if (this.client === Client.Electron) {
+            var remote = require("electron").remote;
+            this.browserWindow = remote.getCurrentWindow();
+            this.screen = remote.screen;
+        } else if (this.client === Client.Browser) {
+            if (container !== undefined) {
+                this.container = container;
+            } else {
+                this.container = undefined;
+                LogError(ErrorCode.BrowserWindowUndefined, "Container undefiend in GameWindow");
+                throw ErrorCode.BrowserWindowUndefined;
+            }
         }
     }
     /**
@@ -103,12 +103,16 @@ export class GameWindow implements Window {
     public close(): void {
         this.browserWindow!.close();
     }
+    public stop(): void {
+        GameWindow._started = false;
+    }
     /**
      * Cleansup all the memory and tearsdown the GameWindow object.
      * @returns void
      */
     public shutdown(): void {
-
+        this.stop();
+        this.cleanup();
     }
     /**
      * Window as a string
@@ -117,5 +121,8 @@ export class GameWindow implements Window {
      */
     public toString(): string {
         return this.title;
+    }
+    private cleanup(): void {
+        
     }
 }

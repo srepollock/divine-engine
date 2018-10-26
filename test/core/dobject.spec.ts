@@ -34,7 +34,10 @@ describe("DObject unit testing", () => {
             MessageSystem.addListener(EventType.Entity, ent);
         });
         after(() => {
-            Engine.stop();
+            Engine.shutdown();
+        });
+        afterEach(() => {
+            MessageSystem.removeListener("player", ent);
         });
         it("should be able to send messages", () => {
             var dm: Message;

@@ -17,7 +17,7 @@ export class RenderSystem implements System {
         this.material = undefined;
         this.mesh = undefined;
         this.renderer = undefined;
-        if (Engine.instance.client === Client.Browser) { // REVIEW: Circular dependency
+        if (Engine.instance!.client === Client.Browser) { // REVIEW: Circular dependency
             this.camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
             this.camera.position.z = 1;
             this.scene = new THREE.Scene();
@@ -30,7 +30,7 @@ export class RenderSystem implements System {
             this.renderer = new THREE.WebGLRenderer( { antialias: true } );
             this.renderer.setSize( window.innerWidth, window.innerHeight );
             document.body.appendChild( this.renderer.domElement );
-        } else if (Engine.instance.client === Client.Electron) {
+        } else if (Engine.instance!.client === Client.Electron) {
             // TODO: Something else.
         } else {
             // Console running
@@ -52,7 +52,7 @@ export class RenderSystem implements System {
 
     }
     public update(delta: number): void {
-        if (Engine.instance.client === Client.Browser) { // REVIEW: Circular dependency
+        if (Engine.instance!.client === Client.Browser) { // REVIEW: Circular dependency
             // requestAnimationFrame( this.update ); // NOTE: The update is caleld by Engine.
             this.mesh!.rotation.x += 0.01;
             this.mesh!.rotation.y += 0.02;

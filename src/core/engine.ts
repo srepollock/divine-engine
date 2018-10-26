@@ -2,7 +2,7 @@ import { BaseSceneManager, SceneManager } from "../scene";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
 import { ErrorCode } from "./logging";
-import { Log, LogCritical, LogError } from "./logging/errorsystem";
+import { Log, LogCritical, LogDebug, LogError, LogWarning } from "./logging/errorsystem";
 import { IMessageHandler } from "./messagesystem";
 import { Message, MessageSystem } from "./messagesystem/messagesystem";
 import { RenderSystem } from "./render/rendersystem";
@@ -89,12 +89,12 @@ export class Engine implements IMessageHandler {
      * Get the engine's instance.
      * @returns Engine
      */
-    public static get instance(): Engine {
+    public static get instance(): Engine | undefined {
         if (Engine._instance !== undefined) {
             return Engine._instance;
         }
         LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
-        throw ErrorCode.EngineInstanceNull;
+        return undefined;
     }
     /**
      * Gets the engine's current time.
@@ -258,6 +258,7 @@ export class Engine implements IMessageHandler {
             Engine._exit = true;
         }
         if (Engine._instance !== undefined) {
+            Log(JSON.stringify(Engine._instance));
             LogCritical(ErrorCode.EngineInstanceNotNull, 
                 "Engine already has an instance in the class");
             Engine._exit = true;
@@ -295,11 +296,15 @@ export class Engine implements IMessageHandler {
      */
     public static start(args: EngineArguments): void {
         Engine._started = true;
-        Log("Engine Arguments:" + args.toString());
+        Log("Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
-        Engine.instance.gameWindow = new GameWindow(Engine.instance.client);
-        Engine.instance.gameWindow.start(this.instance.container!);
-        Engine.instance.gameWindow.title = args.title;
+        if (Engine._instance === undefined) {
+            LogCritical(ErrorCode.EngineInstanceNull, 
+                "Engine was not initialized immediately after constructor called");
+        }
+        Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client);
+        Engine._instance!.gameWindow.start(this._instance!.container!);
+        Engine._instance!.gameWindow.title = args.title;
         Engine._running = true;
         Log("Engine started");
         /**
@@ -308,22 +313,29 @@ export class Engine implements IMessageHandler {
          * They are held in reference by the engine. As it will shut everything down as well.
          */
         // Render System
-        this.instance._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
-        this.instance._renderSystem.initialize();
+        // tslint:disable-next-line:max-line-length
+        Engine._instance!._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
+        if (Engine._instance!._renderSystem === undefined) {
+            LogCritical(ErrorCode.RenderSystemUndefined, 
+                "Render system was not initialized immediately after constructor called");
+        }
+        Engine._instance!._renderSystem!.initialize();
         // REVIEW: Load files in from relative path?
         // Scene Manager
         
         // NOTE: Default BaseSceneManager is defined in default EngineArguments
         // NOTE: Always use the initial scene defined.
-        if (Engine.instance.engineArguments.sceneManager !== undefined) {
-            Engine.instance.sceneManager = Engine.instance.engineArguments.sceneManager;
+        if (Engine._instance!.engineArguments.sceneManager !== undefined) {
+            Engine._instance!.sceneManager = Engine._instance!.engineArguments.sceneManager!;
         } else {
-            Engine.instance.sceneManager = new BaseSceneManager();
+            Engine._instance!.sceneManager = new BaseSceneManager();
         }
         // NOTE: If/else the scene is defined.
-        (Engine.instance.engineArguments.scene !== "") ? 
-            Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene) :
-            Engine.instance._scene = Engine.instance.sceneManager.loadScene(Engine.instance.engineArguments.scene);
+        (Engine._instance!.engineArguments.scene !== "") ? 
+            // tslint:disable-next-line:max-line-length
+            Engine._instance!._scene = Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene) :
+            // tslint:disable-next-line:max-line-length
+            Engine._instance!._scene = Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene);
         Engine.play();
     }
     /**
@@ -340,9 +352,13 @@ export class Engine implements IMessageHandler {
      * @returns void
      */
     public static play(): void {
-        if (!Engine._running && Engine._instance!._engineArguments !== undefined) {
-            Engine.start(this._instance!._engineArguments); // Restart the engine
+        if (Engine._instance === undefined) {
+            LogCritical(ErrorCode.EngineInstanceNull, "Tried to play a null engine");
         }
+        // NOTE: This should be called on typescript recompilation!! Flag for this?
+        // if (!Engine._running && Engine._instance!._engineArguments !== undefined) {
+        //     Engine.start(this._instance!._engineArguments); // Restart the engine
+        // }
         Engine._running = true; // Start running
         Engine._instance!._last = this._instance!.timestamp(); // Sets the last timestep to now (for the first frame)
         // Call the first frame update - End of the function
@@ -364,15 +380,25 @@ export class Engine implements IMessageHandler {
      * @returns void
      */
     public static shutdown(): void {
-        Engine.instance.cleanup();
-        Engine._started = false;
-        Engine._exit = true;
-        if (Engine._instance!._client === Client.Electron) {
-            const remote = require("electron").remote;
-            const win = remote.getCurrentWindow();
-            win.close();
-        }       
-        this._instance = undefined;
+        if (!Engine._started && !Engine._running && Engine._instance === undefined) { // NOTE: This can silently fail
+            LogError(ErrorCode.EngineInstanceNull, "Engine instance null on shutdown call");
+        }
+        if (Engine._started && Engine._running) Engine.stop();
+        if (Engine._instance !== undefined) {
+            Engine._instance!.cleanup();
+            Engine._started = false;
+            Engine._exit = true;
+            if (Engine._instance!._client === Client.Electron) {
+                const remote = require("electron").remote;
+                const win = remote.getCurrentWindow();
+                win.close();
+            }
+            LogDebug(`Engine instance set to: ${this._instance}`);
+            this._instance = undefined;
+            LogDebug(`Engine instance set to: ${this._instance}`);
+        } else {
+            LogWarning(ErrorCode.EngineInstanceNull, "Engine instance is 'undefined'. It has already been shutdown.");
+        }
     }
     /**
      * Message handler.
@@ -389,10 +415,9 @@ export class Engine implements IMessageHandler {
      */
     private cleanup(): void {
         try {
-            Engine.instance.sceneManager.shutdown();
+            Engine.instance!.sceneManager.shutdown();
             MessageSystem.instance!.shutdown();
-            Engine.instance.renderSystem.shutdown();
-            Engine._instance = undefined; // NOTE: This is always last
+            Engine.instance!.renderSystem.shutdown();
         } catch (e) {
             console.trace(e);
             LogCritical(ErrorCode.EngineCleanupFailed, `Cleanup on ${this} failed`);
