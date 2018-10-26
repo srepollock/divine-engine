@@ -16,6 +16,7 @@ script:
     - npm run-script test:all
 post_script:
     - npm run-script coverage
+    - codecov
     - npm run-script docs
 branches:
     only:
