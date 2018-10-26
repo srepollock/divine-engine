@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Entity, FlagComponent, LogInfo, Transform } from "../../src";
+import { Entity, FlagComponent, Log, Transform } from "../../src";
 
 describe("Entity unit testing", () => {
     var entity: Entity;
@@ -11,7 +11,13 @@ describe("Entity unit testing", () => {
         it("should be instantiated with a parent ID", () => {
             let child: Entity = new Entity();
             child.setParent(entity);
-            expect(child.parent!.id).to.equal(entity.id);
+            expect(child.parent!.guid).to.equal(entity.guid);
+        });
+        it("should get 1 child entity object", () => {
+            let child = new Entity();
+            child.setParent(entity);
+            entity.addChild(child);
+            expect(entity.getChild(child.guid)).to.deep.equal(child);
         });
         it("should have 1 child entity object", () => {
             let child = new Entity();
@@ -23,7 +29,7 @@ describe("Entity unit testing", () => {
             let child = new Entity();
             child.setParent(entity);
             entity.addChild(child);
-            expect(entity.getChildren()[0].parent!.id).to.equal(entity.id);
+            expect(entity.getChildren()[0].parent!.guid).to.equal(entity.guid);
         });
     });
     describe("Empty Entity object", () => {
@@ -76,9 +82,9 @@ describe("Entity unit testing", () => {
     });
     describe("Entity object with tag, new coordinates, and 1 component", () => {
         let go4: Entity = new Entity("template", 
-            {x: 30, y: -10}, 
-            [], 
-            [new FlagComponent(new Transform(0, 0))]
+            {x: 30, y: -10},
+            [new FlagComponent(new Transform(0, 0))],
+            []
         );
         it("should have an empty tag", () => {
             expect(go4.tag).to.be.equal("template");
@@ -104,7 +110,7 @@ describe("Entity unit testing", () => {
         });
         it("should get the entities component that equals 1", () => {
             let comp = go5.getComponent("FlagComponent") as FlagComponent;
-            LogInfo("" + comp.getFlagnumber());
+            Log("" + comp.getFlagnumber());
             expect(comp.getFlagnumber()).to.equal(4);
         });
         it("should add multiple components to the entity");

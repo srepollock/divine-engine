@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import { DObject } from "./dobject";
-import { ErrorCode, LogError, LogInfo } from "./logging";
+import { ErrorCode, Log, LogError } from "./logging";
 
 /**
  * The entity objects position.
@@ -39,13 +39,13 @@ export class Entity extends DObject {
     constructor(
         tag: string = "",
         public transform: Transform = new Transform(), 
-        public children: Array<Entity> = new Array(),
-        public components: Array<Component> = new Array()
+        public components: Array<Component> = new Array(),
+        public children: Array<Entity> = new Array()
     ) {
         super(tag);
         this.transform = transform;
-        this.children = children;
         this.components = components;
+        this.children = children;
     }
     /**
      * Gets the parent entity object.
@@ -53,8 +53,7 @@ export class Entity extends DObject {
      */
     public get parent(): Entity | undefined {
         if (this._parent === undefined) {
-            LogError(ErrorCode.EntityParentUndefined, "${this.id} has no \
-                parent");
+            LogError(ErrorCode.EntityParentUndefined, "${this.guid} has no parent");
             return undefined;
         } else {
             return this._parent;
@@ -74,19 +73,18 @@ export class Entity extends DObject {
     public removeParent(): void {
         this._parent = undefined;
     }
-    
     /**
      * Adds a child to the array
      * @param  {Entity} entity
      * @returns void
      */
     public addChild(entity: Entity): void {
-        if (!this.hasChild(entity.id)) {
+        if (!this.hasChild(entity.guid)) {
             entity.setParent(this);
             this.children!.push(entity);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already \
-                has child ${entity.id}");
+            LogError(ErrorCode.EntityAlreadyHasChild, "${this.guid} already \
+                has child ${entity.guid}");
         }
     }
     /**
@@ -116,11 +114,11 @@ export class Entity extends DObject {
          * have to be some sort of indexing on the object if this is the case 
          * or there needs to be another identifier on the object?
          */
-        if (!this.hasComponent(component.id)) {
+        if (!this.hasComponent(component.guid)) {
             this.components!.push(component);
         } else {
             LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object 
-                alread has the ${component.id} attached.`);
+                alread has the ${component.guid} attached.`);
         }
     }
     /**
@@ -139,7 +137,7 @@ export class Entity extends DObject {
      * @returns boolean
      */
     public hasChild(id: string): boolean {
-        let entity = this.children.find((e) => e.id === id);
+        let entity = this.children.find((e) => e.guid === id);
         if (entity !== undefined) return true;
         else return false;
     }
@@ -161,7 +159,7 @@ export class Entity extends DObject {
      * @returns Entity
      */
     public getChild(id: string): Entity | undefined {
-        let entity = this.children!.find((entity) => entity.id === id);
+        let entity = this.children!.find((entity) => entity.guid === id);
         if (entity !== undefined) { 
             return entity!;
         } else {
@@ -195,8 +193,17 @@ export class Entity extends DObject {
      * @returns string
      */
     public toString(): string {
-        let objectString = `Entity [id:${this.id}]`;
-        LogInfo(objectString);
+        let objectString = `Entity [id:${this.guid}]`;
+        Log(objectString);
         return objectString;
     }
+    /**
+     * Udpates the current object
+     * @param  {number} delta
+     * @returns void
+     */
+    public update(delta: number): void {
+        
+    }
 }
+
