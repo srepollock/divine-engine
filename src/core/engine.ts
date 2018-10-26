@@ -8,7 +8,7 @@ import { Message, MessageSystem } from "./messagesystem/messagesystem";
 import { RenderSystem } from "./render/rendersystem";
 import { Scene } from "./scene";
 import { Window } from "./window";
-/**
+/** 
  * Engine arguments for setup.
  */
 export class EngineArguments {

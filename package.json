@@ -10,6 +10,7 @@
     "build": "tsc",
     "build-tests": "tsc --p test/helperfiles",
     "clean": "rm -rf build/* dist/* lib/*",
+    "coverage": "nyc report --reporter=json > coverage/coverage.json",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none src/**/*.ts",
     "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
@@ -19,9 +20,8 @@
     "prepare": "npm run build && npm run bundle && npm run docs",
     "preunit-test": "npm run-script build-tests",
     "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts",
-    "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts",
+    "test:all": "mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts",
-    "test:nyc": "nyc -- npm test",
     "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
   },
   "repository": {

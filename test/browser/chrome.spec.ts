@@ -1,17 +1,17 @@
-import { fail } from "assert";
 import { expect } from "chai";
 import fs from "fs";
-import puppeteer from "puppeteer";
-import { Browser, Page } from "puppeteer";
-import * as Divine from "../../lib/divine.es";
+import puppeteer, { Browser, Page } from "puppeteer";
 
 describe("Chrome testing", () => {
     var browser: Browser;
     var page: Page;
-    let constBrowser: Browser = browser;
+    let constBrowser: Browser = browser; // REVIEW: What??
 
     // Puppeteer options
     const opts = {
+        args: [
+            "--no-sandbox"
+        ],
         devtools: true,
         headless: false,
         slowMo: 100,

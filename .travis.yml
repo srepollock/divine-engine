@@ -1,10 +1,23 @@
 language: node_js
 node_js:
     - "stable"
+dist: trusty
+sudo: required
+before_install:
+    - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
+before_script:
+    - npm i -g typescript@latest
+    - npm i -g codecov
+    - npm run-script lint
 script:
     - npm run-script bundle
-    - npm run-script lint
     - npm run-script test:all
+post_script:
+    - npm run-script coverage
+    - npm run-script docs
+after_success:
+    - codecov
 branches:
     only:
     - master
@@ -22,3 +35,5 @@ notifications:
     email:
         on_success: change
         on_failure: change 
+git:
+    depth: 1
