@@ -17,7 +17,6 @@ script:
 post_script:
     - npm run-script coverage
     - npm run-script docs
-after_success:
     - bash <(curl -s https://codecov.io/bash)
 branches:
     only:
