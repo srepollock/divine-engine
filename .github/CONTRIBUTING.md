@@ -7,6 +7,8 @@ So you’d like to add to this project, that’s great! There are a few steps yo
 
 After you’ve read and followed these two pages, now you’re ready to get to work!
 
+**Please Note:** All participants in this project  are expected to uphold [this code of conduct](./code-of-conduct.md).
+
 ## Conventions
 
 For bracket conventions, this project will use the [K&R indentation styles](https://en.wikipedia.org/wiki/Indentation_style#K&R). The project will have TypeScript lint implemented to run when merging a pull request into the master branch as well, so that all conventions will be followed. The rest of the conventions will be for coding styles to give developers all the tools they need.
