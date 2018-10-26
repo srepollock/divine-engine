@@ -381,7 +381,7 @@ export class Engine implements IMessageHandler {
      */
     public static shutdown(): void {
         if (!Engine._started && !Engine._running && Engine._instance === undefined) { // NOTE: This can silently fail
-            LogError(ErrorCode.EngineInstanceNull, "Engine instance null on shutdown call");
+            LogWarning(ErrorCode.EngineInstanceNull, "Engine instance null on shutdown call");
         }
         if (Engine._started && Engine._running) Engine.stop();
         if (Engine._instance !== undefined) {
