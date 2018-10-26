@@ -13,6 +13,12 @@ describe("Entity unit testing", () => {
             child.setParent(entity);
             expect(child.parent!.guid).to.equal(entity.guid);
         });
+        it("should get 1 child entity object", () => {
+            let child = new Entity();
+            child.setParent(entity);
+            entity.addChild(child);
+            expect(entity.getChild(child.guid)).to.deep.equal(child);
+        });
         it("should have 1 child entity object", () => {
             let child = new Entity();
             child.setParent(entity);
