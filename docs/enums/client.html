@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>System | Divine Engine API</title>
+	<title>Client | Divine Engine API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="system.html">System</a>
+					<a href="client.html">Client</a>
 				</li>
 			</ul>
-			<h1>Interface System</h1>
+			<h1>Enumeration Client</h1>
 		</div>
 	</div>
 </header>
@@ -67,127 +67,56 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>NOTE: Initialize must be a static method/function.</p>
+						<p>Client that the engine is running on.</p>
 					</div>
 				</div>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">System</span>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Methods</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="system.html#cleanup" class="tsd-kind-icon">cleanup</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="system.html#shutdown" class="tsd-kind-icon">shutdown</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="system.html#start" class="tsd-kind-icon">start</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="system.html#stop" class="tsd-kind-icon">stop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="system.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="client.html#browser" class="tsd-kind-icon">Browser</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="client.html#console" class="tsd-kind-icon">Console</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="client.html#electron" class="tsd-kind-icon">Electron</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="cleanup" class="tsd-anchor"></a>
-					<h3>cleanup</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">cleanup<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/isystem.ts#L6">core/isystem.ts:6</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="browser" class="tsd-anchor"></a>
+					<h3>Browser</h3>
+					<div class="tsd-signature tsd-kind-icon">Browser<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/helper.ts#L18">core/helper.ts:18</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="shutdown" class="tsd-anchor"></a>
-					<h3>shutdown</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">shutdown<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/isystem.ts#L7">core/isystem.ts:7</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="console" class="tsd-anchor"></a>
+					<h3>Console</h3>
+					<div class="tsd-signature tsd-kind-icon">Console<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/helper.ts#L17">core/helper.ts:17</a></li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="start" class="tsd-anchor"></a>
-					<h3>start</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">start<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/isystem.ts#L8">core/isystem.ts:8</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="stop" class="tsd-anchor"></a>
-					<h3>stop</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/isystem.ts#L9">core/isystem.ts:9</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="update" class="tsd-anchor"></a>
-					<h3>update</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/isystem.ts#L10">core/isystem.ts:10</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>delta: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="electron" class="tsd-anchor"></a>
+					<h3>Electron</h3>
+					<div class="tsd-signature tsd-kind-icon">Electron<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/helper.ts#L19">core/helper.ts:19</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -201,9 +130,24 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="../enums/client.html" class="tsd-kind-icon">Client</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-enum">
+						<a href="client.html" class="tsd-kind-icon">Client</a>
+						<ul>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="client.html#browser" class="tsd-kind-icon">Browser</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="client.html#console" class="tsd-kind-icon">Console</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="client.html#electron" class="tsd-kind-icon">Electron</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="../classes/basescenemanager.html" class="tsd-kind-icon">Base<wbr>Scene<wbr>Manager</a>
 					</li>
@@ -244,34 +188,13 @@
 						<a href="../classes/transform.html" class="tsd-kind-icon">Transform</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="scenemanager.html" class="tsd-kind-icon">Scene<wbr>Manager</a>
+						<a href="../interfaces/scenemanager.html" class="tsd-kind-icon">Scene<wbr>Manager</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="system.html" class="tsd-kind-icon">System</a>
-						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="system.html#cleanup" class="tsd-kind-icon">cleanup</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="system.html#shutdown" class="tsd-kind-icon">shutdown</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="system.html#start" class="tsd-kind-icon">start</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="system.html#stop" class="tsd-kind-icon">stop</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="system.html#update" class="tsd-kind-icon">update</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="window.html" class="tsd-kind-icon">Window</a>
+						<a href="../interfaces/system.html" class="tsd-kind-icon">System</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/window.html" class="tsd-kind-icon">Window</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../index.html#guid" class="tsd-kind-icon">guid</a>

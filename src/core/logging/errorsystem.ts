@@ -1,3 +1,6 @@
+/**
+ * Error codes
+ */
 export enum ErrorCode {
     OK = 0,
     EngineFailed = 1,

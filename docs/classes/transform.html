@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Transform | Daemon Engine API</title>
+	<title>Transform | Divine Engine API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Daemon Engine API</a>
+					<a href="../index.html" class="title">Divine Engine API</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -66,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The entity objects position.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -106,16 +111,31 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/faeeeb5/src/core/entity.ts#L5">core/entity.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/entity.ts#L8">core/entity.ts:8</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Transform constructor</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> x: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>x world position</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> y: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>y world positon</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="transform.html" class="tsd-signature-type">Transform</a></h4>
@@ -131,9 +151,14 @@
 					<div class="tsd-signature tsd-kind-icon">x<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/faeeeb5/src/core/entity.ts#L6">core/entity.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/entity.ts#L14">core/entity.ts:14</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>x world position</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="y" class="tsd-anchor"></a>
@@ -141,9 +166,14 @@
 					<div class="tsd-signature tsd-kind-icon">y<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/faeeeb5/src/core/entity.ts#L6">core/entity.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/entity.ts#L14">core/entity.ts:14</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>y world positon</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -157,8 +187,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-is-external">
-						<a href="../enums/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/client.html" class="tsd-kind-icon">Client</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="basescenemanager.html" class="tsd-kind-icon">Base<wbr>Scene<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="component.html" class="tsd-kind-icon">Component</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="dobject.html" class="tsd-kind-icon">DObject</a>
@@ -177,6 +213,18 @@
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="gamewindow.html" class="tsd-kind-icon">Game<wbr>Window</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="point.html" class="tsd-kind-icon">Point</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="rendercomponent.html" class="tsd-kind-icon">Render<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="scene.html" class="tsd-kind-icon">Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="soundcomponent.html" class="tsd-kind-icon">Sound<wbr>Component</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -197,16 +245,16 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/component.html" class="tsd-kind-icon">Component</a>
+						<a href="../interfaces/scenemanager.html" class="tsd-kind-icon">Scene<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/system.html" class="tsd-kind-icon">System</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../index.html#logerror" class="tsd-kind-icon">Log<wbr>Error</a>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/window.html" class="tsd-kind-icon">Window</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../index.html#loginfo" class="tsd-kind-icon">Log<wbr>Info</a>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#guid" class="tsd-kind-icon">guid</a>
 					</li>
 				</ul>
 			</nav>

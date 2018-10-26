@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EngineArguments | Daemon Engine API</title>
+	<title>EngineArguments | Divine Engine API</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">Daemon Engine API</a>
+					<a href="../index.html" class="title">Divine Engine API</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -66,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Engine arguments for setup.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -87,8 +92,20 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#fps" class="tsd-kind-icon">fps</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#rootelementid" class="tsd-kind-icon">root<wbr>Element<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#scene" class="tsd-kind-icon">scene</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#scenemanager" class="tsd-kind-icon">scene<wbr>Manager</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#title" class="tsd-kind-icon">title</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="enginearguments.html#width" class="tsd-kind-icon">width</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="enginearguments.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,22 +117,52 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Engine<wbr>Arguments<span class="tsd-signature-symbol">(</span>height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="enginearguments.html" class="tsd-signature-type">EngineArguments</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Engine<wbr>Arguments<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="enginearguments.html" class="tsd-signature-type">EngineArguments</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/faeeeb5/src/core/engine.ts#L4">core/engine.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L25">core/engine.ts:25</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Engine arguments for a base setup. When defining engine parameters, using
+										this object and setting it in a project can provide quick initialization.
+									<strong>Default arguments are defined.</strong></p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> height: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> width: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> __namedParameters: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>debug<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>fps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>root<wbr>Element<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>scene<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>scene<wbr>Manager<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/scenemanager.html" class="tsd-signature-type">SceneManager</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="enginearguments.html" class="tsd-signature-type">EngineArguments</a></h4>
@@ -126,12 +173,72 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="debug" class="tsd-anchor"></a>
+					<h3>debug</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L25">core/engine.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="fps" class="tsd-anchor"></a>
+					<h3>fps</h3>
+					<div class="tsd-signature tsd-kind-icon">fps<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L18">core/engine.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="height" class="tsd-anchor"></a>
 					<h3>height</h3>
 					<div class="tsd-signature tsd-kind-icon">height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/faeeeb5/src/core/engine.ts#L6">core/engine.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L16">core/engine.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="rootelementid" class="tsd-anchor"></a>
+					<h3>root<wbr>Element<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">root<wbr>Element<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L19">core/engine.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="scene" class="tsd-anchor"></a>
+					<h3>scene</h3>
+					<div class="tsd-signature tsd-kind-icon">scene<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L24">core/engine.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="scenemanager" class="tsd-anchor"></a>
+					<h3>scene<wbr>Manager</h3>
+					<div class="tsd-signature tsd-kind-icon">scene<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="../interfaces/scenemanager.html" class="tsd-signature-type">SceneManager</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L21">core/engine.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="title" class="tsd-anchor"></a>
+					<h3>title</h3>
+					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L15">core/engine.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -141,9 +248,29 @@
 					<div class="tsd-signature tsd-kind-icon">width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/daemon-engine/blob/faeeeb5/src/core/engine.ts#L7">core/engine.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L17">core/engine.ts:17</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/b091865/src/core/engine.ts#L58">core/engine.ts:58</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -157,8 +284,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-is-external">
-						<a href="../enums/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/client.html" class="tsd-kind-icon">Client</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="basescenemanager.html" class="tsd-kind-icon">Base<wbr>Scene<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="component.html" class="tsd-kind-icon">Component</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="dobject.html" class="tsd-kind-icon">DObject</a>
@@ -175,10 +308,31 @@
 								<a href="enginearguments.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#debug" class="tsd-kind-icon">debug</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#fps" class="tsd-kind-icon">fps</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="enginearguments.html#height" class="tsd-kind-icon">height</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#rootelementid" class="tsd-kind-icon">root<wbr>Element<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#scene" class="tsd-kind-icon">scene</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#scenemanager" class="tsd-kind-icon">scene<wbr>Manager</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="enginearguments.html#title" class="tsd-kind-icon">title</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="enginearguments.html#width" class="tsd-kind-icon">width</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="enginearguments.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 						</ul>
 					</li>
@@ -194,19 +348,31 @@
 						<a href="gamewindow.html" class="tsd-kind-icon">Game<wbr>Window</a>
 					</li>
 					<li class=" tsd-kind-class">
+						<a href="point.html" class="tsd-kind-icon">Point</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="rendercomponent.html" class="tsd-kind-icon">Render<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="scene.html" class="tsd-kind-icon">Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="soundcomponent.html" class="tsd-kind-icon">Sound<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
 						<a href="transform.html" class="tsd-kind-icon">Transform</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/component.html" class="tsd-kind-icon">Component</a>
+						<a href="../interfaces/scenemanager.html" class="tsd-kind-icon">Scene<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/system.html" class="tsd-kind-icon">System</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../index.html#logerror" class="tsd-kind-icon">Log<wbr>Error</a>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/window.html" class="tsd-kind-icon">Window</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../index.html#loginfo" class="tsd-kind-icon">Log<wbr>Info</a>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#guid" class="tsd-kind-icon">guid</a>
 					</li>
 				</ul>
 			</nav>

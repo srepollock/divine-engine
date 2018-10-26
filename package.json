@@ -10,7 +10,7 @@
     "build": "tsc",
     "build-tests": "tsc --p test/helperfiles",
     "clean": "rm -rf build/* dist/* lib/*",
-    "docs": "typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none src/**/*.ts",
+    "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none src/**/*.ts",
     "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
     "major": "npm version major",
