@@ -8,7 +8,6 @@ before_install:
     - sh -e /etc/init.d/xvfb start
 before_script:
     - npm i -g typescript@latest
-    - npm i -g codecov
     - npm run-script lint
 script:
     - npm run-script bundle
