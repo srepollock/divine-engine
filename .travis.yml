@@ -13,10 +13,9 @@ before_script:
 script:
     - npm run-script bundle
     - npm run-script test:all
-post_script:
+after_success:
     - npm run-script coverage
     - npm run-script docs
-after_success:
     - codecov
 branches:
     only:
