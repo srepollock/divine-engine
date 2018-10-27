@@ -10,7 +10,7 @@
     "build": "tsc",
     "build-tests": "tsc --p test/helperfiles",
     "clean": "rm -rf build/* dist/* lib/*",
-    "coverage": "nyc report --reporter=json > coverage/coverage.json",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none src/**/*.ts",
     "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
