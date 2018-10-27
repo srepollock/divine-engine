@@ -20,7 +20,7 @@
     "prepare": "npm run build && npm run bundle && npm run docs",
     "preunit-test": "npm run-script build-tests",
     "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts --exit",
-    "test:all": "mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
+    "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts --exit",
     "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
   },
@@ -55,6 +55,7 @@
     "@types/puppeteer": "^1.9.0",
     "@types/three": "^0.93.4",
     "chai": "^4.2.0",
+    "codecov": "^3.1.0",
     "electron": "^2.0.11",
     "mocha": "^5.2.0",
     "node": "^10.11.0",
