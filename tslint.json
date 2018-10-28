@@ -9,14 +9,17 @@
         "no-console": false,
         "curly": [true, "ignore-same-line"],
         "eofline": false,
+        "import-spacing": false,
         "interface-name": false,
         "jsdoc-format": true,
         "max-classes-per-file": false,
-        "max-line-length": {
-            "options": [80]
-        },
+        "max-line-length": [
+            true,
+            120
+        ],
         "member-ordering": [true, {"order": "fields-first"}],
-        "no-any": true,
+        "no-any": false,
+        "no-consecutive-blank-lines": false,
         "no-empty": false,
         "no-empty-interface": false,
         "no-reference": true,
