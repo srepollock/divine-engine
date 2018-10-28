@@ -1,7 +1,7 @@
 # What type of issue do you have?
 
-    1. [General issue](#general-issue)
-    2..[Ideas](#ideas)
+1. [General issue](#general-issue)
+2..[Ideas](#ideas)
 
 ## General Issue
 
