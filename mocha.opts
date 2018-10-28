@@ -1,6 +1,2 @@
---require ts-node/register
---watch-extensions ts
---recursive
---source-maps
---inline-diffs
-./test/**/*.spec.ts
+--require ./test/helperfiles/setupTests.js
+--timeout 15000

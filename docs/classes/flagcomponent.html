@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 							<input type="checkbox" id="tsd-filter-only-exported" />
 							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
@@ -70,14 +68,19 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">FlagComponent</span>
+						<a href="component.html" class="tsd-signature-type">Component</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">FlagComponent</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/component.html" class="tsd-signature-type">Component</a></li>
+					<li><span class="tsd-signature-type">IMessageHandler</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -87,22 +90,30 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="flagcomponent.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="flagcomponent.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="flagcomponent.html#flagnumber" class="tsd-kind-icon">flagnumber</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="flagcomponent.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="flagcomponent.html#location" class="tsd-kind-icon">location</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="flagcomponent.html#tag" class="tsd-kind-icon">tag</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="flagcomponent.html#flag_component" class="tsd-kind-icon">FLAG_<wbr>COMPONENT</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static"><a href="flagcomponent.html#staticflagnumber" class="tsd-kind-icon">static<wbr>Flagnumber</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-inherited">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="flagcomponent.html#guid" class="tsd-kind-icon">guid</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="flagcomponent.html#getflagnumber" class="tsd-kind-icon">get<wbr>Flagnumber</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="flagcomponent.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a></li>
 							</ul>
 						</section>
 					</div>
@@ -110,17 +121,18 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 						<li class="tsd-signature tsd-kind-icon">new <wbr>Flag<wbr>Component<span class="tsd-signature-symbol">(</span>location<span class="tsd-signature-symbol">?: </span><a href="transform.html" class="tsd-signature-type">Transform</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="flagcomponent.html" class="tsd-signature-type">FlagComponent</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Overrides <a href="component.html">Component</a>.<a href="component.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e4dcbae/src/components/flagcomponent.ts#L6">components/flagcomponent.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/components/flagcomponent.ts#L7">components/flagcomponent.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -142,18 +154,7 @@
 					<div class="tsd-signature tsd-kind-icon">flagnumber<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e4dcbae/src/components/flagcomponent.ts#L6">components/flagcomponent.ts:6</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;FlagComponent&quot;</span></div>
-					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/component.html">Component</a>.<a href="../interfaces/component.html#id">id</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e4dcbae/src/components/flagcomponent.ts#L5">components/flagcomponent.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/components/flagcomponent.ts#L7">components/flagcomponent.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -163,7 +164,28 @@
 					<div class="tsd-signature tsd-kind-icon">location<span class="tsd-signature-symbol">:</span> <a href="transform.html" class="tsd-signature-type">Transform</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e4dcbae/src/components/flagcomponent.ts#L8">components/flagcomponent.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/components/flagcomponent.ts#L9">components/flagcomponent.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="tag" class="tsd-anchor"></a>
+					<h3>tag</h3>
+					<div class="tsd-signature tsd-kind-icon">tag<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="dobject.html">DObject</a>.<a href="dobject.html#tag">tag</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/core/dobject.ts#L11">core/dobject.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+					<a name="flag_component" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagPrivate">Private</span> FLAG_<wbr>COMPONENT</h3>
+					<div class="tsd-signature tsd-kind-icon">FLAG_<wbr>COMPONENT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> =&nbsp;&quot;FlagComponent&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/components/flagcomponent.ts#L5">components/flagcomponent.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -173,9 +195,36 @@
 					<div class="tsd-signature tsd-kind-icon">static<wbr>Flagnumber<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e4dcbae/src/components/flagcomponent.ts#L4">components/flagcomponent.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/components/flagcomponent.ts#L6">components/flagcomponent.ts:6</a></li>
 						</ul>
 					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="guid" class="tsd-anchor"></a>
+					<h3>guid</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> guid<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="dobject.html">DObject</a>.<a href="dobject.html#guid">guid</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/core/dobject.ts#L26">core/dobject.ts:26</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the DObjects guid.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>string</p>
+						</li>
+					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -190,10 +239,41 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e4dcbae/src/components/flagcomponent.ts#L13">components/flagcomponent.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/components/flagcomponent.ts#L15">components/flagcomponent.ts:15</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="onmessage" class="tsd-anchor"></a>
+					<h3>on<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Message<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Message</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="dobject.html">DObject</a>.<a href="dobject.html#onmessage">onMessage</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/e0918d7/src/core/dobject.ts#L35">core/dobject.ts:35</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>DObjects base messasge handler receiving messages.
+									This can and most likely will be rewritten.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">Message</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<p>void</p>
 						</li>
 					</ul>
 				</section>
@@ -209,8 +289,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-is-external">
-						<a href="../enums/errorcode.html" class="tsd-kind-icon">Error<wbr>Code</a>
+					<li class=" tsd-kind-enum">
+						<a href="../enums/client.html" class="tsd-kind-icon">Client</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="basescenemanager.html" class="tsd-kind-icon">Base<wbr>Scene<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="component.html" class="tsd-kind-icon">Component</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="dobject.html" class="tsd-kind-icon">DObject</a>
@@ -229,23 +315,32 @@
 					<li class="current tsd-kind-class">
 						<a href="flagcomponent.html" class="tsd-kind-icon">Flag<wbr>Component</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
 								<a href="flagcomponent.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 								<a href="flagcomponent.html#flagnumber" class="tsd-kind-icon">flagnumber</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="flagcomponent.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="flagcomponent.html#location" class="tsd-kind-icon">location</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="flagcomponent.html#tag" class="tsd-kind-icon">tag</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
+								<a href="flagcomponent.html#flag_component" class="tsd-kind-icon">FLAG_<wbr>COMPONENT</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-static">
 								<a href="flagcomponent.html#staticflagnumber" class="tsd-kind-icon">static<wbr>Flagnumber</a>
 							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="flagcomponent.html#guid" class="tsd-kind-icon">guid</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="flagcomponent.html#getflagnumber" class="tsd-kind-icon">get<wbr>Flagnumber</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="flagcomponent.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a>
 							</li>
 						</ul>
 					</li>
@@ -253,6 +348,12 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-class">
 						<a href="gamewindow.html" class="tsd-kind-icon">Game<wbr>Window</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="point.html" class="tsd-kind-icon">Point</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="rendercomponent.html" class="tsd-kind-icon">Render<wbr>Component</a>
 					</li>
 					<li class=" tsd-kind-class">
 						<a href="scene.html" class="tsd-kind-icon">Scene</a>
@@ -264,16 +365,16 @@
 						<a href="transform.html" class="tsd-kind-icon">Transform</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/component.html" class="tsd-kind-icon">Component</a>
+						<a href="../interfaces/scenemanager.html" class="tsd-kind-icon">Scene<wbr>Manager</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/system.html" class="tsd-kind-icon">System</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../index.html#logerror" class="tsd-kind-icon">Log<wbr>Error</a>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/window.html" class="tsd-kind-icon">Window</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="../index.html#loginfo" class="tsd-kind-icon">Log<wbr>Info</a>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#guid" class="tsd-kind-icon">guid</a>
 					</li>
 				</ul>
 			</nav>

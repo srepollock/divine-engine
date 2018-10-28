@@ -1,17 +1,28 @@
 {
   "name": "divine-engine",
-  "version": "0.0.1",
-  "description": "The Divine Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
-  "main": "./lib/divine.js",
+  "version": "0.3.1",
+  "description": "The Divine Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
+  "main": "./lib/divine.umd.js",
+  "module": "./lib/divine.es.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "prepare": "npm run clean && npm run build && npm run bundle && npm run docs",
-    "bundle": "./node_modules/.bin/rollup -c",
-    "build": "./node_modules/.bin/tsc",
-    "clean": "rm -rf ./build/* ./lib/*",
-    "docs": "./node_modules/.bin/typedoc --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none ./src/**/*.ts",
-    "lint": "./node_modules/.bin/tslint ./src/**/*.ts -c tslint.json",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ./node_modules/.bin/mocha --opts mocha.opts"
+    "bundle": "rollup -c",
+    "build": "tsc",
+    "build-tests": "tsc --p test/helperfiles",
+    "clean": "rm -rf build/* dist/* lib/*",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --module commonjs --target ES6 --readme none src/**/*.ts",
+    "env": "env",
+    "lint": "tslint src/**/*.ts -c tslint.json",
+    "major": "npm version major",
+    "minor": "npm version minor",
+    "patch": "npm version patch",
+    "prepare": "npm run build && npm run bundle && npm run docs",
+    "preunit-test": "npm run-script build-tests",
+    "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts --exit",
+    "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
+    "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts --exit",
+    "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
   },
   "repository": {
     "type": "git",
@@ -29,39 +40,68 @@
   },
   "homepage": "http://spollock.ca/divine-engine",
   "devDependencies": {
-    "@types/chai": "^4.1.3",
-    "@types/mocha": "^5.2.0",
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "chai": "^4.1.2",
-    "electron": "^2.0.0",
-    "mocha": "^5.1.1",
-    "rollup": "^0.57.1",
-    "rollup-plugin-babel": "^3.0.4",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-transform-arrow-functions": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.1.2",
+    "@types/chai": "^4.1.6",
+    "@types/jsdom": "^11.12.0",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.0",
+    "@types/puppeteer": "^1.9.0",
+    "@types/three": "^0.93.4",
+    "chai": "^4.2.0",
+    "codecov": "^3.1.0",
+    "electron": "^2.0.11",
+    "mocha": "^5.2.0",
+    "node": "^10.11.0",
+    "nyc": "^12.0.2",
+    "puppeteer": "^1.9.0",
+    "rollup": "^0.62.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-typescript2": "^0.12.0",
-    "ts-node": "^5.0.1",
-    "tslint": "^5.10.0",
+    "three": "^0.97.0",
+    "three.js": "^0.77.1",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
     "typedoc": "^0.11.1"
   },
   "dependencies": {
-    "npm": "^6.0.0",
-    "typescript": "^2.8.3"
+    "tsc-watch": "^1.0.30",
+    "typescript": "^3.1.3"
   },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "modules": false
-        }
-      ]
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
     ],
-    "plugins": [
-      "external-helpers"
-    ]
+    "exclude": [
+      "test/helperfiles",
+      "**/*.d.ts",
+      "**/*.spec.ts",
+      "dist",
+      "docs",
+      "coverage",
+      "lib"
+    ],
+    "reporter": [
+      "html",
+      "text-summary"
+    ],
+    "all": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

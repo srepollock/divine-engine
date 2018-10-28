@@ -1,9 +1,14 @@
 # Divine Engine
 
+[![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
+
 Master: [![Build Status](https://travis-ci.org/srepollock/divine-engine.svg?branch=master)](https://travis-ci.org/srepollock/divine-engine)
 Develop: [![Build Status](https://travis-ci.org/srepollock/divine-engine.svg?branch=develop)](https://travis-ci.org/srepollock/divine-engine)
+Master: [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)
+Develop: [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/develop/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/develop/graph/badge.svg)
 
-The Divine Engine is a Typescript-based JavaScript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.
+The Divine Engine is a Typescript game engine built for developers first and formost on some of the [latest web libraries](#built-with). The Divine Engine allows users to develop and deploy lightweight games in a modern development environment. The engine focuses on being modular and lightweight, all while allowing developers to quickly build projects and applications and begin buidling right out of the box.
 
 ## Getting Started
 
@@ -28,9 +33,18 @@ To use the Divine Engine, first setup a new NodeJS project
 
 Next install Typescript and the Divine Engine
 
-`npm i -D typescript divine-engine`
+> The project is not yet up on npm. Use the codeblock after to run in your own app, or clone this repository to test the current engine.  
+> `git clone git@github.com:srepollock/divine-engine.git`
 
-Next, choose your platform you wish to deploy on: Angular2, Electron or setup a basic Webpage with a canvas.
+~~`npm i -D typescript divine-engine`~~
+
+```sh
+# The project is not yet on NPM; use this to pull and test in your own project.
+# Clone into the parent directory of your project (not your project, the folder above it)
+git clone git@github.com:srepollock/divine-engine.git ./
+# From your project install the Engine
+npm i ../divine-engine
+```
 
 Now you're all set and ready to go!
 
@@ -40,6 +54,8 @@ Running the unit tests is simple when using node! All you need to call inside th
 
 ```sh
 npm test
+# Or one of it's variations:
+# `npm run-script test:` and tab the rest out
 ```
 
 > Note: each test must be passing before submitting a pull-request. Travis-CI will check unit tests before allowing admins to merge. More in [contributing](https://github.com/srepollock/divine-engine/blob/master/.github/CONTRIBUTING.md)
@@ -57,6 +73,15 @@ Coding styles must be followed in this project. To ensure that users are followi
 * [NodeJS](https://nodejs.org/en/)
 * [npm](https://www.npmjs.com/)
 * [TypeScript](https://www.typescriptlang.org/)
+* [Rollup](https://rollupjs.org/guide/en)
+* [Babel](https://babeljs.io/)
+* [Mocha](https://mochajs.org/)
+* [Chai](https://www.chaijs.com/)
+* [Puppeteer](https://pptr.dev/)
+* [threejs](https://threejs.org/)
+* [HowlerJS](https://howlerjs.com/)
+* [Box2D](https://www.npmjs.com/package/@types/box2d)
+* [Keypress](https://www.npmjs.com/package/keypress)
 
 ## Contributing
 
@@ -75,3 +100,4 @@ See also the list of [contributors](https://github.com/Goodgoodies/divine-engine
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/srepollock/divine-engine/blob/master/LICENSE.md) file for details
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

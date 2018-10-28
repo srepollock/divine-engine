@@ -1,2 +1,6 @@
 import { DObject } from "./dobject";
-export interface Component extends DObject {}
+export class Component extends DObject {
+    constructor(tag: string = "") {
+        super(tag);
+    }
+}

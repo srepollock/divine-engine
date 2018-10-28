@@ -1,2 +1,3 @@
-export { FlagComponent } from "./flagcomponent";
-export { SoundComponent } from "./soundcomponent";
+export * from "./flagcomponent";
+export * from "./rendercomponent";
+export * from "./soundcomponent";

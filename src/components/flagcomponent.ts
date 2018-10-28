@@ -1,12 +1,14 @@
-import { Component, Transform } from "../core";
+import { Component } from "../core/component";
+import { Transform } from "../core/entity";
 
-export class FlagComponent implements Component {
+export class FlagComponent extends Component {
+    private static FLAG_COMPONENT: string = "FlagComponent";
     private static staticFlagnumber: number = 0;
-    public id: string = "FlagComponent";
     private flagnumber: number;
     constructor(
         public location: Transform = new Transform()
     ) {
+        super(FlagComponent.FLAG_COMPONENT);
         this.flagnumber = ++FlagComponent.staticFlagnumber;
         this.location = location;
     }
