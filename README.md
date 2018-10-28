@@ -3,10 +3,8 @@
 [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
-Master: [![Build Status](https://travis-ci.org/srepollock/divine-engine.svg?branch=master)](https://travis-ci.org/srepollock/divine-engine)
-Develop: [![Build Status](https://travis-ci.org/srepollock/divine-engine.svg?branch=develop)](https://travis-ci.org/srepollock/divine-engine)
-Master: [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)
-Develop: [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/develop/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/develop/graph/badge.svg)
+Master: [![Build Status](https://travis-ci.org/srepollock/divine-engine.svg?branch=master)](https://travis-ci.org/srepollock/divine-engine) [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)  
+Develop: [![Build Status](https://travis-ci.org/srepollock/divine-engine.svg?branch=develop)](https://travis-ci.org/srepollock/divine-engine) [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/develop/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/develop/graph/badge.svg)
 
 The Divine Engine is a Typescript game engine built for developers first and formost on some of the [latest web libraries](#built-with). The Divine Engine allows users to develop and deploy lightweight games in a modern development environment. The engine focuses on being modular and lightweight, all while allowing developers to quickly build projects and applications and begin buidling right out of the box.
 
@@ -99,5 +97,5 @@ See also the list of [contributors](https://github.com/Goodgoodies/divine-engine
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/srepollock/divine-engine/blob/master/LICENSE.md) file for details
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/srepollock/divine-engine/blob/master/LICENSE) file for details
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
