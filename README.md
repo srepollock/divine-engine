@@ -97,5 +97,5 @@ See also the list of [contributors](https://github.com/Goodgoodies/divine-engine
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/srepollock/divine-engine/blob/master/LICENSE.md) file for details
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/srepollock/divine-engine/blob/master/LICENSE) file for details
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
