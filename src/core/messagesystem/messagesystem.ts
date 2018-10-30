@@ -102,7 +102,7 @@ export class MessageSystem implements System {
     public static listenerCount(type: EventType | string): number {
         var count: number = 0;
         for (let i in MessageSystem.listeners) {
-            if (i !== undefined && i === type) { // DEBUG: i should be the EventType
+            if (i !== undefined && i === type) {
                 for (let k of MessageSystem.listeners[i]) {
                     count++;
                 }
@@ -269,15 +269,31 @@ export class Message {
         this._priority = priority;
         this._data = data;
     }
+    /**
+     * Get's this message's GUID.
+     * @returns string
+     */
     public get id(): string {
         return this._id;
     }
+    /**
+     * Gets this message's sender.
+     * @returns any
+     */
     public get sender(): any {
         return this._sender;
     }
+    /**
+     * Gets this message's priority.
+     * @returns Priority
+     */
     public get priority(): Priority {
         return this._priority;
     }
+    /**
+     * Gets this message's data.
+     * @returns string
+     */
     public get data(): string {
         return this._data;
     }

@@ -103,6 +103,11 @@ export class GameWindow implements Window {
     public close(): void {
         this.browserWindow!.close();
     }
+    /**
+     * Stops the game window from running/updating.
+     * REVIEW: Is this necessary? Updating is handled by the render system.
+     * @returns void
+     */
     public stop(): void {
         GameWindow._started = false;
     }

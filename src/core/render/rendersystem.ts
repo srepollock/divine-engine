@@ -9,7 +9,11 @@ export class RenderSystem implements System {
     public material: THREE.Material | undefined;
     public mesh: THREE.Mesh | undefined;
     public renderer: THREE.WebGLRenderer | undefined;
-
+    /**
+     * Render system constructor.
+     * @param  {number} width
+     * @param  {number} height
+     */
     constructor(width: number, height: number) {
         this.camera = undefined;
         this.scene = undefined;
@@ -17,7 +21,7 @@ export class RenderSystem implements System {
         this.material = undefined;
         this.mesh = undefined;
         this.renderer = undefined;
-        if (Engine.instance!.client === Client.Browser) { // REVIEW: Circular dependency
+        if (Engine.instance!.client === Client.Browser) { // NOTE: For Version 1 of the engine, focus on this
             this.camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
             this.camera.position.z = 1;
             this.scene = new THREE.Scene();
@@ -39,14 +43,22 @@ export class RenderSystem implements System {
     public cleanup(): void {
         // TODO: Cleanup anything that is not necessary
     }
+    /**
+     * Initializes the system.
+     * @returns void
+     */
     public initialize(): void {
         
     }
     public shutdown(): void {
         this.cleanup();
     }
+    /**
+     * Render system start method.
+     * @returns void
+     */
     public start(): void {
-
+        
     }
     public stop(): void {
 

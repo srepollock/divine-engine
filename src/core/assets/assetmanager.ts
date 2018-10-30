@@ -1,6 +1,6 @@
+
 import { DObject } from "../dobject";
 import { ErrorCode, LogWarning } from "../logging";
-import { IMessageHandler } from "../messagesystem";
 import { AssetMessage } from "../messagesystem/assetmessage";
 import { EventType, Message, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
@@ -8,7 +8,7 @@ import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
 import { JSONAssetLoader } from "./jsonassetloader";
 
-export class AssetManager extends DObject implements IMessageHandler {
+export class AssetManager extends DObject {
     public static get loadedAssets(): {[name: string]: IAsset} {
         return AssetManager._loadedAssets;
     }
@@ -23,9 +23,10 @@ export class AssetManager extends DObject implements IMessageHandler {
     private static _loaders: IAssetLoader[] = [];
     public _subscriptions: Array<string> = new Array<string>();
     private constructor() {
-        super(); // Calls DObject
+        super();
     }
     public static initialize(): void {
+        AssetManager._instance = new AssetManager();
         AssetManager._loaders.push(new ImageAssetLoader());
         AssetManager._loaders.push(new JSONAssetLoader());
     }
@@ -42,8 +43,8 @@ export class AssetManager extends DObject implements IMessageHandler {
                 }
             }
         } catch (e) { 
-            LogWarning(ErrorCode.NoFileExtension, `File extension has no file ending ${name} given. \
-                continuing to read as a JSON file but may cause errors later.`);
+            // tslint:disable-next-line:max-line-length
+            LogWarning(ErrorCode.NoFileExtension, `File extension has no file ending ${name} given, continuing to read as a JSON file but may cause errors later.`);
         }
         new JSONAssetLoader().loadAsset(name, false);
     }
@@ -73,11 +74,11 @@ export class AssetManager extends DObject implements IMessageHandler {
         MessageSystem.sendMessage(event, message);
     }
     /**
-     * Handles messages that this class subscribes to.
-     * @param  {Message} message
+     * Called when the asset is loaded.
+     * @param  {IAsset} asset
      * @returns void
      */
-    public onMessage(message: Message): void {
-        // TODO: Write message handler for this class
+    public onAssetLoaded(asset: IAsset): void {
+        AssetManager._loadedAssets[asset.name] = asset;
     }
 }

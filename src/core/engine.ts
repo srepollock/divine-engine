@@ -181,8 +181,8 @@ export class Engine implements IMessageHandler {
      * Gets the engine's guid.
      * @returns string
      */
-    public get guid(): string {
-        return this._guid;
+    public get id(): string {
+        return this._id;
     }
     /**
      * Get's the engine's Render System
@@ -232,7 +232,7 @@ export class Engine implements IMessageHandler {
     private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
     private _client: Client;
-    private _guid: string;
+    private _id: string;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
     private _now: number = 0;
@@ -248,7 +248,7 @@ export class Engine implements IMessageHandler {
      * Initializes an Engine object.
      */
     private constructor(args: EngineArguments) {
-        this._guid = guid();
+        this._id = guid();
         this.setEngineArguments(args);
         MessageSystem.initialize();
         if (MessageSystem.instance === undefined) {
@@ -288,8 +288,8 @@ export class Engine implements IMessageHandler {
         this._last = this._startTime;
     }
     /**
-     * This is the both the intialization and startup of the game engine. The
-     * engine can only be setup and started through this function.
+     * This is the intialization, startup and begins running the game engine. The engine can only be setup and started 
+     * through this function.
      * @param  {EngineArguments} args
      * @param  {()=>void} mainLoop
      * @returns void
@@ -393,9 +393,9 @@ export class Engine implements IMessageHandler {
                 const win = remote.getCurrentWindow();
                 win.close();
             }
-            LogDebug(`Engine instance set to: ${this._instance}`);
+            LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
             this._instance = undefined;
-            LogDebug(`Engine instance set to: ${this._instance}`);
+            LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
         } else {
             LogWarning(ErrorCode.EngineInstanceNull, "Engine instance is 'undefined'. It has already been shutdown.");
         }

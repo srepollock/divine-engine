@@ -11,25 +11,27 @@ describe("Entity unit testing", () => {
         it("should be instantiated with a parent ID", () => {
             let child: Entity = new Entity();
             child.setParent(entity);
-            expect(child.parent!.guid).to.equal(entity.guid);
+            expect(child.parent!.id).to.equal(entity.id);
         });
         it("should get 1 child entity object", () => {
             let child = new Entity();
             child.setParent(entity);
             entity.addChild(child);
-            expect(entity.getChild(child.guid)).to.deep.equal(child);
+            expect(entity.getChild(child.id)).not.to.be.undefined;
+            expect(entity.getChild(child.id)).to.deep.equal(child);
         });
         it("should have 1 child entity object", () => {
             let child = new Entity();
             child.setParent(entity);
             entity.addChild(child);
+            expect(entity.getChildren()).not.to.be.undefined;
             expect(entity.getChildren()).to.have.lengthOf(1) ;
         });
         it("should have a child that has the parent ID", () => {
             let child = new Entity();
             child.setParent(entity);
             entity.addChild(child);
-            expect(entity.getChildren()[0].parent!.guid).to.equal(entity.guid);
+            expect(entity.getChildren()[0].parent!.id).to.equal(entity.id);
         });
     });
     describe("Empty Entity object", () => {

@@ -40,8 +40,10 @@ export enum ErrorCode {
     RenderSystemCleanupFailed,
     WindowUndefined, // Window Errors
     GameWindowUndefined,
-    AssetLoaderUninitialized = 700, // AssetLoader
+    AssetLoaderUninitialized = 700, // Asset Errors
     NoFileExtension,
+    LoadAssetFailed,
+    JSONAssetNotLoaded,
     ErrorLoadingFile, // Helper Function Errors
     ReadJSONFile,
     WriteJSONFile,
@@ -102,4 +104,12 @@ export function LogWarning(ec: ErrorCode, data: string): string {
     const errorString = `Warn\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
     console.log("\t", "\x1b[33m", errorString, "\x1b[0m");
     return errorString;
+}
+/**
+ * Prints the error as a trace to the console.
+ * @param  {Error} e Error to trace
+ * @returns void
+ */
+export function trace(e: Error): void {
+    console.trace(e);
 }
