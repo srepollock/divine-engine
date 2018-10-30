@@ -57,14 +57,18 @@ describe("Message System unit testing", () => {
             data = "";
             data2 = "";
             MessageSystem.initialize();
-            MessageSystem.instance.start(); // REVIEW: Engine isn't running, maybe I need to start it first?
+            MessageSystem.start(); // REVIEW: Engine isn't running, maybe I need to start it first?
             // REVIEW: Where can I run a loop for the MessageSystem.update loop?
         });
         afterEach(() => {
-            MessageSystem.instance.shutdown();
+            MessageSystem.shutdown();
         });
         it("should have no listeners if none added", () => {
             expect(MessageSystem.allListenerCount()).to.equal(0);
+        });
+        it("should throw an error if the instance is not defined and the get is called", () => {
+            MessageSystem.shutdown();
+            expect(MessageSytem.instance).to.throw();
         });
         it("should add new listener of EventType.RenderSystem", () => {
             MessageSystem.addListener(EventType.RenderSystem, new Listener());
