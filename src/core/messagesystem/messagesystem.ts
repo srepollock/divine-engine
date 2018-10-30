@@ -47,13 +47,6 @@ export class MessageSystem implements System {
         this.removeAllListeners();
     }
     /**
-     * Returns the count of all listeners in the system.
-     * @returns number
-     */
-    public static allListeners(): number {
-        return -1;
-    }
-    /**
      * @param  {EventType} et
      * @param  {IMessageHandler} handler
      * @returns void
