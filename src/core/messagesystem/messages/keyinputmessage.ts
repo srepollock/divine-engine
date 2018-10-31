@@ -1,3 +1,4 @@
+import { KeyCode } from "../../helper";
 import { IOSystemMessage } from "./iosystemmessage";
 /**
  * Key input message interface.
@@ -5,7 +6,7 @@ import { IOSystemMessage } from "./iosystemmessage";
  * Javascript
  */
 export class KeyInputMessage extends IOSystemMessage {
-    constructor( public code: string) {
+    constructor( public code: KeyCode) {
         super();
         this.code = code;
     }
