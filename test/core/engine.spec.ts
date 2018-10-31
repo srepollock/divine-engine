@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "lodash";
 import "mocha";
-import { Engine, EngineArguments, MessageSystem } from "../../../src";
+import { Engine, EngineArguments, MessageSystem } from "../../src";
 
 describe("Engine unit testing", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));

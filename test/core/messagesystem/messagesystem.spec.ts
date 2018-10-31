@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "mocha";
 // tslint:disable-next-line:max-line-length
-import { DObject, EntityMessage, EventType, Log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage } from "../../../../src";
+import { DObject, EntityMessage, EventType, Log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage } from "../../../src";
 
 describe("Message System unit testing", () => {
     describe("Messages", () => {

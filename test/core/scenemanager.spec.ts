@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { BaseSceneManager, Engine, EngineArguments, SceneManager } from "../../../src";
+import { BaseSceneManager, Engine, EngineArguments, SceneManager } from "../../src";
 
 describe("SceneManager class unit tests", () => {
     var sm: SceneManager = new BaseSceneManager();

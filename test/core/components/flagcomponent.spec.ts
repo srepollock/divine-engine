@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { FlagComponent, Transform } from "../../../../src";
+import { FlagComponent, Transform } from "../../../src";
 
 describe("Flag component unit testing", () => {
     var fc: FlagComponent = new FlagComponent(new Transform(0, 0));

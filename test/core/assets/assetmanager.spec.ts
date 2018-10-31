@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as path from "path";
-import { AssetManager, Engine, EngineArguments } from "../../../../src";
+import { AssetManager, Engine, EngineArguments } from "../../../src";
 
 describe("Asset Manager unit tests", () => {
     before(() => {

@@ -8,6 +8,8 @@ import { IOSystemMessage } from "./iosystemmessage";
 export class KeyInputMessage extends IOSystemMessage {
     constructor( public code: KeyCode) {
         super();
+        // NOTE: Fixes incorrect Istanbul coverage
+        /* istanbul ignore next */
         this.code = code;
     }
 }

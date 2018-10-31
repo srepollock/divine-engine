@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Engine, EngineArguments, GameWindow } from "../../../src";
+import { Engine, EngineArguments, GameWindow } from "../../src";
 
 describe("Window unit tests", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({title: " ", width: 0, height: 0,  debug: false}));

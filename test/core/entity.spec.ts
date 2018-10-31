@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Entity, FlagComponent, Log, Transform } from "../../../src";
+import { Entity, FlagComponent, Log, Transform } from "../../src";
 
 describe("Entity unit testing", () => {
     var entity: Entity;
