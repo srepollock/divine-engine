@@ -7,8 +7,8 @@ export enum ErrorCode {
     Error, // General Errors
     DocumentUndefined,
     EngineInitialization = 100, // Engine Errors
-    EngineInstanceNull,
-    EngineInstanceNotNull,
+    EngineInstanceUndefined,
+    EngineInstanceNotUndefined,
     EngineClientNotSet,
     EngineWindowUndefined,
     EngineStartedEarly,
@@ -41,10 +41,17 @@ export enum ErrorCode {
     WindowUndefined, // Window Errors
     GameWindowUndefined,
     AssetLoaderUninitialized = 700, // Asset Errors
+    AssetManagerUndefined,
     NoFileExtension,
     LoadAssetFailed,
     JSONAssetNotLoaded,
-    ErrorLoadingFile, // Helper Function Errors
+    JSONDataUndefined,
+    AssetManagerDidNotGetAsset,
+    JSONLoaderPathImport,
+    JSONLoaderFsImport,
+    FileDoesNotExist,
+    FileDataUndefined,
+    ErrorLoadingFile = 800, // Helper Function Errors
     ReadJSONFile,
     WriteJSONFile,
     FileContentsNotRead,

@@ -1,6 +1,6 @@
 
 import { DObject } from "../dobject";
-import { ErrorCode, LogWarning } from "../logging";
+import { ErrorCode, LogDebug, LogWarning } from "../logging";
 import { AssetMessage } from "../messagesystem/assetmessage";
 import { EventType, Message, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
@@ -61,6 +61,7 @@ export class AssetManager extends DObject {
     }
     public static onAssetLoaded(asset: IAsset): void {
         AssetManager._loadedAssets[asset.name] = asset;
+        LogDebug(AssetManager._loadedAssets[asset.name].name);
         AssetManager.instance.sendMessage(EventType.IOSystem, 
             new AssetMessage(this, Priority.Normal, asset));
     }

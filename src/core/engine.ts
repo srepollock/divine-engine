@@ -1,4 +1,5 @@
 import { BaseSceneManager, SceneManager } from "../scene";
+import { AssetManager } from "./assets";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
 import { ErrorCode } from "./logging";
@@ -93,7 +94,7 @@ export class Engine implements IMessageHandler {
         if (Engine._instance !== undefined) {
             return Engine._instance;
         }
-        LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
+        LogError(ErrorCode.EngineInstanceUndefined, "Called on get Engine.instance");
         return undefined;
     }
     /**
@@ -259,7 +260,7 @@ export class Engine implements IMessageHandler {
         }
         if (Engine._instance !== undefined) {
             Log(JSON.stringify(Engine._instance));
-            LogCritical(ErrorCode.EngineInstanceNotNull, 
+            LogCritical(ErrorCode.EngineInstanceNotUndefined, 
                 "Engine already has an instance in the class");
             Engine._exit = true;
         }
@@ -299,7 +300,7 @@ export class Engine implements IMessageHandler {
         Log("Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
         if (Engine._instance === undefined) {
-            LogCritical(ErrorCode.EngineInstanceNull, 
+            LogCritical(ErrorCode.EngineInstanceUndefined, 
                 "Engine was not initialized immediately after constructor called");
         }
         Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client);
@@ -309,20 +310,23 @@ export class Engine implements IMessageHandler {
         Log("Engine started");
         /**
          * NOTE: Start subsystems. This is where the rest of the systems `.start()` functions get called. 
-         * REVIEW: Message system started in Constructor
+         * NOTE: Message system started in Constructor
          * They are held in reference by the engine. As it will shut everything down as well.
          */
-        // Render System
+        // NOTE: Render System
         // tslint:disable-next-line:max-line-length
         Engine._instance!._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
         if (Engine._instance!._renderSystem === undefined) {
-            LogCritical(ErrorCode.RenderSystemUndefined, 
-                "Render system was not initialized immediately after constructor called");
+            // tslint:disable-next-line:max-line-length
+            LogCritical(ErrorCode.RenderSystemUndefined, "Render system was not initialized immediately after constructor called");
         }
         Engine._instance!._renderSystem!.initialize();
-        // REVIEW: Load files in from relative path?
-        // Scene Manager
-        
+        // NOTE: Asset Manager
+        AssetManager.initialize();
+        if (AssetManager.instance === undefined) {
+            LogCritical(ErrorCode.AssetManagerUndefined, "Asset manager was not initialized properly");
+        }
+        // NOTE: Scene Manager
         // NOTE: Default BaseSceneManager is defined in default EngineArguments
         // NOTE: Always use the initial scene defined.
         if (Engine._instance!.engineArguments.sceneManager !== undefined) {
@@ -353,7 +357,7 @@ export class Engine implements IMessageHandler {
      */
     public static play(): void {
         if (Engine._instance === undefined) {
-            LogCritical(ErrorCode.EngineInstanceNull, "Tried to play a null engine");
+            LogCritical(ErrorCode.EngineInstanceUndefined, "Tried to play a null engine");
         }
         // NOTE: This should be called on typescript recompilation!! Flag for this?
         // if (!Engine._running && Engine._instance!._engineArguments !== undefined) {
@@ -381,7 +385,7 @@ export class Engine implements IMessageHandler {
      */
     public static shutdown(): void {
         if (!Engine._started && !Engine._running && Engine._instance === undefined) { // NOTE: This can silently fail
-            LogWarning(ErrorCode.EngineInstanceNull, "Engine instance null on shutdown call");
+            LogWarning(ErrorCode.EngineInstanceUndefined, "Engine instance null on shutdown call");
         }
         if (Engine._started && Engine._running) Engine.stop();
         if (Engine._instance !== undefined) {
@@ -397,7 +401,8 @@ export class Engine implements IMessageHandler {
             this._instance = undefined;
             LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
         } else {
-            LogWarning(ErrorCode.EngineInstanceNull, "Engine instance is 'undefined'. It has already been shutdown.");
+            LogWarning(ErrorCode.EngineInstanceUndefined,
+                "Engine instance is 'undefined'. It has already been shutdown.");
         }
     }
     /**
