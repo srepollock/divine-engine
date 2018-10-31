@@ -8,6 +8,14 @@ import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
 import { JSONAssetLoader } from "./jsonassetloader";
 
+/**
+ * Asset Manager class
+ * Load Asset example:
+ * 1) When an asset is required, send a message to the IOSystem. ex: IOSystemMessage(data: filename)
+ * 2) IOSystem recieves message and calls AssetManager.load(filename); on complete, sends an AssetMessage
+ * 3) SceneManager recieves all AssetMessages (as the Scene in SceneManager will hold the loaded assets)
+ * 4) SceneManager.Scene contains the asset for updating
+ */
 export class AssetManager extends DObject {
     public static get loadedAssets(): {[name: string]: IAsset} {
         return AssetManager._loadedAssets;
