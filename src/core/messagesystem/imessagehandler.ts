@@ -1,4 +1,4 @@
-import { Message } from "./messagesystem";
+import { Message } from "./messages/message";
 
 export interface IMessageHandler {
     id: string;

@@ -19,8 +19,8 @@
     "patch": "npm version patch",
     "prepare": "npm run build && npm run bundle && npm run docs",
     "preunit-test": "npm run-script build-tests",
-    "test": "mocha --opts mocha.opts test/assets/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
-    "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
+    "test": "mocha --opts mocha.opts test/src/core/**/*.spec.ts --exit",
+    "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/src/core/**/*.spec.ts --exit",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts --exit",
     "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
   },

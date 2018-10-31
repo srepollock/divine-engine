@@ -1,7 +1,6 @@
 import { Component } from "./component";
 import { DObject } from "./dobject";
 import { ErrorCode, Log, LogError } from "./logging";
-import { Message } from "./messagesystem";
 
 /**
  * The entity objects position.
@@ -84,8 +83,8 @@ export class Entity extends DObject {
             entity.setParent(this);
             this.children!.push(entity);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasChild, `${this.id} already \
-                has child ${entity.id}`);
+            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already \
+                has child ${entity.id}");
         }
     }
     /**
@@ -204,13 +203,6 @@ export class Entity extends DObject {
      * @returns void
      */
     public update(delta: number): void {
-        
-    }
-    /**
-     * Parses the Entity message sent to the entity.
-     * @returns void
-     */
-    public onMessage(message: Message): void {
         
     }
 }

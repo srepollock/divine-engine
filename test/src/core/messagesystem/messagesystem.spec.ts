@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "mocha";
 // tslint:disable-next-line:max-line-length
-import { DObject, EntityMessage, EventType, Log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage } from "../../src";
+import { DObject, EntityMessage, EventType, Log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage } from "../../../../src";
 
 describe("Message System unit testing", () => {
     describe("Messages", () => {
@@ -72,7 +72,7 @@ describe("Message System unit testing", () => {
         });
         it("should throw an error if the instance is not defined and the get is called", () => {
             MessageSystem.shutdown();
-            expect(MessageSytem.instance).to.throw();
+            expect(MessageSystem.instance).to.throw();
         });
         it("should add new listener of EventType.RenderSystem", () => {
             MessageSystem.addListener(EventType.RenderSystem, new Listener());

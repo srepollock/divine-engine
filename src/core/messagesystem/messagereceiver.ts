@@ -1,5 +1,5 @@
 import { IMessageHandler } from "./imessagehandler";
-import { Message } from "./messagesystem";
+import { Message } from "./messages/message";
 
 export class MessageReceiver {
     public message: Message;

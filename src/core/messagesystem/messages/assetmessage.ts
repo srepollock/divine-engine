@@ -1,5 +1,6 @@
-import { IAsset } from "../assets/iasset";
-import { Message, Priority } from "./messagesystem";
+import { IAsset } from "../../assets/iasset";
+import { Priority } from "../messagesystem";
+import { Message } from "./message";
 
 export class AssetMessage extends Message {
     public asset: IAsset;

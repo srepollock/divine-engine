@@ -1,8 +1,8 @@
 
 import { DObject } from "../dobject";
 import { ErrorCode, LogDebug, LogWarning } from "../logging";
-import { AssetMessage } from "../messagesystem/assetmessage";
-import { EventType, Message, MessageSystem, Priority } from "../messagesystem/messagesystem";
+import { AssetMessage, Message } from "../messagesystem/messages/";
+import { EventType, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
