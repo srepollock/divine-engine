@@ -9,15 +9,6 @@
             },
             "components": [],
             "children": []
-        },
-        {
-            "tag": "camera",
-            "transform": {
-                "x": 0,
-                "y": 0
-            },
-            "components": [],
-            "children": []
         }
     ]
  }

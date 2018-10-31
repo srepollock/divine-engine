@@ -9,22 +9,22 @@ import { IMessageHandler, Message } from "./messagesystem";
  */
 export class DObject implements IMessageHandler {
     public tag: string;
-    private _guid: string;
+    private _id: string;
     /**
      * DObject Constructor.
      * Tag is an additional identifier for the DObject.
      * @param  {string=""} tag Tag for the object to be identified on.
      */
     constructor(tag: string = "") {
-        this._guid = guid();
+        this._id = guid();
         this.tag = tag;
     }
     /**
      * Gets the DObjects guid.
      * @returns string
      */
-    public get guid(): string {
-        return this._guid;
+    public get id(): string {
+        return this._id;
     }
     /**
      * DObjects base messasge handler receiving messages.

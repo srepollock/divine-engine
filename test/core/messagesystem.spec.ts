@@ -1,15 +1,18 @@
 import { expect } from "chai";
 import "mocha";
+// tslint:disable-next-line:max-line-length
 import { DObject, EntityMessage, EventType, Log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage } from "../../src";
 
 describe("Message System unit testing", () => {
     describe("Messages", () => {
         it("should be able to be created empty", () => {
             let message: Message = new Message(this, Priority.Low);
+            // tslint:disable-next-line:max-line-length
             expect(message.JSONString).to.equal(`{"_id":"${message.id}","_priority":${message.priority},"_data":"${message.data}"}`);
         });
         it("should take multiple strings of data as input", () => {
             let message: TestMessage = new TestMessage("1");
+            // tslint:disable-next-line:max-line-length
             expect(message.JSONString).to.equal(`{"_id":"${message.id}","_sender":"${message.sender}","_priority":${message.priority},"_data":"${message.data}"}`);
         });
         it("should save data as a string in JSON format", () => {
@@ -18,6 +21,7 @@ describe("Message System unit testing", () => {
         });
         it("should export as a JSON string", () => {
             let message: TestMessage = new TestMessage("1");
+            // tslint:disable-next-line:max-line-length
             expect(message.JSONString).to.equal(`{"_id":"${message.id}","_sender":"${message.sender}","_priority":${message.priority},"_data":"${message.data}"}`);
         });
         it("should export as a JSON object", () => {

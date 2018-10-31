@@ -1,6 +1,6 @@
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
-import { ErrorCode, LogCritical, LogError } from "../core/logging";
+import { ErrorCode, LogCritical, LogDebug, LogError } from "../core/logging";
 import { Scene } from "../core/scene";
 import { SceneManager } from "./scenemanager";
 
@@ -56,13 +56,11 @@ export class BaseSceneManager extends DObject implements SceneManager {
      */
     public loadScene(filename: string): Scene {
         // REVIEW: This needs to read from file.
-        // LogDebug(`Loading scene from file ${filename}`);
-        // this._scene = this.buildSceneFromData();
-        // Log(JSON.stringify(this._scene));
-        // return this._scene;
-        this._scene = new Scene(filename);
-        // TODO: Throws a critical error if scene not read.
+        LogDebug(`Loading scene from file ${filename}`);
+        this._scene = this.buildSceneFromData(filename);
+        LogDebug(JSON.stringify(this._scene));
         return this._scene;
+        // TODO: Throws a critical error if scene not read.
     }
     /**
      * Calls this classes clenaup funciton. Shutsdown the class. Called on Engine shutdown.

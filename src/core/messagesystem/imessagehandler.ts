@@ -1,6 +1,6 @@
 import { Message } from "./messagesystem";
 
 export interface IMessageHandler {
-    guid: string;
+    id: string;
     onMessage(message: Message): void;
 }

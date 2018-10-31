@@ -19,7 +19,7 @@
     "patch": "npm version patch",
     "prepare": "npm run build && npm run bundle && npm run docs",
     "preunit-test": "npm run-script build-tests",
-    "test": "mocha --opts mocha.opts test/components/*.spec.ts test/core/*.spec.ts --exit",
+    "test": "mocha --opts mocha.opts test/assets/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
     "test:all": "nyc mocha --opts mocha.opts test/browser/*.spec.ts test/components/*.spec.ts test/core/*.spec.ts --exit",
     "test:browser": "mocha --opts mocha.opts test/browser/*.spec.ts --exit",
     "watch": "tsc-watch -p . --onSuccess \"npm run-script bundle\" --onFailure 'echo \"tsc failed\"'"
@@ -42,6 +42,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-arrow-functions": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
@@ -57,6 +58,7 @@
     "chai": "^4.2.0",
     "codecov": "^3.1.0",
     "electron": "^2.0.11",
+    "fs": "0.0.1-security",
     "mocha": "^5.2.0",
     "node": "^10.11.0",
     "nyc": "^12.0.2",
@@ -73,7 +75,8 @@
     "three.js": "^0.77.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typedoc": "^0.11.1"
+    "typedoc": "^0.11.1",
+    "xhr2": "^0.1.4"
   },
   "dependencies": {
     "tsc-watch": "^1.0.30",

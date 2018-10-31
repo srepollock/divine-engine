@@ -1,4 +1,5 @@
 import { BaseSceneManager, SceneManager } from "../scene";
+import { AssetManager } from "./assets";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
 import { ErrorCode } from "./logging";
@@ -93,7 +94,7 @@ export class Engine implements IMessageHandler {
         if (Engine._instance !== undefined) {
             return Engine._instance;
         }
-        LogError(ErrorCode.EngineInstanceNull, "Called on get Engine.instance");
+        LogError(ErrorCode.EngineInstanceUndefined, "Called on get Engine.instance");
         return undefined;
     }
     /**
@@ -181,8 +182,8 @@ export class Engine implements IMessageHandler {
      * Gets the engine's guid.
      * @returns string
      */
-    public get guid(): string {
-        return this._guid;
+    public get id(): string {
+        return this._id;
     }
     /**
      * Get's the engine's Render System
@@ -232,7 +233,7 @@ export class Engine implements IMessageHandler {
     private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
     private _client: Client;
-    private _guid: string;
+    private _id: string;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
     private _now: number = 0;
@@ -248,7 +249,7 @@ export class Engine implements IMessageHandler {
      * Initializes an Engine object.
      */
     private constructor(args: EngineArguments) {
-        this._guid = guid();
+        this._id = guid();
         this.setEngineArguments(args);
         MessageSystem.initialize();
         if (MessageSystem.instance === undefined) {
@@ -259,7 +260,7 @@ export class Engine implements IMessageHandler {
         }
         if (Engine._instance !== undefined) {
             Log(JSON.stringify(Engine._instance));
-            LogCritical(ErrorCode.EngineInstanceNotNull, 
+            LogCritical(ErrorCode.EngineInstanceNotUndefined, 
                 "Engine already has an instance in the class");
             Engine._exit = true;
         }
@@ -273,23 +274,31 @@ export class Engine implements IMessageHandler {
         this._client = Client.Console; // Always CLI first
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
-            if (w.process !== undefined && w.process.versions !== undefined 
+            if (w.process !== undefined 
+                && w.process.versions !== undefined 
                 && w.process.versions.electron !== undefined) {
                 this._client = Client.Electron;
             }
             if (typeof(document) !== "undefined") {
                 this._client = Client.Browser;
-                if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId); 
-                // TODO: Container is not being set...
-                else this._container = document.getElementsByTagName("body")[0];
+                if (args.rootElementId !== "") {
+                    this._container = document.getElementById(args.rootElementId); 
+                } else {
+                    this._container = document.getElementsByTagName("body")[0];
+                }
+                LogDebug(`Engine's container: ${this._container}`);
+            } else {
+                LogError(ErrorCode.ContainerUndefined, "document undefined");
             }
+        } else {
+            LogError(ErrorCode.WindowUndefined, "window is not globally defined");
         }
         this._startTime = Date.now();
         this._last = this._startTime;
     }
     /**
-     * This is the both the intialization and startup of the game engine. The
-     * engine can only be setup and started through this function.
+     * This is the intialization, startup and begins running the game engine. The engine can only be setup and started 
+     * through this function.
      * @param  {EngineArguments} args
      * @param  {()=>void} mainLoop
      * @returns void
@@ -299,30 +308,33 @@ export class Engine implements IMessageHandler {
         Log("Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
         if (Engine._instance === undefined) {
-            LogCritical(ErrorCode.EngineInstanceNull, 
+            LogCritical(ErrorCode.EngineInstanceUndefined, 
                 "Engine was not initialized immediately after constructor called");
         }
-        Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client);
-        Engine._instance!.gameWindow.start(this._instance!.container!);
+        Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client, Engine._instance!._container!);
+        Engine._instance!.gameWindow.start();
         Engine._instance!.gameWindow.title = args.title;
         Engine._running = true;
         Log("Engine started");
         /**
          * NOTE: Start subsystems. This is where the rest of the systems `.start()` functions get called. 
-         * REVIEW: Message system started in Constructor
+         * NOTE: Message system started in Constructor
          * They are held in reference by the engine. As it will shut everything down as well.
          */
-        // Render System
+        // NOTE: Render System
         // tslint:disable-next-line:max-line-length
         Engine._instance!._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
         if (Engine._instance!._renderSystem === undefined) {
-            LogCritical(ErrorCode.RenderSystemUndefined, 
-                "Render system was not initialized immediately after constructor called");
+            // tslint:disable-next-line:max-line-length
+            LogCritical(ErrorCode.RenderSystemUndefined, "Render system was not initialized immediately after constructor called");
         }
         Engine._instance!._renderSystem!.initialize();
-        // REVIEW: Load files in from relative path?
-        // Scene Manager
-        
+        // NOTE: Asset Manager
+        AssetManager.initialize();
+        if (AssetManager.instance === undefined) {
+            LogCritical(ErrorCode.AssetManagerUndefined, "Asset manager was not initialized properly");
+        }
+        // NOTE: Scene Manager
         // NOTE: Default BaseSceneManager is defined in default EngineArguments
         // NOTE: Always use the initial scene defined.
         if (Engine._instance!.engineArguments.sceneManager !== undefined) {
@@ -353,7 +365,7 @@ export class Engine implements IMessageHandler {
      */
     public static play(): void {
         if (Engine._instance === undefined) {
-            LogCritical(ErrorCode.EngineInstanceNull, "Tried to play a null engine");
+            LogCritical(ErrorCode.EngineInstanceUndefined, "Tried to play a null engine");
         }
         // NOTE: This should be called on typescript recompilation!! Flag for this?
         // if (!Engine._running && Engine._instance!._engineArguments !== undefined) {
@@ -381,7 +393,7 @@ export class Engine implements IMessageHandler {
      */
     public static shutdown(): void {
         if (!Engine._started && !Engine._running && Engine._instance === undefined) { // NOTE: This can silently fail
-            LogWarning(ErrorCode.EngineInstanceNull, "Engine instance null on shutdown call");
+            LogWarning(ErrorCode.EngineInstanceUndefined, "Engine instance null on shutdown call");
         }
         if (Engine._started && Engine._running) Engine.stop();
         if (Engine._instance !== undefined) {
@@ -393,11 +405,12 @@ export class Engine implements IMessageHandler {
                 const win = remote.getCurrentWindow();
                 win.close();
             }
-            LogDebug(`Engine instance set to: ${this._instance}`);
+            LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
             this._instance = undefined;
-            LogDebug(`Engine instance set to: ${this._instance}`);
+            LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
         } else {
-            LogWarning(ErrorCode.EngineInstanceNull, "Engine instance is 'undefined'. It has already been shutdown.");
+            LogWarning(ErrorCode.EngineInstanceUndefined,
+                "Engine instance is 'undefined'. It has already been shutdown.");
         }
     }
     /**
