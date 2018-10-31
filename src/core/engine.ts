@@ -274,16 +274,24 @@ export class Engine implements IMessageHandler {
         this._client = Client.Console; // Always CLI first
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
-            if (w.process !== undefined && w.process.versions !== undefined 
+            if (w.process !== undefined 
+                && w.process.versions !== undefined 
                 && w.process.versions.electron !== undefined) {
                 this._client = Client.Electron;
             }
             if (typeof(document) !== "undefined") {
                 this._client = Client.Browser;
-                if (args.rootElementId !== "") this._container = document.getElementById(args.rootElementId); 
-                // TODO: Container is not being set...
-                else this._container = document.getElementsByTagName("body")[0];
+                if (args.rootElementId !== "") {
+                    this._container = document.getElementById(args.rootElementId); 
+                } else {
+                    this._container = document.getElementsByTagName("body")[0];
+                }
+                LogDebug(`Engine's container: ${this._container}`);
+            } else {
+                LogError(ErrorCode.ContainerUndefined, "document undefined");
             }
+        } else {
+            LogError(ErrorCode.WindowUndefined, "window is not globally defined");
         }
         this._startTime = Date.now();
         this._last = this._startTime;
@@ -303,8 +311,8 @@ export class Engine implements IMessageHandler {
             LogCritical(ErrorCode.EngineInstanceUndefined, 
                 "Engine was not initialized immediately after constructor called");
         }
-        Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client);
-        Engine._instance!.gameWindow.start(this._instance!.container!);
+        Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client, Engine._instance!._container!);
+        Engine._instance!.gameWindow.start();
         Engine._instance!.gameWindow.title = args.title;
         Engine._running = true;
         Log("Engine started");

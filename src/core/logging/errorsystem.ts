@@ -24,6 +24,7 @@ export enum ErrorCode {
     ListenerUndefined,
     BrowserWindowUndefined = 300, // BrowserWindow Errors
     BrowserWindowDidNotClose,
+    ContainerUndefined,
     SceneUndefined = 400, // Scene Errors
     SceneNameUndefined,
     SceneManagerUndefined,
