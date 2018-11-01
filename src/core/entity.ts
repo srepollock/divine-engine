@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import { DObject } from "./dobject";
-import { ErrorCode, Log, LogError } from "./logging";
+import { ErrorCode, Log, LogError, LogWarning } from "./logging";
 
 /**
  * The entity objects position.
@@ -83,8 +83,7 @@ export class Entity extends DObject {
             entity.setParent(this);
             this.children!.push(entity);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already \
-                has child ${entity.id}");
+            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already has child ${entity.id}");
         }
     }
     /**
@@ -117,8 +116,7 @@ export class Entity extends DObject {
         if (!this.hasComponent(component.id)) {
             this.components!.push(component);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object 
-                alread has the ${component.id} attached.`);
+            LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object alread has the ${component.id} attached.`);
         }
     }
     /**
@@ -163,7 +161,7 @@ export class Entity extends DObject {
         if (entity !== undefined) { 
             return entity!;
         } else {
-            LogError(ErrorCode.EntityChildNotFound, "Component not found");
+            LogWarning(ErrorCode.EntityChildNotFound, "Component not found");
             return undefined;
         }
     }
