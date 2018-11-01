@@ -60,12 +60,15 @@ export class AssetManager extends DObject {
         return AssetManager.loadedAssets[name] !== undefined;
     }
     public static getAsset(name: string): IAsset | undefined {
-        if (AssetManager.loadedAssets[name] !== undefined) {
+        if (AssetManager.isAsstLoaded(name)) {
             return AssetManager.loadedAssets[name];
         } else {
             AssetManager.loadAsset(name); // NOTE: Names must be unique then.
+            if (AssetManager.isAssetLoaded(name)) { // NOTE: Now check if asset loaded
+                return AssetManager.loadedAssets[name];
+            }
         }
-        return undefined;
+        return undefined; // NOTE: Asset was not loaded
     }
     public static onAssetLoaded(asset: IAsset): void {
         AssetManager._loadedAssets[asset.name] = asset;
