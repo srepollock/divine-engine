@@ -44,6 +44,7 @@ export enum ErrorCode {
     AssetLoaderUninitialized = 700, // Asset Errors
     AssetManagerUndefined,
     NoFileExtension,
+    NoAssetName,
     LoadAssetFailed,
     JSONAssetNotLoaded,
     JSONDataUndefined,

@@ -1,6 +1,6 @@
 
 import { DObject } from "../dobject";
-import { ErrorCode, LogDebug, LogWarning } from "../logging";
+import { ErrorCode, LogDebug, LogError, LogWarning } from "../logging";
 import { AssetMessage, Message } from "../messagesystem/messages/";
 import { EventType, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
@@ -45,48 +45,103 @@ export class AssetManager extends DObject {
      * Can take a string or an Object (the direct object)
      * @param {string | object}: name
      */
-    public static loadAsset(name: string | Object): void {
+    public static loadAsset(name: string): void {
         try { 
-            if (name instanceof string) {
-                let fileExtension = name.split(".")!.pop()!.toLowerCase();
-                for (let l of AssetManager._loaders) {
-                    if (l.extensions.indexOf(fileExtension) !== -1) {
-                        l.loadAsset(name);
-                        return;
-                    }
+            let fileExtension = name.split(".")!.pop()!.toLowerCase();
+            for (let l of AssetManager._loaders) {
+                if (l.extensions.indexOf(fileExtension) !== -1) {
+                    l.loadAsset(name);
+                    return;
                 }
-            } else {
-                // REVIEW: Construct inner Asset class to load. This is dangerous...
-                class Asset extends IAsset {
-                    constructor(public name: string, public data: string) {}
-                }
-                this.onAssetLoaded(new Asset((name as Asset).name, (name as Asset).data));
             }
+            // } else {
+            //     // REVIEW: Construct inner Asset class to load. This is dangerous...
+            //     // class Asset implements IAsset {
+            //     //     constructor(public name: string, public data: string) {}
+            //     // }
+            //     // this.onAssetLoaded(new Asset((name as Asset).name, (name as Asset).data));
+            //     // return;
+            // }
         } catch (e) { 
             // tslint:disable-next-line:max-line-length
             LogWarning(ErrorCode.NoFileExtension, `File extension has no file ending ${name} given, continuing to read as a JSON file but may cause errors later.`);
         }
-        new JSONAssetLoader().loadAsset(name, false);
     }
+    /**
+     * Loads an an object into the AssetManager.
+     * This is a dangerous function as we can load any object then...
+     * NOTE: Data is a stringified object.
+     * @param  {object} obj Object **MUST** have a type of name
+     * @returns void
+     */
+    public static loadObjectAsset(obj: any): void {
+        if (obj === undefined) {
+            LogWarning(ErrorCode.JSONDataUndefined, "Object given to loadObjectAsset was undefined.");
+            return;
+        }
+        if (obj.name === undefined) {
+            LogError(ErrorCode.NoAssetName, `Object was given with no name: ${JSON.stringify(obj)}`);
+            return;
+        }
+        // REVIEW: Construct inner Asset class to load. This is dangerous...
+        class Asset implements IAsset {
+            constructor(public name: string, public data: string) {}
+        }
+        this.onAssetLoaded(new Asset(obj.name, JSON.stringify(obj)));
+        return;
+    }
+    /**
+     * Checks if the asset is loaded into the manager or not.
+     * @param  {string} name
+     * @returns boolean
+     */
     public static isAssetLoaded(name: string): boolean {
         return AssetManager.loadedAssets[name] !== undefined;
     }
+    /**
+     * Get's the asset from the manager if found, else try and load the asset and return the loaded asset.
+     * If no asset is found or no asset gets loaded, returns an undefined.
+     * @param  {string} name
+     * @returns IAsset
+     */
     public static getAsset(name: string): IAsset | undefined {
-        if (AssetManager.isAsstLoaded(name)) {
+        if (AssetManager.isAssetLoaded(name)) {
             return AssetManager.loadedAssets[name];
         } else {
             AssetManager.loadAsset(name); // NOTE: Names must be unique then.
             if (AssetManager.isAssetLoaded(name)) { // NOTE: Now check if asset loaded
                 return AssetManager.loadedAssets[name];
+            } else {
+                // tslint:disable-next-line:max-line-length
+                LogError(ErrorCode.LoadAssetFailed, "Get asset failed. Either the asset is not loaded or could not be loaded.");
             }
         }
         return undefined; // NOTE: Asset was not loaded
     }
+    /**
+     * Callback function from the AssetLoaders. This will load the given asset into the AssetManager.
+     * @param  {IAsset} asset
+     * @returns void
+     */
     public static onAssetLoaded(asset: IAsset): void {
         AssetManager._loadedAssets[asset.name] = asset;
         LogDebug(AssetManager._loadedAssets[asset.name].name);
         AssetManager.instance.sendMessage(EventType.IOSystem, 
             new AssetMessage(this, Priority.Normal, asset));
+    }
+    /**
+     * Calls the AssetManagers cleanup function.
+     * @returns void
+     */
+    public static shutdown(): void {
+        this._instance.cleanup();
+    }
+    /**
+     * Cleanups the loaded assets in the manager.
+     * @returns void
+     */
+    public cleanup(): void {
+        AssetManager._loadedAssets = {}; // NOTE: Unloads the assets.
     }
     /**
      * Sends message of event type to message system.
