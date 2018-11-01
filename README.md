@@ -25,23 +25,24 @@ Check out my tutorial on setting up a Typescript library, the first part of the 
 
 To use the Divine Engine, first setup a new NodeJS project
 
-`mkdir temp-project && cd temp-project && npm init`
+`Documents/projects/> mkdir temp-project && cd temp-project && npm init`
 
 > Note: (use `npm init -y` for a basic setup).
 
 Next install Typescript and the Divine Engine
 
 > The project is not yet up on npm. Use the codeblock after to run in your own app, or clone this repository to test the current engine.  
-> `git clone git@github.com:srepollock/divine-engine.git`
+> This will clone the project into your Documents/projects/ directory as divine-engine/
+> `Documents/projects/> git clone git@github.com:srepollock/divine-engine.git`
 
 ~~`npm i -D typescript divine-engine`~~
 
 ```sh
 # The project is not yet on NPM; use this to pull and test in your own project.
-# Clone into the parent directory of your project (not your project, the folder above it)
-git clone git@github.com:srepollock/divine-engine.git ./
-# From your project install the Engine
-npm i ../divine-engine
+# Clone into the parent directory of your project (not your project, the folder above it) 
+temp-project> git clone git@github.com:srepollock/divine-engine.git ../
+# From inside your project install the Engine
+Documents/temp-project/> npm i ../divine-engine
 ```
 
 Now you're all set and ready to go!
