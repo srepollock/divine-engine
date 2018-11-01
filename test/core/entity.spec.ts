@@ -9,28 +9,21 @@ describe("Entity unit testing", () => {
     });
     describe("Child entity objects", () => {
         it("should be instantiated with a parent ID", () => {
-            let child: Entity = new Entity();
-            child.setParent(entity);
+            let child: Entity = new Entity({parent: entity});
             expect(child.parent!.id).to.equal(entity.id);
         });
         it("should get 1 child entity object", () => {
-            let child = new Entity();
-            child.setParent(entity);
-            entity.addChild(child);
+            let child = new Entity({parent: entity, children: new Array(child)});
             expect(entity.getChild(child.id)).not.to.be.undefined;
             expect(entity.getChild(child.id)).to.deep.equal(child);
         });
         it("should have 1 child entity object", () => {
-            let child = new Entity();
-            child.setParent(entity);
-            entity.addChild(child);
+            let child = new Entity({parent: entity, children: new Array(child)});
             expect(entity.getChildren()).not.to.be.undefined;
             expect(entity.getChildren()).to.have.lengthOf(1) ;
         });
         it("should have a child that has the parent ID", () => {
-            let child = new Entity();
-            child.setParent(entity);
-            entity.addChild(child);
+            let child = new Entity({parent: entity, children: new Array(child)});
             expect(entity.getChildren()[0].parent!.id).to.equal(entity.id);
         });
     });
@@ -53,7 +46,7 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Entity object with tag", () => {
-        let go2: Entity = new Entity("template");
+        let go2: Entity = new Entity({tag: "template"});
         it("should have an tag: \"template\"", () => {
             expect(go2.tag).to.be.equal("template");
         });
@@ -68,7 +61,7 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Entity object with tag and new coordinates", () => {
-        let go3: Entity = new Entity("template", {x: 11, y: 23});
+        let go3: Entity = new Entity({tag: "template", transform: {x: 11, y: 23}});
         it("should have an empty tag", () => {
             expect(go3.tag).to.be.equal("template");
         });
@@ -83,11 +76,11 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Entity object with tag, new coordinates, and 1 component", () => {
-        let go4: Entity = new Entity("template", 
-            {x: 30, y: -10},
-            [new FlagComponent(new Transform(0, 0))],
-            []
-        );
+        let go4: Entity = new Entity({tag: "template", 
+            transform: {x: 30, y: -10},
+            components: new Array(new FlagComponent(new Transform(0, 0))),
+            children: new Array()
+        });
         it("should have an empty tag", () => {
             expect(go4.tag).to.be.equal("template");
         });
@@ -105,7 +98,7 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Add components to object", () => {
-        let go5: Entity = new Entity();
+        let go5: Entity = new Entity({});
         it("should add a new component", () => {
             go5.addComponent(new FlagComponent(new Transform(0, 0)));
             expect(go5.hasComponent("FlagComponent")).to.be.true;
