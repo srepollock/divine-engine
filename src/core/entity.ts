@@ -23,6 +23,9 @@ export class Transform {
  * and game object creation.
  */
 export class Entity extends DObject {
+    public transform: Transform = new Transform();
+    public components: Array<Component> = new Array();
+    public children: Array<Entity> = new Array();
     private _parent?: Entity;
     /**
      * Entity constructor
@@ -36,12 +39,17 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor(
+    constructor({
+        tag: string,
+        transform: Transform, 
+        components: Array<Component>,
+        children: Array<Entity>
+    }: {
         tag: string = "",
-        public transform: Transform = new Transform(), 
-        public components: Array<Component> = new Array(),
-        public children: Array<Entity> = new Array()
-    ) {
+        transform?: Transform, 
+        components?: Array<Component>,
+        children?: Array<Entity>
+    } = {}) {
         super(tag);
         this.transform = transform;
         this.components = components;
