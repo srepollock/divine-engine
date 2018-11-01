@@ -12,6 +12,20 @@ describe("Entity unit testing", () => {
             let child: Entity = new Entity({parent: entity});
             expect(child.parent!.id).to.equal(entity.id);
         });
+        it("should be able to add a child to the entity object", () => {
+            let child = new Entity({parent: entity});
+            let c1 = new Entity();
+            child.addChild(c1);
+            expect(child.getChild(c1.id));
+        });
+        it("should not be able to add the same object as a child twice", () => {
+            let child = new Entity({parent: entity});
+            let c1 = new Entity();
+            child.addChild(c1);
+            expect(child.getChild(c1.id));
+            child.addChild(c1);
+            expect(child.getChildren().length).to.equal(1);
+        });
         it("should get 1 child entity object", () => {
             let child = new Entity({parent: entity, children: new Array(child)});
             expect(entity.getChild(child.id)).not.to.be.undefined;
@@ -97,6 +111,16 @@ describe("Entity unit testing", () => {
             expect(go4.children).to.be.an("array").that.is.empty;
         });
     });
+    describe("Entity object with tag, and parent", () => {
+        let go6 = new Entity({tag: "player", parent: entity}); 
+        it("should have a parent", () => {
+            expect(go6.parent).to.not.be.undefined;
+        });
+        it("should be able to remove and have no parent", () => {
+            go6.removeParent();
+            expect(go6.parent).to.be.undefined;
+        });
+    });
     describe("Add components to object", () => {
         let go5: Entity = new Entity({});
         it("should add a new component", () => {
@@ -105,10 +129,12 @@ describe("Entity unit testing", () => {
         });
         it("should get the entities component that equals 1", () => {
             let comp = go5.getComponent("FlagComponent") as FlagComponent;
-            Log("" + comp.getFlagnumber());
+
             expect(comp.getFlagnumber()).to.equal(4);
         });
-        it("should add multiple components to the entity");
+        it("should add multiple components to the entity", () => {
+            go5.addComponents(new Array(new FlagComponent(new Transform(0,0)), new SoundComponent()));
+            expect(go5.getComponents().length).to.equal(2);            
+        });
     });
-    
 });
