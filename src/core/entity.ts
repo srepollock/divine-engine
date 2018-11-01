@@ -39,21 +39,17 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor({
-        tag: string,
-        transform: Transform, 
-        components: Array<Component>,
-        children: Array<Entity>
-    }: {
-        tag: string = "",
+    constructor({tag, transform, components, children}: {
+        tag?: string,
         transform?: Transform, 
         components?: Array<Component>,
         children?: Array<Entity>
     } = {}) {
         super(tag);
-        this.transform = transform;
-        this.components = components;
-        this.children = children;
+        this.transform = (transform) ? transform : new Transform();
+        this.components = (components) ? components : new Array();
+        this.children = (children) ? children : new Array();
+        for (let child in children) child.setParent(this);
     }
     /**
      * Gets the parent entity object.
