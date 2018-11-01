@@ -50,13 +50,14 @@ export class BaseSceneManager extends DObject implements SceneManager {
     }
     /**
      * Trys to load a scene from a file. If no scene is read, throws a Critical error.
-     * NOTE: SCENE NAMES MUST BE THE SAME AS THE FILENAMES
+     * Full file path.
      * @param  {string} filename Name of the scene.
      * @returns void
      */
     public loadScene(filename: string): Scene {
         // REVIEW: This needs to read from file.
         LogDebug(`Loading scene from file ${filename}`);
+        
         this._scene = this.buildSceneFromData(filename);
         LogDebug(JSON.stringify(this._scene));
         return this._scene;

@@ -117,7 +117,7 @@ export class Engine implements IMessageHandler {
      * @returns Scene
      */
     public static get scene(): Scene {
-        return Engine._instance!.scene;
+        return Engine._instance!.sceneManager.getScene();
     }
     /**
      * Gets the engine's started variable.
@@ -346,9 +346,9 @@ export class Engine implements IMessageHandler {
         // NOTE: If/else the scene is defined.
         (Engine._instance!.engineArguments.scene !== "") ? 
             // tslint:disable-next-line:max-line-length
-            Engine._instance!._scene = Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene) :
+            Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene) :
             // tslint:disable-next-line:max-line-length
-            Engine._instance!._scene = Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene);
+            Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene);
         Engine.play();
     }
     /**
