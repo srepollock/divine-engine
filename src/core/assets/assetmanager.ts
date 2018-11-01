@@ -41,14 +41,26 @@ export class AssetManager extends DObject {
     public static registerLoader(loader: IAssetLoader): void {
         AssetManager.loaders.push(loader);
     }
-    public static loadAsset(name: string): void {
+    /**
+     * Can take a string or an Object (the direct object)
+     * @param {string | object}: name
+     */
+    public static loadAsset(name: string | Object): void {
         try { 
-            let fileExtension = name.split(".")!.pop()!.toLowerCase();
-            for (let l of AssetManager._loaders) {
-                if (l.extensions.indexOf(fileExtension) !== -1) {
-                    l.loadAsset(name);
-                    return;
+            if (name instanceof string) {
+                let fileExtension = name.split(".")!.pop()!.toLowerCase();
+                for (let l of AssetManager._loaders) {
+                    if (l.extensions.indexOf(fileExtension) !== -1) {
+                        l.loadAsset(name);
+                        return;
+                    }
                 }
+            } else {
+                // REVIEW: Construct inner Asset class to load. This is dangerous...
+                class Asset extends IAsset {
+                    constructor(public name: string, public data: string) {}
+                }
+                this.onAssetLoaded(new Asset((name as Asset).name, (name as Asset).data));
             }
         } catch (e) { 
             // tslint:disable-next-line:max-line-length
@@ -60,12 +72,15 @@ export class AssetManager extends DObject {
         return AssetManager.loadedAssets[name] !== undefined;
     }
     public static getAsset(name: string): IAsset | undefined {
-        if (AssetManager.loadedAssets[name] !== undefined) {
+        if (AssetManager.isAsstLoaded(name)) {
             return AssetManager.loadedAssets[name];
         } else {
             AssetManager.loadAsset(name); // NOTE: Names must be unique then.
+            if (AssetManager.isAssetLoaded(name)) { // NOTE: Now check if asset loaded
+                return AssetManager.loadedAssets[name];
+            }
         }
-        return undefined;
+        return undefined; // NOTE: Asset was not loaded
     }
     public static onAssetLoaded(asset: IAsset): void {
         AssetManager._loadedAssets[asset.name] = asset;
