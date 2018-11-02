@@ -70,9 +70,9 @@ describe("Message System unit testing", () => {
         it("should have no listeners if none added", () => {
             expect(MessageSystem.allListenerCount()).to.equal(0);
         });
-        it("should throw an error if the instance is not defined and the get is called", () => {
+        it("should not throw an error if the instance is not defined and the get is called", () => {
             MessageSystem.shutdown();
-            expect(MessageSystem.instance).to.throw();
+            expect(() => {MessageSystem.instance; }).to.not.throw();
         });
         it("should add new listener of EventType.RenderSystem", () => {
             MessageSystem.addListener(EventType.RenderSystem, new Listener());

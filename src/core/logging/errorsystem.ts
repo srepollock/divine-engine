@@ -29,6 +29,7 @@ export enum ErrorCode {
     SceneNameUndefined,
     SceneManagerUndefined,
     SceneManagerCleanupFailed,
+    SceneNotLoaded,
     EntityInitialization = 500, // Entity Errors
     EntityParentUndefined,
     EntityAlreadyHasChild,
@@ -51,6 +52,7 @@ export enum ErrorCode {
     AssetManagerDidNotGetAsset,
     JSONLoaderPathImport,
     JSONLoaderFsImport,
+    JSONLoaderFsStat,
     FileDoesNotExist,
     FileDataUndefined,
     ErrorLoadingFile = 800, // Helper Function Errors

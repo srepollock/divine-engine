@@ -38,12 +38,17 @@ export class AssetManager extends DObject {
         AssetManager._loaders.push(new ImageAssetLoader());
         AssetManager._loaders.push(new JSONAssetLoader());
     }
+    /**
+     * Registers a new IAssetLoader to the AssetManager's list of loaders.
+     * @param  {IAssetLoader} loader
+     * @returns void
+     */
     public static registerLoader(loader: IAssetLoader): void {
         AssetManager.loaders.push(loader);
     }
     /**
-     * Can take a string or an Object (the direct object)
-     * @param {string | object}: name
+     * Load asset takes the full path of the file as a string.
+     * @param {string}: name
      */
     public static loadAsset(name: string): void {
         try { 
@@ -54,17 +59,10 @@ export class AssetManager extends DObject {
                     return;
                 }
             }
-            // } else {
-            //     // REVIEW: Construct inner Asset class to load. This is dangerous...
-            //     // class Asset implements IAsset {
-            //     //     constructor(public name: string, public data: string) {}
-            //     // }
-            //     // this.onAssetLoaded(new Asset((name as Asset).name, (name as Asset).data));
-            //     // return;
-            // }
+            throw new Error(); // NOTE: This will be caught
         } catch (e) { 
             // tslint:disable-next-line:max-line-length
-            LogWarning(ErrorCode.NoFileExtension, `File extension has no file ending ${name} given, continuing to read as a JSON file but may cause errors later.`);
+            LogWarning(ErrorCode.LoadAssetFailed, `AssetManager failed to load the asset: ${name}`);
         }
     }
     /**
@@ -106,6 +104,7 @@ export class AssetManager extends DObject {
      */
     public static getAsset(name: string): IAsset | undefined {
         if (AssetManager.isAssetLoaded(name)) {
+            LogDebug(`Found asset ${name}`);
             return AssetManager.loadedAssets[name];
         } else {
             AssetManager.loadAsset(name); // NOTE: Names must be unique then.
@@ -113,7 +112,7 @@ export class AssetManager extends DObject {
                 return AssetManager.loadedAssets[name];
             } else {
                 // tslint:disable-next-line:max-line-length
-                LogError(ErrorCode.LoadAssetFailed, "Get asset failed. Either the asset is not loaded or could not be loaded.");
+                LogError(ErrorCode.LoadAssetFailed, `Get asset failed. Either the asset is not loaded or could not be loaded. Filename: ${name}`);
             }
         }
         return undefined; // NOTE: Asset was not loaded
@@ -124,6 +123,7 @@ export class AssetManager extends DObject {
      * @returns void
      */
     public static onAssetLoaded(asset: IAsset): void {
+        LogDebug(`AssetManager loading asset: ${asset.name}`);
         AssetManager._loadedAssets[asset.name] = asset;
         LogDebug(AssetManager._loadedAssets[asset.name].name);
         AssetManager.instance.sendMessage(EventType.IOSystem, 

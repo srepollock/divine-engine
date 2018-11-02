@@ -1,6 +1,6 @@
 import { Engine } from "../engine"; // NOTE: this is now dependant on Engine?
 import { Client } from "../helper";
-import { ErrorCode, LogDebug, LogError, trace } from "../logging";
+import { ErrorCode, LogCritical, LogDebug, LogError, trace } from "../logging";
 import { AssetManager } from "./assetmanager";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
@@ -50,51 +50,21 @@ export class JSONAssetLoader implements IAssetLoader {
                 this.onJSONLoadedFs(this._path.basename(assetName, this._path.extname(assetName)), data);
             });
         } else if (Engine.client === Client.Console) {
-            LogDebug(`${Engine.client}`); // NOTE: 0 = Console, 1 = Browser, 2 = Electron
             try {
-                LogDebug(`JSONAssetLoader.loadAsset() assetName:${assetName}`);
+                let fileExtension = assetName.split(".")!.pop()!.toLowerCase();
+                // tslint:disable-next-line:max-line-length
+                if (fileExtension === undefined) LogCritical(ErrorCode.NoFileExtension, `No extension on file ${assetName}`);
                 this._fs = require("fs");
                 this._path = require("path");
                 var data: string | undefined;
-                this._fs.stat(assetName, "utf8", (err: any, stat: any) => {
-                    if (err == null) {
-                        this._fs.readFile(assetName, "utf8", (err: any, data: any) => {
-                            LogDebug(`File loaded ${assetName}`);
-                            this.onJSONLoadedFs(this._path.basename(assetName, this._path.extname(assetName)), data);
-                        });
-                    } else if (err.code === "ENOENT") {
-                        // tslint:disable-next-line:max-line-length
-                        LogError(ErrorCode.FileDoesNotExist, `Failed to read file ${this._path.join(__dirname, assetName)}. Does not exist`);
-                    } else {
-                        // tslint:disable-next-line:max-line-length
-                        LogError(ErrorCode.LoadAssetFailed, `Unknown file read error on ${this._path.join(__dirname, assetName)}. This could be a permissions error`);
+                this._fs.readFile(assetName, "utf8", (err: any, data: any) => {
+                    if (err) {
+                        throw new Error();
                     }
+                    LogDebug(`File loaded ${assetName}`);
+                    this.onJSONLoadedFs(this._path.basename(assetName, this._path.extname(assetName)), data);
+                    return;
                 });
-                // REVIEW: This is currently failing, but I want to change to a dynamic promise load later
-                // NOTE: ES6's optional imports. Must be enclosed in an if statement";
-                // import("fs")
-                // .then((fs) => {
-                //     LogDebug("Trying to read file");
-                //     fs.stat(assetName, (err: any, stat: any) => {
-                //         if (err == null) {
-                //             fs.readFile(assetName, "utf8", (err: any, data: any) => {
-                //                 this.onJSONLoadedFs(assetName, data);
-                //             });
-                //         } else if (err.code === "ENOENT") {
-                //             // tslint:disable-next-line:max-line-length
-                // tslint:disable-next-line:max-line-length
-                //             LogError(ErrorCode.FileDoesNotExist, `Failed to read file ${this._path.join(__dirname, assetName)}. Does not exist`);
-                //         } else {
-                //             // tslint:disable-next-line:max-line-length
-                // tslint:disable-next-line:max-line-length
-                //             LogError(ErrorCode.LoadAssetFailed, `Unknown file read error on ${this._path.join(__dirname, assetName)}. This could be a permissions error`);
-                //         }
-                //     });
-                // })
-                // .catch((error) => {
-                //     trace(error);
-                //     LogError(ErrorCode.JSONLoaderFsImport, "Promise error");
-                // });
             } catch (e) {
                 trace(e);
                 // tslint:disable-next-line:max-line-length
@@ -111,12 +81,12 @@ export class JSONAssetLoader implements IAssetLoader {
      * @returns void
      */
     private onJsonLoadedWeb( assetName: string, request: XMLHttpRequest ): void {
-        LogDebug( "onJsonLoaded: assetName/request" + assetName + request);
         if (request.readyState === request.DONE) {
             let json = JSON.parse(request.responseText);
             // TODO: Remove the extension from the file name if there is one. 
             //      Else, throw a warning that there is no ext
             let asset = new JSONAsset(assetName, json);
+            LogDebug(`Created asset: ${asset.name}`);
             AssetManager.onAssetLoaded(asset);
         } else {
             LogError(ErrorCode.AssetManagerDidNotGetAsset, "Did not load the file");
@@ -129,7 +99,6 @@ export class JSONAssetLoader implements IAssetLoader {
      * @returns void
      */
     private onJSONLoadedFs(assetName: string, data: string): void {
-        LogDebug("onJSONLoadedFs function");
         if (data === undefined) {
             LogError(ErrorCode.JSONDataUndefined, "onJSONLoadedFs was given undefined data");
         } else if (data !== undefined) {

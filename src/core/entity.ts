@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import { DObject } from "./dobject";
-import { ErrorCode, Log, LogError, LogWarning } from "./logging";
+import { ErrorCode, Log, LogDebug, LogError, LogWarning } from "./logging";
 
 /**
  * The entity objects position.
@@ -23,10 +23,10 @@ export class Transform {
  * and game object creation.
  */
 export class Entity extends DObject {
-    public transform: Transform = new Transform();
-    public components: Array<Component> = new Array();
-    public children: Array<Entity> = new Array();
-    private _parent?: Entity;
+    public transform: Transform;
+    public components: Array<Component>;
+    public children: Array<Entity>;
+    private _parent: string;
     /**
      * Entity constructor
      * @param id Entity's id for object uniqueness. Defaults to "".
@@ -49,35 +49,33 @@ export class Entity extends DObject {
         super(tag);
         this.transform = (transform) ? transform : new Transform();
         this.components = (components) ? components : new Array();
-        this._parent = (parent) ? parent : undefined;
+        LogDebug(`Setting parent of ${this.id} to ${parent}`);
+        this._parent = (parent) ? parent.id : "";
         this.children = (children) ? children : new Array();
         for (let i in this.children) this.children[i].setParent(this);
     }
     /**
-     * Gets the parent entity object.
-     * @returns Entity undefined if error.
+     * Gets the parent object's ID.
+     * @returns (parent object's ID | "")
      */
-    public get parent(): Entity | undefined {
-        if (this._parent === undefined) {
-            LogError(ErrorCode.EntityParentUndefined, "${this.id} has no parent");
-            return undefined;
-        } else {
-            return this._parent;
-        }
+    public get parent(): string {
+        if (this._parent !== "") return this._parent;
+        LogError(ErrorCode.EntityParentUndefined, `You tried to get the parent of ${this.id} that has no parent`);
+        return "";
     }
     /**
      * Sets parent object of entity.
      * @param  {Entity} entity
      */
     public setParent(entity: Entity): void {
-        this._parent = entity;
+        this._parent = entity.id;
     }
     /**
      * Removes the parent from the entity.
      * @returns void
      */
     public removeParent(): void {
-        this._parent = undefined;
+        this._parent = "";
     }
     /**
      * Adds a child to the array
@@ -89,7 +87,7 @@ export class Entity extends DObject {
             entity.setParent(this);
             this.children!.push(entity);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already has child ${entity.id}");
+            LogError(ErrorCode.EntityAlreadyHasChild, `${this.id} already has child ${entity.id}`);
         }
     }
     /**

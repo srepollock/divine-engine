@@ -10,6 +10,14 @@ export function guid(): string {
     return `${s4() + s4()}-${s4() + s4()}-${s4() + s4()}-${s4() + s4()}`;
 }
 /**
+ * Gets the filename from the filepath given.
+ * @param  {string} filepath
+ * @returns string
+ */
+export function filenameFromPath(filepath: string): string {
+    return filepath.substr(filepath.lastIndexOf("/") + 1).split(".")[0];
+}
+/**
  * Client that the engine is running on.
  */
 export enum Client {
