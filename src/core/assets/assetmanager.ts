@@ -1,14 +1,22 @@
+
 import { DObject } from "../dobject";
-import { ErrorCode, LogWarning } from "../logging";
-import { IMessageHandler } from "../messagesystem";
-import { AssetMessage } from "../messagesystem/assetmessage";
-import { EventType, Message, MessageSystem, Priority } from "../messagesystem/messagesystem";
+import { ErrorCode, LogDebug, LogError, LogWarning } from "../logging";
+import { AssetMessage, Message } from "../messagesystem/messages/";
+import { EventType, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
 import { JSONAssetLoader } from "./jsonassetloader";
 
-export class AssetManager extends DObject implements IMessageHandler {
+/**
+ * Asset Manager class
+ * Load Asset example:
+ * 1) When an asset is required, send a message to the IOSystem. ex: IOSystemMessage(data: filename)
+ * 2) IOSystem recieves message and calls AssetManager.load(filename); on complete, sends an AssetMessage
+ * 3) SceneManager recieves all AssetMessages (as the Scene in SceneManager will hold the loaded assets)
+ * 4) SceneManager.Scene contains the asset for updating
+ */
+export class AssetManager extends DObject {
     public static get loadedAssets(): {[name: string]: IAsset} {
         return AssetManager._loadedAssets;
     }
@@ -23,15 +31,20 @@ export class AssetManager extends DObject implements IMessageHandler {
     private static _loaders: IAssetLoader[] = [];
     public _subscriptions: Array<string> = new Array<string>();
     private constructor() {
-        super(); // Calls DObject
+        super();
     }
     public static initialize(): void {
+        AssetManager._instance = new AssetManager();
         AssetManager._loaders.push(new ImageAssetLoader());
         AssetManager._loaders.push(new JSONAssetLoader());
     }
     public static registerLoader(loader: IAssetLoader): void {
         AssetManager.loaders.push(loader);
     }
+    /**
+     * Can take a string or an Object (the direct object)
+     * @param {string | object}: name
+     */
     public static loadAsset(name: string): void {
         try { 
             let fileExtension = name.split(".")!.pop()!.toLowerCase();
@@ -41,27 +54,94 @@ export class AssetManager extends DObject implements IMessageHandler {
                     return;
                 }
             }
+            // } else {
+            //     // REVIEW: Construct inner Asset class to load. This is dangerous...
+            //     // class Asset implements IAsset {
+            //     //     constructor(public name: string, public data: string) {}
+            //     // }
+            //     // this.onAssetLoaded(new Asset((name as Asset).name, (name as Asset).data));
+            //     // return;
+            // }
         } catch (e) { 
-            LogWarning(ErrorCode.NoFileExtension, `File extension has no file ending ${name} given. \
-                continuing to read as a JSON file but may cause errors later.`);
+            // tslint:disable-next-line:max-line-length
+            LogWarning(ErrorCode.NoFileExtension, `File extension has no file ending ${name} given, continuing to read as a JSON file but may cause errors later.`);
         }
-        new JSONAssetLoader().loadAsset(name, false);
     }
+    /**
+     * Loads an an object into the AssetManager.
+     * This is a dangerous function as we can load any object then...
+     * NOTE: Data is a stringified object.
+     * @param  {object} obj Object **MUST** have a type of name
+     * @returns void
+     */
+    public static loadObjectAsset(obj: any): void {
+        if (obj === undefined) {
+            LogWarning(ErrorCode.JSONDataUndefined, "Object given to loadObjectAsset was undefined.");
+            return;
+        }
+        if (obj.name === undefined) {
+            LogError(ErrorCode.NoAssetName, `Object was given with no name: ${JSON.stringify(obj)}`);
+            return;
+        }
+        // REVIEW: Construct inner Asset class to load. This is dangerous...
+        class Asset implements IAsset {
+            constructor(public name: string, public data: string) {}
+        }
+        this.onAssetLoaded(new Asset(obj.name, JSON.stringify(obj)));
+        return;
+    }
+    /**
+     * Checks if the asset is loaded into the manager or not.
+     * @param  {string} name
+     * @returns boolean
+     */
     public static isAssetLoaded(name: string): boolean {
         return AssetManager.loadedAssets[name] !== undefined;
     }
+    /**
+     * Get's the asset from the manager if found, else try and load the asset and return the loaded asset.
+     * If no asset is found or no asset gets loaded, returns an undefined.
+     * @param  {string} name
+     * @returns IAsset
+     */
     public static getAsset(name: string): IAsset | undefined {
-        if (AssetManager.loadedAssets[name] !== undefined) {
+        if (AssetManager.isAssetLoaded(name)) {
             return AssetManager.loadedAssets[name];
         } else {
             AssetManager.loadAsset(name); // NOTE: Names must be unique then.
+            if (AssetManager.isAssetLoaded(name)) { // NOTE: Now check if asset loaded
+                return AssetManager.loadedAssets[name];
+            } else {
+                // tslint:disable-next-line:max-line-length
+                LogError(ErrorCode.LoadAssetFailed, "Get asset failed. Either the asset is not loaded or could not be loaded.");
+            }
         }
-        return undefined;
+        return undefined; // NOTE: Asset was not loaded
     }
+    /**
+     * Callback function from the AssetLoaders. This will load the given asset into the AssetManager.
+     * @param  {IAsset} asset
+     * @returns void
+     */
     public static onAssetLoaded(asset: IAsset): void {
         AssetManager._loadedAssets[asset.name] = asset;
+        LogDebug(AssetManager._loadedAssets[asset.name].name);
         AssetManager.instance.sendMessage(EventType.IOSystem, 
             new AssetMessage(this, Priority.Normal, asset));
+    }
+    /**
+     * Calls the AssetManagers cleanup function.
+     * @returns void
+     */
+    public static shutdown(): void {
+        this._instance.cleanup();
+    }
+    /**
+     * Cleanups the loaded assets in the manager.
+     * @returns void
+     */
+    public cleanup(): void {
+        AssetManager._loadedAssets = {}; // NOTE: Unloads the assets.
     }
     /**
      * Sends message of event type to message system.
@@ -73,11 +153,11 @@ export class AssetManager extends DObject implements IMessageHandler {
         MessageSystem.sendMessage(event, message);
     }
     /**
-     * Handles messages that this class subscribes to.
-     * @param  {Message} message
+     * Called when the asset is loaded.
+     * @param  {IAsset} asset
      * @returns void
      */
-    public onMessage(message: Message): void {
-        // TODO: Write message handler for this class
+    public onAssetLoaded(asset: IAsset): void {
+        AssetManager._loadedAssets[asset.name] = asset;
     }
 }

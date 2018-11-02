@@ -5,7 +5,7 @@ node_modules/
 .rpt2_cache/
 
 # Istanbul Coverage
-.nyc_output/
+
 
 # Typescript build files
 build/

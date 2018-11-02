@@ -1,4 +1,3 @@
-
 /**
  * Unique message ID.
  */
@@ -17,6 +16,14 @@ export enum Client {
     Console, // Mocha tests
     Browser, // Web/Mobile
     Electron // Desktop
+}
+/**
+ * Key Codes for keyboard input.
+ */
+export enum KeyCode {
+    A,
+    B,
+    C,
 }
 export class Point {
     constructor(public x: number = 0, public y: number = 0) {

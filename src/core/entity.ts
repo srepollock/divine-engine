@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import { DObject } from "./dobject";
-import { ErrorCode, Log, LogError } from "./logging";
+import { ErrorCode, Log, LogError, LogWarning } from "./logging";
 
 /**
  * The entity objects position.
@@ -23,6 +23,9 @@ export class Transform {
  * and game object creation.
  */
 export class Entity extends DObject {
+    public transform: Transform = new Transform();
+    public components: Array<Component> = new Array();
+    public children: Array<Entity> = new Array();
     private _parent?: Entity;
     /**
      * Entity constructor
@@ -36,16 +39,19 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor(
-        tag: string = "",
-        public transform: Transform = new Transform(), 
-        public components: Array<Component> = new Array(),
-        public children: Array<Entity> = new Array()
-    ) {
+    constructor({tag, transform, components, parent, children}: {
+        tag?: string,
+        transform?: Transform, 
+        components?: Array<Component>,
+        parent?: Entity,
+        children?: Array<Entity>
+    } = {}) {
         super(tag);
-        this.transform = transform;
-        this.components = components;
-        this.children = children;
+        this.transform = (transform) ? transform : new Transform();
+        this.components = (components) ? components : new Array();
+        this._parent = (parent) ? parent : undefined;
+        this.children = (children) ? children : new Array();
+        for (let i in this.children) this.children[i].setParent(this);
     }
     /**
      * Gets the parent entity object.
@@ -53,7 +59,7 @@ export class Entity extends DObject {
      */
     public get parent(): Entity | undefined {
         if (this._parent === undefined) {
-            LogError(ErrorCode.EntityParentUndefined, "${this.guid} has no parent");
+            LogError(ErrorCode.EntityParentUndefined, "${this.id} has no parent");
             return undefined;
         } else {
             return this._parent;
@@ -79,12 +85,11 @@ export class Entity extends DObject {
      * @returns void
      */
     public addChild(entity: Entity): void {
-        if (!this.hasChild(entity.guid)) {
+        if (!this.hasChild(entity.id)) {
             entity.setParent(this);
             this.children!.push(entity);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasChild, "${this.guid} already \
-                has child ${entity.guid}");
+            LogError(ErrorCode.EntityAlreadyHasChild, "${this.id} already has child ${entity.id}");
         }
     }
     /**
@@ -114,11 +119,11 @@ export class Entity extends DObject {
          * have to be some sort of indexing on the object if this is the case 
          * or there needs to be another identifier on the object?
          */
-        if (!this.hasComponent(component.guid)) {
+        if (!this.hasComponent(component.id)) {
             this.components!.push(component);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object 
-                alread has the ${component.guid} attached.`);
+            // tslint:disable-next-line:max-line-length
+            LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object alread has the ${component.id} attached.`);
         }
     }
     /**
@@ -137,7 +142,7 @@ export class Entity extends DObject {
      * @returns boolean
      */
     public hasChild(id: string): boolean {
-        let entity = this.children.find((e) => e.guid === id);
+        let entity = this.children.find((e) => e.id === id);
         if (entity !== undefined) return true;
         else return false;
     }
@@ -159,11 +164,11 @@ export class Entity extends DObject {
      * @returns Entity
      */
     public getChild(id: string): Entity | undefined {
-        let entity = this.children!.find((entity) => entity.guid === id);
+        let entity = this.children!.find((entity) => entity.id === id);
         if (entity !== undefined) { 
             return entity!;
         } else {
-            LogError(ErrorCode.EntityChildNotFound, "Component not found");
+            LogWarning(ErrorCode.EntityChildNotFound, "Component not found");
             return undefined;
         }
     }
@@ -193,7 +198,7 @@ export class Entity extends DObject {
      * @returns string
      */
     public toString(): string {
-        let objectString = `Entity [id:${this.guid}]`;
+        let objectString = `Entity [id:${this.id}]`;
         Log(objectString);
         return objectString;
     }

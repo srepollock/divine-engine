@@ -6,7 +6,7 @@ export interface Window {
     screen: Electron.Screen | undefined;
     title: string;
     client: Client;
-    start(container: HTMLElement): void;
+    start(): void;
     update(): void;
     refresh(): void;
     resize(height: number, width: number): void;

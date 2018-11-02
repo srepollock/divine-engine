@@ -59,8 +59,8 @@ export class GameWindow implements Window {
                 this.container = container;
             } else {
                 this.container = undefined;
-                LogError(ErrorCode.BrowserWindowUndefined, "Container undefiend in GameWindow");
-                throw ErrorCode.BrowserWindowUndefined;
+                // TODO: This is hitting...
+                LogError(ErrorCode.BrowserWindowUndefined, "Container undefined in GameWindow");
             }
         }
     }
@@ -69,8 +69,8 @@ export class GameWindow implements Window {
      * @param  {HTMLElement} container
      * @returns void
      */
-    public start(container: HTMLElement): void {
-        this.container = container;
+    public start(): void {
+        
     }
     /**
      * Window instance's update method.
@@ -103,6 +103,11 @@ export class GameWindow implements Window {
     public close(): void {
         this.browserWindow!.close();
     }
+    /**
+     * Stops the game window from running/updating.
+     * REVIEW: Is this necessary? Updating is handled by the render system.
+     * @returns void
+     */
     public stop(): void {
         GameWindow._started = false;
     }

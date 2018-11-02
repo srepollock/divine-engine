@@ -7,8 +7,8 @@ export enum ErrorCode {
     Error, // General Errors
     DocumentUndefined,
     EngineInitialization = 100, // Engine Errors
-    EngineInstanceNull,
-    EngineInstanceNotNull,
+    EngineInstanceUndefined,
+    EngineInstanceNotUndefined,
     EngineClientNotSet,
     EngineWindowUndefined,
     EngineStartedEarly,
@@ -24,6 +24,7 @@ export enum ErrorCode {
     ListenerUndefined,
     BrowserWindowUndefined = 300, // BrowserWindow Errors
     BrowserWindowDidNotClose,
+    ContainerUndefined,
     SceneUndefined = 400, // Scene Errors
     SceneNameUndefined,
     SceneManagerUndefined,
@@ -40,9 +41,19 @@ export enum ErrorCode {
     RenderSystemCleanupFailed,
     WindowUndefined, // Window Errors
     GameWindowUndefined,
-    AssetLoaderUninitialized = 700, // AssetLoader
+    AssetLoaderUninitialized = 700, // Asset Errors
+    AssetManagerUndefined,
     NoFileExtension,
-    ErrorLoadingFile, // Helper Function Errors
+    NoAssetName,
+    LoadAssetFailed,
+    JSONAssetNotLoaded,
+    JSONDataUndefined,
+    AssetManagerDidNotGetAsset,
+    JSONLoaderPathImport,
+    JSONLoaderFsImport,
+    FileDoesNotExist,
+    FileDataUndefined,
+    ErrorLoadingFile = 800, // Helper Function Errors
     ReadJSONFile,
     WriteJSONFile,
     FileContentsNotRead,
@@ -102,4 +113,12 @@ export function LogWarning(ec: ErrorCode, data: string): string {
     const errorString = `Warn\t|| ${ec} || ${ErrorCode[ec]}: ${data}`;
     console.log("\t", "\x1b[33m", errorString, "\x1b[0m");
     return errorString;
+}
+/**
+ * Prints the error as a trace to the console.
+ * @param  {Error} e Error to trace
+ * @returns void
+ */
+export function trace(e: Error): void {
+    console.trace(e);
 }

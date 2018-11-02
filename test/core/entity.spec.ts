@@ -9,27 +9,36 @@ describe("Entity unit testing", () => {
     });
     describe("Child entity objects", () => {
         it("should be instantiated with a parent ID", () => {
-            let child: Entity = new Entity();
-            child.setParent(entity);
-            expect(child.parent!.guid).to.equal(entity.guid);
+            let child: Entity = new Entity({parent: entity});
+            expect(child.parent!.id).to.equal(entity.id);
+        });
+        it("should be able to add a child to the entity object", () => {
+            let child = new Entity({parent: entity});
+            let c1 = new Entity();
+            child.addChild(c1);
+            expect(child.getChild(c1.id));
+        });
+        it("should not be able to add the same object as a child twice", () => {
+            let child = new Entity({parent: entity});
+            let c1 = new Entity();
+            child.addChild(c1);
+            expect(child.getChild(c1.id));
+            child.addChild(c1);
+            expect(child.getChildren().length).to.equal(1);
         });
         it("should get 1 child entity object", () => {
-            let child = new Entity();
-            child.setParent(entity);
-            entity.addChild(child);
-            expect(entity.getChild(child.guid)).to.deep.equal(child);
+            let child = new Entity({parent: entity, children: new Array(child)});
+            expect(entity.getChild(child.id)).not.to.be.undefined;
+            expect(entity.getChild(child.id)).to.deep.equal(child);
         });
         it("should have 1 child entity object", () => {
-            let child = new Entity();
-            child.setParent(entity);
-            entity.addChild(child);
+            let child = new Entity({parent: entity, children: new Array(child)});
+            expect(entity.getChildren()).not.to.be.undefined;
             expect(entity.getChildren()).to.have.lengthOf(1) ;
         });
         it("should have a child that has the parent ID", () => {
-            let child = new Entity();
-            child.setParent(entity);
-            entity.addChild(child);
-            expect(entity.getChildren()[0].parent!.guid).to.equal(entity.guid);
+            let child = new Entity({parent: entity, children: new Array(child)});
+            expect(entity.getChildren()[0].parent!.id).to.equal(entity.id);
         });
     });
     describe("Empty Entity object", () => {
@@ -51,7 +60,7 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Entity object with tag", () => {
-        let go2: Entity = new Entity("template");
+        let go2: Entity = new Entity({tag: "template"});
         it("should have an tag: \"template\"", () => {
             expect(go2.tag).to.be.equal("template");
         });
@@ -66,7 +75,7 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Entity object with tag and new coordinates", () => {
-        let go3: Entity = new Entity("template", {x: 11, y: 23});
+        let go3: Entity = new Entity({tag: "template", transform: {x: 11, y: 23}});
         it("should have an empty tag", () => {
             expect(go3.tag).to.be.equal("template");
         });
@@ -81,11 +90,11 @@ describe("Entity unit testing", () => {
         });
     });
     describe("Entity object with tag, new coordinates, and 1 component", () => {
-        let go4: Entity = new Entity("template", 
-            {x: 30, y: -10},
-            [new FlagComponent(new Transform(0, 0))],
-            []
-        );
+        let go4: Entity = new Entity({tag: "template", 
+            transform: {x: 30, y: -10},
+            components: new Array(new FlagComponent(new Transform(0, 0))),
+            children: new Array()
+        });
         it("should have an empty tag", () => {
             expect(go4.tag).to.be.equal("template");
         });
@@ -102,18 +111,30 @@ describe("Entity unit testing", () => {
             expect(go4.children).to.be.an("array").that.is.empty;
         });
     });
+    describe("Entity object with tag, and parent", () => {
+        let go6 = new Entity({tag: "player", parent: entity}); 
+        it("should have a parent", () => {
+            expect(go6.parent).to.not.be.undefined;
+        });
+        it("should be able to remove and have no parent", () => {
+            go6.removeParent();
+            expect(go6.parent).to.be.undefined;
+        });
+    });
     describe("Add components to object", () => {
-        let go5: Entity = new Entity();
+        let go5: Entity = new Entity({});
         it("should add a new component", () => {
             go5.addComponent(new FlagComponent(new Transform(0, 0)));
             expect(go5.hasComponent("FlagComponent")).to.be.true;
         });
         it("should get the entities component that equals 1", () => {
             let comp = go5.getComponent("FlagComponent") as FlagComponent;
-            Log("" + comp.getFlagnumber());
+
             expect(comp.getFlagnumber()).to.equal(4);
         });
-        it("should add multiple components to the entity");
+        it("should add multiple components to the entity", () => {
+            go5.addComponents(new Array(new FlagComponent(new Transform(0,0)), new SoundComponent()));
+            expect(go5.getComponents().length).to.equal(2);            
+        });
     });
-    
 });

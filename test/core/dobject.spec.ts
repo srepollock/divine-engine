@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import "mocha";
+// tslint:disable-next-line:max-line-length
 import { DObject, Engine, EngineArguments, Entity, EventType, Message, MessageSystem, TestMessage, Transform } from "../../src";
 
 describe("DObject unit testing", () => {
@@ -8,8 +9,8 @@ describe("DObject unit testing", () => {
         beforeEach(() => {
             obj = new DObject();
         });
-        it("should have an guid", () => {
-            expect(obj.guid).to.not.equal("");
+        it("should have an id", () => {
+            expect(obj.id).to.not.equal("");
         });
         it("should have no tag", () => {
             expect(obj.tag).to.equal("");

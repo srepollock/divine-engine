@@ -1,0 +1,3 @@
+describe("Image Asset loader", () => {
+
+});

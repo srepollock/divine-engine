@@ -1,8 +1,8 @@
-import { guid, Point } from "../helper";
 import { System } from "../isystem";
 import { ErrorCode, Log, LogCritical, LogDebug, LogWarning } from "../logging";
 import { IMessageHandler } from "./imessagehandler";
 import { MessageReceiver } from "./messagereceiver";
+import { Message } from "./messages/message";
 
 
 /**
@@ -45,13 +45,6 @@ export class MessageSystem implements System {
     public static initialize(): void {
         MessageSystem._instance = new MessageSystem();
         this.removeAllListeners();
-    }
-    /**
-     * Returns the count of all listeners in the system.
-     * @returns number
-     */
-    public static allListeners(): number {
-        return -1;
     }
     /**
      * @param  {EventType} et
@@ -102,7 +95,7 @@ export class MessageSystem implements System {
     public static listenerCount(type: EventType | string): number {
         var count: number = 0;
         for (let i in MessageSystem.listeners) {
-            if (i !== undefined && i === type) { // DEBUG: i should be the EventType
+            if (i !== undefined && i === type) {
                 for (let k of MessageSystem.listeners[i]) {
                     count++;
                 }
@@ -164,12 +157,33 @@ export class MessageSystem implements System {
             MessageSystem.listeners = {};
         }
     }
+    /** 
+     * Static call to the instances start function.
+     * @returns void
+     */
+    public static start(): void {
+        MessageSystem.instance!.start();
+    }
+    /**
+     * Static call to the instances stop function.
+     * @returns void
+     */
+    public static stop(): void {
+        MessageSystem.instance!.stop();
+    }
+    /**
+     * Static call to the instances shutdown function.
+     * @returns void
+     */
+    public static shutdown(): void {
+        MessageSystem.instance!.shutdown();
+    }
     /**
      * Begins the message system. REVIEW: is this needed?
      * @returns void
      */
     public start(): void {
-
+        
     }
     /**
      * Stops the message system. REVIEW: is this needed?
@@ -185,6 +199,11 @@ export class MessageSystem implements System {
     public shutdown(): void {
         MessageSystem.instance!.cleanup();
     }
+    /**
+     * Message system's update function. This is called first during the main engine's update.
+     * @param  {number} delta current delta time to use for calculations.
+     * @returns void
+     */
     public update(delta: number): void {
         if ( MessageSystem._normalMessageQueue.length === 0 ) {
             return;
@@ -232,167 +251,4 @@ export enum Priority {
     Normal,
     Hgih,
     Urgent
-}
-
-/**
- *              ------------
- *              CORE CLASSES
- *              ------------
- *  Notes:
- *  ------
- *  
- *  These are all the core Messages that the system will handle. The 
- *  messages here correspond with the enumerator class `EventType` defined in 
- *  `messagesystem.ts`. For your own messages and message types, please save an
- *  enumerated list in your own message types file and extend these classes 
- *  there as well. 
- *  
- *  Instructions:
- *  -------------
- *  All messages must implement thier own constructor or else they will not 
- *  parse correctly.
- */
-/**
- * Message object.
- * The data is saved as a JSON object in string format. It will be parsed based
- * on it's message type. Listeners have a specific format based on interface.
- */
-export class Message {    
-    // Unique message ID. Parse the current time to a hash.
-    private _id: string;
-    private _sender: any;
-    private _priority: Priority;
-    private _data: string;
-    constructor(sender: any, priority: Priority, data: string = "") {
-        this._id = guid();
-        this._sender = sender;
-        this._priority = priority;
-        this._data = data;
-    }
-    public get id(): string {
-        return this._id;
-    }
-    public get sender(): any {
-        return this._sender;
-    }
-    public get priority(): Priority {
-        return this._priority;
-    }
-    public get data(): string {
-        return this._data;
-    }
-    /**
-     * Returns the data as a JSON string object.
-     * @returns string
-     */
-    public get JSONString(): string {
-        return JSON.stringify(this);
-    }
-    /**
-     * Returns the JSON object.
-     * @returns JSON
-     */
-    public get JSON(): JSON {
-        return JSON.parse(JSON.stringify(this));
-    }
-}
-
-/** 
- * Testing message for empty messages.
- */
-export class TestMessage extends Message {
-    constructor(data?: string) {
-        super("TestMessage", Priority.Low, data);
-    }
-}
-
-/**
- * Base message data interface(class).
- * All messages must extend from this class.
- *  
- *  data: is a JSON string object.
- */
-
-/**
- * EntityMessages interface. 
- * All entity messages must extend this interface.
- */
-export class EntityMessage extends Message {
-    constructor(data?: string) {
-        super("EntityMessage", Priority.Normal, data);
-    }
-}
-
-/**
- * IO system message interface. 
- * All io messages must extend this class.
- */
-export class IOSystemMessage extends Message {
-    constructor(data?: string) {
-        super("IOSystemMessage", Priority.Normal, data);
-    }
-}
-
-/**
- * Physics system message interface. 
- * All physics messages must extend this interface.
- */
-export class PhysicsSystemMessage extends Message {
-    constructor(data?: string) {
-        super("PhysicsSystemMessage", Priority.Urgent, data);
-    }
-}
-
-/**
- * Render system message  interface. 
- * All render messages must extend this interface.
- */
-export class RenderSystemMessage extends Message {
-    constructor(data?: string) {
-        super("RenderSystemMessage", Priority.Urgent, data);
-    }
-}
-
-/**
- * Sound system message interface. 
- * All sound messages must extend this interface.
- */
-export class SoundSystemMessage extends Message {
-    constructor(data?: string) {
-        super("SoundSystemMessage", Priority.Normal, data);
-    }
-}
-/**             ----------------
- *              END CORE CLASSES
- *              ----------------
- */
-/**
- * Key input message interface.
- * For listeners, use 'keydown', 'keypress', 'keyup' events, just like standard
- * Javascript
- */
-export class KeyInputMessage extends IOSystemMessage {
-    constructor( public code: string) {
-        super();
-        this.code = code;
-    }
-}
-/**
- * Mouse input message interface.
- */
-export class MouseInputMessage extends IOSystemMessage {
-    constructor(x: number, y: number) {
-        super(JSON.stringify(new Point(x, y)));
-    }
-}
-/**
- * Touch input message interface.
- */
-export class TouchInputMessage extends IOSystemMessage {
-    constructor( public x: number, 
-        public y: number) {
-        super();
-        this.x = x;
-        this. y = y;
-    }
 }
