@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as path from "path";
-import { AssetManager, Engine, EngineArguments, JSONAssetLoader, Scene } from "../../../src";
+import { AssetManager, Engine, EngineArguments, JSONAssetLoader, LogDebug, Scene } from "../../../src";
 
 describe("Asset Manager unit tests", () => {
     before(() => {
@@ -22,13 +22,14 @@ describe("Asset Manager unit tests", () => {
     it("should not throw an error when trying to load an asset that is not found", () => {
         expect(() => {AssetManager.loadAsset("temp"); }).to.not.throw();
     });
-    it("should not throw an error when giving an object to load", () => {
+    it("should not throw an error when given an object to load", () => {
         var tempScene = new Scene("temp");
         // tslint:disable-next-line:max-line-length
         expect(() => {AssetManager.loadObjectAsset({name: tempScene.title, data: JSON.stringify(tempScene)}); }).to.not.throw();
         expect(AssetManager.isAssetLoaded(tempScene.title)).to.be.true;
     });
     it("should return true that asset \"temp\" is loaded", () => {
+        LogDebug(AssetManager.isAssetLoaded("temp"));
         expect(AssetManager.isAssetLoaded("temp")).to.be.true;
     });
     it("should not load an asset from file if given just the asset name", () => {
@@ -39,6 +40,7 @@ describe("Asset Manager unit tests", () => {
         this.timeout(15000);
         expect(() => { AssetManager.loadAsset(path.resolve(__dirname, "./testscene.json")); }).to.not.throw();
         expect(AssetManager.loadedAssets).to.not.be.undefined; 
+        LogDebug(`${JSON.stringify(AssetManager.loadedAssets)}`);
         expect(AssetManager.getAsset("testscene")).to.not.be.undefined;
         expect(AssetManager.getAsset("testscene").name).to.equal("testscene");
     });

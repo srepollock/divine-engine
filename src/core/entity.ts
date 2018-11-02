@@ -51,7 +51,7 @@ export class Entity extends DObject {
         this.components = (components) ? components : new Array();
         this._parent = (parent) ? parent : undefined;
         this.children = (children) ? children : new Array();
-        for (let child in children) child.setParent(this);
+        for (let i in this.children) this.children[i].setParent(this);
     }
     /**
      * Gets the parent entity object.
@@ -122,6 +122,7 @@ export class Entity extends DObject {
         if (!this.hasComponent(component.id)) {
             this.components!.push(component);
         } else {
+            // tslint:disable-next-line:max-line-length
             LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object alread has the ${component.id} attached.`);
         }
     }
