@@ -5,10 +5,7 @@ node_modules/
 .rpt2_cache/
 
 # Istanbul Coverage
-.nyc_output/
-coverage.lcov
-coverage/
-*.lcov
+
 
 # Typescript build files
 build/
