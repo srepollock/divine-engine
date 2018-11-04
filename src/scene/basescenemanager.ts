@@ -50,8 +50,7 @@ export class BaseSceneManager extends DObject implements SceneManager {
     }
     /**
      * Trys to load a scene from a file. If no scene is read, throws a Critical error.
-     * Full file path.
-     * @param  {string} filename Name of the scene.
+     * @param  {string} filename Full file path.
      * @returns void
      */
     public loadScene(filename: string): Scene {
@@ -73,8 +72,8 @@ export class BaseSceneManager extends DObject implements SceneManager {
             this.cleanup();
         } catch (e) {
             console.trace(e);
-            LogCritical(ErrorCode.SceneManagerCleanupFailed, "Engine's cleanup failed. The engine did not garbage "
-                + "collect properly.");
+            // tslint:disable-next-line:max-line-length
+            LogCritical(ErrorCode.SceneManagerCleanupFailed, "Engine's cleanup failed. The engine did not garbage collect properly.");
         }
     }
     /**
