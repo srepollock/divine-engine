@@ -1,4 +1,3 @@
-import { BaseSceneManager, SceneManager } from "../scene";
 import { AssetManager } from "./assets";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
@@ -8,8 +7,10 @@ import { IMessageHandler } from "./messagesystem";
 import { Message } from "./messagesystem/messages";
 import { MessageSystem } from "./messagesystem/messagesystem";
 import { RenderSystem } from "./render/rendersystem";
-import { Scene } from "./scene";
+import { BaseSceneManager, SceneManager } from "./scene";
+import { Scene } from "./scene/scene";
 import { Window } from "./window";
+
 /** 
  * Engine arguments for setup.
  */
@@ -227,25 +228,25 @@ export class Engine implements IMessageHandler {
     public set sceneManager(sceneManager: SceneManager) {
         this._sceneManager = sceneManager;
     }
-    private static _instance: Engine | undefined = undefined;
-    private static _started: boolean = false;
-    private static _running: boolean = false;
     private static _exit: boolean = false;
+    private static _instance: Engine | undefined = undefined;
+    private static _running: boolean = false;
+    private static _started: boolean = false;
+    private _client: Client;
     private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
-    private _client: Client;
-    private _id: string;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
-    private _now: number = 0;
-    private _last: number = 0;
+    private _gameWindow: GameWindow | undefined = undefined;
     private _height: number = 0;
-    private _scene: Scene | undefined = undefined;
+    private _id: string;
+    private _last: number = 0;
+    private _now: number = 0;
+    private _physicsSystem: PhysicsSystem | undefined = undefined;
+    private _renderSystem: RenderSystem | undefined = undefined;
     private _sceneManager: SceneManager | undefined = undefined;
     private _startTime: number;
-    private _renderSystem: RenderSystem | undefined = undefined;
     private _width: number = 0;
-    private _gameWindow: GameWindow | undefined = undefined;
     /**
      * Initializes an Engine object.
      */
@@ -270,9 +271,8 @@ export class Engine implements IMessageHandler {
                 "The engine instance must be started from the start function");
             Engine._exit = true;
         }
-        Engine._instance = this; // NOTE: Sets the engine instance.
-        // Set Client NOTE: should this be in a build script?
-        this._client = Client.Console; // Always CLI first
+        Engine._instance = this;
+        this._client = Client.Console; // NOTE: Always CLI first; Default
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
             if (w.process !== undefined 
@@ -289,10 +289,11 @@ export class Engine implements IMessageHandler {
                 }
                 LogDebug(`Engine's container: ${this._container}`);
             } else {
-                LogError(ErrorCode.ContainerUndefined, "document undefined");
+                LogCritical(ErrorCode.ContainerUndefined, "the 'document' object is undefined");
             }
         } else {
-            LogError(ErrorCode.WindowUndefined, "window is not globally defined");
+            LogCritical(ErrorCode.WindowUndefined, "the 'window' object is not globally defined. If using Electron,"
+                + " make sure you are calling this in the render process");
         }
         this._startTime = Date.now();
         this._last = this._startTime;
@@ -410,8 +411,8 @@ export class Engine implements IMessageHandler {
             this._instance = undefined;
             LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
         } else {
-            LogWarning(ErrorCode.EngineInstanceUndefined,
-                "Engine instance is 'undefined'. It has already been shutdown.");
+            // tslint:disable-next-line:max-line-length
+            LogWarning(ErrorCode.EngineInstanceUndefined, "Engine instance is 'undefined'. It has already been shutdown.");
         }
     }
     /**
@@ -449,11 +450,11 @@ export class Engine implements IMessageHandler {
          */
         // LogDebug(`Update loop | delta = ${delta}`);
         this._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
-        // this._ioSystem.update(delta); // NOTE: IO messages
-        // this._scene.update(delta); // NOTE: Calls scene update
-        // this._physicsSystem.update(delta); // NOTE: Physics messages handled
-        // this._soundSystem.update(delta); // NOTE: Sound messages handled
-        // this._renderSystem.update(delta); // NOTE: Render system udpated.
+        // this._ioSystem!.update(delta); // NOTE: IO messages
+        this._sceneManager!.update(delta); // NOTE: Calls scene update
+        this._physicsSystem!.update(delta); // NOTE: Physics messages handled
+        this._soundSystem!.update(delta); // NOTE: Sound messages handled
+        this._renderSystem!.update(delta); // NOTE: Render system udpated.
     }
     /**
      * 3 Game loops??

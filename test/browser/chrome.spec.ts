@@ -33,6 +33,12 @@ describe("Chrome testing", () => {
         });
     });
 
+    it("should have a canvas element attached from the render system", () => {
+        page.evaluate(() => {
+
+        });
+    });
+
     // close browser and reset global variables
     after (() => {
         browser.close();

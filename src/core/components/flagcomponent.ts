@@ -1,5 +1,5 @@
-import { Component } from "../core/component";
 import { Transform } from "../core/entity";
+import { Component } from "./component";
 
 export class FlagComponent extends Component {
     private static FLAG_COMPONENT: string = "FlagComponent";

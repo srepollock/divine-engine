@@ -15,3 +15,6 @@ docs/
 
 # Visual Studio Code
 .vscode/
+
+# Personal UML Diagrams
+diagrams/

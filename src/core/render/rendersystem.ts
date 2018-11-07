@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { Engine } from "../engine";
 import { Client } from "../helper";
-import { System } from "../isystem";
-export class RenderSystem implements System {
+import { System } from "../system";
+export class RenderSystem extends System {
     public camera: any | undefined;
     public scene: THREE.Scene | undefined;
     public geometry: THREE.Geometry | undefined;
@@ -15,6 +15,7 @@ export class RenderSystem implements System {
      * @param  {number} height
      */
     constructor(width: number, height: number) {
+        super("rendersystem");
         this.camera = undefined;
         this.scene = undefined;
         this.geometry = undefined;
@@ -35,11 +36,27 @@ export class RenderSystem implements System {
             this.renderer.setSize( window.innerWidth, window.innerHeight );
             document.body.appendChild( this.renderer.domElement );
         } else if (Engine.instance!.client === Client.Electron) {
-            // TODO: Something else.
+            this.camera = new THREE.PerspectiveCamera( 70, width / height, 0.01, 10 );
+            this.camera.position.z = 1;
+            this.scene = new THREE.Scene();
+            this.geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+            this.material = new THREE.MeshNormalMaterial();
+
+            this.mesh = new THREE.Mesh( this.geometry, this.material );
+            this.scene.add( this.mesh );
+
+            this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+            this.renderer.setSize(width, height);
+            // TODO: Send a message to the GameWindow add the renderer dom elements.\
+            document.body.appendChild( this.renderer.domElement );
         } else {
             // Console running
         }
     }
+    /**
+     * @returns void
+     * @override
+     */
     public cleanup(): void {
         // TODO: Cleanup anything that is not necessary
     }

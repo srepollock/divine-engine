@@ -1,4 +1,4 @@
-import { Component } from "./component";
+import { Component } from "../core/components/component";
 import { DObject } from "./dobject";
 import { ErrorCode, Log, LogDebug, LogError, LogWarning } from "./logging";
 

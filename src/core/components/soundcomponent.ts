@@ -1,4 +1,4 @@
-import { Component } from "../core/component";
+import { Component } from "./component";
 
 export class SoundComponent extends Component {
     constructor(tag: string = "") {

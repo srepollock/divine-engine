@@ -1,7 +1,8 @@
-import { DObject } from "../core/dobject";
-import { Entity } from "../core/entity";
-import { ErrorCode, LogCritical, LogDebug, LogError } from "../core/logging";
-import { Scene } from "../core/scene";
+
+import { DObject } from "../dobject";
+import { Entity } from "../entity";
+import { ErrorCode, LogCritical, LogDebug, LogError } from "../logging";
+import { Scene } from "./scene";
 import { SceneManager } from "./scenemanager";
 
 // REVIEW: Should this be an interface and have a class that is the MainSceneManager?

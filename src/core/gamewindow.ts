@@ -1,3 +1,4 @@
+import { BrowserWindow, Screen } from "electron";
 import { Client } from "./helper";
 import { ErrorCode, Log, LogError } from "./logging";
 import { Window } from "./window";
@@ -39,8 +40,8 @@ export class GameWindow implements Window {
     }
     private static _started: boolean = true;
     public container: HTMLElement | undefined;
-    public browserWindow: Electron.BrowserWindow | undefined = undefined;
-    public screen: Electron.Screen | undefined;
+    public browserWindow: BrowserWindow | undefined = undefined;
+    public screen: Screen | undefined;
     public client: Client;
     private _title: string = "";
     constructor(client: Client, container?: HTMLElement) {

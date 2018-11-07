@@ -1,5 +1,5 @@
-import { System } from "../isystem";
-import { ErrorCode, Log, LogCritical, LogDebug, LogWarning } from "../logging";
+import { ErrorCode, Log, LogCritical, LogDebug, LogError, LogWarning } from "../logging";
+import { System } from "../system";
 import { IMessageHandler } from "./imessagehandler";
 import { MessageReceiver } from "./messagereceiver";
 import { Message } from "./messages/message";
@@ -10,7 +10,7 @@ import { Message } from "./messages/message";
  * TODO: Should there be a que for the engine? [10/22] YES
  * TODO: [10/22] reworking things...
  */
-export class MessageSystem implements System {
+export class MessageSystem extends System {
     public static set listeners(Listeners: {[type: string]: IMessageHandler[]}) {
         MessageSystem._listeners = Listeners;
     }
@@ -36,7 +36,7 @@ export class MessageSystem implements System {
      * Message system constructor.
      */
     private constructor() {
-
+        super("messagesystem");
     }
     /**
      * Initializes the message system.
@@ -47,6 +47,8 @@ export class MessageSystem implements System {
         this.removeAllListeners();
     }
     /**
+     * Adds a listener of the type to the system with the IMessageHandler to handle the message. The handler should 
+     * be able to handle the message type or else there will be undefined errors in the system.
      * @param  {EventType} et
      * @param  {IMessageHandler} handler
      * @returns void
@@ -55,18 +57,19 @@ export class MessageSystem implements System {
         if (MessageSystem._listeners[type] === undefined ) {
             MessageSystem._listeners[type] = new Array<IMessageHandler>(); // REVIEW: What is this doing?
         } else {
-            LogWarning(ErrorCode.FailedAddingListener, 
-                `Event ${type} is already being handled, not creating new index.`);
+            // tslint:disable-next-line:max-line-length
+            LogWarning(ErrorCode.FailedAddingListener, `Event ${type} is already being handled, not creating new index.`);
         }
         if ( MessageSystem._listeners[type] !== undefined 
             && MessageSystem._listeners[type].indexOf(handler) !== -1 ) {
-            LogWarning(ErrorCode.DuplicateListener, 
-                `Attempting to add a duplicate handler to code:${type}. Listener not added.`);
+            // tslint:disable-next-line:max-line-length
+            LogWarning(ErrorCode.DuplicateListener, `Attempting to add a duplicate handler to code:${type}. Listener not added.`);
         } else if (MessageSystem._listeners[type] !== undefined) {
             LogDebug(`Added ${type} and handler: ${JSON.stringify(handler)}`);
             MessageSystem._listeners[type].push( handler );
         } else {
-            LogCritical(ErrorCode.ListenerUndefined, "");
+            // tslint:disable-next-line:max-line-length
+            LogError(ErrorCode.ListenerUndefined, `Listener ${handler.id} could not be assigned to handle the event of type: ${type}`);
         }
     }
     /**
@@ -200,7 +203,7 @@ export class MessageSystem implements System {
         MessageSystem.instance!.cleanup();
     }
     /**
-     * Message system's update function. This is called first during the main engine's update.
+     * Message system's update function. This is called first during the main engine's update to begin sorting messages.
      * @param  {number} delta current delta time to use for calculations.
      * @returns void
      */
@@ -215,7 +218,7 @@ export class MessageSystem implements System {
                 let node = MessageSystem._normalMessageQueue.pop();
                 node!.handler.onMessage( node!.message );
             } catch (e) {
-                LogWarning(ErrorCode.MessageRecieverNotFound, `A node was never round.`);
+                LogWarning(ErrorCode.MessageRecieverNotFound, `A node was never found.`);
             }
         }
     }
