@@ -1,13 +1,12 @@
-export * from "../scene";
 export * from "./assets";
+export * from "./components";
 export * from "./dobject";
 export { Engine, EngineArguments } from "./engine";
-export { Entity, Transform } from "./entity";
+export * from "./entity";
 export * from "./gamewindow";
 export * from "./helper";
 export * from "./logging";
 export * from "./messagesystem";
-export * from "./scene/scene";
+export * from "./scene";
 export * from "./system";
 export * from "./window";
-

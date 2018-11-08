@@ -31,7 +31,7 @@ export class MessageSystem extends System {
     private static _instance: MessageSystem | undefined;
     private static _listeners: {[type: string]: Array<IMessageHandler>} = {};
     private static _normalQueueMessagePerUpdate: number = 10;
-    private static _normalMessageQueue: MessageReceiver[] = [];
+    private static _normalMessageQueue: Array<MessageReceiver> = Array();
     /**
      * Message system constructor.
      */

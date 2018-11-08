@@ -1,21 +1,7 @@
 import { Component } from "../core/components/component";
 import { DObject } from "./dobject";
+import { Transform } from "./helper";
 import { ErrorCode, Log, LogDebug, LogError, LogWarning } from "./logging";
-
-/**
- * The entity objects position.
- */
-export class Transform {
-    /**
-     * Transform constructor
-     * @param x x world position
-     * @param y y world positon
-     */
-    constructor(public x: number = 0, public y: number = 0) {
-        this.x = x;
-        this.y = y;
-    }
-}
 
 /**
  * The Daemon's entity object for game objects. The engine uses an

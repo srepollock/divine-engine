@@ -1,22 +1,22 @@
 import { expect } from "chai";
 import * as path from "path";
-import { BaseSceneManager, Engine, EngineArguments, SceneManager } from "../../src";
+import { Engine, EngineArguments, SceneManager } from "../../src";
 
 describe("SceneManager class unit tests", () => {
-    var sm: SceneManager = new BaseSceneManager();
+    var sm: SceneManager = new SceneManager();
     it("should be able to be created as empty", () => {
         expect(sm).to.not.be.undefined;
     });
     it("should have an empty scene loaded initially", () => {
-        expect(sm.getScene()).to.not.be.undefined;
+        expect(sm.scene).to.not.be.undefined;
     });
     it("should unload the previous scene when loading the scene", () => {
-        expect(sm.getScene()).to.not.be.undefined; // NOTE: The scene should be undefined from the previous test
-        let scene = sm.getScene();
+        expect(sm.scene).to.not.be.undefined; // NOTE: The scene should be undefined from the previous test
+        let scene = sm.scene;
         sm.loadScene(path.resolve(__dirname, "./assets/testscene.json"));
-        expect(sm.getScene()).to.not.be.undefined;
-        expect(sm.getScene().title).to.equal("testscene");
-        expect(sm.getScene()).to.not.equal(scene); // NOTE: Does not equal the old scene.
+        expect(sm.scene).to.not.be.undefined;
+        expect(sm.scene.title).to.equal("testscene");
+        expect(sm.scene).to.not.equal(scene); // NOTE: Does not equal the old scene.
     });
     describe("engine's scene manager", () => {
         before(() => {

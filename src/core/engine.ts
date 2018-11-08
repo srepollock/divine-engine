@@ -6,9 +6,11 @@ import { Log, LogCritical, LogDebug, LogError, LogWarning } from "./logging/erro
 import { IMessageHandler } from "./messagesystem";
 import { Message } from "./messagesystem/messages";
 import { MessageSystem } from "./messagesystem/messagesystem";
+import { PhysicsSystem } from "./physics/physicssystem";
 import { RenderSystem } from "./render/rendersystem";
-import { BaseSceneManager, SceneManager } from "./scene";
+import { SceneManager } from "./scene";
 import { Scene } from "./scene/scene";
+import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
 
 /** 
@@ -118,7 +120,7 @@ export class Engine implements IMessageHandler {
      * @returns Scene
      */
     public static get scene(): Scene {
-        return Engine._instance!.sceneManager.getScene();
+        return Engine._instance!.sceneManager.scene;
     }
     /**
      * Gets the engine's started variable.
@@ -203,8 +205,8 @@ export class Engine implements IMessageHandler {
      * @returns Scene
      */
     public get scene(): Scene {
-        if (this._sceneManager!.getScene() !== undefined) {
-            return this._sceneManager!.getScene();
+        if (this._sceneManager!.scene !== undefined) {
+            return this._sceneManager!.scene;
         }
         LogError(ErrorCode.SceneUndefined, "Scene is undefined");
         throw ErrorCode.SceneUndefined;
@@ -245,6 +247,7 @@ export class Engine implements IMessageHandler {
     private _physicsSystem: PhysicsSystem | undefined = undefined;
     private _renderSystem: RenderSystem | undefined = undefined;
     private _sceneManager: SceneManager | undefined = undefined;
+    private _soundSystem: SoundSystem | undefined = undefined;
     private _startTime: number;
     private _width: number = 0;
     /**
@@ -337,19 +340,12 @@ export class Engine implements IMessageHandler {
             LogCritical(ErrorCode.AssetManagerUndefined, "Asset manager was not initialized properly");
         }
         // NOTE: Scene Manager
-        // NOTE: Default BaseSceneManager is defined in default EngineArguments
-        // NOTE: Always use the initial scene defined.
-        if (Engine._instance!.engineArguments.sceneManager !== undefined) {
-            Engine._instance!.sceneManager = Engine._instance!.engineArguments.sceneManager!;
-        } else {
-            Engine._instance!.sceneManager = new BaseSceneManager();
-        }
-        // NOTE: If/else the scene is defined.
-        (Engine._instance!.engineArguments.scene !== "") ? 
-            // tslint:disable-next-line:max-line-length
-            Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene) :
-            // tslint:disable-next-line:max-line-length
+        // tslint:disable-next-line:max-line-length
+        (Engine._instance!.engineArguments.sceneManager !== undefined) ? Engine._instance!.sceneManager = Engine._instance!.engineArguments.sceneManager! : Engine._instance!.sceneManager = new SceneManager();
+        // tslint:disable-next-line:max-line-length
+        (Engine._instance!.engineArguments.scene !== ""); {
             Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene);
+        }
         Engine.play();
     }
     /**
@@ -421,7 +417,7 @@ export class Engine implements IMessageHandler {
      * @returns void
      */
     public onMessage(message: Message): void {
-
+        // TODO: Handle messages
     }
     /**
      * Call's system shutdown files.
@@ -430,12 +426,12 @@ export class Engine implements IMessageHandler {
      */
     private cleanup(): void {
         try {
-            Engine.instance!.sceneManager.shutdown();
+            Engine.instance!.sceneManager.shutdown(); // BUG: Calling on undefined? What??
+            // Engine.instance!.renderSystem.shutdown(); // TODO: initiailize in constructor.
             MessageSystem.instance!.shutdown();
-            Engine.instance!.renderSystem.shutdown();
         } catch (e) {
             console.trace(e);
-            LogCritical(ErrorCode.EngineCleanupFailed, `Cleanup on ${this} failed`);
+            LogCritical(ErrorCode.EngineCleanupFailed, `Cleanup on ${this.id} failed`);
         }
     }
     /**
