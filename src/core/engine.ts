@@ -440,10 +440,11 @@ export class Engine implements IMessageHandler {
     private cleanup(): void {
         LogDebug("Engine cleanup called");
         try {
+            Engine._instance!._physicsSystem!.shutdown();
             if (Engine._instance!._sceneManager !== undefined) {
                 Engine._instance!._sceneManager!.shutdown(); // BUG: Calling on undefined? What??
             }
-            // Engine.instance!.renderSystem.shutdown(); // TODO: initiailize in constructor.
+            Engine.instance!.renderSystem.shutdown(); // TODO: initiailize in constructor.
             MessageSystem.instance!.shutdown();
         } catch (e) {
             console.trace(e);
@@ -461,12 +462,12 @@ export class Engine implements IMessageHandler {
          * 
          */
         // LogDebug(`Update loop | delta = ${delta}`);
-        this._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
-        // this._ioSystem!.update(delta); // NOTE: IO messages
-        this._sceneManager!.update(delta); // NOTE: Calls scene update
-        this._physicsSystem!.update(delta); // NOTE: Physics messages handled
-        // this._soundSystem!.update(delta); // NOTE: Sound messages handled
-        this._renderSystem!.update(delta); // NOTE: Render system udpated.
+        Engine._instance!._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
+        // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
+        Engine._instance!._sceneManager!.update(delta); // NOTE: Calls scene update
+        Engine._instance!._physicsSystem!.update(delta); // NOTE: Physics messages handled
+        // Engine._instance!._soundSystem!.update(delta); // NOTE: Sound messages handled
+        Engine._instance!._renderSystem!.update(delta); // NOTE: Render system udpated.
     }
     /**
      * 3 Game loops??

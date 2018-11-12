@@ -1,3 +1,2 @@
 --require ./test/helperfiles/setupTests.js
 --timeout 15000
---inspect=1123
