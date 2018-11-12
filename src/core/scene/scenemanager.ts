@@ -2,11 +2,11 @@ import { DObject } from "../dobject";
 import { Entity } from "../entity";
 import { ErrorCode, LogCritical, LogDebug, LogError } from "../logging";
 import { SceneManagerMessage } from "../messagesystem/messages/Scenemanagermessage";
-import { Scene } from "./scene";
+import { DScene } from "./dscene";
 
 export class SceneManager extends DObject {
     public normalMessageQueue: Array<SceneManagerMessage> = new Array();
-    private _scene: Scene | undefined = undefined;
+    private _scene: DScene | undefined = undefined;
     /**
      * Load scene 
      * @param  {string} filename?
@@ -21,9 +21,9 @@ export class SceneManager extends DObject {
     }
     /**
      * Returns the Scene object.
-     * @returns Scene | undefined
+     * @returns DScene | undefined
      */
-    public get scene(): Scene {
+    public get scene(): DScene {
         if (this._scene !== undefined) return this._scene;
         else {
             LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene getter.");
@@ -34,7 +34,7 @@ export class SceneManager extends DObject {
      * While this says it can take undefined, it will throw a LogError saying the scene is undefined
      * @param  {Scene} scene 
      */
-    public set scene(scene: Scene) {
+    public set scene(scene: DScene) {
         if (scene !== undefined) this._scene = scene;
         else LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
     }
@@ -42,18 +42,18 @@ export class SceneManager extends DObject {
      * Creates a scene with a filename and entities if defiend.
      * @param  {string} filename
      * @param  {Array<Entity>} entities?
-     * @returns Scene
+     * @returns DScene
      */
-    public buildScene(filename: string, entities?: Array<Entity>): Scene {
-        if (entities !== undefined) return  new Scene(filename, entities);
-        else return new Scene(filename);
+    public buildScene(filename: string, entities?: Array<Entity>): DScene {
+        if (entities !== undefined) return  new DScene(filename, entities);
+        else return new DScene(filename);
     }
     /**
      * Trys to load a scene from a file. If no scene is read, throws a Critical error.
      * @param  {string} filename Full file path.
      * @returns void
      */
-    public loadScene(filename: string): Scene {
+    public loadScene(filename: string): DScene {
         // REVIEW: This needs to read from file.
         LogDebug(`Loading scene from file ${filename}`);
         
@@ -81,9 +81,9 @@ export class SceneManager extends DObject {
      * @param  {string} filename
      * @returns void
      */
-    public unloadScene(filename: string): Scene {
+    public unloadScene(filename: string): DScene {
         // REVIEW: What needs to be unloaded? Should the entities be sent on from here?
-        return new Scene(filename); // REVIEW: Should try to load the scene from file first.
+        return new DScene(filename); // REVIEW: Should try to load the scene from file first.
     }
     /**
      * Updates the scene.
@@ -93,17 +93,17 @@ export class SceneManager extends DObject {
     public update(delta: number): void {
         // TODO: Handle messages first, then update the scene
         this.normalMessageQueue.forEach((message) => {
-            
+            LogDebug(`${message.data}`);
         });
         this.scene.update(delta);
     }
     /**
      * Builds the scene class from the JSON string. Uses Object.assign from ES6.
      * @param  {string} data A JSON stringed Scene object
-     * @returns Scene
+     * @returns DScene
      */
-    private buildSceneFromData(data: string): Scene {
-        return Object.assign(new Scene(""), data);
+    private buildSceneFromData(data: string): DScene {
+        return Object.assign(new DScene(""), data);
     }
     /**
      * Cleansup the class before shutdown.
@@ -122,10 +122,10 @@ export class SceneManager extends DObject {
      * The filename will be set as the scene's title.
      * The file will be written as a JSON object using writeJSONFile(filename, data)
      * File writes default to the an asset folder in the same directory as the process's start
-     * @param  {Scene} scene
+     * @param  {DScene} scene
      * @returns void
      */
-    private writeSceneToFile(scene: Scene): void {
+    private writeSceneToFile(scene: DScene): void {
         // REVIEW: This needs to write to file.
         // LogDebug(`Writing scene ${scene.title} to file`);
         // let sceneData = JSON.stringify(scene);

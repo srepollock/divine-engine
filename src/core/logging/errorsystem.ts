@@ -40,9 +40,10 @@ export enum ErrorCode {
     RenderSystemInitializationFailed,
     CanvasNotFound,
     RenderSystemCleanupFailed,
+    PhysicsSystemUndefined = 700, // PhysicsSystem Error
     WindowUndefined, // Window Errors
     GameWindowUndefined,
-    AssetLoaderUninitialized = 700, // Asset Errors
+    AssetLoaderUninitialized, // Asset Errors
     AssetManagerUndefined,
     NoFileExtension,
     NoAssetName,

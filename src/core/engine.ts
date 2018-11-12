@@ -8,11 +8,10 @@ import { Message } from "./messagesystem/messages";
 import { MessageSystem } from "./messagesystem/messagesystem";
 import { PhysicsSystem } from "./physics/physicssystem";
 import { RenderSystem } from "./render/rendersystem";
-import { SceneManager } from "./scene";
-import { Scene } from "./scene/scene";
+import { DScene, SceneManager } from "./scene";
 import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
-
+ 
 /** 
  * Engine arguments for setup.
  */
@@ -119,7 +118,7 @@ export class Engine implements IMessageHandler {
      * Gets the scene from the Engine's scene manager.
      * @returns Scene
      */
-    public static get scene(): Scene {
+    public static get scene(): DScene {
         return Engine._instance!.sceneManager.scene;
     }
     /**
@@ -204,11 +203,11 @@ export class Engine implements IMessageHandler {
      * Returns current scene manager's scene.
      * @returns Scene
      */
-    public get scene(): Scene {
+    public get scene(): DScene {
         if (this._sceneManager!.scene !== undefined) {
             return this._sceneManager!.scene;
         }
-        LogError(ErrorCode.SceneUndefined, "Scene is undefined");
+        LogCritical(ErrorCode.SceneUndefined, "Scene is undefined");
         throw ErrorCode.SceneUndefined;
     }
     /**
@@ -218,8 +217,8 @@ export class Engine implements IMessageHandler {
     public get sceneManager(): SceneManager {
         if (this._sceneManager !== undefined) return this._sceneManager;
         else {
-            LogCritical(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend when calling get"
-                + " function.");
+            // tslint:disable-next-line:max-line-length
+            LogCritical(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend when calling get function.");
             throw ErrorCode.SceneManagerUndefined;
         }
     }
@@ -261,18 +260,18 @@ export class Engine implements IMessageHandler {
             // NOTE: Because the message system is so critical, it must be started if the engine is to run.
             LogCritical(ErrorCode.MessageSystemInitialization, 
                 "Engine called MessageSystem.initialization and it failed");
-            Engine._exit = true;
+            Engine.shutdown();
         }
         if (Engine._instance !== undefined) {
             Log(JSON.stringify(Engine._instance));
             LogCritical(ErrorCode.EngineInstanceNotUndefined, 
                 "Engine already has an instance in the class");
-            Engine._exit = true;
+            Engine.shutdown();
         }
         if (!Engine._started) {
             LogCritical(ErrorCode.EngineStartedEarly, 
                 "The engine instance must be started from the start function");
-            Engine._exit = true;
+            Engine.shutdown();
         }
         Engine._instance = this;
         this._client = Client.Console; // NOTE: Always CLI first; Default
@@ -293,9 +292,10 @@ export class Engine implements IMessageHandler {
                 LogDebug(`Engine's container: ${this._container}`);
             } else {
                 LogCritical(ErrorCode.ContainerUndefined, "the 'document' object is undefined");
+                Engine.shutdown();
             }
         } else {
-            LogCritical(ErrorCode.WindowUndefined, "the 'window' object is not globally defined. If using Electron,"
+            LogWarning(ErrorCode.WindowUndefined, "the 'window' object is not globally defined. If using Electron,"
                 + " make sure you are calling this in the render process");
         }
         this._startTime = Date.now();
@@ -342,8 +342,21 @@ export class Engine implements IMessageHandler {
         // NOTE: Scene Manager
         // tslint:disable-next-line:max-line-length
         (Engine._instance!.engineArguments.sceneManager !== undefined) ? Engine._instance!.sceneManager = Engine._instance!.engineArguments.sceneManager! : Engine._instance!.sceneManager = new SceneManager();
+        if (Engine._instance!._sceneManager === undefined) {
+            // tslint:disable-next-line:max-line-length
+            LogCritical(ErrorCode.SceneManagerUndefined, "SceneManager was not initialized properly.");
+        } else {
+            LogDebug("Loaded scene manager");
+            LogDebug(`${Engine._instance!._sceneManager}`);
+        }
+        // NOTE: Physics System
+        Engine._instance!._physicsSystem = new PhysicsSystem();
+        if (Engine._instance!._physicsSystem === undefined) {
+            LogCritical(ErrorCode.PhysicsSystemUndefined, "Phyiscs System was not initialized properly.");
+            Engine.shutdown();
+        }
         // tslint:disable-next-line:max-line-length
-        (Engine._instance!.engineArguments.scene !== ""); {
+        if (Engine._instance!.engineArguments.scene !== "") {
             Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene);
         }
         Engine.play();
@@ -425,13 +438,16 @@ export class Engine implements IMessageHandler {
      * @returns void
      */
     private cleanup(): void {
+        LogDebug("Engine cleanup called");
         try {
-            Engine.instance!.sceneManager.shutdown(); // BUG: Calling on undefined? What??
+            if (Engine._instance!._sceneManager !== undefined) {
+                Engine._instance!._sceneManager!.shutdown(); // BUG: Calling on undefined? What??
+            }
             // Engine.instance!.renderSystem.shutdown(); // TODO: initiailize in constructor.
             MessageSystem.instance!.shutdown();
         } catch (e) {
             console.trace(e);
-            LogCritical(ErrorCode.EngineCleanupFailed, `Cleanup on ${this.id} failed`);
+            LogWarning(ErrorCode.EngineCleanupFailed, `Cleanup on Engine cleanup failed.`);
         }
     }
     /**
@@ -449,7 +465,7 @@ export class Engine implements IMessageHandler {
         // this._ioSystem!.update(delta); // NOTE: IO messages
         this._sceneManager!.update(delta); // NOTE: Calls scene update
         this._physicsSystem!.update(delta); // NOTE: Physics messages handled
-        this._soundSystem!.update(delta); // NOTE: Sound messages handled
+        // this._soundSystem!.update(delta); // NOTE: Sound messages handled
         this._renderSystem!.update(delta); // NOTE: Render system udpated.
     }
     /**

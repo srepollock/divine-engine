@@ -1,4 +1,5 @@
-import { Transform } from "../helper";
+
+import { Transform } from "../math";
 import { Component } from "./component";
 
 /**

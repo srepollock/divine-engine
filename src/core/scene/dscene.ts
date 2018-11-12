@@ -1,6 +1,6 @@
 import { DObject } from "../dobject";
 import { Entity } from "../entity";
-export class Scene extends DObject {
+export class DScene extends DObject {
     // NOTE: tslint:disable-next-line:semicolon
     private _entityArray: Array<Entity> = new Array<Entity>();
     private _title: string = "";

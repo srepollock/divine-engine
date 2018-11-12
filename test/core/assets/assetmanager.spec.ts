@@ -1,10 +1,13 @@
 import { expect } from "chai";
 import * as path from "path";
-import { AssetManager, Engine, EngineArguments, JSONAssetLoader, LogDebug, Scene } from "../../../src";
+import { AssetManager, DScene, Engine, EngineArguments, JSONAssetLoader, LogDebug } from "../../../src";
 
 describe("Asset Manager unit tests", () => {
     before(() => {
         Engine.start(new EngineArguments({debug: true}));
+    });
+    after(() => {
+        Engine.shutdown();
     });
     it("should be initialized", () => {
         expect(() => {AssetManager.instance; }).to.not.throw();
@@ -23,7 +26,7 @@ describe("Asset Manager unit tests", () => {
         expect(() => {AssetManager.loadAsset("temp"); }).to.not.throw();
     });
     it("should not throw an error when given an object to load", () => {
-        var tempScene = new Scene("temp");
+        var tempScene = new DScene("temp");
         // tslint:disable-next-line:max-line-length
         expect(() => {AssetManager.loadObjectAsset({name: tempScene.title, data: JSON.stringify(tempScene)}); }).to.not.throw();
         expect(AssetManager.isAssetLoaded(tempScene.title)).to.be.true;
@@ -52,8 +55,5 @@ describe("Asset Manager unit tests", () => {
         expect(AssetManager.instance).to.not.be.undefined;
         AssetManager.shutdown();
         expect(() => {AssetManager.instance; }).to.throw;
-    });
-    after(() => {
-        Engine.shutdown();
     });
 });

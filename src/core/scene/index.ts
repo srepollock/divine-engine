@@ -1,2 +1,3 @@
-export * from "./scene";
+export * from "./dscene";
 export * from "./scenemanager";
+

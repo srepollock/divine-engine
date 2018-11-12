@@ -1,7 +1,7 @@
 import { Component } from "../core/components/component";
 import { DObject } from "./dobject";
-import { Transform } from "./helper";
 import { ErrorCode, Log, LogDebug, LogError, LogWarning } from "./logging";
+import { Transform } from "./math";
 
 /**
  * The Daemon's entity object for game objects. The engine uses an

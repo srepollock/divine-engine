@@ -6,6 +6,7 @@ export * from "./entity";
 export * from "./gamewindow";
 export * from "./helper";
 export * from "./logging";
+export * from "./math";
 export * from "./messagesystem";
 export * from "./scene";
 export * from "./system";

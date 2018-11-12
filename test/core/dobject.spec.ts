@@ -31,7 +31,7 @@ describe("DObject unit testing", () => {
             Engine.start(new EngineArguments());
         });
         beforeEach(() => {
-            ent = new Entity("player", new Transform());
+            ent = new Entity({tag: "player", transform: new Transform()});
             MessageSystem.addListener(EventType.Entity, ent);
         });
         after(() => {
