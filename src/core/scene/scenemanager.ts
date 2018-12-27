@@ -1,12 +1,14 @@
+import * as THREE from "three";
+import { AssetManager } from "../assets";
 import { DObject } from "../dobject";
 import { Entity } from "../entity";
-import { ErrorCode, LogCritical, LogDebug, LogError } from "../logging";
+import { ErrorCode, LogCritical, LogDebug, LogError, LogWarning } from "../logging";
 import { SceneManagerMessage } from "../messagesystem/messages/Scenemanagermessage";
-import { DScene } from "./dscene";
+import { RenderSystem } from "../render/rendersystem";
 
 export class SceneManager extends DObject {
     public normalMessageQueue: Array<SceneManagerMessage> = new Array();
-    private _scene: DScene | undefined = undefined;
+    private _scene: THREE.Scene | undefined = undefined;
     /**
      * Load scene 
      * @param  {string} filename?
@@ -23,7 +25,7 @@ export class SceneManager extends DObject {
      * Returns the Scene object.
      * @returns DScene | undefined
      */
-    public get scene(): DScene {
+    public get scene(): THREE.Scene {
         if (this._scene !== undefined) return this._scene;
         else {
             LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene getter.");
@@ -34,7 +36,7 @@ export class SceneManager extends DObject {
      * While this says it can take undefined, it will throw a LogError saying the scene is undefined
      * @param  {Scene} scene 
      */
-    public set scene(scene: DScene) {
+    public set scene(scene: THREE.Scene) {
         if (scene !== undefined) this._scene = scene;
         else LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
     }
@@ -44,23 +46,58 @@ export class SceneManager extends DObject {
      * @param  {Array<Entity>} entities?
      * @returns DScene
      */
-    public buildScene(filename: string, entities?: Array<Entity>): DScene {
-        if (entities !== undefined) return  new DScene(filename, entities);
-        else return new DScene(filename);
+    public buildScene(filename: string, entities?: Array<Entity>): THREE.Scene {
+        this.loadScene(filename);
+        if (entities !== undefined) {
+            // TODO: Load entites to scene
+        } else {
+            LogWarning(ErrorCode.NoEntitiesLoaded, "No entities were given to load to the scene.");
+        }
+        // TODO: Wait for scene to be loaded
+        return RenderSystem.scene;
     }
     /**
      * Trys to load a scene from a file. If no scene is read, throws a Critical error.
      * @param  {string} filename Full file path.
      * @returns void
      */
-    public loadScene(filename: string): DScene {
+    public async loadScene(filename: string): Promise<THREE.Scene> {
         // REVIEW: This needs to read from file.
         LogDebug(`Loading scene from file ${filename}`);
-        
-        this._scene = this.buildSceneFromData(filename);
-        LogDebug(JSON.stringify(this._scene));
-        return this._scene;
-        // TODO: Throws a critical error if scene not read.
+        AssetManager.loadAsset(filename);
+        // REVIEW: Wait and get the scene loaded from the asset manager.
+        var count: number = 0;
+        var promiseSceneLoaded = (n: number): Promise<THREE.Scene> => {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (RenderSystem.scene !== undefined) resolve(RenderSystem.scene);
+                    else reject(`Scene not yet loaded in RenderSystem try: ${count}/5`);
+                }, 500);
+            });
+        };
+        await promiseSceneLoaded(count)
+            .then(
+                (result) => {
+                    LogDebug(`Scene Manager loeaded scene: ${filename}.`);
+                }
+            ).then(
+                (result) => {
+                    LogDebug(`Scene Manager loeaded scene: ${filename}.`);
+                },
+                (error) => {
+                    // tslint:disable-next-line:max-line-length
+                    LogCritical(ErrorCode.SceneNotLoaded, "Scene could not be loaded in the Scene Manager. The Render system did not have it loaded.");
+                }
+            );
+        if (this._scene === undefined) {
+            // tslint:disable-next-line:max-line-length
+            // NOTE: This throws.
+            // tslint:disable-next-line:max-line-length
+            LogCritical(ErrorCode.SceneNotLoaded, "Scene could not be loaded in the Scene Manager. The Render system did not have it loaded.");
+        }
+        return new Promise<THREE.Scene>(() => {
+            return this._scene;
+        });
     }
     /**
      * Calls this classes clenaup funciton. Shutsdown the class. Called on Engine shutdown.
@@ -81,9 +118,10 @@ export class SceneManager extends DObject {
      * @param  {string} filename
      * @returns void
      */
-    public unloadScene(filename: string): DScene {
+    public async unloadScene(filename: string): Promise<THREE.Scene> {
         // REVIEW: What needs to be unloaded? Should the entities be sent on from here?
-        return new DScene(filename); // REVIEW: Should try to load the scene from file first.
+        this._scene = undefined;
+        return this.loadScene(filename);
     }
     /**
      * Updates the scene.
@@ -95,15 +133,6 @@ export class SceneManager extends DObject {
         this.normalMessageQueue.forEach((message) => {
             LogDebug(`${message.data}`);
         });
-        this.scene.update(delta);
-    }
-    /**
-     * Builds the scene class from the JSON string. Uses Object.assign from ES6.
-     * @param  {string} data A JSON stringed Scene object
-     * @returns DScene
-     */
-    private buildSceneFromData(data: string): DScene {
-        return Object.assign(new DScene(""), data);
     }
     /**
      * Cleansup the class before shutdown.
@@ -111,7 +140,7 @@ export class SceneManager extends DObject {
      * @returns void
      */
     private cleanup(): void {
-        if (this._scene !== undefined) this._scene.shutdown();
+        if (this._scene !== undefined) this._scene = undefined;
         else {
             LogCritical(ErrorCode.SceneUndefined, "Scene is undfined on BaseSceneManager.cleanup");
             throw new Error(`${ErrorCode.SceneUndefined}`);
@@ -125,7 +154,7 @@ export class SceneManager extends DObject {
      * @param  {DScene} scene
      * @returns void
      */
-    private writeSceneToFile(scene: DScene): void {
+    private writeSceneToFile(scene: THREE.Scene): void {
         // REVIEW: This needs to write to file.
         // LogDebug(`Writing scene ${scene.title} to file`);
         // let sceneData = JSON.stringify(scene);

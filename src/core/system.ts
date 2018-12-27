@@ -13,6 +13,17 @@ export abstract class System extends DObject {
      */
     public normalMessageQueue: Array<Message> = new Array();
     /**
+     * This is the runner boolean.
+     */
+    private _running: boolean = false;
+    /**
+     * Gets if the system is running or not.
+     * @returns boolean
+     */
+    public get running(): boolean {
+        return this._running;
+    }
+    /**
      * Constructor for the system class. Always call super and give the system name as the tag. There shall never be 
      * two of the same system currently loaded into the engine.
      * @param  {string} tag
@@ -42,14 +53,14 @@ export abstract class System extends DObject {
      * @returns void
      */
     public start(): void {
-
+        this._running = true;
     }
     /**
      * Stops the system.
      * @returns void
      */
     public stop(): void {
-        
+        this._running = false;
     }
     /**
      * System update function called in the Engine's update function.

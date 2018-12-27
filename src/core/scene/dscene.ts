@@ -1,6 +1,10 @@
 import { DObject } from "../dobject";
 import { Entity } from "../entity";
-export class DScene extends DObject {
+
+/**
+ * Depricated. I will be using THREEJS Scenes from here on.
+ */
+class DScene extends DObject {
     // NOTE: tslint:disable-next-line:semicolon
     private _entityArray: Array<Entity> = new Array<Entity>();
     private _title: string = "";

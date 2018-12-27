@@ -8,7 +8,7 @@ import { Message } from "./messagesystem/messages";
 import { MessageSystem } from "./messagesystem/messagesystem";
 import { PhysicsSystem } from "./physics/physicssystem";
 import { RenderSystem } from "./render/rendersystem";
-import { DScene, SceneManager } from "./scene";
+import { SceneManager } from "./scene";
 import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
  
@@ -118,7 +118,7 @@ export class Engine implements IMessageHandler {
      * Gets the scene from the Engine's scene manager.
      * @returns Scene
      */
-    public static get scene(): DScene {
+    public static get scene(): THREE.Scene {
         return Engine._instance!.sceneManager.scene;
     }
     /**
@@ -193,8 +193,8 @@ export class Engine implements IMessageHandler {
      * @returns RenderSystem
      */
     public get renderSystem(): RenderSystem {
-        if (this._renderSystem !== undefined) {
-            return this._renderSystem;
+        if (RenderSystem.instance !== undefined) {
+            return RenderSystem.instance;
         }
         LogCritical(ErrorCode.RenderSystemUndefined, "Render system is undefined");
         throw ErrorCode.RenderSystemUndefined;
@@ -203,7 +203,7 @@ export class Engine implements IMessageHandler {
      * Returns current scene manager's scene.
      * @returns Scene
      */
-    public get scene(): DScene {
+    public get scene(): THREE.Scene {
         if (this._sceneManager!.scene !== undefined) {
             return this._sceneManager!.scene;
         }
@@ -244,7 +244,6 @@ export class Engine implements IMessageHandler {
     private _last: number = 0;
     private _now: number = 0;
     private _physicsSystem: PhysicsSystem | undefined = undefined;
-    private _renderSystem: RenderSystem | undefined = undefined;
     private _sceneManager: SceneManager | undefined = undefined;
     private _soundSystem: SoundSystem | undefined = undefined;
     private _startTime: number;
@@ -328,14 +327,13 @@ export class Engine implements IMessageHandler {
          */
         // NOTE: Render System
         // tslint:disable-next-line:max-line-length
-        Engine._instance!._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
-        if (Engine._instance!._renderSystem === undefined) {
+        RenderSystem.start(args.width, args.height); // REVIEW: This is subject to change
+        if (RenderSystem.instance === undefined) {
             // tslint:disable-next-line:max-line-length
             LogCritical(ErrorCode.RenderSystemUndefined, "Render system was not initialized immediately after constructor called");
         }
-        Engine._instance!._renderSystem!.initialize();
         // NOTE: Asset Manager
-        AssetManager.initialize();
+        AssetManager.start();
         if (AssetManager.instance === undefined) {
             LogCritical(ErrorCode.AssetManagerUndefined, "Asset manager was not initialized properly");
         }
@@ -460,14 +458,15 @@ export class Engine implements IMessageHandler {
          * NOTE:
          * Wait for message worker
          * 
+         * Should the updates be sent as messages? No that's for concurrency
+         * 
          */
         // LogDebug(`Update loop | delta = ${delta}`);
-        Engine._instance!._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
-        // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
-        Engine._instance!._sceneManager!.update(delta); // NOTE: Calls scene update
-        Engine._instance!._physicsSystem!.update(delta); // NOTE: Physics messages handled
-        // Engine._instance!._soundSystem!.update(delta); // NOTE: Sound messages handled
-        Engine._instance!._renderSystem!.update(delta); // NOTE: Render system udpated.
+        // Engine._instance!._ioSystem!.update(delta);
+        Engine._instance!._sceneManager!.update(delta);
+        Engine._instance!._physicsSystem!.update(delta);
+        // Engine._instance!._soundSystem!.update(delta);
+        RenderSystem.instance!.update(delta);
     }
     /**
      * 3 Game loops??

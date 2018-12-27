@@ -47,9 +47,9 @@ describe("DObject unit testing", () => {
             expect(dm).to.not.be.null;
         });
         it("should be able to receive messages", () => {
-            Engine.instance.scene.addEntity(ent);
             MessageSystem.addListener("test", ent);
-            expect(ent).to.not.be.null;
+            MessageSystem.sendMessage("test", new TestMessage("Test Message Error"));
+            expect(true); // NOTE: I need to check the terminal/log for a message.
         });
     });
 });

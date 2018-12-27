@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import * as path from "path";
-import { AssetManager, DScene, Engine, EngineArguments, JSONAssetLoader, LogDebug } from "../../../src";
+import * as THREE from "three";
+import { AssetManager, Engine, EngineArguments, JSONAssetLoader, LogDebug } from "../../../src";
 
 describe("Asset Manager unit tests", () => {
     before(() => {
@@ -26,10 +27,11 @@ describe("Asset Manager unit tests", () => {
         expect(() => {AssetManager.loadAsset("temp"); }).to.not.throw();
     });
     it("should not throw an error when given an object to load", () => {
-        var tempScene = new DScene("temp");
+        var tempScene = new THREE.Scene();
+        let title = "temp";
         // tslint:disable-next-line:max-line-length
-        expect(() => {AssetManager.loadObjectAsset({name: tempScene.title, data: JSON.stringify(tempScene)}); }).to.not.throw();
-        expect(AssetManager.isAssetLoaded(tempScene.title)).to.be.true;
+        expect(() => {AssetManager.loadObjectAsset({name: title, data: JSON.stringify(tempScene)}); }).to.not.throw();
+        expect(AssetManager.isAssetLoaded(title)).to.be.true;
     });
     it("should return true that asset \"temp\" is loaded", () => {
         LogDebug(AssetManager.isAssetLoaded("temp").toString());

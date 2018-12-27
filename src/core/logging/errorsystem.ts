@@ -6,6 +6,7 @@ export enum ErrorCode {
     EngineFailed = 1,
     Error, // General Errors
     DocumentUndefined,
+    ClientNotSupported,
     EngineInitialization = 100, // Engine Errors
     EngineInstanceUndefined,
     EngineInstanceNotUndefined,
@@ -30,6 +31,8 @@ export enum ErrorCode {
     SceneManagerUndefined,
     SceneManagerCleanupFailed,
     SceneNotLoaded,
+    NoEntitiesLoaded,
+    LoadingScene,
     EntityInitialization = 500, // Entity Errors
     EntityParentUndefined,
     EntityAlreadyHasChild,

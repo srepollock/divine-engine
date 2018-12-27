@@ -1,7 +1,7 @@
 
 import { DObject } from "../dobject";
 import { ErrorCode, LogDebug, LogError, LogWarning } from "../logging";
-import { AssetMessage, Message } from "../messagesystem/messages/";
+import { AssetMessage } from "../messagesystem/messages/";
 import { EventType, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
@@ -17,12 +17,24 @@ import { JSONAssetLoader } from "./jsonassetloader";
  * 4) SceneManager.Scene contains the asset for updating
  */
 export class AssetManager extends DObject {
+    /**
+     * Gets the list of loaded assets.
+     * @returns IAsset
+     */
     public static get loadedAssets(): {[name: string]: IAsset} {
         return AssetManager._loadedAssets;
     }
+    /**
+     * Gets the list of loaders in the asset manager.
+     * @returns IAssetLoader
+     */
     public static get loaders(): IAssetLoader[] {
         return AssetManager._loaders;
     }
+    /**
+     * Gets the AssetManager instance.
+     * @returns AssetManager
+     */
     public static get instance(): AssetManager {
         return AssetManager._instance;
     }
@@ -33,7 +45,11 @@ export class AssetManager extends DObject {
     private constructor() {
         super();
     }
-    public static initialize(): void {
+    /**
+     * Sets up the asset manager for usage in the engine.
+     * @returns void
+     */
+    public static start(): void {
         AssetManager._instance = new AssetManager();
         AssetManager._loaders.push(new ImageAssetLoader());
         AssetManager._loaders.push(new JSONAssetLoader());
@@ -126,8 +142,7 @@ export class AssetManager extends DObject {
         LogDebug(`AssetManager loading asset: ${asset.name}`);
         AssetManager._loadedAssets[asset.name] = asset;
         LogDebug(AssetManager._loadedAssets[asset.name].name);
-        AssetManager.instance.sendMessage(EventType.IOSystem, 
-            new AssetMessage(this, Priority.Normal, asset));
+        MessageSystem.sendMessage(EventType.IOSystem, new AssetMessage(this, Priority.Normal, asset));
     }
     /**
      * Calls the AssetManagers cleanup function.
@@ -142,15 +157,6 @@ export class AssetManager extends DObject {
      */
     public cleanup(): void {
         AssetManager._loadedAssets = {}; // NOTE: Unloads the assets.
-    }
-    /**
-     * Sends message of event type to message system.
-     * @param  {string} event
-     * @param  {Message} message
-     * @returns void
-     */
-    public sendMessage(event: string, message: Message): void {
-        MessageSystem.sendMessage(event, message);
     }
     /**
      * Called when the asset is loaded.
