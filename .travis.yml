@@ -16,14 +16,13 @@ node_js:
   - "7"
   - "6"
 stages:
-  - |
-    setup
-    test
-    document
-    coverage
-    name: release
+  - setup
+  - test
+  - document
+  - coverage
+  - name: release
     if: branch = master
-    name: deploy
+  - name: deploy
     if: branch = master
 script:
   - export DISPLAY=:99.0
@@ -47,10 +46,10 @@ jobs:
         - npm run-script coverage
     - stage: release
       after_success:
-        - npm run semantic-release
-        branches:
-          except:
-            - /^v\d+\.\d+\.\d+$/
+      - npm run semantic-release
+      branches:
+        except:
+          - /^v\d+\.\d+\.\d+$/
     - stage: deploy
       name: "Deploy Github Pages and NPM"
       deploy:
