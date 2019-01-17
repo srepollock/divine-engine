@@ -3,7 +3,7 @@ import { AssetManager } from "../assets";
 import { DObject } from "../dobject";
 import { Entity } from "../entity";
 import { ErrorCode, LogCritical, LogDebug, LogError, LogWarning } from "../logging";
-import { SceneManagerMessage } from "../messagesystem/messages/Scenemanagermessage";
+import { SceneManagerMessage } from "../messagesystem/messages/scenemanagermessage";
 import { RenderSystem } from "../render/rendersystem";
 
 export class SceneManager extends DObject {
