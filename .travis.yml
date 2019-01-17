@@ -1,38 +1,73 @@
 language: node_js
-node_js:
-    - "stable"
+cache:
+  directories:
+    - ~/.npm
+notifications:
+  email:
+    on_success: change
+    on_failure: change
 dist: trusty
 sudo: required
-before_install:
-    - export DISPLAY=:99.0
-    - sh -e /etc/init.d/xvfb start
-    - npm install -g codecov
-before_script:
-    - npm i -g typescript@latest
-    - npm run-script lint
+node_js:
+  - "stable"
+  - "10"
+  - "9"
+  - "8"
+  - "7"
+  - "6"
+stages:
+  - |
+    setup
+    test
+    document
+    coverage
+    name: release
+    if: branch = master
+    name: deploy
+    if: branch = master
 script:
-    - npm run-script bundle
-    - npm run-script test:all
-after_success:
-    - npm run-script coverage
-    - npm run-script docs
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+jobs:
+  include:
+    - stage: setup
+      script:
+        - npm i -g typescript@latest
+        - npm i -g coveralls
+        - npm run-script lint
+        - npm run-script bundle
+    - stage: test
+      script:
+        - npm run-script test:all
+    - stage: document
+      script:
+        - npm run-script docs
+    - stage: coverage
+      script:
+        - npm run-script coverage
+    - stage: release
+      after_success:
+        - npm run semantic-release
+        branches:
+          except:
+            - /^v\d+\.\d+\.\d+$/
+    - stage: deploy
+      name: "Deploy Github Pages and NPM"
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN
+        keep-history: true
+        on:
+          branch: master
+        provider: npm
+        email: $EMAIL
+        api_key: $NPM_TOKEN
+        on:
+          branch: master
+      script: npm run coverage
 branches:
-    only:
-    - master
-    - develop
-deploy:
-    provider: pages
-    skip-cleanup: true
-    github-token: $GITHUB_TOKEN
-    keep-history: true
-    script:
-        - npx semantic-release
-    on:
-        branch: master
-notifications:
-    email:
-        on_success: change
-        on_failure: change 
+  except:
+    - /^v\d+\.\d+\.\d+$/
 git:
-    depth: 1
-
+  depth: 2
