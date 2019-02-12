@@ -1,14 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * Prints and returns "Hello world".
- * @returns string
- */
-function printHelloWorld() {
-    let s = "Hello world";
-    console.log(s);
-    return s;
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
-exports.printHelloWorld = printHelloWorld;
-printHelloWorld();
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(require("./core"));
 //# sourceMappingURL=index.js.map
