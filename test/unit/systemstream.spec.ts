@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { Writable } from "stream";
 import { EngineStream, Message, MessageType, SystemStream } from "../../src/index";
 
 describe("System stream unit testing", () => {
@@ -14,23 +15,35 @@ describe("System stream unit testing", () => {
     it("should change from JSON objects", () => {
         expect(systemStream.fromJSON(JSON.stringify(new Message()))).to.not.be.undefined;
     });
-    it("should pass messages to the process.stdout", () => {
+    it("should pass messages to the Writable", () => {
         let m: Message = new Message("Hello world!");
+        let ws = new Writable({
+            objectMode: true,
+            write(chunk, encoding, callback){
+                console.log(chunk.toString());
+            }
+        });
         systemStream.write(m);
-        systemStream.pipe(process.stdout); // printing here
-        process.stdout.on("data", (data) => {
+        systemStream.pipe(ws); // printing here
+        ws.on("data", (data) => {
             expect(data).to.equal(m); // uid must be the same
         });
     });
-    it("should pass global messages to the process.stdout", () => {
+    it("should pass global messages to the Writable", () => {
         let m: Message = new Message("Hello world!", MessageType.Global, true);
         let es: EngineStream = new EngineStream();
+        let ws = new Writable({
+            objectMode: true,
+            write(chunk, encoding, callback){
+                console.log(chunk.toString());
+            }
+        });
         systemStream.write(m);
-        systemStream.pipe(es).pipe(process.stdout); // printing here
+        systemStream.pipe(es).pipe(ws); // printing here
         es.on("data", (data) => {
             expect(systemStream.fromJSON(data)).to.not.be.undefined;
         });
-        process.stdout.on("data", (data) => {
+        ws.on("data", (data) => {
             let d = systemStream.fromJSON(data);
             expect(d).to.not.be.undefined;
             if (d.type === MessageType.Removed) {
