@@ -4,10 +4,12 @@
   "description": "The Sunset Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "./lib/sunset.umd.js",
   "module": "./lib/sunset.es.js",
-  "types": "./lib/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "bundle": "rollup -c",
     "clean": "rm -rf build/* dist/* lib/*",
+    "cleanbuild": "npm run clean; npm run build",
     "commit": "npm run lint; git add --all && git-cz",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Sunset\\ Engine\\ API --out docs --mode file --module commonjs --target ESNext --readme none src/*",
@@ -20,11 +22,10 @@
     "setup:semantic-release": "semantic-release-cli setup",
     "test": "npm run test:all",
     "test:all": "nyc mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit",
-    "test:browser": "mocha --opts mocha.opts \"test/browser/*.spec.ts\" --exit",
     "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.ts\"",
     "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.ts\"",
     "test:unit": "mocha --opts mocha.opts \"test/unit/**/*.spec.ts\"",
-    "watch": "mocha -w t--opts .mocha est/**/*.spec.ts"
+    "watch": "mocha -w --opts .mocha test/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -49,7 +50,7 @@
     "@types/puppeteer": "^1.11.1",
     "chai": "^4.2.0",
     "codecov": "^3.1.0",
-    "commitizen": "^3.0.5",
+    "commitizen": "^3.0.7",
     "cz-conventional-changelog": "^2.1.0",
     "electron": "^2.0.16",
     "event-stream": "3.3.4",
@@ -57,12 +58,16 @@
     "node": "^10.14.2",
     "nyc": "^12.0.2",
     "puppeteer": "^1.11.0",
+    "rollup": "^1.6.0",
+    "rollup-plugin-typescript2": "^0.20.0",
     "semver": ">=4.3.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.0",
-    "typedoc": "^0.11.1"
+    "typedoc": "^0.14.2"
   },
   "dependencies": {
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
     "typescript": "^3.3.3"
   },
   "nyc": {
