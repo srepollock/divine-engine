@@ -1,31 +1,41 @@
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
-import typescript from 'rollup-plugin-typescript2';
+import commonjs from "rollup-plugin-commonjs";
+import nodeResolve from "rollup-plugin-node-resolve";
 import pkg from "./package.json";
 
 export default {
-    input: './dist/index.js',
-    output: [
+    external: [
+        "stream"
+    ],
+    input: 'dist/index.js', // Required
+    plugins: [
+        globals(),
+        builtins(),
+        nodeResolve(),
+        commonjs(),
+    ],
+    output: [ // Required; Array = multiple outputs
         {
             file: pkg.main,
             format: 'umd',
             name: 'Sunset'
         },
         {
-            file: "./lib/sunset.cjs.js",
+            file: "lib/sunset.cjs.js",
             format: 'cjs'
         },
         {
             file: pkg.module,
             format: 'es'
-        },
+        }
     ],
-    external: [
-        'stream'
-    ],
-    plugins: [
-        globals(),
-        builtins(),
-        typescript({tsconfigOverride: {compilerOptions: {declaration: false}}})
-    ]
+    watch: {
+        include: [
+            "src/**/*.ts"
+        ],
+        exclude: [
+            
+        ]
+    }
 }
