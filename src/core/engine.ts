@@ -2,10 +2,14 @@ import { ErrorCode, log, LogLevel } from "./loggingsystem";
 
 export class Engine {
     private static _instance: Engine | undefined;
+    private static _secondToNano: number = 1e9;
+    private static _nanoToSecond: number = 1 / Engine._secondToNano;
+    private static _milisecondToNano: number = 1e6;
+    private _activeLoops: Array<number> = Array<number>();
     private _running: boolean = false;
     private _started: boolean = false;
     private _delta: number = -1;
-    private _lastTime: number = 0;
+    private _frame: number = 0;
     public static get instance(): Engine {
         if (Engine._instance === undefined) {
             throw new Error("Engine has not been defined. Something went horribly wrong.");
@@ -14,6 +18,9 @@ export class Engine {
     }
     public get delta(): number {
         return Engine.instance._delta;
+    }
+    public get frame(): number {
+        return Engine.instance._frame;
     }
     public get running(): boolean {
         return Engine.instance._running;
@@ -29,8 +36,6 @@ export class Engine {
             return;
         }
         Engine._instance = this;
-        Engine.instance._lastTime = Date.now();
-        Engine.instance._delta = Date.now();
     }
     public static pause(): void {
         Engine.instance._running = false;
@@ -42,31 +47,74 @@ export class Engine {
         new Engine();
         Engine.instance._started = true;
         Engine.instance._running = true;
-        Engine.instance.loop();
+        Engine.instance.startGameLoop(Engine.instance.update);
     }
     public static stop(): void {
-        Engine.instance._started = true;
-        Engine.instance._running = true;
+        Engine.instance._started = false;
+        Engine.instance._running = false;
         Engine.instance.shutdown();
     }
     private cleanup() {
-        
-    }
-    private loop(): void {
-        if (Engine.instance._started) {
-            if (Engine.instance._running) {
-                this.update();
+        if (Engine.instance._activeLoops.length !== 0) {
+            setTimeout(() => {}, 1000);
+            if (Engine.instance._activeLoops.length !== 0) {
+                // DEBUG: This is failing; needs to be addressed.
+                // tslint:disable-next-line: max-line-length
+                log(LogLevel.critical, "Engine loop failed critically. The loops are still running after waiting. This may be a memory leak and needs to be addressed asap.", ErrorCode.EngineCleanupFailed);
             }
-            requestAnimationFrame(this.loop.bind(this));
         }
+    }
+    private getLoopId(): number {
+        return this._activeLoops.length;
+    }
+    private startGameLoop(update: (delta: number) => void): number {
+        const tickLengthMilliseconds = 1000 / 30;
+        const loopId = this.getLoopId();
+        this._activeLoops.push(loopId);
+        const tickLengthNano = tickLengthMilliseconds * Engine._milisecondToNano;
+        const longWaitMilliseconds = Math.floor(tickLengthMilliseconds - 1);
+        const longWaitNano = longWaitMilliseconds * Engine._milisecondToNano;
+        let previous = this.getNanoSecond();
+        let target = this.getNanoSecond();
+        const loop = () => {
+            if (Engine.instance.running) {
+                this._frame++;
+                const now: number = this.getNanoSecond();
+                if (now >= target) {
+                    this._delta = now - previous;
+                    previous = now;
+                    target = now + tickLengthNano;
+                    update(this._delta * Engine._nanoToSecond);
+                }
+                if (this._activeLoops.indexOf(loopId) === -1) {
+                    return;
+                }
+                const remaningInTick = target - this.getNanoSecond();
+                if (remaningInTick > longWaitNano) {
+                    setTimeout(loop, Math.max(longWaitMilliseconds, 16));
+                } else {
+                    setImmediate(loop);
+                }
+            } else {
+                if (!Engine.instance.started) {
+                    return;
+                }
+                setTimeout(loop, Math.max(longWaitMilliseconds, 16));
+            }
+        };
+        loop();
+        return loopId;
+    }
+    
+    private getNanoSecond(): number {
+        let hourTime: [number, number] = process.hrtime();
+        return (+hourTime[0]) * Engine._secondToNano + (+hourTime[1]);
     }
     private shutdown(): void {
         Engine.instance.cleanup();
         Engine._instance = undefined; // Last line of this function.
     }
-    private update(): void {
-        Engine.instance._delta = Date.now() - Engine.instance._lastTime;
-        Engine.instance._lastTime = Date.now();
+    private update(delta: number): void {
         log(LogLevel.debug, `Delta is: ${Engine.instance.delta}`);
     }
 }
