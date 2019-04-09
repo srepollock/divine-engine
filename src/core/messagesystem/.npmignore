@@ -1,0 +1,37 @@
+# npm files
+node_modules
+package-lock.json
+npm-debug.log
+.npmrc
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Rollup cache
+.rpt2_cache/
+rollup.config.js
+
+# Typescript build files
+build/
+src/
+test/
+tsconfig.json
+tslint.json
+
+# Visual Studio Code
+.vscode/
+
+# Other files
+.env
+CVS
+.svn
+.hg
+.lock-wscript
+.wafpickle-N
+.*.swp
+.DS_Store
+._*
+config.gypi
+*.orig

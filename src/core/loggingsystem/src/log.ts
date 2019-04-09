@@ -16,32 +16,29 @@ export function log(level: LogLevel, message: string, ec?: ErrorCode): string {
     var errorString: string = "";
     switch (level) {
         case LogLevel.info:
-            errorString = `Info\t|| ${message}`;
+            errorString = `Info\t${message}`;
             console.log("\t", "\x1b[32m", errorString, "\x1b[0m");
-            console.log();
             break;
         case LogLevel.debug:
-            if (process.env.NODE_DEBUG) {
-                errorString = `Critical!!\t|| ${ec} || ${ErrorCode[ec]}: ${message}`;
-                console.error("\t", "\x1b[30m", "\x1b[41m", errorString, "\x1b[0m");
+            if (process.env.NODE_DEBUG === "true") {
+                errorString = `Debug\t|| ${ec} ${ErrorCode[ec]}: ${message}`;
+                console.log("\t", "\x1b[34m", errorString, "\x1b[0m");
             }
             break;
         case LogLevel.warning:
-            errorString = `Warn\t|| ${ec} || ${ErrorCode[ec]}: ${message}`;
+            errorString = `Warn\t|| ${ec} ${ErrorCode[ec]}: ${message}`;
             console.log("\t", "\x1b[33m", errorString, "\x1b[0m");
             break;
         case LogLevel.error:
-            errorString = `Error\t|| ${ec} || ${ErrorCode[ec]}: ${message}`;
+            errorString = `Error\t|| ${ec} ${ErrorCode[ec]}: ${message}`;
             console.error("\t", "\x1b[31m", errorString, "\x1b[0m");
             break;
         case LogLevel.critical:
-            errorString = `Critical!!\t|| ${ec} || ${ErrorCode[ec]}: ${message}`;
+            errorString = `Critical!! || ${ec} ${ErrorCode[ec]}: ${message}`;
             console.error("\t", "\x1b[30m", "\x1b[41m", errorString, "\x1b[0m");
             throw new Error(errorString);
-            break;
         default:
-            throw new Error("Something terrible happened or that logging level is not allowed.")
-            break;
+            throw new Error("Something terrible happened or that logging level is not allowed.");
     }
     return errorString;
 }
