@@ -1,11 +1,9 @@
 import { DObject } from "../dobject";
 import { Entity } from "../entity";
-import { ErrorCode, LogCritical, LogDebug, LogError } from "../logging";
-import { SceneManagerMessage } from "../messagesystem/messages/Scenemanagermessage";
+import { ErrorCode, log, LogLevel } from "../loggingsystem/src";
 import { DScene } from "./dscene";
 
 export class SceneManager extends DObject {
-    public normalMessageQueue: Array<SceneManagerMessage> = new Array();
     private _scene: DScene | undefined = undefined;
     /**
      * Load scene 
@@ -26,8 +24,8 @@ export class SceneManager extends DObject {
     public get scene(): DScene {
         if (this._scene !== undefined) return this._scene;
         else {
-            LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene getter.");
-            throw ErrorCode.SceneUndefined;
+            log(LogLevel.error, "You gave an undefined scene to the SceneManager.scene getter.", 
+                ErrorCode.SceneUndefined);
         }
     }
     /**
@@ -36,7 +34,10 @@ export class SceneManager extends DObject {
      */
     public set scene(scene: DScene) {
         if (scene !== undefined) this._scene = scene;
-        else LogError(ErrorCode.SceneUndefined, "You gave an undefined scene to the SceneManager.scene setter.");
+        else {
+            log(LogLevel.error, "You gave an undefined scene to the SceneManager.scene setter.", 
+                ErrorCode.SceneUndefined);
+        }
     }
     /**
      * Creates a scene with a filename and entities if defiend.
@@ -55,10 +56,10 @@ export class SceneManager extends DObject {
      */
     public loadScene(filename: string): DScene {
         // REVIEW: This needs to read from file.
-        LogDebug(`Loading scene from file ${filename}`);
+        log(LogLevel.debug, `Loading scene from file ${filename}`);
         
         this._scene = this.buildSceneFromData(filename);
-        LogDebug(JSON.stringify(this._scene));
+        log(LogLevel.debug, JSON.stringify(this._scene));
         return this._scene;
         // TODO: Throws a critical error if scene not read.
     }
@@ -73,7 +74,8 @@ export class SceneManager extends DObject {
         } catch (e) {
             console.trace(e);
             // tslint:disable-next-line:max-line-length
-            LogCritical(ErrorCode.SceneManagerCleanupFailed, "Engine's cleanup failed. The engine did not garbage collect properly.");
+            log(LogLevel.critical, "Engine's cleanup failed. The engine did not garbage collect properly.", 
+                ErrorCode.SceneManagerCleanupFailed);
         }
     }
     /**
@@ -93,7 +95,7 @@ export class SceneManager extends DObject {
     public update(delta: number): void {
         // TODO: Handle messages first, then update the scene
         this.normalMessageQueue.forEach((message) => {
-            LogDebug(`${message.data}`);
+            log(LogLevel.debug, `${message.data}`);
         });
         this.scene.update(delta);
     }
@@ -113,8 +115,7 @@ export class SceneManager extends DObject {
     private cleanup(): void {
         if (this._scene !== undefined) this._scene.shutdown();
         else {
-            LogCritical(ErrorCode.SceneUndefined, "Scene is undfined on BaseSceneManager.cleanup");
-            throw new Error(`${ErrorCode.SceneUndefined}`);
+            log(LogLevel.critical, "Scene is undfined on BaseSceneManager.cleanup", ErrorCode.SceneUndefined);
         }
     }
     /**

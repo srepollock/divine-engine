@@ -1,12 +1,11 @@
 
 import { DObject } from "../dobject";
-import { ErrorCode, LogDebug, LogError, LogWarning } from "../logging";
-import { AssetMessage, Message } from "../messagesystem/messages/";
-import { EventType, MessageSystem, Priority } from "../messagesystem/messagesystem";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
 import { JSONAssetLoader } from "./jsonassetloader";
+import { log } from "three";
+import { LogLevel, ErrorCode } from "../loggingsystem/src";
 
 /**
  * Asset Manager class
@@ -62,7 +61,7 @@ export class AssetManager extends DObject {
             throw new Error(); // NOTE: This will be caught
         } catch (e) { 
             // tslint:disable-next-line:max-line-length
-            LogWarning(ErrorCode.LoadAssetFailed, `AssetManager failed to load the asset: ${name}`);
+            log(LogLevel.warning, `AssetManager failed to load the asset: ${name}`, ErrorCode.LoadAssetFailed);
         }
     }
     /**
@@ -74,11 +73,11 @@ export class AssetManager extends DObject {
      */
     public static loadObjectAsset(obj: any): void {
         if (obj === undefined) {
-            LogWarning(ErrorCode.JSONDataUndefined, "Object given to loadObjectAsset was undefined.");
+            log(LogLevel.warning, "Object given to loadObjectAsset was undefined.", ErrorCode.JSONDataUndefined);
             return;
         }
         if (obj.name === undefined) {
-            LogError(ErrorCode.NoAssetName, `Object was given with no name: ${JSON.stringify(obj)}`);
+            log(LogLevel.error, `Object was given with no name: ${JSON.stringify(obj)}`, ErrorCode.NoAssetName);
             return;
         }
         // REVIEW: Construct inner Asset class to load. This is dangerous...
@@ -104,7 +103,7 @@ export class AssetManager extends DObject {
      */
     public static getAsset(name: string): IAsset | undefined {
         if (AssetManager.isAssetLoaded(name)) {
-            LogDebug(`Found asset ${name}`);
+            log(LogLevel.debug, `Found asset ${name}`);
             return AssetManager.loadedAssets[name];
         } else {
             AssetManager.loadAsset(name); // NOTE: Names must be unique then.
@@ -112,7 +111,7 @@ export class AssetManager extends DObject {
                 return AssetManager.loadedAssets[name];
             } else {
                 // tslint:disable-next-line:max-line-length
-                LogError(ErrorCode.LoadAssetFailed, `Get asset failed. Either the asset is not loaded or could not be loaded. Filename: ${name}`);
+                log(LogLevel.error, `Get asset failed. Either the asset is not loaded or could not be loaded. Filename: ${name}`, ErrorCode.LoadAssetFailed);
             }
         }
         return undefined; // NOTE: Asset was not loaded
@@ -123,9 +122,9 @@ export class AssetManager extends DObject {
      * @returns void
      */
     public static onAssetLoaded(asset: IAsset): void {
-        LogDebug(`AssetManager loading asset: ${asset.name}`);
+        log(LogLevel.debug, `AssetManager loading asset: ${asset.name}`);
         AssetManager._loadedAssets[asset.name] = asset;
-        LogDebug(AssetManager._loadedAssets[asset.name].name);
+        log(LogLevel.debug, AssetManager._loadedAssets[asset.name].name);
         AssetManager.instance.sendMessage(EventType.IOSystem, 
             new AssetMessage(this, Priority.Normal, asset));
     }

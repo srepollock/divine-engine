@@ -1,13 +1,13 @@
 import { guid } from "./helper";
-import { LogDebug } from "./logging";
-import { IMessageHandler, Message } from "./messagesystem";
+import { Message } from "./messagesystem";
+import { LogLevel, log } from "./loggingsystem/src";
 
 /**
  * All objects begin passed as messages in the message system extend this 
  * object. They are ID'd on their string. The engine creates unique ID's for
  * each object to verify them.
  */
-export class DObject implements IMessageHandler {
+export class DObject {
     public tag: string;
     private _id: string;
     /**
@@ -33,6 +33,6 @@ export class DObject implements IMessageHandler {
      * @returns void
      */
     public onMessage(message: Message): void {
-        LogDebug(`${this.tag} receiving: ${message.JSONString}`);
+        log(LogLevel.debug, `${this.tag} receiving: ${message.JSONString}`);
     }
 }

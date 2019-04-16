@@ -1,6 +1,6 @@
 import { BrowserWindow, Screen } from "electron";
 import { Client } from "./helper";
-import { ErrorCode, Log, LogError } from "./logging";
+import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 import { Window } from "./window";
 export class GameWindow implements Window { 
     /**
@@ -61,7 +61,7 @@ export class GameWindow implements Window {
             } else {
                 this.container = undefined;
                 // TODO: This is hitting...
-                LogError(ErrorCode.BrowserWindowUndefined, "Container undefined in GameWindow");
+                log(LogLevel.error, "Container undefined in GameWindow", ErrorCode.BrowserWindowUndefined);
             }
         }
     }
@@ -79,7 +79,7 @@ export class GameWindow implements Window {
      */
     public update(): void {
         // Calls update to the screen
-        Log("GameWindow update");
+        log(LogLevel.debug, "GameWindow update");
     }
     /**
      * Refresh the screen.

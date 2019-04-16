@@ -1,9 +1,9 @@
 import { Engine } from "../engine"; // NOTE: this is now dependant on Engine?
 import { Client } from "../helper";
-import { ErrorCode, LogCritical, LogDebug, LogError, trace } from "../logging";
 import { AssetManager } from "./assetmanager";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
+import { LogLevel, ErrorCode, log } from "../loggingsystem/src";
 var Fs: any;
 var Path: any;
 
@@ -53,7 +53,7 @@ export class JSONAssetLoader implements IAssetLoader {
             try {
                 let fileExtension = assetName.split(".")!.pop()!.toLowerCase();
                 // tslint:disable-next-line:max-line-length
-                if (fileExtension === undefined) LogCritical(ErrorCode.NoFileExtension, `No extension on file ${assetName}`);
+                if (fileExtension === undefined) log(LogLevel.debug,`No extension on file ${assetName}`, ErrorCode.NoFileExtension);
                 this._fs = require("fs");
                 this._path = require("path");
                 var data: string | undefined;
@@ -61,17 +61,17 @@ export class JSONAssetLoader implements IAssetLoader {
                     if (err) {
                         throw new Error();
                     }
-                    LogDebug(`File loaded ${assetName}`);
+                    log(LogLevel.debug,`File loaded ${assetName}`);
                     this.onJSONLoadedFs(this._path.basename(assetName, this._path.extname(assetName)), data);
                     return;
                 });
             } catch (e) {
-                trace(e);
+                log(LogLevel.error, `${e}`);
                 // tslint:disable-next-line:max-line-length
-                LogError(ErrorCode.FileContentsNotRead, `The file ${assetName} could not be read. Are you in the right directory?`);
+                log(LogLevel.error,`The file ${assetName} could not be read. Are you in the right directory?`, ErrorCode.FileContentsNotRead);
             }
         } else {
-            LogError(ErrorCode.EngineClientNotSet, `Engine clinet is not set.`);
+            log(LogLevel.error, `Engine clinet is not set.`, ErrorCode.EngineClientNotSet);
         }
     }
     /**
@@ -86,10 +86,10 @@ export class JSONAssetLoader implements IAssetLoader {
             // TODO: Remove the extension from the file name if there is one. 
             //      Else, throw a warning that there is no ext
             let asset = new JSONAsset(assetName, json);
-            LogDebug(`Created asset: ${asset.name}`);
+            log(LogLevel.debug,`Created asset: ${asset.name}`);
             AssetManager.onAssetLoaded(asset);
         } else {
-            LogError(ErrorCode.AssetManagerDidNotGetAsset, "Did not load the file");
+            log(LogLevel.error, "Did not load the file", ErrorCode.AssetManagerDidNotGetAsset);
         }
     }
     /**
@@ -100,17 +100,17 @@ export class JSONAssetLoader implements IAssetLoader {
      */
     private onJSONLoadedFs(assetName: string, data: string): void {
         if (data === undefined) {
-            LogError(ErrorCode.JSONDataUndefined, "onJSONLoadedFs was given undefined data");
+            log(LogLevel.error,"onJSONLoadedFs was given undefined data", ErrorCode.JSONDataUndefined);
         } else if (data !== undefined) {
             let json = JSON.parse(data);
             // TODO: Remove the extension from the file name if there is one. 
             //      Else, throw a warning that there is no ext
             let asset = new JSONAsset(assetName, json);
-            LogDebug(`Created asset: ${asset.name}`);
+            log(LogLevel.debug,`Created asset: ${asset.name}`);
             AssetManager.onAssetLoaded(asset);
         } else {
-            LogDebug("data: " + data);
-            LogError(ErrorCode.AssetManagerDidNotGetAsset, "AssetManager did not recieve an asset.");
+            log(LogLevel.debug,"data: " + data);
+            log(LogLevel.error,"AssetManager did not recieve an asset.", ErrorCode.AssetManagerDidNotGetAsset);
         }
     }
 }

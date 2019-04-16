@@ -1,7 +1,7 @@
 import { Component } from "../core/components/component";
 import { DObject } from "./dobject";
-import { ErrorCode, Log, LogDebug, LogError, LogWarning } from "./logging";
 import { Transform } from "./math";
+import { log, LogLevel, ErrorCode } from "./loggingsystem/src";
 
 /**
  * The Daemon's entity object for game objects. The engine uses an
@@ -35,7 +35,7 @@ export class Entity extends DObject {
         super(tag);
         this.transform = (transform) ? transform : new Transform();
         this.components = (components) ? components : new Array();
-        LogDebug(`Setting parent of ${this.id} to ${parent}`);
+        log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
         this._parent = (parent) ? parent.id : "";
         this.children = (children) ? children : new Array();
         for (let i in this.children) this.children[i].setParent(this);
@@ -46,7 +46,8 @@ export class Entity extends DObject {
      */
     public get parent(): string {
         if (this._parent !== "") return this._parent;
-        LogError(ErrorCode.EntityParentUndefined, `You tried to get the parent of ${this.id} that has no parent`);
+        log(LogLevel.error,`You tried to get the parent of ${this.id} that has no parent`, 
+            ErrorCode.EntityParentUndefined);
         return "";
     }
     /**
@@ -73,7 +74,7 @@ export class Entity extends DObject {
             entity.setParent(this);
             this.children!.push(entity);
         } else {
-            LogError(ErrorCode.EntityAlreadyHasChild, `${this.id} already has child ${entity.id}`);
+            log(LogLevel.error, `${this.id} already has child ${entity.id}`, ErrorCode.EntityAlreadyHasChild);
         }
     }
     /**
@@ -107,7 +108,7 @@ export class Entity extends DObject {
             this.components!.push(component);
         } else {
             // tslint:disable-next-line:max-line-length
-            LogError(ErrorCode.EntityAlreadyHasComponent, `This entity object alread has the ${component.id} attached.`);
+            log(LogLevel.error, `This entity object alread has the ${component.id} attached.`, ErrorCode.EntityAlreadyHasComponent);
         }
     }
     /**
@@ -152,7 +153,7 @@ export class Entity extends DObject {
         if (entity !== undefined) { 
             return entity!;
         } else {
-            LogWarning(ErrorCode.EntityChildNotFound, "Component not found");
+            log(LogLevel.warning, "Component not found", ErrorCode.EntityChildNotFound);
             return undefined;
         }
     }
@@ -173,7 +174,7 @@ export class Entity extends DObject {
         if (comp !== undefined) { 
             return comp!;
         } else {
-            LogError(ErrorCode.EntityComponentNotFound, "Component not found");
+            log(LogLevel.warning, "Component not found", ErrorCode.EntityComponentNotFound);
             return undefined;
         }
     }
@@ -183,7 +184,7 @@ export class Entity extends DObject {
      */
     public toString(): string {
         let objectString = `Entity [id:${this.id}]`;
-        Log(objectString);
+        log(LogLevel.debug, objectString);
         return objectString;
     }
     /**

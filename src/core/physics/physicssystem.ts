@@ -1,4 +1,4 @@
-import { Message, PhysicsSystemMessage } from "../messagesystem";
+import { Message } from "../messagesystem";
 import { System } from "../system";
 
 export class PhysicsSystem extends System {

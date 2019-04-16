@@ -28,24 +28,27 @@ export default {
             filename: true
         }),
     ],
-    watch: {
-        include: 'src/**/*.ts'
-    },
-    output: [
+    output: [ // Required; Array = multiple outputs
         {
             file: pkg.main,
             format: 'umd',
             name: 'Divine'
         },
         {
-            file: "./lib/divine.cjs.js",
-            format: 'cjs',
-            name: 'Divine'
+            file: "lib/divine.cjs.js",
+            format: 'cjs'
         },
         {
             file: pkg.module,
-            format: 'es',
-            name: 'Divine'
-        },
+            format: 'es'
+        }
     ],
+    watch: {
+        include: [
+            "src/**/*.ts"
+        ],
+        exclude: [
+            
+        ]
+    }
 }

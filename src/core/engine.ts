@@ -1,17 +1,14 @@
 import { AssetManager } from "./assets";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
-import { ErrorCode } from "./logging";
-import { Log, LogCritical, LogDebug, LogError, LogWarning } from "./logging/errorsystem";
-import { IMessageHandler } from "./messagesystem";
-import { Message } from "./messagesystem/messages";
-import { MessageSystem } from "./messagesystem/messagesystem";
+import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
+import { Message, MessageSystem } from "./messagesystem/src";
 import { PhysicsSystem } from "./physics/physicssystem";
 import { RenderSystem } from "./render/rendersystem";
 import { DScene, SceneManager } from "./scene";
 import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
- 
+
 /** 
  * Engine arguments for setup.
  */
@@ -67,7 +64,7 @@ export class EngineArguments {
 /**
  * The Divine Game Engine class.
  */
-export class Engine implements IMessageHandler {
+export class Engine {
     /**
      * Gets the engine's client type.
      * @returns Client
@@ -97,7 +94,7 @@ export class Engine implements IMessageHandler {
         if (Engine._instance !== undefined) {
             return Engine._instance;
         }
-        LogError(ErrorCode.EngineInstanceUndefined, "Called on get Engine.instance");
+        log(LogLevel.error, "Called on get Engine.instance", ErrorCode.EngineInstanceUndefined);
         return undefined;
     }
     /**
@@ -170,8 +167,7 @@ export class Engine implements IMessageHandler {
      */
     public get gameWindow(): Window {
         if (this._gameWindow) return this._gameWindow;
-        LogError(ErrorCode.EngineWindowUndefined, 
-            "The engine's game window is not defined");
+        log(LogLevel.error, "The engine's game window is not defined", ErrorCode.EngineWindowUndefined);
         throw ErrorCode.EngineWindowUndefined;
     }
     /**
@@ -196,7 +192,7 @@ export class Engine implements IMessageHandler {
         if (this._renderSystem !== undefined) {
             return this._renderSystem;
         }
-        LogCritical(ErrorCode.RenderSystemUndefined, "Render system is undefined");
+        log(LogLevel.critical, "Render system is undefined", ErrorCode.RenderSystemUndefined);
         throw ErrorCode.RenderSystemUndefined;
     }
     /**
@@ -207,7 +203,7 @@ export class Engine implements IMessageHandler {
         if (this._sceneManager!.scene !== undefined) {
             return this._sceneManager!.scene;
         }
-        LogCritical(ErrorCode.SceneUndefined, "Scene is undefined");
+        log(LogLevel.critical, "Scene is undefined", ErrorCode.SceneUndefined);
         throw ErrorCode.SceneUndefined;
     }
     /**
@@ -218,7 +214,7 @@ export class Engine implements IMessageHandler {
         if (this._sceneManager !== undefined) return this._sceneManager;
         else {
             // tslint:disable-next-line:max-line-length
-            LogCritical(ErrorCode.SceneManagerUndefined, "Engine's scene manager is not defiend when calling get function.");
+            log(LogLevel.critical, "Engine's scene manager is not defiend when calling get function.", ErrorCode.SceneManagerUndefined);
             throw ErrorCode.SceneManagerUndefined;
         }
     }
@@ -258,19 +254,18 @@ export class Engine implements IMessageHandler {
         MessageSystem.initialize();
         if (MessageSystem.instance === undefined) {
             // NOTE: Because the message system is so critical, it must be started if the engine is to run.
-            LogCritical(ErrorCode.MessageSystemInitialization, 
-                "Engine called MessageSystem.initialization and it failed");
+            // tslint:disable-next-line: max-line-length
+            log(LogLevel.critical, "Engine called MessageSystem.initialization and it failed", ErrorCode.MessageSystemInitialization);
             Engine.shutdown();
         }
         if (Engine._instance !== undefined) {
-            Log(JSON.stringify(Engine._instance));
-            LogCritical(ErrorCode.EngineInstanceNotUndefined, 
-                "Engine already has an instance in the class");
+            log(LogLevel.debug, JSON.stringify(Engine._instance));
+            log(LogLevel.critical, "Engine already has an instance in the class", ErrorCode.EngineInstanceNotUndefined);
             Engine.shutdown();
         }
         if (!Engine._started) {
-            LogCritical(ErrorCode.EngineStartedEarly, 
-                "The engine instance must be started from the start function");
+            log(LogLevel.critical, "The engine instance must be started from the start function", 
+                ErrorCode.EngineStartedEarly);
             Engine.shutdown();
         }
         Engine._instance = this;
@@ -289,14 +284,14 @@ export class Engine implements IMessageHandler {
                 } else {
                     this._container = document.getElementsByTagName("body")[0];
                 }
-                LogDebug(`Engine's container: ${this._container}`);
+                log(LogLevel.debug, `Engine's container: ${this._container}`);
             } else {
-                LogCritical(ErrorCode.ContainerUndefined, "the 'document' object is undefined");
+                log(LogLevel.critical, "the 'document' object is undefined", ErrorCode.ContainerUndefined);
                 Engine.shutdown();
             }
         } else {
-            LogWarning(ErrorCode.WindowUndefined, "the 'window' object is not globally defined. If using Electron,"
-                + " make sure you are calling this in the render process");
+            log(LogLevel.warning, "the 'window' object is not globally defined. If using Electron,"
+                + " make sure you are calling this in the render process", ErrorCode.WindowUndefined);
         }
         this._startTime = Date.now();
         this._last = this._startTime;
@@ -310,17 +305,17 @@ export class Engine implements IMessageHandler {
      */
     public static start(args: EngineArguments): void {
         Engine._started = true;
-        Log("Engine Arguments:" + JSON.stringify(args));
+        log(LogLevel.debug, "Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
         if (Engine._instance === undefined) {
-            LogCritical(ErrorCode.EngineInstanceUndefined, 
-                "Engine was not initialized immediately after constructor called");
+            log(LogLevel.critical, 
+                "Engine was not initialized immediately after constructor called", ErrorCode.EngineInstanceUndefined);
         }
         Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client, Engine._instance!._container!);
         Engine._instance!.gameWindow.start();
         Engine._instance!.gameWindow.title = args.title;
         Engine._running = true;
-        Log("Engine started");
+        log(LogLevel.debug, "Engine started");
         /**
          * NOTE: Start subsystems. This is where the rest of the systems `.start()` functions get called. 
          * NOTE: Message system started in Constructor
@@ -331,28 +326,28 @@ export class Engine implements IMessageHandler {
         Engine._instance!._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
         if (Engine._instance!._renderSystem === undefined) {
             // tslint:disable-next-line:max-line-length
-            LogCritical(ErrorCode.RenderSystemUndefined, "Render system was not initialized immediately after constructor called");
+            log(LogLevel.critical, "Render system was not initialized immediately after constructor called", ErrorCode.RenderSystemUndefined);
         }
         Engine._instance!._renderSystem!.initialize();
         // NOTE: Asset Manager
         AssetManager.initialize();
         if (AssetManager.instance === undefined) {
-            LogCritical(ErrorCode.AssetManagerUndefined, "Asset manager was not initialized properly");
+            log(LogLevel.critical, "Asset manager was not initialized properly", ErrorCode.AssetManagerUndefined);
         }
         // NOTE: Scene Manager
         // tslint:disable-next-line:max-line-length
         (Engine._instance!.engineArguments.sceneManager !== undefined) ? Engine._instance!.sceneManager = Engine._instance!.engineArguments.sceneManager! : Engine._instance!.sceneManager = new SceneManager();
         if (Engine._instance!._sceneManager === undefined) {
             // tslint:disable-next-line:max-line-length
-            LogCritical(ErrorCode.SceneManagerUndefined, "SceneManager was not initialized properly.");
+            log(LogLevel.critical, "SceneManager was not initialized properly.", ErrorCode.SceneManagerUndefined);
         } else {
-            LogDebug("Loaded scene manager");
-            LogDebug(`${Engine._instance!._sceneManager}`);
+            log(LogLevel.debug, "Loaded scene manager");
+            log(LogLevel.debug, `${Engine._instance!._sceneManager}`);
         }
         // NOTE: Physics System
         Engine._instance!._physicsSystem = new PhysicsSystem();
         if (Engine._instance!._physicsSystem === undefined) {
-            LogCritical(ErrorCode.PhysicsSystemUndefined, "Phyiscs System was not initialized properly.");
+            log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
             Engine.shutdown();
         }
         // tslint:disable-next-line:max-line-length
@@ -376,7 +371,7 @@ export class Engine implements IMessageHandler {
      */
     public static play(): void {
         if (Engine._instance === undefined) {
-            LogCritical(ErrorCode.EngineInstanceUndefined, "Tried to play a null engine");
+            log(LogLevel.critical, "Tried to play a null engine", ErrorCode.EngineInstanceUndefined);
         }
         // NOTE: This should be called on typescript recompilation!! Flag for this?
         // if (!Engine._running && Engine._instance!._engineArguments !== undefined) {
@@ -388,7 +383,7 @@ export class Engine implements IMessageHandler {
         if (this.client === Client.Browser) Engine._instance!.browserFrame();
         else if (this.client === Client.Electron) Engine._instance!.electronFrame();
         else if (this.client === Client.Console) Engine._instance!.consoleFrame();
-        else LogError(ErrorCode.EngineClientNotSet, "Client has not been set by the engine.");
+        else log(LogLevel.error, "Client has not been set by the engine.", ErrorCode.EngineClientNotSet);
     }
     /**
      * Pauses the engine running.
@@ -404,7 +399,7 @@ export class Engine implements IMessageHandler {
      */
     public static shutdown(): void {
         if (!Engine._started && !Engine._running && Engine._instance === undefined) { // NOTE: This can silently fail
-            LogWarning(ErrorCode.EngineInstanceUndefined, "Engine instance null on shutdown call");
+            log(LogLevel.warning, "Engine instance null on shutdown call", ErrorCode.EngineInstanceUndefined);
         }
         if (Engine._started && Engine._running) Engine.stop();
         if (Engine._instance !== undefined) {
@@ -416,12 +411,12 @@ export class Engine implements IMessageHandler {
                 const win = remote.getCurrentWindow();
                 win.close();
             }
-            LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
+            log(LogLevel.debug, `Engine.shutdown() set Engine instance to: ${this._instance}`);
             this._instance = undefined;
-            LogDebug(`Engine.shutdown() set Engine instance to: ${this._instance}`);
+            log(LogLevel.debug, `Engine.shutdown() set Engine instance to: ${this._instance}`);
         } else {
             // tslint:disable-next-line:max-line-length
-            LogWarning(ErrorCode.EngineInstanceUndefined, "Engine instance is 'undefined'. It has already been shutdown.");
+            log(LogLevel.warning, "Engine instance is 'undefined'. It has already been shutdown.", ErrorCode.EngineInstanceUndefined);
         }
     }
     /**
@@ -438,7 +433,7 @@ export class Engine implements IMessageHandler {
      * @returns void
      */
     private cleanup(): void {
-        LogDebug("Engine cleanup called");
+        log(LogLevel.debug, "Engine cleanup called");
         try {
             Engine._instance!._physicsSystem!.shutdown();
             if (Engine._instance!._sceneManager !== undefined) {
@@ -448,7 +443,7 @@ export class Engine implements IMessageHandler {
             MessageSystem.instance!.shutdown();
         } catch (e) {
             console.trace(e);
-            LogWarning(ErrorCode.EngineCleanupFailed, `Cleanup on Engine cleanup failed.`);
+            log(LogLevel.warning, `Cleanup on Engine cleanup failed.`, ErrorCode.EngineCleanupFailed);
         }
     }
     /**
@@ -461,7 +456,7 @@ export class Engine implements IMessageHandler {
          * Wait for message worker
          * 
          */
-        // LogDebug(`Update loop | delta = ${delta}`);
+        // log(LogLevel.debug, `Update loop | delta = ${delta}`);
         Engine._instance!._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
         // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
         Engine._instance!._sceneManager!.update(delta); // NOTE: Calls scene update

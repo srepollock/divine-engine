@@ -1,4 +1,4 @@
-import { Message, SoundSystemMessage } from "../messagesystem";
+import { Message } from "../messagesystem";
 import { System } from "../system";
 
 /**
