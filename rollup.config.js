@@ -19,10 +19,10 @@ export default {
         {
             file: pkg.main,
             format: 'umd',
-            name: 'Sunset'
+            name: 'Divine'
         },
         {
-            file: "lib/sunset.cjs.js",
+            file: "lib/divine.cjs.js",
             format: 'cjs'
         },
         {

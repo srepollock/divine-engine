@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { Engine } from "../../src";
-
+process.env.NODE_DEBUG = "true";
 describe("Engine unit tests", () => {
     Engine.start();
     it("should create a single instance", () => {
@@ -33,6 +33,6 @@ describe("Engine unit tests", () => {
     });
     it("should stop and shtudown when stop is called", () => {
         Engine.stop();
-        expect(Engine.instance).to.be.undefined;
+        expect(() => { Engine.instance; }).to.throw;
     });
 });

@@ -6,6 +6,7 @@ export class Engine {
     private static _nanoToSecond: number = 1 / Engine._secondToNano;
     private static _milisecondToNano: number = 1e6;
     private _activeLoops: Array<number> = Array<number>();
+    private _loopId: number = -1;
     private _running: boolean = false;
     private _started: boolean = false;
     private _delta: number = -1;
@@ -47,7 +48,7 @@ export class Engine {
         new Engine();
         Engine.instance._started = true;
         Engine.instance._running = true;
-        Engine.instance.startGameLoop(Engine.instance.update);
+        Engine.instance._loopId = Engine.instance.startGameLoop(Engine.instance.update);
     }
     public static stop(): void {
         Engine.instance._started = false;
@@ -55,7 +56,8 @@ export class Engine {
         Engine.instance.shutdown();
     }
     private cleanup() {
-        if (Engine.instance._activeLoops.length !== 0) {
+        if (Engine.instance._loopId !== -1 && Engine.instance._activeLoops.length !== 0) {
+            Engine.instance.clearGameLoop(Engine.instance._loopId);
             setTimeout(() => {}, 1000);
             if (Engine.instance._activeLoops.length !== 0) {
                 // DEBUG: This is failing; needs to be addressed.
@@ -63,6 +65,14 @@ export class Engine {
                 log(LogLevel.critical, "Engine loop failed critically. The loops are still running after waiting. This may be a memory leak and needs to be addressed asap.", ErrorCode.EngineCleanupFailed);
             }
         }
+    }
+    /**
+     * Remove the loop id from the active loops. There should only ever be 1 loop running at a time.
+     * @param  {number} loopId Loop ID to remove
+     * @returns void
+     */
+    private clearGameLoop(loopId: number): void {
+        Engine.instance._activeLoops.splice(Engine.instance._activeLoops.indexOf(loopId), 1);
     }
     private getLoopId(): number {
         return this._activeLoops.length;
@@ -76,9 +86,10 @@ export class Engine {
         const longWaitNano = longWaitMilliseconds * Engine._milisecondToNano;
         let previous = this.getNanoSecond();
         let target = this.getNanoSecond();
+        log(LogLevel.debug, "Before the inner loop");
         const loop = () => {
             if (Engine.instance.running) {
-                this._frame++;
+                Engine.instance._frame++;
                 const now: number = this.getNanoSecond();
                 if (now >= target) {
                     this._delta = now - previous;
@@ -91,14 +102,18 @@ export class Engine {
                 }
                 const remaningInTick = target - this.getNanoSecond();
                 if (remaningInTick > longWaitNano) {
+                    log(LogLevel.debug, `Set timeout ${Math.max(longWaitMilliseconds, 16)}`);
                     setTimeout(loop, Math.max(longWaitMilliseconds, 16));
                 } else {
+                    log(LogLevel.debug, "Set immediate");
                     setImmediate(loop);
                 }
             } else {
                 if (!Engine.instance.started) {
+                    log(LogLevel.debug, "Engine not running or started");
                     return;
                 }
+                log(LogLevel.debug, "Engine not running");
                 setTimeout(loop, Math.max(longWaitMilliseconds, 16));
             }
         };
