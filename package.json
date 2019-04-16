@@ -1,27 +1,30 @@
 {
   "name": "divine-engine",
-  "version": "0.0.1",
+  "version": "0.3.3",
   "description": "The Divine Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
-  "main": "lib/divine.umd.js",
-  "module": "lib/divine.es.js",
-  "types": "dist/index.d.ts",
+  "main": "./lib/divine.umd.js",
+  "module": "./lib/divine.es.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
+    "build-tests": "tsc --p test/helperfiles",
+    "bundle": "npm run build; parcel",
     "build": "tsc",
-    "bundle": "npm run build; rollup -c",
     "clean": "rm -rf build/* dist/* lib/*",
     "cleanbuild": "npm run clean; npm run build",
     "commit": "npm run lint; git add --all && git-cz",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --target ESNext --readme none src/*",
+    "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
     "prepare": "npm run clean; npm run bundle;",
+    "preunit-test": "npm run-script build-tests",
     "semantic-release": "semantic-release",
     "test": "npm run test:all",
     "test:all": "nyc mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit",
     "test:debug": "mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit --inspect-brk",
-    "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.ts\"",
-    "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.ts\"",
-    "test:unit": "mocha --opts mocha.opts \"test/unit/**/*.spec.ts\""
+    "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.{ts,tsx}\" --exit",
+    "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.{ts,tsx}\" --exit",
+    "test:unit": "mocha --opts mocha.opts \"test/unit/**/*.spec.{ts,tsx}\""
   },
   "repository": {
     "type": "git",
@@ -29,8 +32,8 @@
   },
   "keywords": [
     "typescript",
-    "node",
-    "game-engine"
+    "game-engine",
+    "game-development"
   ],
   "author": "Spencer Pollock <spencer@spollock.ca> (http://spollock.ca)",
   "license": "Apache-2.0",
@@ -39,32 +42,63 @@
   },
   "homepage": "http://spollock.ca/divine-engine",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-arrow-functions": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-typescript": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "@babel/runtime": "^7.1.2",
+    "@types/chai": "^4.1.6",
+    "@types/jsdom": "^11.12.0",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.18",
-    "@types/puppeteer": "^1.11.1",
+    "@types/node": "^10.12.0",
+    "@types/puppeteer": "^1.9.0",
+    "@types/three": "^0.93.8",
     "chai": "^4.2.0",
     "codecov": "^3.1.0",
-    "commitizen": "^3.0.7",
-    "cz-conventional-changelog": "^2.1.0",
-    "electron": "^2.0.16",
-    "event-stream": "3.3.4",
+    "electron": "^2.0.11",
+    "fs": "0.0.1-security",
     "mocha": "^5.2.0",
-    "node": "^10.14.2",
+    "node": "^10.11.0",
     "nyc": "^12.0.2",
-    "puppeteer": "^1.11.0",
-    "rollup": "^1.6.0",
-    "rollup-plugin-commonjs": "^9.2.2",
+    "puppeteer": "^1.9.0",
+    "rollup": "^0.62.0",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "semver": ">=4.3.2",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-plugin-typescript2": "^0.12.0",
+    "three": "^0.97.0",
+    "three.js": "^0.77.1",
     "ts-node": "^7.0.1",
-    "tslint": "^5.12.0",
-    "typedoc": "^0.14.2"
-  },
-  "dependencies": {
-    "typescript": "^3.3.3"
+    "tslint": "^5.11.0",
+    "typedoc": "^0.14.2",
+    "xhr2": "^0.1.4"
+    },
+    "dependencies": {
+      "chai": "^4.2.0",
+      "codecov": "^3.1.0",
+      "commitizen": "^3.0.7",
+      "cz-conventional-changelog": "^2.1.0",
+      "event-stream": "3.3.4",
+      "mocha": "^6.1.3",
+      "node": "^11.12.0",
+      "nyc": "^13.3.0",
+      "semver": ">=4.3.2",
+      "ts-node": "^7.0.1",
+      "tslint": "^5.12.0",
+      "typedoc": "^0.14.2",
+      "typescript": "^3.4.1"
+    },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "nyc": {
     "extension": [
@@ -85,10 +119,5 @@
       "text-summary"
     ],
     "all": true
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }

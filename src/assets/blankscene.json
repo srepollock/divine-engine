@@ -1,0 +1,14 @@
+{
+    "tag": "basicscene",
+    "entityArray": [
+        {
+            "tag": "player",
+            "transform": {
+                "x": 0,
+                "y": 0
+            },
+            "components": [],
+            "children": []
+        }
+    ]
+ }

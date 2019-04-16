@@ -3,6 +3,8 @@ import { MessageType } from "../messagesystem/src//messagetype";
 
 /**
  * IO stream class to handle io messages.
+ * 
+ * Would like to put this here: https://stackoverflow.com/questions/40306837/electron-processing-input
  */
 export class IOStream extends SystemStream {
     /**

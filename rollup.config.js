@@ -1,19 +1,32 @@
+import typescript from 'rollup-plugin-typescript2';
+import babel from 'rollup-plugin-babel';
 import globals from 'rollup-plugin-node-globals';
 import builtins from 'rollup-plugin-node-builtins';
-import commonjs from "rollup-plugin-commonjs";
-import nodeResolve from "rollup-plugin-node-resolve";
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 import pkg from "./package.json";
 
 export default {
-    external: [
-        "stream"
-    ],
-    input: 'dist/index.js', // Required
+    input: './src/index.ts',
     plugins: [
-        globals(),
+        typescript(),
+        babel({
+            babelrc: false,
+            presets: [["@babel/preset-env", {"modules": false}]],
+            runtimeHelpers: true
+        }),
         builtins(),
-        nodeResolve(),
+        resolve({
+            preferBuiltins: true,
+            browser: true
+        }),
         commonjs(),
+        globals({
+            process: true,
+            global: true,
+            dirname: true,
+            filename: true
+        }),
     ],
     output: [ // Required; Array = multiple outputs
         {

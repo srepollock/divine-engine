@@ -76,11 +76,7 @@ Coding styles must be followed in this project. To ensure that users are followi
 * [Babel](https://babeljs.io/)
 * [Mocha](https://mochajs.org/)
 * [Chai](https://www.chaijs.com/)
-* [Puppeteer](https://pptr.dev/)
-* [threejs](https://threejs.org/)
 * [HowlerJS](https://howlerjs.com/)
-* [Box2D](https://www.npmjs.com/package/@types/box2d)
-* [Keypress](https://www.npmjs.com/package/keypress)
 
 ## Contributing
 
