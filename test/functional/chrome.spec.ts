@@ -5,7 +5,7 @@ import puppeteer, { Browser, Page } from "puppeteer";
 describe("Chrome testing", () => {
     var browser: Browser;
     var page: Page;
-    let constBrowser: Browser = browser; // REVIEW: What??
+    let constBrowser: Browser; // REVIEW: What??
 
     // Puppeteer options
     const opts = {

@@ -2,7 +2,7 @@ import { AssetManager } from "./assets";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Message, MessageSystem } from "./messagesystem/src";
+import { Message, MessageSystem, MessageType } from "./messagesystem/src";
 import { PhysicsSystem } from "./physics/physicssystem";
 import { RenderSystem } from "./render/rendersystem";
 import { DScene, SceneManager } from "./scene";
@@ -96,6 +96,18 @@ export class Engine {
         }
         log(LogLevel.error, "Called on get Engine.instance", ErrorCode.EngineInstanceUndefined);
         return undefined;
+    }
+    /**
+     * Gets the enigine message system, returns a new one if none-existant? (Will throw error first.)
+     * @returns MessageSystem
+     */
+    public static get messageSystem(): MessageSystem {
+        if (Engine.instance! !== undefined &&
+            Engine._instance!._messageSystem! !== undefined) {
+                return Engine.instance!._messageSystem!;
+        }
+        log(LogLevel.critical, `Engine.instance or MessageSystem was not defined.`);
+        return new MessageSystem(); // REVIEW: This should be fixed later; but not now.\?
     }
     /**
      * Gets the engine's current time.
@@ -232,6 +244,7 @@ export class Engine {
     private _client: Client;
     private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
+    private _messageSystem: MessageSystem;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
     private _gameWindow: GameWindow | undefined = undefined;
@@ -251,8 +264,8 @@ export class Engine {
     private constructor(args: EngineArguments) {
         this._id = guid();
         this.setEngineArguments(args);
-        MessageSystem.initialize();
-        if (MessageSystem.instance === undefined) {
+        this._messageSystem = new MessageSystem();
+        if (this._messageSystem === undefined) {
             // NOTE: Because the message system is so critical, it must be started if the engine is to run.
             // tslint:disable-next-line: max-line-length
             log(LogLevel.critical, "Engine called MessageSystem.initialization and it failed", ErrorCode.MessageSystemInitialization);
@@ -440,10 +453,11 @@ export class Engine {
                 Engine._instance!._sceneManager!.shutdown(); // BUG: Calling on undefined? What??
             }
             Engine.instance!.renderSystem.shutdown(); // TODO: initiailize in constructor.
-            MessageSystem.instance!.shutdown();
+            this._messageSystem!.destroy();
         } catch (e) {
             console.trace(e);
-            log(LogLevel.warning, `Cleanup on Engine cleanup failed.`, ErrorCode.EngineCleanupFailed);
+            log(LogLevel.warning, `Cleanup on Engine cleanup failed. NOTE: TypeScript "should" clean this`, 
+                ErrorCode.EngineCleanupFailed);
         }
     }
     /**
@@ -454,10 +468,10 @@ export class Engine {
         /**
          * NOTE:
          * Wait for message worker
-         * 
          */
-        // log(LogLevel.debug, `Update loop | delta = ${delta}`);
-        Engine._instance!._renderSystem!.update(delta); // NOTE: Possibly undefined is handled on creation.
+        log(LogLevel.debug, `Update loop | delta = ${delta}`);
+        this._messageSystem!.write(new Message(delta.toString(), 
+            MessageType.Global)); // NOTE: Possibly undefined is handled on creation.
         // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
         Engine._instance!._sceneManager!.update(delta); // NOTE: Calls scene update
         Engine._instance!._physicsSystem!.update(delta); // NOTE: Physics messages handled

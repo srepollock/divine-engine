@@ -1,16 +1,11 @@
 import { DObject } from "./dobject";
+import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 import { Message } from "./messagesystem";
 
 /**
  * Abstract System class. This is the base class of all other Systems in the Engine.
  */
 export abstract class System extends DObject {
-    /**
-     * Message queue for the system to handle messages on udpate.
-     * NOTE: normalMessageQueue will need to be redefined for each system implementation as each system has it's own 
-     * messages.
-     */
-    public normalMessageQueue: Array<Message> = new Array();
     /**
      * Constructor for the system class. Always call super and give the system name as the tag. There shall never be 
      * two of the same system currently loaded into the engine.
@@ -56,21 +51,21 @@ export abstract class System extends DObject {
      * @returns void
      */
     public update(delta: number): void {
-        if (this.normalMessageQueue.length !== 0) {
-            this.normalMessageQueue.forEach((message) => {
-                LogWarning(ErrorCode.OK, `Base System message handler called. Did you forget to override?
-                Handling message: ${message!.JSONString}`);
-            });
-        }
+        // if (this.normalMessageQueue.length !== 0) {
+        //     this.normalMessageQueue.forEach((message) => {
+        //         log(LogLevel.warning, `Base System message handler called. Did you forget to override?
+        //             Handling message: ${message!.toString()}`, ErrorCode.OK);
+        //     });
+        // }
     }
-    /**
-     * Default system message handler. 
-     * **This *MUST* be overridden in each System for their message types.**
-     * Defaults an OK warning message. REVIEW: Should this be different?
-     * @param  {Message} message
-     * @returns void
-     */
-    public onMessage(message: Message): void {
-        this.normalMessageQueue.push(message);
-    }
+    // /**
+    //  * Default system message handler. 
+    //  * **This *MUST* be overridden in each System for their message types.**
+    //  * Defaults an OK warning message. REVIEW: Should this be different?
+    //  * @param  {Message} message
+    //  * @returns void
+    //  */
+    // public onMessage(message: Message): void {
+    //     this.normalMessageQueue.push(message);
+    // }
 }

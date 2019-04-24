@@ -34,3 +34,5 @@ CVS
 ._*
 config.gypi
 *.orig
+
+.cache/

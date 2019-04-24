@@ -1,11 +1,12 @@
 
 import { DObject } from "../dobject";
+import { Engine } from "../engine";
+import { ErrorCode, log, LogLevel } from "../loggingsystem/src";
+import { Message, MessageSystem, MessageType } from "../messagesystem/src";
 import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
 import { JSONAssetLoader } from "./jsonassetloader";
-import { log } from "three";
-import { LogLevel, ErrorCode } from "../loggingsystem/src";
 
 /**
  * Asset Manager class
@@ -125,8 +126,7 @@ export class AssetManager extends DObject {
         log(LogLevel.debug, `AssetManager loading asset: ${asset.name}`);
         AssetManager._loadedAssets[asset.name] = asset;
         log(LogLevel.debug, AssetManager._loadedAssets[asset.name].name);
-        AssetManager.instance.sendMessage(EventType.IOSystem, 
-            new AssetMessage(this, Priority.Normal, asset));
+        Engine.messageSystem.write(new Message( JSON.stringify(asset), MessageType.Render));
     }
     /**
      * Calls the AssetManagers cleanup function.
@@ -144,12 +144,13 @@ export class AssetManager extends DObject {
     }
     /**
      * Sends message of event type to message system.
-     * @param  {string} event
-     * @param  {Message} message
+     * @param  {any} data
+     * @param  {MessageType} type
+     * @param  {boolean} global?
      * @returns void
      */
-    public sendMessage(event: string, message: Message): void {
-        MessageSystem.sendMessage(event, message);
+    public sendMessage(data: any, type: MessageType, global?: boolean): void {
+        Engine.messageSystem.write(new Message(data, type, global));
     }
     /**
      * Called when the asset is loaded.

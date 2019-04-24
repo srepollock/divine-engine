@@ -22,11 +22,16 @@ export class SceneManager extends DObject {
      * @returns DScene | undefined
      */
     public get scene(): DScene {
-        if (this._scene !== undefined) return this._scene;
-        else {
+        if (this._scene !== undefined) {
+            return this._scene;
+        } else {
             log(LogLevel.error, "You gave an undefined scene to the SceneManager.scene getter.", 
                 ErrorCode.SceneUndefined);
         }
+        // REVIEW: Should I setup a new scene?
+        // this._scene = new DSCENE();
+        // return this._scene;
+        return new DScene("Should not hit this.");
     }
     /**
      * While this says it can take undefined, it will throw a LogError saying the scene is undefined
@@ -94,9 +99,9 @@ export class SceneManager extends DObject {
      */
     public update(delta: number): void {
         // TODO: Handle messages first, then update the scene
-        this.normalMessageQueue.forEach((message) => {
-            log(LogLevel.debug, `${message.data}`);
-        });
+        // this.normalMessageQueue.forEach((message) => {
+        //     log(LogLevel.debug, `${message.data}`);
+        // });
         this.scene.update(delta);
     }
     /**

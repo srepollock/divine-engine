@@ -7,7 +7,7 @@ export * from "./gamewindow";
 export * from "./helper";
 export * from "./loggingsystem/src";
 export * from "./math";
-export * from "./messagesystem";
+export * from "./messagesystem/src";
 export * from "./scene";
 export * from "./system";
 export * from "./window";

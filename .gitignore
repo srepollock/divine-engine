@@ -20,3 +20,5 @@ lib/
 
 # Visual Studio Code
 .vscode/
+
+.cache/
