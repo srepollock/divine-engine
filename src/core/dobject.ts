@@ -24,7 +24,7 @@ export class DObject {
         constructor() {
             super();
         }
-    }
+    };
     public tag: string;
     private _id: string;
     private _dobjectStream = new DObject.ObjectStream();

@@ -109,8 +109,8 @@ export class JSONAssetLoader implements IAssetLoader {
             log(LogLevel.debug,`Created asset: ${asset.name}`);
             AssetManager.onAssetLoaded(asset);
         } else {
-            log(LogLevel.debug,"data: " + data);
-            log(LogLevel.error,"AssetManager did not recieve an asset.", ErrorCode.AssetManagerDidNotGetAsset);
+            log(LogLevel.debug, "data: " + data);
+            log(LogLevel.error, "AssetManager did not recieve an asset.", ErrorCode.AssetManagerDidNotGetAsset);
         }
     }
 }

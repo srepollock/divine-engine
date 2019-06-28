@@ -7,6 +7,7 @@ import { IAsset } from "./iasset";
 import { IAssetLoader } from "./iassetloader";
 import { ImageAssetLoader } from "./imageassetloader";
 import { JSONAssetLoader } from "./jsonassetloader";
+import { AssetStream } from "../systemstreams/assetstream";
 
 /**
  * Asset Manager class
@@ -26,6 +27,7 @@ export class AssetManager extends DObject {
     public static get instance(): AssetManager {
         return AssetManager._instance;
     }
+    // private static _assetStream: AssetStream = new AssetStream();
     private static _instance: AssetManager;
     private static _loadedAssets: {[name: string]: IAsset} = {};
     private static _loaders: IAssetLoader[] = [];

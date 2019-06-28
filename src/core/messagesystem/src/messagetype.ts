@@ -8,5 +8,6 @@ export enum MessageType {
     IO,
     Render,
     Physics,
-    Sound
+    Sound,
+    Asset
 }

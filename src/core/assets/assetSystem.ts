@@ -1,20 +1,20 @@
 import { log, LogLevel } from "../loggingsystem/src";
 import { Message } from "../messagesystem";
 import { System } from "../system";
-import { SoundStream } from "../systemstreams";
+import { AssetStream } from "../systemstreams/assetstream";
 
 /**
  * Sound System for the Divine Engine.
  * This engine uses HowlerJS for it's sound
  */
-export class SoundSystem extends System {
-    public soundStream: SoundStream = new SoundStream();
+export class AssetSystem extends System {
+    public assetStream: AssetStream = new AssetStream();
     protected messageQueue: Array<Message> = new Array<Message>();
     constructor() {
         super("soundsystem");
     }
     public start() {
-        this.soundStream.on("data", (data) => {
+        this.assetStream.on("data", (data) => {
             this.messageQueue.push(data as Message);
         });
     }

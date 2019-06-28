@@ -1,11 +1,13 @@
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Message } from "./messagesystem";
+import { Message, SystemStream } from "./messagesystem";
 
 /**
  * Abstract System class. This is the base class of all other Systems in the Engine.
  */
 export abstract class System extends DObject {
+    protected messageQueue: Array<Message> = new Array<Message>();
+    private systemStream: SystemStream = new SystemStream();
     /**
      * Constructor for the system class. Always call super and give the system name as the tag. There shall never be 
      * two of the same system currently loaded into the engine.
@@ -58,6 +60,7 @@ export abstract class System extends DObject {
         //     });
         // }
     }
+    
     // /**
     //  * Default system message handler. 
     //  * **This *MUST* be overridden in each System for their message types.**
@@ -66,6 +69,6 @@ export abstract class System extends DObject {
     //  * @returns void
     //  */
     // public onMessage(message: Message): void {
-    //     this.normalMessageQueue.push(message);
+        
     // }
 }
