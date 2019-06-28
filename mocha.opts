@@ -1,2 +1,4 @@
---require ./test/helperfiles/setupTests.js
+--require ts-node/register
+--watch-extensions ts,tsx 
 --timeout 15000
+--exit

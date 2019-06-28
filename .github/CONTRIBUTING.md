@@ -2,55 +2,73 @@
 
 So you’d like to add to this project, that’s great! There are a few steps you need to follow first:
 
-1. Check out the [Project Description](https://github.com/srepollock/daemon-engine/wiki/project-description) page for what this project is working towards and why it’s important.
-2. [Your Project](https://github.com/srepollock/daemon-engine/wiki/your-project)
+1. Check out the [Project Description](https://github.com/srepollock/sunset-engine/wiki/project-description) page for what this project is working towards and why it’s important.
+2. [Your Project](https://github.com/srepollock/sunset-engine/wiki/your-project)
+3. Check out open [issues](https://github.com/srepollock/sunset-engine/issues) to see if any issues stand out that you'd like to tackle!
 
-After you’ve read and followed these two pages, now you’re ready to get to work!
+After you’ve read and followed these steps, now you’re ready to get to work!
 
-**Please Note:** All participants in this project  are expected to uphold [this code of conduct](./code-of-conduct.md).
-
-## Linting
-
-The project will also run linting checks based on the TSLint file found in the root directory. Lint checks run each Travis-CI run as well.
-
-## Conventions
-
-For bracket conventions, this project will use the [K&R indentation styles](https://en.wikipedia.org/wiki/Indentation_style#K&R). The project will have TypeScript lint implemented to run when merging a pull request into the master branch as well, so that all conventions will be followed. The rest of the conventions will be for coding styles to give developers all the tools they need.
-
-### Naming Conventions
-
-[variable, function, class, class variable, class function, global variable, global function, static variable, static function]
-
-### Documentation
-
-The documentation is built using TypeDocs on Travis-CI checking, and use the JSDoc format. For all project comments, please follow JSDocumetation standards.
+**Please Note:** All participants in this project  are expected to uphold the [code of conduct](https://github.com/srepollock/blob/master/.github/CODE_OF_CONDUCT.md).
 
 ## Branch
 
 When branching to work on your new feature, or to work on a hotfix, please create a branch with the name:
 
-`feature/[your_branch_name]`
+`[feature/hotfix]/[your_branch_name]`
+
+- Features are new addions (features) to the engine.
+- Hotfixes are branched from master that address a breaking issue and need to be changed quick.
+
+> Please use snake_case for branch naming with descriptive names.
+
+## Documentation
+
+The documentation for the project is built using TypeDocs on Travis-CI and use the JSDoc format. For all project comments, please follow [JSDocumetation standards](http://usejsdoc.org/about-getting-started.html).
+
+## Conventions
+
+The project will run linting checks based on the [TSLint file](https://github.com/srepollock/blob/master/tslint.json) found in the root directory. Lint checks are run each `npm run commit` and run each TravisCI run as well (to ensure that coding is consistant and reliable).
+
+## Bracket Conventions
+
+For bracket conventions, this project will use the [K&R indentation styles](https://en.wikipedia.org/wiki/Indentation_style#K&R).
+
+## Naming Conventions
+
+```ts
+/// Imports
+export class BaseClass {
+    // Variables
+    public static publicStatic: string;
+    ...
+    private static _privateStatic: string;
+    ...
+    public publicVariable: string;
+    ...
+    private _privateVariable: string;
+    ...
+    // Getters/Setters
+    public get variable(): string { return this._privateVariable; }
+    public set variable(s: string) { this._privateVariable = s; }
+    ...
+    // Methods
+    constructor() {}
+    public static publicStaticMethod(): void {}
+    ...
+    private static privateStaticMethod(): void {}
+    ...
+    public publicMethod(): void {}
+    ...
+    private privateMethod(): void {}
+    ...
+}
+```
 
 The feature name will be snake_case to verbosely explain the branch.
 
 ## Committing
 
-Committing is essential to git and the best place to describe intermittent changes in your code. Committing is the quintessential element to git, and as I keep talking about it, you get the sense of how much I care about it. With this said, there is a template setup for commit messages that should be used when you fork and clone this project as from [Your Project](https://github.com/srepollock/daemon-engine/wiki/your-project) in the Wiki. The commit template is as follows:
-
-**Commit Summary**
-Major working feature (keep to 50 characters)
-**Commit Description**
-Changes:
-
-[This should be an overall summary of changes to the project at least done in point-form. More detailed prose format is of course allowed. The point of the description is to provide detail of changes and why.]
-
-Issues:
-
-[Please provide a point-form description of issues. Then please submit a formal issue on the GitHub project. Issue guidelines are documented in the project Wiki.]
-
-Comments:
-
-[Other general comments you wish to add]
+Committing will be handled with an npm script. Simply run `npm run commit` and follow the prompts to get your commit working. If you've finished a feature, click the link output after the commit to start a pull request! If you've given a well documented commit message, you won't even have to give a pull request description!
 
 ## Issues
 
@@ -61,74 +79,11 @@ Issues are, well, an issue. Nobody want’s problems pointed out about a project
 
 With either issue there is always a solution, or one that can be coded. When submitting issues, there is a very simple guideline:
 
-```md
-# What type of issue do you have?
-
-1. [General issue](#general-issue)
-2..[Ideas](#ideas)
-
-## General Issue
-
-The template is as follows:
-
-### What is the Issue
-
-[Describe in your best words what you’re trying to do, what you have done, and why (best guess) it’s not working.]
-
-### How to duplicate the issue
-
-[Can you duplicate this issue? What were the steps you took to working on this project and when this issue arose.]
-
-### Screenshots/Console output/Log files
-
-[Give screenshots, console output, or log files (whichever is best) to show us what the issue is.]
-
-## Ideas
-
-Provide as much information as you cah :smile:.
-Please label with the *idea* tag.
-Delete everything and type away!
-```
-
-The more information you provide, the better equipped I will be to go about working on the issue. To follow up, please keep in contact with me on the issue, your findings (if any) and if you’d like to work on the issue yourself, check out [Pull Requests](https://github.com/srepollock/daemon-engine/wiki/pull-requests) on how to submit pull requests of the fix.
+The more information you provide, the better equipped I will be to go about working on the issue. To follow up, please keep in contact with me on the issue, your findings (if any) and if you’d like to work on the issue yourself, simply fork the project and continue working there.
 All issues are welcome, I just ask you please give information on what the issue is.
+
+There are issue templates setup for the project. Please select one that is best suited for the issue you have.
 
 ## Pull Requests
 
-Have you added a new feature that has been requested? Have you fixed an issue sitting on the [issues](https://github.com/srepollock/daemon-engine/issues) page? Have you fixed your own issue? Well now you want to submit a pull request I reckon. If that’s the case, you’ve come to the right place. The Daemon engine has a few rules put in place to ensure quick pull requests for new features to test and develop. As long as you have been following the [commit messages](https://github.com/srepollock/daemon-engine/CONTRIBUTING.md#Committing) you will be setup to write a great pull request.
-There are two forms of pull requests, and this is to better document what has happened between different releases for the engine. There is the *master* pull requests and the *develop* pull request.
-The following is the *develop* pull request, as this is the most common:
-
-```md
-[Describe the major feature/change in the project. Why is it necessary? What makes it so important it has to be added into the project? What does this version do differently?]
-
-# How to use
-
-[What is it we are now using in the project? How do others use this amazing new feature/change themselves?]
-
-# Resources
-
-[What resources did you use to make this change?]
-```
-
-The next is the *master* pull request that has more information on specfics in the project:
-
-```md
-# Summary
-
-[Describe the major feature/change in the project. Why is it necessary? What makes it so important it has to be added into the project? What does this version do differently?]
-
-# New Features
-
-[Talk of the new features added into this project with this pull request. What has changed since the last version? What is new? How is it different? Perhaps it would be easiest to reference direct commits here?]
-
-# Fixes
-
-[What is it we are now using in the project? How do others use this amazing new feature/change themselves?]
-
-# Resources
-
-[What resources did you use to make this change?]
-```
-
-If you follow these as the guides you’re all set up to make some incredible additions to the project!
+Have you added a new feature that has been requested? Have you fixed an issue sitting on the [issues](https://github.com/srepollock/sunset-engine/issues) page? Have you fixed your own issue? Well now you want to submit a pull request I reckon. If that’s the case, you’ve come to the right place. The Sunset Engine has a few rules put in place to ensure quick pull requests for new features to test and develop. As long as you have been using `npm run commit` you will be setup to write a great pull request. Please try and be as descriptive as possible in your commit messages, as well as your pull requests for the best detail!

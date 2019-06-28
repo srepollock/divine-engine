@@ -1,4 +1,0 @@
-
-describe("Helper function tests", () => {
-    
-});

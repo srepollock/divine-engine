@@ -1,3 +1,6 @@
+# Environment Variables file
+.env
+
 # npm files
 node_modules/
 
@@ -6,6 +9,7 @@ node_modules/
 
 # Istanbul Coverage
 .nyc_output/
+coverage/
 
 # Typescript build files
 build/
