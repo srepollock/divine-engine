@@ -1,7 +1,7 @@
-import { Component } from "../core/components/component";
+import { Component } from "../components/component";
+import { Transform } from "../math";
 import { DObject } from "./dobject";
-import { Transform } from "./math";
-import { log, LogLevel, ErrorCode } from "./loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 
 /**
  * The Daemon's entity object for game objects. The engine uses an
@@ -46,7 +46,7 @@ export class Entity extends DObject {
      */
     public get parent(): string {
         if (this._parent !== "") return this._parent;
-        log(LogLevel.error,`You tried to get the parent of ${this.id} that has no parent`, 
+        log(LogLevel.error, `You tried to get the parent of ${this.id} that has no parent`, 
             ErrorCode.EntityParentUndefined);
         return "";
     }

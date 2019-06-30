@@ -1,4 +1,3 @@
-import { Engine } from "./engine";
 import { guid } from "./helper";
 import { log, LogLevel } from "./loggingsystem/src";
 import { Message, MessageType, SystemStream } from "./messagesystem";
@@ -58,6 +57,6 @@ export class DObject {
      * @returns void
      */
     public sendMessage(data: string, type: MessageType, single?: boolean): void {
-        Engine.messageSystem.write(new Message(data, type, single));
+        this._dobjectStream.write(new Message(data, type, single));
     }
 }
