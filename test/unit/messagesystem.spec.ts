@@ -1,12 +1,12 @@
 import { expect } from "chai";
 import "mocha";
 // tslint:disable-next-line:max-line-length
-import { DObject, EntityMessage, EventType, Log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage } from "../../src";
+import { DObject, EntityMessage, EventType, log, Message, MessageSystem, MouseInputMessage, PhysicsSystemMessage, Point, Priority, RenderComponent, RenderSystemMessage, TestMessage, LogLevel } from "../../lib/divine.cjs";
 
 describe("Message System unit testing", () => {
     describe("Messages", () => {
         it("should be able to be created empty", () => {
-            let message: Message = new Message(this, Priority.Low);
+            let message: Message = new Message("", Priority.Low);
             // tslint:disable-next-line:max-line-length
             expect(message.JSONString).to.equal(`{"_id":"${message.id}","_priority":${message.priority},"_data":"${message.data}"}`);
         });
@@ -52,8 +52,8 @@ describe("Message System unit testing", () => {
         var data2: string = "";
         class Listener extends DObject {
             public onMessage(message: Message) {
-                data = message.JSONString;
-                Log(message.JSONString);
+                data = message.toString();
+                log(LogLevel.info , message.toString());
             }
         }
         var listener: Listener = new Listener();

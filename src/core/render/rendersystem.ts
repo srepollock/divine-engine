@@ -8,14 +8,10 @@ import { ErrorCode, log, LogLevel } from "../loggingsystem/src";
 import { System } from "../system";
 import { SceneManager } from "./scenemanager";
 export class RenderSystem extends System {
+    private static _instance: RenderSystem;
     private _canvas: HTMLCanvasElement;
     private _engine: BEngine;
     private _sceneManager: SceneManager;
-    // public scene: THREE.Scene | undefined;
-    // public geometry: THREE.Geometry | undefined;
-    // public material: THREE.Material | undefined;
-    // public mesh: THREE.Mesh | undefined;
-    // public renderer: THREE.WebGLRenderer | undefined;
     /**
      * Render system constructor.
      * @param  {number} width
@@ -23,7 +19,7 @@ export class RenderSystem extends System {
      */
     private constructor({ width, height, canvas, scenes, sceneManager }: {
         width?: number, height?: number,
-        canvas?: HTMLCanvasElement, engine?: BEngine, scenes?: Array<Scene>,
+        canvas?: HTMLCanvasElement, scenes?: Array<Scene>,
         sceneManager?: SceneManager
     } = {}) {
         super("rendersystem");
@@ -34,7 +30,7 @@ export class RenderSystem extends System {
         this._engine = new BEngine(this._canvas!);
         if (sceneManager === undefined) {
             // TODO: Personal Scene manager to be added here
-            this._sceneManager = new SceneManager(this._engine, scenes);
+            this._sceneManager = new SceneManager(this._canvas, this._engine, scenes);
         } else if (scenes !== undefined) {
             this._sceneManager = sceneManager;
             sceneManager.loadScenes(scenes);
@@ -42,6 +38,7 @@ export class RenderSystem extends System {
             this._sceneManager = sceneManager;
             this._sceneManager.createEmptyScene(this._canvas, this._engine);
         }
+        RenderSystem._instance = this;
         // if (Engine.instance!.client === Client.Browser) { // NOTE: For Version 1 of the engine, focus on this
 
         // } else if (Engine.instance!.client === Client.Electron) {
@@ -51,21 +48,29 @@ export class RenderSystem extends System {
         // }
     }
     /**
-     * @returns void
-     * @override
+     * Gets the render systems instance for Engine use.
+     * @returns RenderSystem
      */
-    public cleanup(): void {
-        // TODO: Cleanup anything that is not necessary
+    public static get instance(): RenderSystem {
+        return RenderSystem._instance;
     }
     /**
      * Initializes the system.
      * @returns void
      */
-    public initialize({ width, height, canvas, scenes, sceneManager }: {
+    public static initialize({ width, height, canvas, scenes, sceneManager }: {
         width?: number, height?: number,
         canvas?: HTMLCanvasElement, engine?: BEngine, scenes?: Array<Scene>,
         sceneManager?: SceneManager
     } = {}): void {
+        
+    }
+    /**
+     * @returns void
+     * @override
+     */
+    public cleanup(): void {
+        this._sceneManager.shutdown();
     }
     public shutdown(): void {
         this.cleanup();

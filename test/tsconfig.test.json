@@ -1,0 +1,6 @@
+{
+    "compililerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+    }
+}

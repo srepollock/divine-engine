@@ -1,3 +1,0 @@
-describe("Image Asset loader", () => {
-
-});

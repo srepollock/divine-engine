@@ -1,5 +1,3 @@
-require("ts-node").register({
-    compilerOptions: {
-        module: "commonjs",
-    },
+require('ts-node').register({
+    project: "test/tsconfig.test.json"
 });

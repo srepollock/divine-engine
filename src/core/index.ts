@@ -1,4 +1,3 @@
-export * from "../assets";
 export * from "../components";
 export * from "./dobject";
 export { Engine, EngineArguments } from "./engine";
@@ -8,7 +7,7 @@ export * from "./helper";
 export * from "./loggingsystem/src";
 export * from "../math";
 export * from "./messagesystem/src";
-export * from "./scene";
+export * from "./render";
 export * from "./system";
 export * from "./window";
 export * from "./systemstreams";

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Engine, EngineArguments, MessageSystem } from "../../src";
+import { Engine, EngineArguments, MessageSystem } from "../../lib/divine.cjs";
 process.env.NODE_DEBUG = "true";
 describe("Engine unit tests", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 0, height: 0, debug: false}));
@@ -48,3 +48,4 @@ describe("Engine unit tests", () => {
         Engine.stop();
         expect(() => { Engine.instance; }).to.throw;
     });
+});

@@ -1,3 +1,0 @@
-describe("JSON Asset loader", () => {
-
-});

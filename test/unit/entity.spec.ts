@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Entity, FlagComponent, SoundComponent, Transform } from "../../src";
+import { Entity, FlagComponent, SoundComponent, Transform } from "../../lib/divine.cjs";
 
 describe("Entity unit testing", () => {
     var entity: Entity;
@@ -9,7 +9,7 @@ describe("Entity unit testing", () => {
     });
     describe("Child entity objects", () => {
         it("should be instantiated with a parent ID", () => {
-            let child: Entity = new Entity({parent: entity});
+            let child: Entity = new Entity();
             expect(child.parent).to.equal(entity.id);
         });
         it("should be able to add a child to the entity object", () => {

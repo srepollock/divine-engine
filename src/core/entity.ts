@@ -25,13 +25,13 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor({tag, transform, components, parent, children}: {
+    constructor(
         tag?: string,
         transform?: Transform, 
         components?: Array<Component>,
         parent?: Entity,
         children?: Array<Entity>
-    } = {}) {
+    ) {
         super(tag);
         this.transform = (transform) ? transform : new Transform();
         this.components = (components) ? components : new Array();

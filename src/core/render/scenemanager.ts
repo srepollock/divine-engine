@@ -12,15 +12,18 @@ export class SceneManager {
     private _scene: Scene;
     private _canvas: HTMLCanvasElement | undefined;
     private _scenes: Array<Scene>;
-    constructor(engine: BEngine, scenes?: Array<Scene>) {
+    constructor(canvas: HTMLCanvasElement, engine: BEngine, scenes?: Array<Scene>) {
         this._scenes = new Array<Scene>();
         let tempScenes = scenes;
         if (tempScenes === undefined) {
-            this._scenes.push(this.createEmptyScene(engine));
+            this._scenes.push(this.createEmptyScene(canvas, engine));
         } else if (tempScenes.length <= 0) {
-            this._scenes.push(this.createEmptyScene(engine));
+            this._scenes.push(this.createEmptyScene(canvas, engine));
         }
         this._scene = this._scenes[0]; // Defaults to the first. Checks for save
+    }
+    public get scene(): Scene {
+        return this._scene;
     }
     public pause(): void {
 
@@ -47,6 +50,12 @@ export class SceneManager {
     }
     public stop(): void {
 
+    }
+    public shutdown(): void {
+        // TODO: Check to save here if shutdown by watch
+        // if (Engine.exit == True) {
+        //     this.save();
+        // }
     }
     public createScene(engine: BEngine, canvas: HTMLCanvasElement, width: number, height: number): Scene {
         // TODO: More stuff goes here

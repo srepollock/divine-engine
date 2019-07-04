@@ -1,11 +1,10 @@
-import { AssetManager } from "./assets";
+import { Scene } from "@babylonjs/core/scene";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Message, MessageSystem, MessageType } from "./messagesystem/src";
+import { Message, MessageSystem, MessageType, SystemStream } from "./messagesystem/src";
 import { PhysicsSystem } from "./physics/physicssystem";
-import { RenderSystem } from "./render/rendersystem";
-import { DScene, SceneManager } from "./scene";
+import { RenderSystem, SceneManager } from "./render/";
 import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
 
@@ -51,8 +50,7 @@ export class EngineArguments {
         this.width = (width) ? width : 0;
         this.fps = (fps) ? fps : 60;
         this.rootElementId = (rootElementId) ? rootElementId : "";
-        this.sceneManager = (sceneManager) ? sceneManager : undefined; /*
-             REVIEW: This scenemanager will be their own how? */
+        this.sceneManager = (sceneManager) ? sceneManager : undefined;
         this.scene = (scene) ? scene : "";
         this.debug = (debug) ? debug : false;
     }
@@ -127,7 +125,7 @@ export class Engine {
      * Gets the scene from the Engine's scene manager.
      * @returns Scene
      */
-    public static get scene(): DScene {
+    public static get scene(): Scene {
         return Engine._instance!.sceneManager.scene;
     }
     /**
@@ -173,6 +171,15 @@ export class Engine {
     public get engineArguments(): EngineArguments {
         return this._engineArguments;
     }
+    private static ObjectStream = class extends SystemStream {
+        /**
+         * Default message type for the stream.
+         */
+        public type: MessageType = MessageType.Render;
+        constructor() {
+            super();
+        }
+    };
     /**
      * Gets the engines current GameWindow object.
      * @returns GameWindow
@@ -211,7 +218,7 @@ export class Engine {
      * Returns current scene manager's scene.
      * @returns Scene
      */
-    public get scene(): DScene {
+    public get scene(): Scene {
         if (this._sceneManager!.scene !== undefined) {
             return this._sceneManager!.scene;
         }
@@ -244,6 +251,7 @@ export class Engine {
     private _client: Client;
     private _container: HTMLElement | null = null;
     private _engineArguments: EngineArguments = new EngineArguments();
+    private _engineStream = new Engine.ObjectStream();
     private _messageSystem: MessageSystem;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
@@ -316,7 +324,7 @@ export class Engine {
      * @param  {()=>void} mainLoop
      * @returns void
      */
-    public static start(args: EngineArguments): void {
+    public static start(args: EngineArguments, canvas: HTMLCanvasElement): void {
         Engine._started = true;
         log(LogLevel.debug, "Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
@@ -336,26 +344,11 @@ export class Engine {
          */
         // NOTE: Render System
         // tslint:disable-next-line:max-line-length
-        Engine._instance!._renderSystem = new RenderSystem(args.width, args.height); // REVIEW: This is subject to change
+        RenderSystem.initialize({width: args.width, height: args.height, canvas});
+        Engine._instance!._renderSystem =  RenderSystem.instance; // REVIEW: This is subject to change
         if (Engine._instance!._renderSystem === undefined) {
             // tslint:disable-next-line:max-line-length
             log(LogLevel.critical, "Render system was not initialized immediately after constructor called", ErrorCode.RenderSystemUndefined);
-        }
-        Engine._instance!._renderSystem!.initialize();
-        // NOTE: Asset Manager
-        AssetManager.initialize();
-        if (AssetManager.instance === undefined) {
-            log(LogLevel.critical, "Asset manager was not initialized properly", ErrorCode.AssetManagerUndefined);
-        }
-        // NOTE: Scene Manager
-        // tslint:disable-next-line:max-line-length
-        (Engine._instance!.engineArguments.sceneManager !== undefined) ? Engine._instance!.sceneManager = Engine._instance!.engineArguments.sceneManager! : Engine._instance!.sceneManager = new SceneManager();
-        if (Engine._instance!._sceneManager === undefined) {
-            // tslint:disable-next-line:max-line-length
-            log(LogLevel.critical, "SceneManager was not initialized properly.", ErrorCode.SceneManagerUndefined);
-        } else {
-            log(LogLevel.debug, "Loaded scene manager");
-            log(LogLevel.debug, `${Engine._instance!._sceneManager}`);
         }
         // NOTE: Physics System
         Engine._instance!._physicsSystem = new PhysicsSystem();
@@ -363,9 +356,10 @@ export class Engine {
             log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
             Engine.shutdown();
         }
-        // tslint:disable-next-line:max-line-length
+        // NOTE: Sets the scene for the engine to read from Engine Arguments. 
+        // REVIEW: Could this be where it checks for a save? or should it be in Render system?
         if (Engine._instance!.engineArguments.scene !== "") {
-            Engine._instance!.sceneManager.loadScene(Engine._instance!.engineArguments.scene);
+            Engine._instance!.sendMessage(Engine._instance!.engineArguments.scene, MessageType.Render, true);
         }
         Engine.play();
     }
@@ -441,6 +435,16 @@ export class Engine {
         // TODO: Handle messages
     }
     /**
+     * Sends a message to the engine stream.
+     * @param  {string} data
+     * @param  {MessageType} type
+     * @param  {boolean} single?
+     * @returns void
+     */
+    public sendMessage(data: string, type: MessageType, single?: boolean): void {
+        this._engineStream.write(new Message(data, type, single));
+    }
+    /**
      * Call's system shutdown files.
      * Call in reverese order of startup.
      * @returns void
@@ -449,10 +453,7 @@ export class Engine {
         log(LogLevel.debug, "Engine cleanup called");
         try {
             Engine._instance!._physicsSystem!.shutdown();
-            if (Engine._instance!._sceneManager !== undefined) {
-                Engine._instance!._sceneManager!.shutdown(); // BUG: Calling on undefined? What??
-            }
-            Engine.instance!.renderSystem.shutdown(); // TODO: initiailize in constructor.
+            Engine._instance!._renderSystem!.shutdown();
             this._messageSystem!.destroy();
         } catch (e) {
             console.trace(e);
@@ -473,7 +474,6 @@ export class Engine {
         this._messageSystem!.write(new Message(delta.toString(), 
             MessageType.Global)); // NOTE: Possibly undefined is handled on creation.
         // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
-        Engine._instance!._sceneManager!.update(delta); // NOTE: Calls scene update
         Engine._instance!._physicsSystem!.update(delta); // NOTE: Physics messages handled
         // Engine._instance!._soundSystem!.update(delta); // NOTE: Sound messages handled
         Engine._instance!._renderSystem!.update(delta); // NOTE: Render system udpated.
