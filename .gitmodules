@@ -1,0 +1,6 @@
+[submodule "de-message-system"]
+	path = src/core/messagesystem
+	url = git@github.com:srepollock/de-message-system.git
+[submodule "de-logger"]
+	path = src/core/loggingsystem
+	url = git@github.com:srepollock/de-logger.git
