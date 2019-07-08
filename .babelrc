@@ -9,5 +9,9 @@
         "@babel/plugin-transform-arrow-functions",
         "@babel/plugin-syntax-dynamic-import"
     ],
-    "compact": "auto"
+    "compact": "auto",
+    "exclude": [
+        "./src/**/test/**/*.spec.ts",
+        "./node_modules/*"
+    ]
 }

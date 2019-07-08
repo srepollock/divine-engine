@@ -1,6 +1,20 @@
 {
     "compililerOptions": {
+        "target": "es5",
         "module": "commonjs",
         "moduleResolution": "node",
+        "esModuleInterop": true,
+        "types": [
+            "chai",
+            "mocha",
+        ],
+        "include": [
+            
+        ],
+        "exclude": [
+            "node_modules",
+            "src/core/loggingsystem/test",
+            "src/core/messagesystem/test"
+        ]
     }
 }

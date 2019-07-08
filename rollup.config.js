@@ -1,7 +1,7 @@
 import typescript from 'rollup-plugin-typescript2';
 import babel from 'rollup-plugin-babel';
 import globals from 'rollup-plugin-node-globals';
-import builtins from 'rollup-plugin-node-builtins';
+import builtins from '@joseph184/rollup-plugin-node-builtins';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import pkg from "./package.json";
@@ -9,6 +9,12 @@ import pkg from "./package.json";
 export default [
     {
         input: './src/index.ts',
+        plugins: [
+            typescript(),
+        ],
+        external: [
+            "three"
+        ],
         output: [
             {
                 file: pkg.module,
@@ -19,16 +25,9 @@ export default [
     {
         input: './src/index.ts',
         plugins: [
-            commonjs(),
-            typescript(),
-            babel({
-                babelrc: true,
-                exclude: "./src/**/test/**/*.spec.ts"
-            }),
-            builtins(),
             resolve({
                 preferBuiltins: true,
-                browser: true
+                mainFields: ['module', 'main'],
             }),
             globals({
                 process: true,
@@ -36,6 +35,15 @@ export default [
                 dirname: true,
                 filename: true
             }),
+            builtins(),
+            commonjs(),
+            typescript(),
+            babel({
+                babelrc: true
+            }),
+        ],
+        external: [
+            "three"
         ],
         output: [ // Required; Array = multiple outputs
             {

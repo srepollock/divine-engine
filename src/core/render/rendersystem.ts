@@ -1,51 +1,49 @@
-import { Engine as BEngine } from "@babylonjs/core/Engines/engine";
-import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
-import { Mesh } from "@babylonjs/core/Meshes/mesh";
-import { Scene } from "@babylonjs/core/scene";
-import { Engine } from "../engine";
-import { Client } from "../helper";
+import * as THREE from "three";
+import { Camera, PerspectiveCamera, WebGLRenderer } from "three";
 import { ErrorCode, log, LogLevel } from "../loggingsystem/src";
 import { System } from "../system";
+import { RenderStream } from "../systemstreams";
+import { DScene } from "./dscene";
 import { SceneManager } from "./scenemanager";
 export class RenderSystem extends System {
     private static _instance: RenderSystem;
     private _canvas: HTMLCanvasElement;
-    private _engine: BEngine;
+    private _camera: Camera;
+    private _renderer: WebGLRenderer;
     private _sceneManager: SceneManager;
+    public get canvas(): HTMLCanvasElement {
+        return this._canvas;
+    }
     /**
      * Render system constructor.
      * @param  {number} width
      * @param  {number} height
      */
-    private constructor({ width, height, canvas, scenes, sceneManager }: {
-        width?: number, height?: number,
-        canvas?: HTMLCanvasElement, scenes?: Array<Scene>,
+    private constructor({ width, height, scenes, sceneManager }: {
+        width?: number, 
+        height?: number,
+        scenes?: Array<DScene>,
         sceneManager?: SceneManager
     } = {}) {
         super("rendersystem");
-        if (canvas === undefined) {
-            log(LogLevel.critical, "No canvas element was given to the render engine.", ErrorCode.CanvasNotDefined);
-        }
-        this._canvas = canvas!;
-        this._engine = new BEngine(this._canvas!);
         if (sceneManager === undefined) {
-            // TODO: Personal Scene manager to be added here
-            this._sceneManager = new SceneManager(this._canvas, this._engine, scenes);
+            this._sceneManager = new SceneManager(scenes);
         } else if (scenes !== undefined) {
             this._sceneManager = sceneManager;
             sceneManager.loadScenes(scenes);
         } else {
             this._sceneManager = sceneManager;
-            this._sceneManager.createEmptyScene(this._canvas, this._engine);
+            this._sceneManager.createEmptyScene();
         }
-        RenderSystem._instance = this;
-        // if (Engine.instance!.client === Client.Browser) { // NOTE: For Version 1 of the engine, focus on this
-
-        // } else if (Engine.instance!.client === Client.Electron) {
-
-        // } else {
-        //     // Console running
-        // }
+        if (width === undefined || height === undefined) {
+            width = window.innerWidth;
+            height = window.innerHeight;
+        }
+        this._camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+        this._renderer = new WebGLRenderer();
+        this._renderer.setSize(width, height);
+        this._canvas = document.body.appendChild(this._renderer.domElement);
+        RenderSystem._instance = this; // NOTE: Render System has been created.
     }
     /**
      * Gets the render systems instance for Engine use.
@@ -58,12 +56,13 @@ export class RenderSystem extends System {
      * Initializes the system.
      * @returns void
      */
-    public static initialize({ width, height, canvas, scenes, sceneManager }: {
-        width?: number, height?: number,
-        canvas?: HTMLCanvasElement, engine?: BEngine, scenes?: Array<Scene>,
+    public static initialize({ width, height, scenes, sceneManager }: {
+        width?: number, 
+        height?: number,
+        scenes?: Array<DScene>,
         sceneManager?: SceneManager
     } = {}): void {
-        
+        new RenderSystem({width, height, scenes, sceneManager});
     }
     /**
      * @returns void
@@ -86,11 +85,7 @@ export class RenderSystem extends System {
 
     }
     public update(delta: number): void {
-        if (Engine.instance!.client === Client.Browser) { // REVIEW: Circular dependency
-            // requestAnimationFrame( this.update ); // NOTE: The update is caleld by Engine.
-            // this.mesh!.rotation.x += 0.01;
-            // this.mesh!.rotation.y += 0.02;
-            // this.renderer!.render( this.scene!, this.camera! );
-        }
+        log(LogLevel.info, `Renderer delta: ${delta}`);
+        this._renderer.render(this._sceneManager.scene.threeScene, this._camera);
     }
 }

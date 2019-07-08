@@ -1,10 +1,9 @@
-import { Scene } from "@babylonjs/core/scene";
 import { GameWindow } from "./gamewindow";
 import { Client, guid } from "./helper";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 import { Message, MessageSystem, MessageType, SystemStream } from "./messagesystem/src";
 import { PhysicsSystem } from "./physics/physicssystem";
-import { RenderSystem, SceneManager } from "./render/";
+import { DScene, RenderSystem, SceneManager } from "./render/";
 import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
 
@@ -123,9 +122,9 @@ export class Engine {
     }
     /**
      * Gets the scene from the Engine's scene manager.
-     * @returns Scene
+     * @returns DScene
      */
-    public static get scene(): Scene {
+    public static get scene(): DScene {
         return Engine._instance!.sceneManager.scene;
     }
     /**
@@ -216,9 +215,9 @@ export class Engine {
     }
     /**
      * Returns current scene manager's scene.
-     * @returns Scene
+     * @returns DScene
      */
-    public get scene(): Scene {
+    public get scene(): DScene {
         if (this._sceneManager!.scene !== undefined) {
             return this._sceneManager!.scene;
         }
@@ -324,7 +323,7 @@ export class Engine {
      * @param  {()=>void} mainLoop
      * @returns void
      */
-    public static start(args: EngineArguments, canvas: HTMLCanvasElement): void {
+    public static start(args: EngineArguments): void {
         Engine._started = true;
         log(LogLevel.debug, "Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
@@ -344,8 +343,8 @@ export class Engine {
          */
         // NOTE: Render System
         // tslint:disable-next-line:max-line-length
-        RenderSystem.initialize({width: args.width, height: args.height, canvas});
-        Engine._instance!._renderSystem =  RenderSystem.instance; // REVIEW: This is subject to change
+        RenderSystem.initialize({width: args.width, height: args.height});
+        Engine._instance!._renderSystem =  RenderSystem.instance;
         if (Engine._instance!._renderSystem === undefined) {
             // tslint:disable-next-line:max-line-length
             log(LogLevel.critical, "Render system was not initialized immediately after constructor called", ErrorCode.RenderSystemUndefined);
@@ -492,16 +491,16 @@ export class Engine {
     private browserFrame(): void {
         if (!Engine._running) return;
         else {
-            this._now = this.timestamp();
-            if (this._now > (this._last + 1000)) { // update every second
-                this._fps = 0.25 * this._framesThisSecond; // new FPS
-                let delta: number = (this._now - this._last) / 1000;
-                this.update(delta);
-                this._last = this._now;
-                this._framesThisSecond = 0;
+            Engine._instance!._now = Engine._instance!.timestamp();
+            if (Engine._instance!._now > (Engine._instance!._last + 1000)) { // update every second
+                Engine._instance!._fps = 0.25 * Engine._instance!._framesThisSecond; // new FPS
+                let delta: number = (Engine._instance!._now - Engine._instance!._last) / 1000;
+                Engine._instance!.update(delta);
+                Engine._instance!._last = Engine._instance!._now;
+                Engine._instance!._framesThisSecond = 0;
             }
-            this._framesThisSecond++;
-            requestAnimationFrame(this.browserFrame.bind(this));
+            Engine._instance!._framesThisSecond++;
+            requestAnimationFrame(Engine._instance!.browserFrame);
         }
     }
     /**
@@ -511,16 +510,16 @@ export class Engine {
     private electronFrame(): void {
         if (!Engine._running) return;
         else {
-            this._now = this.timestamp();
-            if (this._now > (this._last + 1000)) { // update every second
-                this._fps = 0.25 * this._framesThisSecond; // new FPS
-                let delta: number = (this._now - this._last) / 1000;
-                this.update(delta);
-                this._last = this._now;
-                this._framesThisSecond = 0;
+            Engine._instance!._now = Engine._instance!.timestamp();
+            if (Engine._instance!._now > (Engine._instance!._last + 1000)) { // update every second
+                Engine._instance!._fps = 0.25 * Engine._instance!._framesThisSecond; // new FPS
+                let delta: number = (Engine._instance!._now - Engine._instance!._last) / 1000;
+                Engine._instance!.update(delta);
+                Engine._instance!._last = Engine._instance!._now;
+                Engine._instance!._framesThisSecond = 0;
             }
-            this._framesThisSecond++;
-            window.requestAnimationFrame(this.browserFrame.bind(this));
+            Engine._instance!._framesThisSecond++;
+            window.requestAnimationFrame(Engine._instance!.browserFrame);
         }
     }
     /**
@@ -539,11 +538,12 @@ export class Engine {
         if (!Engine._running) return;
         else {
             // setTimeout(this.consoleFrame, 1000 / this._fps);
-            setTimeout(() => this.consoleFrame(), 1000 / this._fps); // NOTE: Goes infinite unless stopped externally
-            this._now = this.hrtimeMs();
-            let delta = (this._now - this._last) / 1000;
-            this.update(delta); // game logic would go here
-            this._last = this._now;
+// tslint:disable-next-line: max-line-length
+            setTimeout(() => Engine._instance!.consoleFrame(), 1000 / this._fps); // NOTE: Goes infinite unless stopped externally
+            Engine._instance!._now = Engine._instance!.hrtimeMs();
+            let delta = (Engine._instance!._now - Engine._instance!._last) / 1000;
+            Engine._instance!.update(delta); // game logic would go here
+            Engine._instance!._last = Engine._instance!._now;
         }
     }
     /**
