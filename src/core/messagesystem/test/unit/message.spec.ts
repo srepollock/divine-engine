@@ -4,7 +4,7 @@ import { Message, MessageType } from "../../src";
 describe("Message unit testing", () => {
     describe("Empty message", () => {
         var message: Message;
-        before(() => {
+        beforeEach(() => {
             message = new Message();
         });
         it("should be able to be created empty", () => {

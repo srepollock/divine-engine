@@ -1,5 +1,4 @@
-import { expect } from "chai";
-import { EngineStream, IOStream, Message, MessageSystem, MessageType } from "../../lib/divine.es";
+import { EngineStream, IOStream, Message, MessageSystem, MessageType } from "../../lib/index";
 
 describe("Message system, EngineStream and IOStream incrementals tests", () => {
     var messageSystem: MessageSystem = new MessageSystem();
@@ -22,8 +21,8 @@ describe("Message system, EngineStream and IOStream incrementals tests", () => {
     it("should take input from the message stream", () => {
         messageSystem.write(new Message("Something cool"));
         engineStream.on("data", (data) => {
-            expect(engineStream.fromJSON(data)).to.not.be.undefined;
-            expect(engineStream.fromJSON(data).data).to.not.be.undefined;
+            expect(engineStream.fromJSON(data)).toBeDefined();
+            expect(engineStream.fromJSON(data).data).toBeDefined();
         });
         messageSystem.pipe(engineStream);
         messageSystem.removeAllListeners();
@@ -32,8 +31,8 @@ describe("Message system, EngineStream and IOStream incrementals tests", () => {
         messageSystem.write(new Message("Something cool", MessageType.Global));
         messageSystem.pipe(engineStream);
         engineStream.on("data", (data) => {
-            expect(engineStream.fromJSON(data).data).to.equal("Something cool");
-            expect(engineStream.fromJSON(data).data).to.equal(MessageType.Global);
+            expect(engineStream.fromJSON(data).data).toBe("Something cool");
+            expect(engineStream.fromJSON(data).data).toBe(MessageType.Global);
         });
         messageSystem.removeAllListeners();
         engineStream.removeAllListeners();
@@ -43,8 +42,8 @@ describe("Message system, EngineStream and IOStream incrementals tests", () => {
         messageSystem.write(new Message("Something only for Engines", MessageType.Engine));
         messageSystem.pipe(engineStream);
         engineStream.on("data", (data) => {
-            expect(engineStream.fromJSON(data).data).to.equal("Something only for Engines");
-            expect(engineStream.fromJSON(data).type).to.equal(MessageType.Engine);
+            expect(engineStream.fromJSON(data).data).toBe("Something only for Engines");
+            expect(engineStream.fromJSON(data).type).toBe(MessageType.Engine);
         });
         messageSystem.removeAllListeners();
         engineStream.removeAllListeners();
@@ -55,7 +54,7 @@ describe("Message system, EngineStream and IOStream incrementals tests", () => {
         messageSystem.write(new Message("Something only for Engines", MessageType.Engine, true));
         messageSystem.pipe(engineStream);
         engineStream.on("data", (data) => {
-            expect(engineStream.fromJSON(data).type).to.equal(MessageType.Engine);
+            expect(engineStream.fromJSON(data).type).toBe(MessageType.Engine);
         });
         messageSystem.removeAllListeners();
         engineStream.removeAllListeners();
@@ -65,7 +64,7 @@ describe("Message system, EngineStream and IOStream incrementals tests", () => {
         messageSystem.write(new Message("Something for Engines only", MessageType.Engine, true));
         messageSystem.pipe(engineStream).pipe(ioStream);
         engineStream.on("data", (data) => {
-            expect(engineStream.fromJSON(data).type).to.equal(MessageType.Engine);
+            expect(engineStream.fromJSON(data).type).toBe(MessageType.Engine);
         });
         messageSystem.removeAllListeners();
         engineStream.removeAllListeners();
@@ -75,7 +74,7 @@ describe("Message system, EngineStream and IOStream incrementals tests", () => {
         messageSystem.write(new Message("Something for Engines only", MessageType.Engine));
         messageSystem.pipe(engineStream).pipe(ioStream);
         engineStream.on("data", (data) => {
-            expect(engineStream.fromJSON(data).type).to.equal(MessageType.Engine);
+            expect(engineStream.fromJSON(data).type).toBe(MessageType.Engine);
         });
         messageSystem.removeAllListeners();
         engineStream.removeAllListeners();

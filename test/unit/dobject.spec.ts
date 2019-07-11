@@ -1,7 +1,6 @@
-import { expect } from "chai";
 import "mocha";
 // tslint:disable-next-line:max-line-length
-import { DObject } from "../../lib/divine.es";
+import { DObject } from "../../lib/index";
 
 describe("DObject unit testing", () => {
     describe("empty object instantiation", () => {
@@ -10,10 +9,10 @@ describe("DObject unit testing", () => {
             obj = new DObject();
         });
         it("should have an id", () => {
-            expect(obj.id).to.not.equal("");
+            expect(obj.id).not.toBe("");
         });
         it("should have no tag", () => {
-            expect(obj.tag).to.equal("");
+            expect(obj.tag).toBe("");
         });
     });
     describe("filled out object instantiation", () => {
@@ -22,7 +21,7 @@ describe("DObject unit testing", () => {
             obj = new DObject("player");
         });
         it("should have an id of \"player \"", () => {
-            expect(obj.tag).to.equal("player");
+            expect(obj.tag).toBe("player");
         });
     });
     // describe("dobject's receiving messages", () => {

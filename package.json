@@ -19,7 +19,7 @@
     "prepare": "npm run clean; npm run bundle;",
     "semantic-release": "semantic-release",
     "test": "npm run test:all",
-    "test:all": "jest",
+    "test:all": "jest --coverage",
     "test:debug": "mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit --inspect-brk",
     "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.{ts,tsx}\" --exit",
     "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.{ts,tsx}\" --exit",
@@ -75,6 +75,12 @@
     }
   },
   "jest": {
-    "preset": "ts-jest"
+    "coverageDirectory": "coverage",
+    "coverageReporters": ["lcov", "text"],
+    "preset": "ts-jest",
+    "testPathIgnorePatterns": [
+      "src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",
+      "src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"
+    ]
   }
 }
