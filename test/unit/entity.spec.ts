@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Entity, FlagComponent, SoundComponent, Transform } from "../../lib/divine.cjs";
+import { Entity, FlagComponent, SoundComponent, Transform } from "../../lib/divine.es";
 
 describe("Entity unit testing", () => {
     var entity: Entity;

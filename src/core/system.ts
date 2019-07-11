@@ -61,14 +61,14 @@ export abstract class System extends DObject {
         // }
     }
     
-    // /**
-    //  * Default system message handler. 
-    //  * **This *MUST* be overridden in each System for their message types.**
-    //  * Defaults an OK warning message. REVIEW: Should this be different?
-    //  * @param  {Message} message
-    //  * @returns void
-    //  */
-    // public onMessage(message: Message): void {
+    /**
+     * Default system message handler. 
+     * **This *MUST* be overridden in each System for their message types.**
+     * Defaults an OK warning message. REVIEW: Should this be different?
+     * @param  {Message} message
+     * @returns void
+     */
+    public onMessage(message: Message): void {
         
-    // }
+    }
 }

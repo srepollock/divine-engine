@@ -19,9 +19,15 @@ export class PhysicsSystem extends System {
 
     }
     public update(delta: number): void {
-        // TODO: Should handle the messages passed to the system.
+        this.messageQueue.forEach((element) => {
+            this.parseMessage(element);
+        });
+        this.messageQueue = new Array<Message>();
     }
     public onMessage(message: Message): void {
+        log(LogLevel.debug, message.toString());
+    }
+    public parseMessage(message: Message): void {
         log(LogLevel.debug, message.toString());
     }
 }

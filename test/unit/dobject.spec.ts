@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import "mocha";
 // tslint:disable-next-line:max-line-length
-import { DObject } from "../../lib/divine.cjs";
+import { DObject } from "../../lib/divine.es";
 
 describe("DObject unit testing", () => {
     describe("empty object instantiation", () => {

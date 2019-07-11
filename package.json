@@ -17,10 +17,9 @@
     "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
     "prepare": "npm run clean; npm run bundle;",
-    "preunit-test": "npm run-script build-tests",
     "semantic-release": "semantic-release",
     "test": "npm run test:all",
-    "test:all": "nyc mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit",
+    "test:all": "jest",
     "test:debug": "mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit --inspect-brk",
     "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.{ts,tsx}\" --exit",
     "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.{ts,tsx}\" --exit",
@@ -42,32 +41,14 @@
   },
   "homepage": "http://spollock.ca/divine-engine",
   "devDependencies": {
-    "@babel/core": "^7.4.3",
     "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-transform-arrow-functions": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.1.0",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/preset-typescript": "^7.1.0",
-    "@babel/register": "^7.4.4",
-    "@babel/runtime": "^7.1.2",
     "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
-    "@types/chai": "^4.1.6",
-    "@types/jsdom": "^11.12.0",
-    "@types/mocha": "^5.2.5",
+    "@types/jest": "^24.0.15",
     "@types/node": "^10.12.0",
-    "@types/puppeteer": "^1.9.0",
-    "@types/three": "^0.93.8",
-    "bl": ">=1.0.1",
-    "chai": "^4.2.0",
     "codecov": "^3.1.0",
     "electron": "^2.0.11",
-    "fs": "0.0.1-security",
-    "marked": ">=0.6.2",
-    "mocha": "^5.2.0",
-    "nyc": "^14.1.1",
-    "puppeteer": "^1.18.1",
-    "resolve": "1.11.0",
+    "jest": "^24.8.0",
+    "jest-codemods": "^0.20.0",
     "rollup": "^0.68.0",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.0",
@@ -75,20 +56,17 @@
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-typescript2": "^0.21.2",
     "semver": ">=4.3.2",
-    "three": "^0.106.2",
-    "three.js": "^0.77.1",
+    "ts-jest": "^24.0.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typedoc": "^0.14.2",
-    "webgl-operate": "^0.5.2",
-    "xhr2": "^0.1.4"
+    "typedoc": "^0.14.2"
   },
   "dependencies": {
     "commitizen": "^3.0.7",
     "cz-conventional-changelog": "^2.1.0",
     "node": "^11.12.0",
     "semver": ">=4.3.2",
-    "tslib": "^1.10.0",
+    "three": "^0.106.2",
     "typescript": "^3.4.1"
   },
   "config": {
@@ -96,24 +74,7 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "exclude": [
-      "test/helperfiles",
-      "**/*.d.ts",
-      "**/*.spec.ts",
-      "dist",
-      "docs",
-      "coverage",
-      "lib"
-    ],
-    "reporter": [
-      "html",
-      "text-summary"
-    ],
-    "all": true
+  "jest": {
+    "preset": "ts-jest"
   }
 }

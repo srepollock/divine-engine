@@ -16,10 +16,7 @@ export class EngineArguments {
     public width: number;
     public fps: number;
     public rootElementId: string;
-    // NOTE: If left blank, the BaseSM is used, otherwise use sm passed in
     public sceneManager: SceneManager | undefined;
-    // NOTE: If left blank, the default scene is used and will run.
-    // NOTE:REVIEW: Relative path?
     public scene: string;
     public debug: boolean;
     /**

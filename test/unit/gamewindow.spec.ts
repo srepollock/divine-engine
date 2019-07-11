@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { Engine, EngineArguments, GameWindow } from "../../lib/divine.cjs";
+import { Engine, EngineArguments, GameWindow } from "../../lib/divine.es";
 
 describe("Window unit tests", () => {
     let engArgs: EngineArguments = JSON.parse(JSON.stringify({title: " ", width: 0, height: 0,  debug: false}));

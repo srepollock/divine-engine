@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import "mocha";
-import { FlagComponent, Transform } from "../../lib/divine.cjs";
+import { FlagComponent, Transform } from "../../lib/divine.es";
 
 describe("Flag component unit testing", () => {
     var fc = new FlagComponent(new Transform(0, 0));

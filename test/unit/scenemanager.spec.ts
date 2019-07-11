@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import * as path from "path";
-import { Engine, EngineArguments, SceneManager } from "../../lib/divine.cjs";
+import { Engine, EngineArguments, SceneManager } from "../../lib/divine.es";
 
 describe("SceneManager class unit tests", () => {
     var sm: SceneManager = new SceneManager();

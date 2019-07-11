@@ -29,7 +29,7 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor(
+    constructor({tag, transform, geometry, material, mesh, components, parent, children}: {
         tag?: string,
         transform?: Transform,
         geometry?: Geometry,
@@ -38,7 +38,7 @@ export class Entity extends DObject {
         components?: Array<Component>,
         parent?: Entity,
         children?: Array<Entity>
-    ) {
+    } = {}) {
         super(tag);
         this.transform = (transform) ? transform : new Transform();
         this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
@@ -123,15 +123,6 @@ export class Entity extends DObject {
      * @returns void
      */
     public addComponent(component: Component): void {
-        /**
-         * TODO: Currently you can only have 1 type of a component on the object
-         * at a time. I would like to change the entity.components list to a map
-         * instead and then have multiple objects. This will make indexing a bit
-         * different as well when calling Entity.hasComponent() as it will be 
-         * looking at the key and not the the exact object per se. There will
-         * have to be some sort of indexing on the object if this is the case 
-         * or there needs to be another identifier on the object?
-         */
         if (!this.hasComponent(component.id)) {
             this.components!.push(component);
         } else {
@@ -155,7 +146,9 @@ export class Entity extends DObject {
      * @returns boolean
      */
     public hasChild(id: string): boolean {
-        let entity = this.children.find((e) => e.id === id);
+        // https://stackoverflow.com/questions/46348749/ts-property-find-does-not-exist-on-type-myarray
+        // let entity = this.children.find((e) => e.id === id);
+        let entity = this.children.filter((e) => e.id === id).shift();
         if (entity !== undefined) return true;
         else return false;
     }
@@ -165,7 +158,7 @@ export class Entity extends DObject {
      * @returns boolean
      */
     public hasComponent(type: string): boolean {
-        let comp = this.components!.find((comp) => comp.tag! === type);
+        let comp = this.components!.filter((comp) => comp.tag! === type).shift();
         if (comp !== undefined) return true;
         else return false;
     }
@@ -177,7 +170,7 @@ export class Entity extends DObject {
      * @returns Entity
      */
     public getChild(id: string): Entity | undefined {
-        let entity = this.children!.find((entity) => entity.id === id);
+        let entity = this.children!.filter((entity) => entity.id === id).shift();
         if (entity !== undefined) { 
             return entity!;
         } else {
@@ -198,7 +191,7 @@ export class Entity extends DObject {
      * @returns Component
      */
     public getComponent(type: string): Component | undefined {
-        let comp = this.components!.find((comp) => comp.tag! === type);
+        let comp = this.components!.filter((comp) => comp.tag! === type).shift();
         if (comp !== undefined) { 
             return comp!;
         } else {

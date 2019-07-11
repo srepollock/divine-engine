@@ -1,4 +1,0 @@
---compilers test/tshook.js
---watch-extensions ts,tsx 
---timeout 15000
---exit

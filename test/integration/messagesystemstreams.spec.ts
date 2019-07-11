@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { EngineStream, IOStream, Message, MessageSystem, MessageType } from "../../src";
+import { EngineStream, IOStream, Message, MessageSystem, MessageType } from "../../lib/divine.es";
 
 describe("Message system, EngineStream and IOStream incrementals tests", () => {
     var messageSystem: MessageSystem = new MessageSystem();

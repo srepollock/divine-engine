@@ -1,5 +1,4 @@
-import { expect } from "chai";
-import { DObject, Message, MessageSystem, MessageType } from "../../src/core";
+import { DObject, Message, MessageSystem, MessageType } from "../../lib/divine.es";
 
 describe("DObject and MessageSystem integration", () => {
     let messageSystem = new MessageSystem();
