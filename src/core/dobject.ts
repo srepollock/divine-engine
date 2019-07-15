@@ -37,6 +37,13 @@ export class DObject {
         this.tag = tag;
     }
     /**
+     * Returns this object as a JSON string to send in messages.
+     * @returns string
+     */
+    public asMessage(): string {
+        return JSON.stringify(this);
+    }
+    /**
      * DObjects base messasge handler receiving messages.
      * This can and most likely will be rewritten.
      * @param  {Message} message

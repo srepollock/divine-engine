@@ -40,6 +40,7 @@ export class RenderSystem extends System {
             height = window.innerHeight;
         }
         this._camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
+        this._camera.position.z = 5;
         this._renderer = new WebGLRenderer();
         this._renderer.setSize(width, height);
         this._canvas = document.body.appendChild(this._renderer.domElement);

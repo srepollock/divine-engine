@@ -1,3 +1,4 @@
+import { Entity } from "../entity";
 import { ErrorCode, log, LogLevel } from "../loggingsystem/src";
 import { DScene } from "./dscene";
 
@@ -53,7 +54,9 @@ export class SceneManager {
         return new DScene(sceneName);
     }
     public createEmptyScene(sceneName: string = "Defualt DScene Template"): DScene {
-        return new DScene(sceneName);
+        let emptyScene: DScene = new DScene(sceneName);
+        emptyScene.addEntity(new Entity({tag: "box"}));
+        return emptyScene;
     }
     public loadScene(scene: DScene): void {
         this._scenes.push(scene);

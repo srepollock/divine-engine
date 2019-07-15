@@ -1,4 +1,4 @@
-import { EngineStream, IOStream, Message, MessageSystem, MessageType } from "../../lib/index";
+import { EngineStream, IOStream, Message, MessageSystem, MessageType } from "../../lib/divine.umd";
 
 describe("Message system, EngineStream and IOStream incrementals tests", () => {
     var messageSystem: MessageSystem = new MessageSystem();

@@ -6,6 +6,7 @@ import { PhysicsSystem } from "./physics/physicssystem";
 import { DScene, RenderSystem, SceneManager } from "./render/";
 import { SoundSystem } from "./sound/soundsystem";
 import { Window } from "./window";
+import { Scene } from "three";
 
 /** 
  * Engine arguments for setup.
@@ -428,7 +429,14 @@ export class Engine {
      * @returns void
      */
     public onMessage(message: Message): void {
-        // TODO: Handle messages
+        let obj = JSON.parse(message.data);
+        if (obj.hasOwnProperty("threeScene")) { // Handling a DScene Message
+            // NOTE: Handle as a DScene message
+            log(LogLevel.debug, `Loading scene: ${obj.name}`);
+            this._sceneManager!.loadScene(obj);
+        }  else if (obj.hasOwnProperty("transform")) { // Handling an Entity Message
+            // NOTE: Handle as a DScene message
+        }
     }
     /**
      * Sends a message to the engine stream.
@@ -467,8 +475,7 @@ export class Engine {
          * Wait for message worker
          */
         log(LogLevel.debug, `Update loop | delta = ${delta}`);
-        this._messageSystem!.write(new Message(delta.toString(), 
-            MessageType.Global)); // NOTE: Possibly undefined is handled on creation.
+        this._messageSystem!.write(new Message(delta.toString(), MessageType.Global));
         // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
         Engine._instance!._physicsSystem!.update(delta); // NOTE: Physics messages handled
         // Engine._instance!._soundSystem!.update(delta); // NOTE: Sound messages handled

@@ -1,5 +1,4 @@
-import "mocha";
-import { Entity, FlagComponent, SoundComponent, Transform } from "../../lib/index";
+import { Entity, FlagComponent, SoundComponent, Transform } from "../../lib/divine.umd";
 
 describe("Entity unit testing", () => {
     var entity: Entity;
