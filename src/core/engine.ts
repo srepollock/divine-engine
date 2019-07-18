@@ -1,61 +1,13 @@
+import { guid } from "../helper";
+import { Client } from "../helper";
+import { PhysicsSystem } from "../physicssystem";
+import { RenderSystem, SceneManager } from "../rendersystem";
+import { DScene } from "../rendersystem/dscene";
+import { SoundSystem } from "../soundsystem";
+import { EngineArguments } from "./enginearguments";
 import { GameWindow } from "./gamewindow";
-import { Client, guid } from "./helper";
-import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Message, MessageSystem, MessageType, SystemStream } from "./messagesystem/src";
-import { PhysicsSystem } from "./physics/physicssystem";
-import { DScene, RenderSystem, SceneManager } from "./render/";
-import { SoundSystem } from "./sound/soundsystem";
-import { Window } from "./window";
-import { Scene } from "three";
-
-/** 
- * Engine arguments for setup.
- */
-export class EngineArguments {
-    public title: string;
-    public height: number;
-    public width: number;
-    public fps: number;
-    public rootElementId: string;
-    public sceneManager: SceneManager | undefined;
-    public scene: string;
-    public debug: boolean;
-    /**
-     * Engine arguments for a base setup. When defining engine parameters, using
-     * this object and setting it in a project can provide quick initialization.
-     * **Default arguments are defined.**
-     * @param  {string=""} publictitle
-     * @param  {number=0} publicheight
-     * @param  {number=0} publicwidth
-     * @param  {number=60} publicfps
-     * @param  {string=""} publicrootElementId
-     * @param  {boolean=false} publicdebug
-     */
-    constructor({title, height, width, fps, rootElementId, sceneManager, scene, debug}: {
-            title?: string,
-            height?: number,
-            width?: number,
-            fps?: number,
-            rootElementId?: string,
-            sceneManager?: SceneManager,
-            scene?: string,
-            debug?: boolean
-        } = {}
-    ) {
-        this.title = (title) ? title : "";
-        this.height = (height ? height : 0);
-        this.width = (width) ? width : 0;
-        this.fps = (fps) ? fps : 60;
-        this.rootElementId = (rootElementId) ? rootElementId : "";
-        this.sceneManager = (sceneManager) ? sceneManager : undefined;
-        this.scene = (scene) ? scene : "";
-        this.debug = (debug) ? debug : false;
-    }
-    public toString(): string {
-        return JSON.stringify(`${this.title}, ${this.width}x${this.height}, ${this.fps}, ${this.sceneManager}`);
-    }
-}
-
+import { ErrorCode, log, LogLevel } from "./loggingsystem";
+import { Message, MessageSystem, MessageType, SystemStream } from "./messagesystem";
 /**
  * The Divine Game Engine class.
  */
@@ -181,7 +133,7 @@ export class Engine {
      * Gets the engines current GameWindow object.
      * @returns GameWindow
      */
-    public get gameWindow(): Window {
+    public get gameWindow(): GameWindow {
         if (this._gameWindow) return this._gameWindow;
         log(LogLevel.error, "The engine's game window is not defined", ErrorCode.EngineWindowUndefined);
         throw ErrorCode.EngineWindowUndefined;
@@ -190,7 +142,7 @@ export class Engine {
      * Sets the engine's game window
      * @param  {GameWindow} gw
      */
-    public set gameWindow(gw: Window) {
+    public set gameWindow(gw: GameWindow) {
         this._gameWindow = gw as GameWindow;
     }
     /**
@@ -329,9 +281,8 @@ export class Engine {
             log(LogLevel.critical, 
                 "Engine was not initialized immediately after constructor called", ErrorCode.EngineInstanceUndefined);
         }
-        Engine._instance!.gameWindow = new GameWindow(Engine._instance!.client, Engine._instance!._container!);
-        Engine._instance!.gameWindow.start();
-        Engine._instance!.gameWindow.title = args.title;
+        // tslint:disable-next-line: max-line-length
+        Engine._instance!.gameWindow = new GameWindow(args.title, Engine._instance!.client, Engine._instance!._container!);
         Engine._running = true;
         log(LogLevel.debug, "Engine started");
         /**
@@ -341,7 +292,7 @@ export class Engine {
          */
         // NOTE: Render System
         // tslint:disable-next-line:max-line-length
-        RenderSystem.initialize({width: args.width, height: args.height});
+        RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height});
         Engine._instance!._renderSystem =  RenderSystem.instance;
         if (Engine._instance!._renderSystem === undefined) {
             // tslint:disable-next-line:max-line-length

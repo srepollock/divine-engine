@@ -6,24 +6,17 @@
   "module": "./lib/divine.es.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build-tests": "tsc --p test/helperfiles",
     "bundle": "tsc; rollup -c",
-    "build": "tsc",
-    "clean": "rm -rf build/* dist/* lib/*",
-    "cleanbuild": "npm run clean; npm run build",
-    "commit": "npm run lint; git add --all && git-cz",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "clean": "rm -rf lib/*",
+    "commit": "npm run lint; git add --all; git-cz",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --target ESNext --readme none src/*",
-    "env": "env",
     "lint": "tslint src/**/*.ts -c tslint.json",
-    "prepare": "npm run clean; npm run bundle;",
     "semantic-release": "semantic-release",
     "test": "npm run test:all",
     "test:all": "jest --coverage",
-    "test:debug": "mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit --inspect-brk",
-    "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.{ts,tsx}\" --exit",
-    "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.{ts,tsx}\" --exit",
-    "test:unit": "mocha --opts mocha.opts \"test/unit/**/*.spec.{ts,tsx}\""
+    "test:functional": "jest test/functional/**/*\\.spec\\.[jt]s",
+    "test:integration": "jest test/integration/**/*\\.spec\\.[jt]s",
+    "test:unit": "jest test/unit/**/*\\.spec\\.[jt]s"
   },
   "repository": {
     "type": "git",
@@ -40,34 +33,27 @@
     "url": "https://github.com/srepollock/divine-engine/issues"
   },
   "homepage": "http://spollock.ca/divine-engine",
-  "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
-    "@types/jest": "^24.0.15",
-    "@types/node": "^10.12.0",
-    "codecov": "^3.1.0",
-    "electron": "^2.0.11",
-    "jest": "^24.8.0",
-    "jest-codemods": "^0.20.0",
-    "rollup": "^0.68.0",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-globals": "^1.4.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-typescript2": "^0.21.2",
-    "semver": ">=4.3.2",
-    "ts-jest": "^24.0.2",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
-    "typedoc": "^0.14.2"
-  },
   "dependencies": {
-    "commitizen": "^3.0.7",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/electron": "^1.6.10",
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.6.3",
+    "babel-jest": "^24.8.0",
+    "codecov": "^3.5.0",
+    "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
-    "node": "^11.12.0",
-    "semver": ">=4.3.2",
+    "jest": "^24.8.0",
+    "rollup": "^1.17.0",
+    "rollup-plugin-typescript2": "^0.22.0",
     "three": "^0.106.2",
-    "typescript": "^3.4.1"
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "typedoc": "^0.14.2"
   },
   "config": {
     "commitizen": {
@@ -76,7 +62,10 @@
   },
   "jest": {
     "coverageDirectory": "coverage",
-    "coverageReporters": ["lcov", "text"],
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ],
     "preset": "ts-jest",
     "testPathIgnorePatterns": [
       "src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",

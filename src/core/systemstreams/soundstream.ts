@@ -1,9 +1,5 @@
-import { SystemStream } from "../messagesystem/src/isystemstream";
-import { MessageType } from "../messagesystem/src/messagetype";
+import { MessageType, SystemStream } from "../messagesystem/src";
 
-/**
- * Sound stream class to handle sound messages.
- */
 export class SoundStream extends SystemStream {
     /**
      * Default message type for the stream.

@@ -1,5 +1,4 @@
 import { DObject } from "./dobject";
-import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 import { Message, SystemStream } from "./messagesystem";
 
 /**

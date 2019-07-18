@@ -1,9 +1,4 @@
-import { SystemStream } from "../messagesystem/src//isystemstream";
-import { MessageType } from "../messagesystem/src//messagetype";
-
-/**
- * Render stream class to handle render messages.
- */
+import { MessageType, SystemStream } from "../messagesystem/src";
 export class RenderStream extends SystemStream {
     /**
      * Default message type for the stream.

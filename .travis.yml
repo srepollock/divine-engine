@@ -12,12 +12,10 @@ before_script:
 script:
     - npm run-script test:all
 after_success:
-    - npm run-script coverage
     - npm run-script docs
 branches:
     only:
     - master
-    - develop
 deploy:
     provider: pages
     skip-cleanup: true

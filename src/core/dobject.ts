@@ -1,12 +1,7 @@
-import { guid } from "./helper";
+import { guid } from "../helper";
 import { log, LogLevel } from "./loggingsystem/src";
 import { Message, MessageType, SystemStream } from "./messagesystem";
 
-/**
- * All objects begin passed as messages in the message system extend this 
- * object. They are ID'd on their string. The engine creates unique ID's for
- * each object to verify them.
- */
 export class DObject {
     /**
      * Gets the DObjects guid.

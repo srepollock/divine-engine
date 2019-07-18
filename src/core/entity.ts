@@ -1,6 +1,6 @@
 import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial } from "three";
 import { Component } from "../components/component";
-import { Transform } from "../math";
+import { Vector3 } from "../math";
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 
@@ -10,7 +10,7 @@ import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
  * and game object creation.
  */
 export class Entity extends DObject {
-    public transform: Transform;
+    public transform: Vector3;
     public components: Array<Component>;
     public children: Array<Entity>;
     private _geometry: Geometry;
@@ -31,7 +31,7 @@ export class Entity extends DObject {
      */
     constructor({tag, transform, geometry, material, mesh, components, parent, children}: {
         tag?: string,
-        transform?: Transform,
+        transform?: Vector3,
         geometry?: Geometry,
         material?: Material,
         mesh?: Mesh,
@@ -40,7 +40,7 @@ export class Entity extends DObject {
         children?: Array<Entity>
     } = {}) {
         super(tag);
-        this.transform = (transform) ? transform : new Transform();
+        this.transform = (transform) ? transform : new Vector3();
         this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
         this._material = (material) ? material : new MeshBasicMaterial({color: 0x00ff00});
         this._mesh = (mesh) ? mesh : new Mesh(geometry, material);
@@ -123,7 +123,7 @@ export class Entity extends DObject {
      * @returns void
      */
     public addComponent(component: Component): void {
-        if (!this.hasComponent(component.id)) {
+        if (!this.hasComponent(component.tag)) {
             this.components!.push(component);
         } else {
             // tslint:disable-next-line:max-line-length
@@ -154,7 +154,8 @@ export class Entity extends DObject {
     }
     /**
      * Checks if the entity has the component or not.
-     * @param  {string} type Component class name
+     * REVIEW: This should be searching by ID
+     * @param  {string} type Component tag name
      * @returns boolean
      */
     public hasComponent(type: string): boolean {
@@ -174,7 +175,7 @@ export class Entity extends DObject {
         if (entity !== undefined) { 
             return entity!;
         } else {
-            log(LogLevel.warning, "Component not found", ErrorCode.EntityChildNotFound);
+            log(LogLevel.warning, `Child ${id} not found`, ErrorCode.EntityChildNotFound);
             return undefined;
         }
     }
@@ -217,4 +218,3 @@ export class Entity extends DObject {
         
     }
 }
-
