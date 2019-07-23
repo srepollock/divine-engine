@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { Camera, PerspectiveCamera, WebGLRenderer } from "three";
 import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { System } from "../core/system";
@@ -44,7 +43,7 @@ export class RenderSystem extends System {
             this._sceneManager = new SceneManager(scenes);
         } else if (scenes !== undefined) {
             this._sceneManager = sceneManager;
-            sceneManager.loadScenes(scenes);
+            sceneManager.addScenes(scenes);
         } else {
             this._sceneManager = sceneManager;
             this._sceneManager.createEmptyScene();

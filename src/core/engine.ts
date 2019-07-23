@@ -153,6 +153,13 @@ export class Engine {
         return this._id;
     }
     /**
+     * Get's this Engine's now time.
+     * @returns number
+     */
+    public get now(): number {
+        return this._now;
+    }
+    /**
      * Get's the engine's Render System
      * @returns RenderSystem
      */

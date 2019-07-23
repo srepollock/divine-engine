@@ -31,7 +31,9 @@ export class GameWindow extends DObject {
     public static get height(): number {
         if (GameWindow.client === Client.Electron) {
             return this.browserWindow!.getContentSize()[1];
-        } else if ( GameWindow.client === Client.Browser) {
+        } else if (GameWindow.client === Client.Browser 
+            && GameWindow.container !== null 
+            && GameWindow.container !== undefined) {
             return GameWindow.container!.getBoundingClientRect().height;
         } else {
             log(LogLevel.warning, `Engine was started in console and does not have a window to display to.`);
@@ -45,7 +47,9 @@ export class GameWindow extends DObject {
     public static get width(): number {
         if (GameWindow.client === Client.Electron) {
             return this.browserWindow!.getContentSize()[0];
-        } else if (GameWindow.client === Client.Browser) {
+        } else if (GameWindow.client === Client.Browser 
+            && GameWindow.container !== null 
+            && GameWindow.container !== undefined) {
             return GameWindow.container!.getBoundingClientRect().width;
         } else {
             log(LogLevel.warning, `Engine was started in console and does not have a window to display to.`);
@@ -87,7 +91,7 @@ export class GameWindow extends DObject {
             GameWindow.browserWindow = remote.getCurrentWindow();
             GameWindow.screen = remote.screen;
         } else if (GameWindow.client === Client.Browser) {
-            if (container !== undefined) {
+            if (container !== undefined || container !== null) {
                 GameWindow.container = container;
             } else {
                 GameWindow.container = undefined;

@@ -44,6 +44,6 @@ export class EngineArguments {
         this.debug = (debug) ? debug : false;
     }
     public toString(): string {
-        return JSON.stringify(`${this.title}, ${this.width}x${this.height}, ${this.fps}, ${this.sceneManager}`);
+        return JSON.stringify(this);
     }
 }

@@ -10,6 +10,7 @@ import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
  * and game object creation.
  */
 export class Entity extends DObject {
+    public name: string;
     public transform: Vector3;
     public components: Array<Component>;
     public children: Array<Entity>;
@@ -29,7 +30,8 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor({tag, transform, geometry, material, mesh, components, parent, children}: {
+    constructor({name, tag, transform, geometry, material, mesh, components, parent, children}: {
+        name?: string,
         tag?: string,
         transform?: Vector3,
         geometry?: Geometry,
@@ -40,6 +42,7 @@ export class Entity extends DObject {
         children?: Array<Entity>
     } = {}) {
         super(tag);
+        this.name = (name) ? name : `${this.tag + " " + this.id}`;
         this.transform = (transform) ? transform : new Vector3();
         this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
         this._material = (material) ? material : new MeshBasicMaterial({color: 0x00ff00});
