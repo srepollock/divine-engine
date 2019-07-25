@@ -1,6 +1,6 @@
 import { BrowserWindow, Screen } from "electron";
 import { Client } from "../helper";
-import { Mouse } from "../inputsystem";
+import { IOSystem } from "../inputsystem";
 import { Vector2 } from "../math";
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
@@ -19,6 +19,10 @@ export class GameWindow extends DObject {
             return true;
         }
     }
+    /**
+     * Sets the screen to full window only when in Electrona
+     * @param  {boolean} b
+     */
     public static set fullscreen(b: boolean) {
         if (GameWindow.client === Client.Electron) {
             GameWindow.browserWindow!.setFullScreen(b);
@@ -79,6 +83,7 @@ export class GameWindow extends DObject {
     }
     public static browserWindow: BrowserWindow | undefined = undefined;
     public static client: Client;
+    public static canvas: HTMLCanvasElement | undefined;
     public static container: HTMLElement | undefined;
     public static screen: Screen | undefined;
     private static titleName: string;
@@ -93,18 +98,23 @@ export class GameWindow extends DObject {
         } else if (GameWindow.client === Client.Browser) {
             if (container !== undefined || container !== null) {
                 GameWindow.container = container;
+                GameWindow.canvas = GameWindow.container!.getElementsByTagName("canvas")[0];
             } else {
                 GameWindow.container = undefined;
                 log(LogLevel.warning, "Container undefined in GameWindow", ErrorCode.BrowserWindowUndefined);
             }
         }
     }
+    /**
+     * Gets the current mouse position on the Electron screen, or the BrowserWindow.
+     * @returns Vector2
+     */
     public static mousePosition(): Vector2 {
         if (GameWindow.client === Client.Electron) {
             let pos = GameWindow.screen!.getCursorScreenPoint();
             return new Vector2(pos.x, pos.y);
         }
-        return Mouse.absolute;
+        return IOSystem.absolute;
     }
     /**
      * Refresh the screen.
@@ -116,15 +126,14 @@ export class GameWindow extends DObject {
         }
     }
     /**
-     * Resize's the window.
+     * Resize's the Canvas element in the window.
      * @param  {number} height
      * @param  {number} width
      * @returns void
      */
     public static resize(height: number, width: number): void {
-        if (GameWindow.client === Client.Electron) {
-            GameWindow.browserWindow!.setSize(width, height);
-        }
+        document.body.getElementsByTagName("canvas")[0].height = height;
+        document.body.getElementsByTagName("canvas")[0].width = width;
     }
     /**
      * Cleansup all the memory and tearsdown the GameWindow object.

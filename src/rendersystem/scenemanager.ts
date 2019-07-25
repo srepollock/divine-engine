@@ -7,30 +7,29 @@ export class SceneManager {
     // REVIEW: Change this to a map
     private _scenes: Array<DScene>;
     constructor(scenes?: Array<DScene>) {
-        this._scenes = new Array<DScene>();
-        let tempScenes = scenes;
-        if (tempScenes === undefined) {
-            this._scenes.push(this.createEmptyScene());
-        } else if (tempScenes.length <= 0) {
+        if (scenes !== undefined) {
+            this._scenes = scenes;
+        } else {
+            this._scenes = new Array<DScene>();
             this._scenes.push(this.createEmptyScene());
         }
-        this._scene = this._scenes[0]; // Defaults to the first. Checks for save
+        this._scene = this._scenes[0];
+        this.start();
     }
     public get scene(): DScene {
         return this._scene;
     }
-    public pause(): void {
-
-    }
     /**
      * 
-     * Saves the scene the game was currently on.
+     * Saves the scene the game was currently running and the player was on.
      * <bold>Caution:</bold> this save is not a game save, simply the
      * save of the scene currently that can be loaded up on restart.
+     * 
+     * // TODO: Should setup a state to save the base scenes for the game(?)
      * @returns void
      */
     public save(): void {
-
+        this._scene.save();
     }
     /**
      * 
@@ -40,23 +39,41 @@ export class SceneManager {
      * @returns void
      */
     public start(): void {
+        if (this._scene.checkSaved()) {
+            // load the instance and continue.
+            // this.scene = this.scene.loadPreviousSave()
+        }
+    }
+    /**
+     * Save the current scene state and shutdown
+     * @returns void
+     */
+    public shutdown(): void {
+        this.save();
+        this._scenes.forEach((scene) => {
+            scene.shutdown();
+        });
         
     }
-    public stop(): void {
-
-    }
-    public shutdown(): void {
-        // TODO: Check to save here if shutdown by watch
-        // if (Engine.exit == True) {
-        //     this.save();
-        // }
-    }
+    /**
+     * Creates a new DScene and adds it to the end of the scene manager's scene list.
+     * @param  {string} sceneName?
+     * @returns DScene
+     */
     public createScene(sceneName?: string): DScene {
-        return new DScene(sceneName);
+        let scene = new DScene(sceneName);
+        this._scenes.push(scene);
+        return scene;
     }
+    /**
+     * Creates a new Scene with a default name. Adds the new scene to the end of the scene manager's scene list.
+     * @param  {string="DefualtDSceneTemplate"} sceneName
+     * @returns DScene
+     */
     public createEmptyScene(sceneName: string = "Defualt DScene Template"): DScene {
         let emptyScene: DScene = new DScene(sceneName);
         emptyScene.addEntity(new Entity({tag: "box"}));
+        this._scenes.push(emptyScene);
         return emptyScene;
     }
     /**

@@ -32,20 +32,16 @@ export class RenderSystem extends System {
      * @param  {number} width
      * @param  {number} height
      */
-    private constructor({ width, height, scenes, sceneManager }: {
+    private constructor({ width, height, scenes }: {
         width?: number, 
         height?: number,
         scenes?: Array<DScene>,
-        sceneManager?: SceneManager
     } = {}) {
         super("rendersystem");
-        if (sceneManager === undefined) {
+        if (scenes !== undefined) {
             this._sceneManager = new SceneManager(scenes);
-        } else if (scenes !== undefined) {
-            this._sceneManager = sceneManager;
-            sceneManager.addScenes(scenes);
         } else {
-            this._sceneManager = sceneManager;
+            this._sceneManager = new SceneManager();
             this._sceneManager.createEmptyScene();
         }
         if (width === undefined || height === undefined) {
@@ -70,13 +66,12 @@ export class RenderSystem extends System {
      * Initializes the system.
      * @returns void
      */
-    public static initialize({ width, height, scenes, sceneManager }: {
+    public static initialize({ width, height, scenes }: {
         width?: number, 
         height?: number,
         scenes?: Array<DScene>,
-        sceneManager?: SceneManager
     } = {}): void {
-        new RenderSystem({width, height, scenes, sceneManager});
+        new RenderSystem({width, height, scenes});
     }
     /**
      * @returns void

@@ -253,15 +253,9 @@ export class Engine {
                 && w.process.versions !== undefined 
                 && w.process.versions.electron !== undefined) {
                 this._client = Client.Electron;
-            }
-            if (typeof(document) !== "undefined") {
+            } else if (typeof(document) !== "undefined") {
                 this._client = Client.Browser;
-                if (args.rootElementId !== "") {
-                    this._container = document.getElementById(args.rootElementId); 
-                } else {
-                    this._container = document.getElementsByTagName("body")[0];
-                }
-                log(LogLevel.debug, `Engine's container: ${this._container}`);
+                this._container = document.getElementsByTagName("body")[0];
             } else {
                 log(LogLevel.critical, "the 'document' object is undefined", ErrorCode.ContainerUndefined);
                 Engine.shutdown();
@@ -298,8 +292,8 @@ export class Engine {
          * They are held in reference by the engine. As it will shut everything down as well.
          */
         // NOTE: Render System
-        // tslint:disable-next-line:max-line-length
-        RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height});
+        // tslint:disable-next-line: max-line-length
+        RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height, scenes: args.scenes});
         Engine._instance!._renderSystem =  RenderSystem.instance;
         if (Engine._instance!._renderSystem === undefined) {
             // tslint:disable-next-line:max-line-length
@@ -310,11 +304,6 @@ export class Engine {
         if (Engine._instance!._physicsSystem === undefined) {
             log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
             Engine.shutdown();
-        }
-        // NOTE: Sets the scene for the engine to read from Engine Arguments. 
-        // REVIEW: Could this be where it checks for a save? or should it be in Render system?
-        if (Engine._instance!.engineArguments.scene !== "") {
-            Engine._instance!.sendMessage(Engine._instance!.engineArguments.scene, MessageType.Render, true);
         }
         Engine.play();
     }
