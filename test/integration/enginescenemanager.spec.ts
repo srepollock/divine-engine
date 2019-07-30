@@ -13,7 +13,7 @@ describe("engine's scene manager", () => {
     });
     it("should load a new scene", () => {
         // tslint:disable-next-line: max-line-length
-        expect(Engine.instance!.sceneManager.addScene(JSON.parse(readFileSync(path.resolve(__dirname, "./assets/testscene.json"), "utf8")) as DScene)).toBe(true);
+        expect(Engine.instance!.sceneManager.addScene(Object.assign(new DScene(), JSON.parse(readFileSync(path.resolve(__dirname, "./assets/testscene.json"), "utf8"))))).toBe(true);
         expect(Engine.instance!.sceneManager.loadScene("testscene")).toBe(true);
         expect(Engine.scene.name).toBe("testscene");
     });

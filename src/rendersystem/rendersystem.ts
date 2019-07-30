@@ -5,11 +5,6 @@ import { RenderStream } from "../core/systemstreams";
 import { DScene } from "./dscene";
 import { SceneManager } from "./scenemanager";
 export class RenderSystem extends System {
-    private static _instance: RenderSystem;
-    private _canvas: HTMLCanvasElement;
-    private _camera: Camera;
-    private _renderer: WebGLRenderer;
-    private _sceneManager: SceneManager;
     public get canvas(): HTMLCanvasElement {
         return this._canvas;
     }
@@ -20,6 +15,9 @@ export class RenderSystem extends System {
     public get height(): number {
         return this._canvas.height;
     }
+    public get running(): boolean {
+        return this._running;
+    }
     /**
      * Gets the canvas' width.
      * @returns number
@@ -27,6 +25,19 @@ export class RenderSystem extends System {
     public get width(): number {
         return this._canvas.width;
     }
+    /**
+     * Gets the render systems instance for Engine use.
+     * @returns RenderSystem
+     */
+    public static get instance(): RenderSystem {
+        return RenderSystem._instance;
+    }
+    private static _instance: RenderSystem;
+    private _canvas: HTMLCanvasElement;
+    private _camera: Camera;
+    private _renderer: WebGLRenderer;
+    private _running: boolean;
+    private _sceneManager: SceneManager;
     /**
      * Render system constructor.
      * @param  {number} width
@@ -53,14 +64,8 @@ export class RenderSystem extends System {
         this._renderer = new WebGLRenderer();
         this._renderer.setSize(width, height);
         this._canvas = document.body.appendChild(this._renderer.domElement);
+        this._running = true;
         RenderSystem._instance = this; // NOTE: Render System has been created.
-    }
-    /**
-     * Gets the render systems instance for Engine use.
-     * @returns RenderSystem
-     */
-    public static get instance(): RenderSystem {
-        return RenderSystem._instance;
     }
     /**
      * Initializes the system.
@@ -78,23 +83,49 @@ export class RenderSystem extends System {
      * @override
      */
     public cleanup(): void {
-        this._sceneManager.shutdown();
-    }
-    public shutdown(): void {
-        this.cleanup();
+        RenderSystem.instance._sceneManager.shutdown();
     }
     /**
-     * Render system start method.
+     * Called when the RenderSystem needs to cleanup and shutdown.
+     * @returns void
+     */
+    public shutdown(): void {
+        RenderSystem.instance.cleanup();
+    }
+    /**
+     * RenderSystem start method.
      * @returns void
      */
     public start(): void {
-
+        RenderSystem.instance._running = true;
     }
+    /**
+     * RenderSystem stop method. Called to stop updating, but continue running (could start later).
+     * @returns void
+     */
     public stop(): void {
-
+        RenderSystem.instance._running = false;
     }
+    /**
+     * The RenderSystem update method. Called from within the engine. This should be called through the 
+     * message system however.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
-        log(LogLevel.info, `Renderer delta: ${delta}`);
-        this._renderer.render(this._sceneManager.scene.threeScene, this._camera);
+        if (RenderSystem.instance._running) {
+            /**
+             * // TODO: Call this through the message system.
+             * // REVIEW: Update this and other systems.
+             * RenderStream.on("data", (data as Message) => {
+             *   if (data.messageType == MessageType.Render) {
+             *     // Render it out.
+             *   }
+             * });
+             */
+            log(LogLevel.info, `Renderer delta: ${delta}`);
+            // tslint:disable-next-line: max-line-length
+            RenderSystem.instance._renderer.render(RenderSystem.instance._sceneManager.scene.threeScene, RenderSystem.instance._camera);
+        }
     }
 }

@@ -14,7 +14,7 @@ describe("SceneManager Unit Tests", () => {
         expect(sm.scene).toBeDefined(); // NOTE: The scene should be undefined from the previous test
         let scene = sm.scene;
         // tslint:disable-next-line: max-line-length
-        expect(sm.addScene(Object.assign(DScene, JSON.parse(readFileSync(path.resolve(__dirname, "../../assets/testscene.json"), "utf8"))))).toBe(true);
+        expect(sm.addScene(Object.assign(new DScene(), JSON.parse(readFileSync(path.resolve(__dirname, "../../assets/testscene.json"), "utf8"))))).toBe(true);
         // tslint:disable-next-line: max-line-length
         expect(sm.loadScene("testscene")).toBe(true);
         expect(sm.scene.name).toBe("testscene");

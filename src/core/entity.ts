@@ -43,7 +43,7 @@ export class Entity extends DObject {
     } = {}) {
         super(tag);
         this.name = (name) ? name : `${this.tag + " " + this.id}`;
-        this.transform = (transform) ? transform : new Vector3();
+        this.transform = (transform) ? transform : new Vector3(1, 1, 1);
         this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
         this._material = (material) ? material : new MeshBasicMaterial({color: 0x00ff00});
         this._mesh = (mesh) ? mesh : new Mesh(geometry, material);
