@@ -19,6 +19,7 @@
         ],
         "member-ordering": [true, {"order": "fields-first"}],
         "no-any": false,
+        "no-bitwise": false,
         "no-consecutive-blank-lines": false,
         "no-empty": false,
         "no-empty-interface": false,

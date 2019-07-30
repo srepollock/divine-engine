@@ -1,4 +1,3 @@
-import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial } from "three";
 import { Component } from "../components/component";
 import { Vector3 } from "../math";
 import { DObject } from "./dobject";
@@ -14,9 +13,6 @@ export class Entity extends DObject {
     public transform: Vector3;
     public components: Array<Component>;
     public children: Array<Entity>;
-    private _geometry: Geometry;
-    private _material: Material;
-    private _mesh: Mesh;
     private _parent: string;
     /**
      * Entity constructor
@@ -30,13 +26,10 @@ export class Entity extends DObject {
      * here.
      * @see Component
      */
-    constructor({name, tag, transform, geometry, material, mesh, components, parent, children}: {
+    constructor({name, tag, transform, components, parent, children}: {
         name?: string,
         tag?: string,
         transform?: Vector3,
-        geometry?: Geometry,
-        material?: Material,
-        mesh?: Mesh,
         components?: Array<Component>,
         parent?: Entity,
         children?: Array<Entity>
@@ -44,9 +37,6 @@ export class Entity extends DObject {
         super(tag);
         this.name = (name) ? name : `${this.tag + " " + this.id}`;
         this.transform = (transform) ? transform : new Vector3(1, 1, 1);
-        this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
-        this._material = (material) ? material : new MeshBasicMaterial({color: 0x00ff00});
-        this._mesh = (mesh) ? mesh : new Mesh(geometry, material);
         this.components = (components) ? components : new Array();
         log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
         this._parent = (parent) ? parent.id : "";
@@ -62,24 +52,6 @@ export class Entity extends DObject {
         log(LogLevel.error, `You tried to get the parent of ${this.id} that has no parent`, 
             ErrorCode.EntityParentUndefined);
         return "";
-    }
-    public get geometry(): Geometry {
-        return this._geometry;
-    }
-    public set geometry(geometry: Geometry) {
-        this._geometry = geometry;
-    }
-    public get material(): Material {
-        return this._material;
-    }
-    public set material(material: Material) {
-        this._material = material;
-    }
-    public get mesh(): Mesh {
-        return this._mesh;
-    }
-    public set mesh(mesh: Mesh) {
-        this._mesh = mesh;
     }
     /**
      * Sets parent object of entity.

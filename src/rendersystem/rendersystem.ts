@@ -1,9 +1,13 @@
-import { Camera, PerspectiveCamera, WebGLRenderer } from "three";
+import { GameWindow } from "src/core";
 import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { System } from "../core/system";
 import { RenderStream } from "../core/systemstreams";
+import { Color } from "../helper";
+import { Camera } from "./camera";
 import { DScene } from "./dscene";
+import { fragmentShaderSource } from "./fragmentshader";
 import { SceneManager } from "./scenemanager";
+import { vertexShaderSource } from "./vertexshader";
 export class RenderSystem extends System {
     public get canvas(): HTMLCanvasElement {
         return this._canvas;
@@ -33,11 +37,14 @@ export class RenderSystem extends System {
         return RenderSystem._instance;
     }
     private static _instance: RenderSystem;
+    private _buffers: {position: WebGLBuffer | null};
     private _canvas: HTMLCanvasElement;
     private _camera: Camera;
-    private _renderer: WebGLRenderer;
+    private _gl: WebGLRenderingContext | null;
+    private _programInfo: any;
     private _running: boolean;
     private _sceneManager: SceneManager;
+    private _shaderProgram: WebGLProgram | null;
     /**
      * Render system constructor.
      * @param  {number} width
@@ -59,11 +66,17 @@ export class RenderSystem extends System {
             width = window.innerWidth;
             height = window.innerHeight;
         }
-        this._camera = new PerspectiveCamera(75, width / height, 0.1, 1000);
-        this._camera.position.z = 5;
-        this._renderer = new WebGLRenderer();
-        this._renderer.setSize(width, height);
-        this._canvas = document.body.appendChild(this._renderer.domElement);
+        this._camera = new Camera();
+        this._camera.transform.z = 5;
+        this._canvas = document.body.appendChild(this.createCanvasElement(width, height));
+        this._gl = this._canvas.getContext("experimental-webgl");
+        if (this._gl === null) {
+            // tslint:disable-next-line: max-line-length
+            log(LogLevel.critical, `Unable to initialize WebGL. Your browser or machine may not support it.`, ErrorCode.CanvasGLContextNull);
+        }
+        this._buffers = {position: null};
+        this._shaderProgram = null;
+        this.setupGL(this._gl!);
         this._running = true;
         RenderSystem._instance = this; // NOTE: Render System has been created.
     }
@@ -107,6 +120,16 @@ export class RenderSystem extends System {
         RenderSystem.instance._running = false;
     }
     /**
+     * Renders the scene in the scene manager.
+     * @param {DScene} scene Scene to render
+     * @returns void
+     */
+    public render(camera: Camera, scene: DScene): void {
+        this.preRender(this._gl!);
+        // TODO: Do something with the scene rendering here.
+        this.drawScene(this._gl!, this._programInfo, this._buffers!);
+    }
+    /**
      * The RenderSystem update method. Called from within the engine. This should be called through the 
      * message system however.
      * @param  {number} delta
@@ -125,7 +148,168 @@ export class RenderSystem extends System {
              */
             log(LogLevel.info, `Renderer delta: ${delta}`);
             // tslint:disable-next-line: max-line-length
-            RenderSystem.instance._renderer.render(RenderSystem.instance._sceneManager.scene.threeScene, RenderSystem.instance._camera);
+            RenderSystem._instance.render(RenderSystem._instance._camera, RenderSystem._instance._sceneManager.scene);
         }
+    }
+    /**
+     * Creates the canvas element for the DOM.
+     * @param  {number} width
+     * @param  {number} height
+     * @returns HTMLCanvasElement
+     */
+    private createCanvasElement(width: number, height: number, id: string = "deGLCanvas"): HTMLCanvasElement {
+        let canvas = new HTMLCanvasElement();
+        canvas.width = width;
+        canvas.height = height;
+        canvas.id = id;
+        return canvas;
+    }
+    private drawScene(gl: WebGLRenderingContext, programInfo: any, buffers: {position: WebGLBuffer | null}): void {
+        // TODO: Move this to camera.
+        let projectionMatrix: mat4 = this._camera.projectionMatrix;
+        // --
+        // Set drawing position to "identity" point (center of screen or 0);
+        let modelViewMatrix: mat4 = mat4.create();
+        // Move the drawing position a bit to where we draw the scene.
+        // NOTE: modelViewMatrix is the destination
+        mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -0.6]);
+        // Tell WebGL how to pull positions out of the position buffer into the vertexPosition attribute
+        {
+            // Pull out 2 values per iteration
+            let numComponents = 2;
+            // the data in the buffer is 32bit
+            let type = gl.FLOAT;
+            // don't normalize
+            let normalize = false;
+            // how many bytes to get from one set to the next; 0 = numComponents above
+            let stride = 0;
+            // how many bytes inside the buffer to start from
+            let offset = 0;
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+            gl.vertexAttribPointer(
+                this._programInfo.attributeLocations.vertexPosition,
+                numComponents,
+                type,
+                normalize,
+                stride,
+                offset);
+            gl.enableVertexAttribArray(this._programInfo.attributeLocations.vertexPosition);
+        }
+        gl.useProgram(this._programInfo.program);
+        gl.uniformMatrix4fv(this._programInfo.unifromLocations.projectionMatrix, false, projectionMatrix);
+        gl.uniformMatrix4fv(this._programInfo.unifromLocations.modelViewMatrix, false, modelViewMatrix);
+        {
+            let offset = 0;
+            let vertexCount = 4;
+            gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount); // draws the square
+        }
+    }
+    /**
+     * Setups the rendering buffers for the GL Context. 
+     * 
+     * // NOTE: This is a single WebGLBuffer for a single object at this time.
+     * // REVIEW: This needs to be a larger array depending on how many Entities are in the scene.
+     * @param  {WebGLRenderingContext} gl
+     * @returns WebGLBuffer
+     */
+    private initializeBuffers(gl: WebGLRenderingContext): {position: WebGLBuffer | null} {
+        let positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        let positions = [
+            -1.0, 1.0,
+            1.0, 1.0,
+            -1.0, -1.0,
+            1.0, -1.0,
+        ];
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+        return {
+            position: positionBuffer,
+        };
+    }
+    /**
+     * Initializes the shader program, so WebGL knows how to draw our data to the WebGL Program.
+     * @param  {WebGLRenderingContext} gl
+     * @param  {string} vertexShaderSource
+     * @param  {string} fragmentShaderSource
+     * @returns WebGLProgram
+     */
+    private initializeShaderProgram(gl: WebGLRenderingContext, vertexShaderSource: string, 
+        fragmentShaderSource: string): WebGLProgram | null {
+        let vertexShader: WebGLShader | null = this.loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+        if (vertexShader === null) {
+            log(LogLevel.critical, `The Vertex Shader was not created.`, ErrorCode.WebGLVertexShaderNull);
+        }
+        let fragmentShader: WebGLShader | null = this.loadShader(gl, gl.VERTEX_SHADER, fragmentShaderSource);
+        if (fragmentShader === null) {
+            log(LogLevel.critical, `The Vertex Shader was not created.`, ErrorCode.WebGLFragmentShaderNull);
+        }
+        let shaderProgram = gl.createProgram();
+        if (shaderProgram === null) {
+            log(LogLevel.critical, `WebGL shader program could not be created.`, ErrorCode.WebGLShaderProgramNull);
+        }
+        gl.attachShader(shaderProgram!, vertexShader!);
+        gl.attachShader(shaderProgram!, fragmentShader!);
+        gl.linkProgram(shaderProgram!);
+        if (!gl.getProgramParameter(shaderProgram!, gl.LINK_STATUS)) {
+            log(LogLevel.critical, `Unable to initialize the shader program: ${gl.getProgramInfoLog(shaderProgram!)}`);
+            return null;
+        }
+        return shaderProgram!;
+    }
+    /**
+     * Creates and compiles the shader as follows:
+     * 1. A new shader is created calling gl.createShader()
+     * 2. Shader's source code is sent to the shader calling gl.shaderSource()
+     * 3. After the shader has the source, it's compiled using gl.compileShader()
+     * 4. Checks if the shader was compiled using gl.COMPILE_STATUS; retrieved using gl.getShaderParameter() specificng the shader we wish to check. It prints compiling errors with gl.getShaderInfoLog() then deletes the failed shader.
+     * 5. Returns the successful shader back to the program.
+     * @param  {WebGLRenderingContext} gl
+     * @param  {number} type
+     * @param  {string} source
+     * @returns WebGLShader
+     */
+    private loadShader(gl: WebGLRenderingContext, type: number, source: string): WebGLShader | null {
+        let shader = gl.createShader(type);
+        if (shader === null) {
+            log(LogLevel.critical, `The shader ${type} (see GL numbered constants) could not be compiled from source.`, 
+                ErrorCode.WebGLShaderNull);
+        }
+        gl.shaderSource(shader!, source);
+        gl.compileShader(shader!);
+        if (!gl.getShaderParameter(shader!, gl.COMPILE_STATUS)) {
+            log(LogLevel.error, `An error occured compiling the shaders: ${gl.getShaderInfoLog(shader!)}`, 
+                ErrorCode.WebGLShaderNotCompiled);
+            gl.deleteShader(shader!);
+            return null;
+        }
+        return shader!;
+    }
+    private preRender(gl: WebGLRenderingContext): void {
+        // Cleanup the scene.
+        gl.clearColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, Color.BLACK.a);
+        gl.clearDepth(1.0);
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    }
+    /**
+     * Setups the GL to the correct settings to begin rendering.
+     * @returns void
+     */
+    private setupGL(gl: WebGLRenderingContext, backgroundColor: Color = new Color()): void {
+        gl.clearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        this._shaderProgram = this.initializeShaderProgram(gl, vertexShaderSource, fragmentShaderSource);
+        this._programInfo = {
+            program: this._shaderProgram!,
+            attributeLocations: {
+                vertexPosition: gl.getAttribLocation(this._shaderProgram!, "aVertexPosition"),
+            },
+            unifromLocations: {
+                projectionMatrix: gl.getUniformLocation(this._shaderProgram!, "uProjectionMatrix"),
+                modelViewMatrix: gl.getUniformLocation(this._shaderProgram!, "uModelViewMatrix"),
+            },
+        };
+        this._buffers = this.initializeBuffers(gl);
     }
 }

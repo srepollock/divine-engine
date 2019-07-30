@@ -1,11 +1,9 @@
-import { Scene } from "three";
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
 import { log, LogLevel } from "../core/loggingsystem/src";
 
 export class DScene extends DObject {
     private _name: string;
-    private _threeScene: Scene;
     private _entities: Array<Entity> = new Array<Entity>();
     /**
      * Gets the name of the DScene.
@@ -14,18 +12,9 @@ export class DScene extends DObject {
     public get name(): string {
         return this._name;
     }
-    /**
-     * Gets the DScenes ThreeJS scene.
-     * @see Scene
-     * @returns Scene
-     */
-    public get threeScene(): Scene {
-        return this._threeScene;
-    }
     constructor(name: string = "Divine Engine Scene", entities?: Array<Entity>) {
         super("scene");
         this._name = name;
-        this._threeScene = new Scene();
         if (entities !== undefined) {
             log(LogLevel.debug, `Loading entities into scene.`);
             entities.forEach((entity: Entity) => {
@@ -40,7 +29,6 @@ export class DScene extends DObject {
      */
     public addEntity(entity: Entity): void {
         this._entities.push(entity);
-        this._threeScene.add(entity.mesh);
     }
     /**
      * Gets all the Entities in this scene.
@@ -101,7 +89,6 @@ export class DScene extends DObject {
      * @returns void
      */
     private cleanup(): void {
-        this._threeScene = new Scene(); // Just to clean and save memory.
         this._entities.length = 0; // Cleans the array. (Fastest method I've found)
     }
 }
