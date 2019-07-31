@@ -9,9 +9,6 @@ export default [
         plugins: [
             typescript({tsconfigOverride: override}),
         ],
-        external: [
-            "gl-matrix"
-        ],
         output: [
             {
                 file: pkg.module,

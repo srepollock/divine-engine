@@ -39,7 +39,6 @@
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
     "types": [
       "electron",
-      "gl-matrix",
       "jest",
       "node",
     ],                                        /* Type declaration files to be included in compilation. */

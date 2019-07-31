@@ -1,8 +1,9 @@
-import { GameWindow } from "src/core";
+import { GameWindow } from "../core";
 import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { System } from "../core/system";
 import { RenderStream } from "../core/systemstreams";
 import { Color } from "../helper";
+import { Matrix3, Matrix4 } from "../math";
 import { Camera } from "./camera";
 import { DScene } from "./dscene";
 import { fragmentShaderSource } from "./fragmentshader";
@@ -165,14 +166,14 @@ export class RenderSystem extends System {
         return canvas;
     }
     private drawScene(gl: WebGLRenderingContext, programInfo: any, buffers: {position: WebGLBuffer | null}): void {
-        // TODO: Move this to camera.
-        let projectionMatrix: mat4 = this._camera.projectionMatrix;
+        // TODO: Change the matrix to a 4x4 (3d) instead of 3x3 (2d)
+        let projectionMatrix: Matrix4 = this._camera.projectionMatrix;
         // --
         // Set drawing position to "identity" point (center of screen or 0);
-        let modelViewMatrix: mat4 = mat4.create();
+        let modelViewMatrix: Matrix4 = new Matrix4();
         // Move the drawing position a bit to where we draw the scene.
         // NOTE: modelViewMatrix is the destination
-        mat4.translate(modelViewMatrix, modelViewMatrix, [-0.0, 0.0, -0.6]);
+        modelViewMatrix.translate(-0.0, 0.0, -0.6);
         // Tell WebGL how to pull positions out of the position buffer into the vertexPosition attribute
         {
             // Pull out 2 values per iteration
@@ -196,8 +197,8 @@ export class RenderSystem extends System {
             gl.enableVertexAttribArray(this._programInfo.attributeLocations.vertexPosition);
         }
         gl.useProgram(this._programInfo.program);
-        gl.uniformMatrix4fv(this._programInfo.unifromLocations.projectionMatrix, false, projectionMatrix);
-        gl.uniformMatrix4fv(this._programInfo.unifromLocations.modelViewMatrix, false, modelViewMatrix);
+        gl.uniformMatrix4fv(this._programInfo.unifromLocations.projectionMatrix, false, projectionMatrix.matrix);
+        gl.uniformMatrix4fv(this._programInfo.unifromLocations.modelViewMatrix, false, modelViewMatrix.matrix);
         {
             let offset = 0;
             let vertexCount = 4;
