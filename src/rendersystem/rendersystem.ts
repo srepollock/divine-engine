@@ -159,14 +159,13 @@ export class RenderSystem extends System {
      * @returns HTMLCanvasElement
      */
     private createCanvasElement(width: number, height: number, id: string = "deGLCanvas"): HTMLCanvasElement {
-        let canvas = new HTMLCanvasElement();
+        let canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
         canvas.id = id;
         return canvas;
     }
     private drawScene(gl: WebGLRenderingContext, programInfo: any, buffers: {position: WebGLBuffer | null}): void {
-        // TODO: Change the matrix to a 4x4 (3d) instead of 3x3 (2d)
         let projectionMatrix: Matrix4 = this._camera.projectionMatrix;
         // --
         // Set drawing position to "identity" point (center of screen or 0);
@@ -240,9 +239,9 @@ export class RenderSystem extends System {
         if (vertexShader === null) {
             log(LogLevel.critical, `The Vertex Shader was not created.`, ErrorCode.WebGLVertexShaderNull);
         }
-        let fragmentShader: WebGLShader | null = this.loadShader(gl, gl.VERTEX_SHADER, fragmentShaderSource);
+        let fragmentShader: WebGLShader | null = this.loadShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
         if (fragmentShader === null) {
-            log(LogLevel.critical, `The Vertex Shader was not created.`, ErrorCode.WebGLFragmentShaderNull);
+            log(LogLevel.critical, `The Fragment Shader was not created.`, ErrorCode.WebGLFragmentShaderNull);
         }
         let shaderProgram = gl.createProgram();
         if (shaderProgram === null) {
