@@ -445,11 +445,12 @@ export class Engine {
             Engine._instance!._now = Engine._instance!.timestamp();
             if (Engine._instance!._now > (Engine._instance!._last + 1000)) { // update every second
                 Engine._instance!._fps = 0.25 * Engine._instance!._framesThisSecond; // new FPS
-                let delta: number = (Engine._instance!._now - Engine._instance!._last) / 1000;
-                Engine._instance!.update(delta);
-                Engine._instance!._last = Engine._instance!._now;
                 Engine._instance!._framesThisSecond = 0;
             }
+            log(LogLevel.debug, `FPS: ${Engine._instance!._fps}`);
+            let delta: number = (Engine._instance!._now - Engine._instance!._last) / 1000;
+            Engine._instance!.update(delta);
+            Engine._instance!._last = Engine._instance!._now;
             Engine._instance!._framesThisSecond++;
             requestAnimationFrame(Engine._instance!.browserFrame);
         }
@@ -506,6 +507,8 @@ export class Engine {
     private setEngineArguments(args: EngineArguments): void {
         this._engineArguments = args;
         this._fps = this._engineArguments.fps;
+        process.env.NODE_DEBUG = (args.debug) ? "true" : "false"; 
+        // TODO: Set a debugging variable or something for Browser/Electron
     }
     /**
      * Gets the current timestamp.

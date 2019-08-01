@@ -1,16 +1,25 @@
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
 import { log, LogLevel } from "../core/loggingsystem/src";
+import { Scene } from "three";
 
 export class DScene extends DObject {
-    private _name: string;
     private _entities: Array<Entity> = new Array<Entity>();
+    private _name: string;
+    private _scene: Scene;
     /**
      * Gets the name of the DScene.
      * @returns string
      */
     public get name(): string {
         return this._name;
+    }
+    /**
+     * Gets the ThreeJS scene to render.
+     * @returns Scene
+     */
+    public get threeScene(): Scene {
+        return this._scene;
     }
     constructor(name: string = "Divine Engine Scene", entities?: Array<Entity>) {
         super("scene");
@@ -21,6 +30,7 @@ export class DScene extends DObject {
                 this.addEntity(entity);
             });
         }
+        this._scene = new Scene();
     }
     /**
      * Adds an entity to the Scene list and the ThreeJS scene to be rendered out.
