@@ -334,29 +334,19 @@ export class Matrix4 {
     /**
      * Changes the called on matrix to a perspective matrix with the given values.
      * @param  {number} fieldOfView in radians
+     * @param {number} aspect
      * @param  {number=0.1} near
      * @param  {number=100} far
      * @returns Matrix4
      */
-    public perspective(fieldOfView: number, near: number = 0.1, far: number = 100): Matrix4 {
-        let a00 = this.matrix[0];
-        let a11 = this.matrix[5];
-        let a20 = this.matrix[8];
-        let a21 = this.matrix[9];
-        let a22 = this.matrix[10];
-        let a23 = this.matrix[11];
-        let a32 = this.matrix[14];
-        let left = -(Math.tan(fieldOfView) * near);
-        let right = Math.tan(fieldOfView) * near;
-        let top = Math.tan(fieldOfView) * near;
-        let bottom = -(Math.tan(fieldOfView) * near);
-        a00 = (2 * near) / (right - left);
-        a11 = (2 * near) / (top - bottom);
-        a20 = (right + left) / (right - left);
-        a21 = (top + bottom) / (top - bottom);
-        a22 = -(far + near) / (far - near);
-        a23 = -1;
-        a32 = -((2 * near * far) / (far - near));
+    public perspective(fieldOfView: number, aspect: number, near: number = 0.1, far: number = 100): Matrix4 {
+        let fov = Math.tan(Math.PI * 0.5 - 0.5 * fieldOfView);
+        let rangeInv = 1.0 / (near - far);
+        this.matrix[0] = fov / aspect;
+        this.matrix[5] = fov;
+        this.matrix[10] = (near + far) * rangeInv;
+        this.matrix[11] = -1;
+        this.matrix[14] = near * far * rangeInv * 2;
         return this;
     }
     /**

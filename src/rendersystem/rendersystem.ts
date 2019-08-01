@@ -67,8 +67,10 @@ export class RenderSystem extends System {
             width = window.innerWidth;
             height = window.innerHeight;
         }
+        // TODO: FieldOfView
         this._camera = new Camera();
-        this._camera.transform.z = 5;
+        // this._camera.transform.z = 5; // REVIEW: This needs to update the transform and the matrix??
+        this._camera.projectionMatrix.translate(0, 0, 5);
         this._canvas = document.body.appendChild(this.createCanvasElement(width, height));
         this._gl = this._canvas.getContext("experimental-webgl");
         if (this._gl === null) {
@@ -165,25 +167,22 @@ export class RenderSystem extends System {
         canvas.id = id;
         return canvas;
     }
+    /**
+     * Draws the scene to the canvas based on the rendering context, shader program info and buffers.
+     * @param  {WebGLRenderingContext} gl
+     * @param  {any} programInfo
+     * @param  {{position:WebGLBuffer|null}} buffers
+     * @returns void
+     */
     private drawScene(gl: WebGLRenderingContext, programInfo: any, buffers: {position: WebGLBuffer | null}): void {
         let projectionMatrix: Matrix4 = this._camera.projectionMatrix;
-        // --
-        // Set drawing position to "identity" point (center of screen or 0);
         let modelViewMatrix: Matrix4 = new Matrix4();
-        // Move the drawing position a bit to where we draw the scene.
-        // NOTE: modelViewMatrix is the destination
         modelViewMatrix.translate(-0.0, 0.0, -0.6);
-        // Tell WebGL how to pull positions out of the position buffer into the vertexPosition attribute
         {
-            // Pull out 2 values per iteration
             let numComponents = 2;
-            // the data in the buffer is 32bit
             let type = gl.FLOAT;
-            // don't normalize
             let normalize = false;
-            // how many bytes to get from one set to the next; 0 = numComponents above
             let stride = 0;
-            // how many bytes inside the buffer to start from
             let offset = 0;
             gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
             gl.vertexAttribPointer(
@@ -284,8 +283,12 @@ export class RenderSystem extends System {
         }
         return shader!;
     }
+    /**
+     * Clears the screen before beginning the render.
+     * @param  {WebGLRenderingContext} gl
+     * @returns void
+     */
     private preRender(gl: WebGLRenderingContext): void {
-        // Cleanup the scene.
         gl.clearColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, Color.BLACK.a);
         gl.clearDepth(1.0);
         gl.enable(gl.DEPTH_TEST);

@@ -1,4 +1,4 @@
-import { DObject } from "../core";
+import { GameWindow } from "../core";
 import { Matrix4, Vector3 } from "../math";
 
 export class Camera {
@@ -20,7 +20,7 @@ export class Camera {
     public get transform(): Vector3 {
         return this._transform;
     }
-    public set transofrm(v: Vector3) {
+    public set transform(v: Vector3) {
         this._transform = v;
     }
     public get zFar(): number {
@@ -48,7 +48,8 @@ export class Camera {
         this._zFar = zFar; 
         this._projectionMatrix = new Matrix4();
         // Sets projection matrix to a perspective matrix with field of view, aspect, znear, zfar taken into account.
-        this._projectionMatrix.perspective(this._fieldOfView, this._zNear, this._zFar);
+        this._projectionMatrix.perspective(this._fieldOfView, GameWindow.width / GameWindow.height, this._zNear, 
+            this._zFar);
     }
     public recalculateProjectionMatrix(): Matrix4 {
         this._projectionMatrix = new Matrix4();
