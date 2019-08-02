@@ -271,7 +271,6 @@ export class Engine {
      * This is the intialization, startup and begins running the game engine. The engine can only be setup and started 
      * through this function.
      * @param  {EngineArguments} args
-     * @param  {()=>void} mainLoop
      * @returns void
      */
     public static start(args: EngineArguments): void {
@@ -490,7 +489,7 @@ export class Engine {
         if (!Engine._running) return;
         else {
             // setTimeout(this.consoleFrame, 1000 / this._fps);
-// tslint:disable-next-line: max-line-length
+            // tslint:disable-next-line: max-line-length
             setTimeout(() => Engine._instance!.consoleFrame(), 1000 / this._fps); // NOTE: Goes infinite unless stopped externally
             Engine._instance!._now = Engine._instance!.hrtimeMs();
             let delta = (Engine._instance!._now - Engine._instance!._last) / 1000;

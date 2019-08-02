@@ -2,6 +2,7 @@ import { Component } from "../components/component";
 import { Vector3 } from "../math";
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
+import { Mesh, Material, BoxGeometry, MeshBasicMaterial, Geometry } from "three";
 
 /**
  * The Daemon's entity object for game objects. The engine uses an
@@ -10,33 +11,45 @@ import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
  */
 export class Entity extends DObject {
     public name: string;
-    public transform: Vector3;
     public components: Array<Component>;
     public children: Array<Entity>;
+    public transform: Vector3;
+    public mesh: Mesh;
+    public material: Material;
+    public geometry: Geometry;
     private _parent: string;
     /**
      * Entity constructor
-     * @param id Entity's id for object uniqueness. Defaults to "".
-     * @param transform Entities transform or world position.
-     * @param children Entities child objects as there can be children attached 
-     * to the entity.
-     * @param components Entities components as an array attached to the object.
+     * @param {string} name
+     * @param {string} tag
+     * @param {Vector3} transform
+     * @param {Geometry} geometry
+     * @param {Material} material
+     * @param {Array<Component>} components Entities components as an array attached to the object.
      * These can be engine default components or user defined components. 
      * Any new component that derives from the base Component class can be used 
      * here.
      * @see Component
+     * @param {Array<Entity>} children Entities child objects as there can be children attached 
+     * to the entity.
+     * @param {parent} parent
      */
-    constructor({name, tag, transform, components, parent, children}: {
+    constructor({name, tag, transform, geometry, material, components, children, parent}: {
         name?: string,
         tag?: string,
         transform?: Vector3,
+        geometry?: Geometry,
+        material?: Material,
         components?: Array<Component>,
         parent?: Entity,
         children?: Array<Entity>
     } = {}) {
         super(tag);
         this.name = (name) ? name : `${this.tag + " " + this.id}`;
-        this.transform = (transform) ? transform : new Vector3(1, 1, 1);
+        this.transform = (transform) ? transform : new Vector3();
+        this.geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
+        this.material = (material) ? material : new MeshBasicMaterial({color: 0x000000});
+        this.mesh = new Mesh(geometry, material);
         this.components = (components) ? components : new Array();
         log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
         this._parent = (parent) ? parent.id : "";

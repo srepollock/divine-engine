@@ -101,10 +101,10 @@ export class RenderSystem extends System {
      */
     public start(): void {
         if (!RenderSystem.instance.running) {
-            var geometry = new BoxGeometry( 1, 1, 1 );
-            var material = new MeshBasicMaterial( { color: 0x00ff00 } );
-            this._cube = new Mesh( geometry, material );
-            this._sceneManager.scene.threeScene.add( this._cube );
+            // var geometry = new BoxGeometry( 1, 1, 1 );
+            // var material = new MeshBasicMaterial( { color: 0x00ff00 } );
+            // this._cube = new Mesh( geometry, material );
+            // this._sceneManager.scene.threeScene.add( this._cube );
             this._camera.position.z = 5;
         }
         RenderSystem.instance._running = true;
@@ -134,23 +134,8 @@ export class RenderSystem extends System {
              * });
              */
             log(LogLevel.info, `Renderer delta: ${delta}`);
-            this._cube!.rotation.x += 0.01;
-            this._cube!.rotation.y += 0.01;
             RenderSystem._instance._renderer.render(RenderSystem._instance._sceneManager.scene.threeScene, 
                 RenderSystem._instance._camera);
         }
-    }
-    /**
-     * Creates the canvas element for the DOM.
-     * @param  {number} width
-     * @param  {number} height
-     * @returns HTMLCanvasElement
-     */
-    private createCanvasElement(width: number, height: number, id: string = "deGLCanvas"): HTMLCanvasElement {
-        let canvas = document.createElement("canvas");
-        canvas.width = width;
-        canvas.height = height;
-        canvas.id = id;
-        return canvas;
     }
 }

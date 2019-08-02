@@ -12,11 +12,6 @@ export class EngineArguments {
      * Engine arguments for a base setup. When defining engine parameters, using
      * this object and setting it in a project can provide quick initialization.
      * **Default arguments are defined.**
-     * @param  {string=""} publictitle
-     * @param  {number=0} publicheight
-     * @param  {number=0} publicwidth
-     * @param  {number=60} publicfps
-     * @param  {boolean=false} publicdebug
      */
     constructor({title, fps, scenes, debug}: {
             title?: string,

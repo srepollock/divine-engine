@@ -24,13 +24,13 @@ export class DScene extends DObject {
     constructor(name: string = "Divine Engine Scene", entities?: Array<Entity>) {
         super("scene");
         this._name = name;
+        this._scene = new Scene();
         if (entities !== undefined) {
             log(LogLevel.debug, `Loading entities into scene.`);
             entities.forEach((entity: Entity) => {
                 this.addEntity(entity);
             });
         }
-        this._scene = new Scene();
     }
     /**
      * Adds an entity to the Scene list and the ThreeJS scene to be rendered out.
@@ -39,6 +39,7 @@ export class DScene extends DObject {
      */
     public addEntity(entity: Entity): void {
         this._entities.push(entity);
+        this._scene.add(entity.mesh);
     }
     /**
      * Gets all the Entities in this scene.
