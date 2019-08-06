@@ -1,3 +1,4 @@
+import { BoxGeometry, Camera, Mesh, MeshBasicMaterial, PerspectiveCamera, WebGLRenderer } from "three";
 import { GameWindow } from "../core";
 import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { System } from "../core/system";
@@ -6,7 +7,6 @@ import { Color } from "../helper";
 import { Matrix3, Matrix4 } from "../math";
 import { DScene } from "./dscene";
 import { SceneManager } from "./scenemanager";
-import { PerspectiveCamera, WebGLRenderer, Camera, Mesh, MeshBasicMaterial, BoxGeometry } from "three";
 export class RenderSystem extends System {
     public get canvas(): HTMLCanvasElement {
         return this._canvas;

@@ -1,7 +1,7 @@
+import { Scene } from "three";
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
 import { log, LogLevel } from "../core/loggingsystem/src";
-import { Scene } from "three";
 
 export class DScene extends DObject {
     private _entities: Array<Entity> = new Array<Entity>();
