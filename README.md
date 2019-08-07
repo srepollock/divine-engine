@@ -3,7 +3,8 @@
 [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![Build Status](https://travis-ci.com/srepollock/divine-engine.svg?branch=master)](https://travis-ci.com/srepollock/divine-engine) [![Codecov](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg)  
+[![Build Status](https://travis-ci.com/srepollock/divine-engine.svg?token=vCpX1PnxzAGLJBhzSWzt&branch=master)](https://travis-ci.com/srepollock/divine-engine)
+[![codecov](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg?token=xxUigA222v)](https://codecov.io/gh/srepollock/divine-engine)
 
 ---
 The Divine Engine is a Typescript game engine built for developers - first and formost - on some of the [latest web libraries and frameworks](#built-with). The Divine Engine allows users to develop and deploy lightweight games in a modern development environment. The engine focuses on being modular and lightweight, all while allowing developers to quickly build projects and applications and begin buidling right out of the box.
