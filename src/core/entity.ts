@@ -1,11 +1,12 @@
+import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial, Sprite, SpriteMaterial, Texture } from "three";
 import { Component } from "../components/component";
 import { Vector3 } from "../math";
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Mesh, Material, BoxGeometry, MeshBasicMaterial, Geometry } from "three";
+import { Engine } from "./engine";
 
 /**
- * The Daemon's entity object for game objects. The engine uses an
+ * The Divine's entity object for game objects. The engine uses a Scene->
  * Entity->Component system for all game objects for easy object manipulation
  * and game object creation.
  */
@@ -16,7 +17,9 @@ export class Entity extends DObject {
     public transform: Vector3;
     public mesh: Mesh;
     public material: Material;
-    public geometry: Geometry;
+    public geometry?: Geometry | undefined;
+    public sprite?: Sprite | undefined;
+    public texture?: Texture | undefined;
     private _parent: string;
     /**
      * Entity constructor
@@ -34,12 +37,14 @@ export class Entity extends DObject {
      * to the entity.
      * @param {parent} parent
      */
-    constructor({name, tag, transform, geometry, material, components, children, parent}: {
+    constructor({name, tag, transform, geometry, material, sprite, texture, components, children, parent}: {
         name?: string,
         tag?: string,
         transform?: Vector3,
         geometry?: Geometry,
         material?: Material,
+        sprite?: Sprite,
+        texture?: Texture,
         components?: Array<Component>,
         parent?: Entity,
         children?: Array<Entity>
@@ -47,6 +52,19 @@ export class Entity extends DObject {
         super(tag);
         this.name = (name) ? name : `${this.tag + " " + this.id}`;
         this.transform = (transform) ? transform : new Vector3();
+        if (geometry !== undefined && sprite !== undefined) {
+            log(LogLevel.warning, 
+                `Both Geometry and Sprite cannot be defined for the same object. Defaulting to geometry.`);
+        }
+        if (!geometry && sprite) {
+            this.geometry = undefined;
+            this.sprite = (sprite) ? sprite : new Sprite();
+            this.material = (material) ? material : new SpriteMaterial();
+            this.texture = (texture) ? texture : new Texture();
+        } else {
+            // tslint:disable-next-line: max-line-length
+            log(LogLevel.error, `Something went wrong loading ${this.tag}'s sprite and texture.`)
+        }
         this.geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
         this.material = (material) ? material : new MeshBasicMaterial({color: 0x000000});
         this.mesh = new Mesh(geometry, material);

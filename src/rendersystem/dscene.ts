@@ -1,4 +1,4 @@
-import { Scene } from "three";
+import { Scene, PointLight } from "three";
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
 import { log, LogLevel } from "../core/loggingsystem/src";
@@ -25,6 +25,7 @@ export class DScene extends DObject {
         super("scene");
         this._name = name;
         this._scene = new Scene();
+        this._scene.add(new PointLight(0xffffff));
         if (entities !== undefined) {
             log(LogLevel.debug, `Loading entities into scene.`);
             entities.forEach((entity: Entity) => {

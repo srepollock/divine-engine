@@ -206,6 +206,7 @@ export class Engine {
     private static _started: boolean = false;
     private _client: Client;
     private _container: HTMLElement | null = null;
+    private _dimension: boolean = false;
     private _engineArguments: EngineArguments = new EngineArguments();
     private _engineStream = new Engine.ObjectStream();
     private _messageSystem: MessageSystem;
