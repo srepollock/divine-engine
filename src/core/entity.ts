@@ -180,11 +180,11 @@ export class Entity extends DObject {
      * @see DScene
      * @returns any
      */
-    public addToScene(): any {
+    public addToScene(): Sprite | Mesh {
         if (this._sprite && !this._geometry) {
-            return this._sprite;
+            return this._sprite!;
         } else {
-            return this._mesh;
+            return this._mesh!;
         }
     }
     /**

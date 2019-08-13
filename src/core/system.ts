@@ -5,9 +5,9 @@ import { Message, SystemStream } from "./messagesystem";
  * Abstract System class. This is the base class of all other Systems in the Engine.
  */
 export abstract class System extends DObject {
+    public messageQueue: Array<Message> = new Array<Message>();
     public running: boolean = false;
-    protected _messageQueue: Array<Message> = new Array<Message>();
-    protected _systemStream: SystemStream = new SystemStream();
+    public systemStream: SystemStream = new SystemStream({messageQueueReference: this.messageQueue});
     /**
      * Constructor for the system class. Always call super and give the system name as the tag. There shall never be 
      * two of the same system currently loaded into the engine.

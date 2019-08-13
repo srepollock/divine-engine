@@ -27,13 +27,6 @@ export class RenderSystem extends System {
         return RenderSystem._instance;
     }
     /**
-     * Gets the status of the render system whether it is running or not.
-     * @returns boolean
-     */
-    public get running(): boolean {
-        return this._running;
-    }
-    /**
      * Gets the SceneManager that the RenderSystem is using.
      * @returns SceneManager
      */
@@ -50,7 +43,6 @@ export class RenderSystem extends System {
     private static _instance: RenderSystem;
     private _canvas: HTMLCanvasElement;
     private _camera: Camera;
-    private _running: boolean = false;
     private _renderer: WebGLRenderer;
     private _sceneManager: SceneManager;
     /**
@@ -64,7 +56,7 @@ export class RenderSystem extends System {
         scenes?: Array<DScene>,
     } = {}) {
         super("rendersystem");
-        this._systemStream = new RenderStream();
+        this.systemStream = new RenderStream({messageQueueReference: this.messageQueue});
         if (scenes !== undefined) {
             this._sceneManager = new SceneManager(scenes);
         } else {
@@ -100,7 +92,7 @@ export class RenderSystem extends System {
      */
     public cleanup(): void {
         RenderSystem.instance._sceneManager.shutdown();
-        this._systemStream.removeAllListeners();
+        this.systemStream.removeAllListeners();
     }
     /**
      * Called when the RenderSystem needs to cleanup and shutdown.
@@ -121,14 +113,14 @@ export class RenderSystem extends System {
             // this._sceneManager.scene.threeScene.add( this._cube );
             this._camera.position.z = 5;
         }
-        RenderSystem.instance._running = true;
+        this.running = true;
     }
     /**
      * RenderSystem stop method. Called to stop updating, but continue running (could start later).
      * @returns void
      */
     public stop(): void {
-        RenderSystem.instance._running = false;
+        this.running = false;
     }
     /**
      * The RenderSystem update method. Called from within the engine. This should be called through the 
@@ -137,16 +129,11 @@ export class RenderSystem extends System {
      * @returns void
      */
     public update(delta: number): void {
-        if (RenderSystem.instance._running) {
-            /**
-             * // TODO: Call this through the message system.
-             * // REVIEW: Update this and other systems.
-             * RenderStream.on("data", (data as Message) => {
-             *   if (data.messageType == MessageType.Render) {
-             *     // Render it out.
-             *   }
-             * });
-             */
+        if (this.running) {
+            this.messageQueue.forEach((element) => {
+                this.onMessage(element);
+            });
+            this.messageQueue = new Array<Message>();
             log(LogLevel.info, `Renderer delta: ${delta}`);
             RenderSystem._instance._renderer.render(RenderSystem._instance._sceneManager.scene.threeScene, 
                 RenderSystem._instance._camera);

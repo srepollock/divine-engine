@@ -1,11 +1,11 @@
-import { MessageType, SystemStream } from "../messagesystem/src";
+import { Message, MessageType, SystemStream } from "../messagesystem/src";
 
 export class PhysicsStream extends SystemStream {
     /**
      * Default message type for the stream.
      */
     public type: MessageType = MessageType.Physics;
-    constructor() {
-        super();
+    constructor({messageQueueReference}: {messageQueueReference: Array<Message>}) {
+        super({messageQueueReference});
     }
 }

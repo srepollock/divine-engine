@@ -3,11 +3,15 @@ import { ErrorCode, log, LogLevel } from "../core";
 import { SceneManagerStream } from "../core/streams/scenemanagerstream";
 import { DScene } from "./dscene";
 export class SceneManager {
+    public get scene(): DScene {
+        return this._scene;
+    }
+    public messageQueue: Array<Message> = new Array<Message>();
+    public sceneManagerStream: SceneManagerStream = new SceneManagerStream({messageQueueReference: this.messageQueue});
     // REVIEW: Change this to the number of the scene in the map
     private _scene: DScene;
     // REVIEW: Change this to a map
     private _scenes: Array<DScene>;
-    private _sceneManagerStream: SceneManagerStream = new SceneManagerStream();
     constructor(scenes?: Array<DScene>) {
         if (scenes !== undefined) {
             this._scenes = scenes;
@@ -17,9 +21,6 @@ export class SceneManager {
         }
         this._scene = this._scenes[0];
         this.start();
-    }
-    public get scene(): DScene {
-        return this._scene;
     }
     /**
      * 
@@ -178,6 +179,6 @@ export class SceneManager {
      * @returns void
      */
     public sendMessage(data: string, type: MessageType, single?: boolean): void {
-        this._sceneManagerStream.write(new Message(data, type, single));
+        this.sceneManagerStream.write(new Message(data, type, single));
     }
 }

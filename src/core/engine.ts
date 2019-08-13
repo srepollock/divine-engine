@@ -1,5 +1,7 @@
+import { Stream } from "stream";
 import { guid } from "../helper";
 import { Client } from "../helper";
+import { IOSystem } from "../inputsystem";
 import { PhysicsSystem } from "../physicssystem";
 import { RenderSystem, SceneManager } from "../rendersystem";
 import { DScene } from "../rendersystem/dscene";
@@ -126,7 +128,7 @@ export class Engine {
          */
         public type: MessageType = MessageType.Render;
         constructor() {
-            super();
+            super({messageQueueReference: Engine._messageQueue});
         }
     };
     /**
@@ -188,8 +190,8 @@ export class Engine {
     public get sceneManager(): SceneManager {
         if (this._sceneManager !== undefined) return this._sceneManager;
         else {
-            // tslint:disable-next-line:max-line-length
-            log(LogLevel.critical, "Engine's scene manager is not defiend when calling get function.", ErrorCode.SceneManagerUndefined);
+            log(LogLevel.critical, "Engine's scene manager is not defiend when calling get function.", 
+                ErrorCode.SceneManagerUndefined);
             throw ErrorCode.SceneManagerUndefined;
         }
     }
@@ -204,11 +206,11 @@ export class Engine {
     private static _instance: Engine | undefined = undefined;
     private static _running: boolean = false;
     private static _started: boolean = false;
+    private static _messageQueue: Array<Message> = new Array<Message>();
     private _client: Client;
     private _container: HTMLElement | null = null;
-    private _dimension: boolean = false;
     private _engineArguments: EngineArguments = new EngineArguments();
-    private _engineStream = new Engine.ObjectStream();
+    private _systemStream = new Engine.ObjectStream();
     private _messageSystem: MessageSystem;
     private _fps: number = 0;
     private _framesThisSecond: number = 0;
@@ -217,6 +219,7 @@ export class Engine {
     private _id: string;
     private _last: number = 0;
     private _now: number = 0;
+    private _ioSystem: IOSystem | undefined = undefined;
     private _physicsSystem: PhysicsSystem | undefined = undefined;
     private _renderSystem: RenderSystem | undefined = undefined;
     private _sceneManager: SceneManager | undefined = undefined;
@@ -231,9 +234,8 @@ export class Engine {
         this.setEngineArguments(args);
         this._messageSystem = new MessageSystem();
         if (this._messageSystem === undefined) {
-            // NOTE: Because the message system is so critical, it must be started if the engine is to run.
-            // tslint:disable-next-line: max-line-length
-            log(LogLevel.critical, "Engine called MessageSystem.initialization and it failed", ErrorCode.MessageSystemInitialization);
+            log(LogLevel.critical, "Engine called MessageSystem.initialization and it failed", 
+                ErrorCode.MessageSystemInitialization);
             Engine.shutdown();
         }
         if (Engine._instance !== undefined) {
@@ -247,7 +249,7 @@ export class Engine {
             Engine.shutdown();
         }
         Engine._instance = this;
-        this._client = Client.Console; // NOTE: Always CLI first; Default
+        this._client = Client.Console;
         if (typeof(window) !== "undefined") { // There is a window; we are in the browser
             const w = (window as any);
             if (w.process !== undefined 
@@ -291,23 +293,25 @@ export class Engine {
          * *Message system started in Constructor*
          * They are held in reference by the engine. As it will shut everything down as well.
          */
-        // NOTE: Render System
         Engine._instance!._renderSystem = RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height, 
             scenes: args.scenes});
         if (Engine._instance!._renderSystem === undefined) {
-            // tslint:disable-next-line:max-line-length
-            log(LogLevel.critical, "Render system was not initialized immediately after constructor called", ErrorCode.RenderSystemUndefined);
+            log(LogLevel.critical, "Render system was not initialized immediately after constructor called", 
+                ErrorCode.RenderSystemUndefined);
         }
-        // NOTE: Physics System
         Engine._instance!._physicsSystem = PhysicsSystem.initialize();
         if (Engine._instance!._physicsSystem === undefined) {
             log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
             Engine.shutdown();
         }
-        // NOTE: Sound System
         Engine._instance!._soundSystem = SoundSystem.initialize();
-        if (Engine._instance!._physicsSystem === undefined) {
+        if (Engine._instance!._soundSystem === undefined) {
             log(LogLevel.critical, "Sound System was not initialized properly.", ErrorCode.SoundSystemUndefined);
+            Engine.shutdown();
+        }
+        Engine._instance!._ioSystem = IOSystem.initialize();
+        if (Engine._instance!._ioSystem === undefined) {
+            log(LogLevel.critical, "IO System was not initialized properly.", ErrorCode.IOSystemUndefined);
             Engine.shutdown();
         }
         Engine.play();
@@ -398,7 +402,7 @@ export class Engine {
      * @returns void
      */
     public sendMessage(data: string, type: MessageType, single?: boolean): void {
-        this._engineStream.write(new Message(data, type, single));
+        this._systemStream.write(new Message(data, type, single));
     }
     /**
      * Call's system shutdown files.
@@ -408,6 +412,8 @@ export class Engine {
     private cleanup(): void {
         log(LogLevel.debug, "Engine cleanup called");
         try {
+            Engine._instance!._ioSystem!.shutdown();
+            Engine._instance!._soundSystem!.shutdown();
             Engine._instance!._physicsSystem!.shutdown();
             Engine._instance!._renderSystem!.shutdown();
             this._messageSystem!.destroy();
@@ -418,28 +424,20 @@ export class Engine {
         }
     }
     /**
-     * Main update loop. Calls all other system updates.
+     * Main update loop. Updates the system streams with a message pipeline. Calls all other system updates.
      * @returns void
      */
     private update(delta: number): void {
-        /**
-         * NOTE:
-         * Wait for message worker
-         */
         log(LogLevel.debug, `Update loop | delta = ${delta}`);
         this._messageSystem!.write(new Message(delta.toString(), MessageType.Global));
-        // Engine._instance!._ioSystem!.update(delta); // NOTE: IO messages
-        Engine._instance!._physicsSystem!.update(delta); // NOTE: Physics messages handled
-        // Engine._instance!._soundSystem!.update(delta); // NOTE: Sound messages handled
-        Engine._instance!._renderSystem!.update(delta); // NOTE: Render system udpated.
+        Stream.pipeline(this._messageSystem, Engine._instance!._ioSystem!.systemStream, 
+            Engine._instance!._physicsSystem!.systemStream, Engine._instance!._soundSystem!.systemStream,
+            Engine._instance!._renderSystem!.systemStream);
+        Engine._instance!._ioSystem!.update(delta);
+        Engine._instance!._physicsSystem!.update(delta);
+        Engine._instance!._soundSystem!.update(delta);
+        Engine._instance!._renderSystem!.update(delta);
     }
-    /**
-     * 3 Game loops??
-     * There are 3 game loops in this engine for the purposes of unit testing and multiple client usage. As this engine
-     * will be run in different environments, I want to set it up to unit test in each and different clients use
-     * different loops. So there.
-     * TODO: Update this discription before release.
-     */
     /**
      * Browser game loop.
      * @returns void

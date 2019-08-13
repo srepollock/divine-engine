@@ -136,13 +136,6 @@ export class GameWindow extends DObject {
         document.body.getElementsByTagName("canvas")[0].width = width;
     }
     /**
-     * Cleansup all the memory and tearsdown the GameWindow object.
-     * @returns void
-     */
-    public static shutdown(): void {
-        GameWindow.cleanup();
-    }
-    /**
      * Turns on Electron's Dev tools for the window.
      * @returns void
      */
@@ -156,14 +149,14 @@ export class GameWindow extends DObject {
      * @returns string
      */
     public static toString(): string {
-        return GameWindow.titleName;
+        return `${GameWindow.titleName}: w:${this.width}, h:${GameWindow.height}`;
     }
     /**
      * Closes the window
      * @returns void
      */
     public static close(): void {
-        GameWindow.cleanup();
+        GameWindow.shutdown();
         if (GameWindow.client === Client.Electron) {
             GameWindow.browserWindow!.close();
         }
@@ -174,5 +167,12 @@ export class GameWindow extends DObject {
      */
     private static cleanup(): void {
         
+    }
+    /**
+     * Cleansup all the memory and tearsdown the GameWindow object.
+     * @returns void
+     */
+    private static shutdown(): void {
+        GameWindow.cleanup();
     }
 }

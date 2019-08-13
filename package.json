@@ -68,6 +68,26 @@
       "lcov",
       "text"
     ],
+    "coverageThreshold": {
+      "global": {
+        "functions": 70,
+        "branches": 50,
+        "lines": 70,
+        "statements": 50
+      },
+      "./src/math": {
+        "functions": 100,
+        "branches": 100,
+        "lines": 100,
+        "statements": 100
+      },
+      "./src/helper": {
+        "functions": 100,
+        "branches": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
     "preset": "ts-jest",
     "moduleFileExtensions": [
       "js", "ts", "tsx"
@@ -75,9 +95,14 @@
     "modulePaths": [
       "<rootDir>"
     ],
+    "coveragePathIgnorePatterns:": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/core/loggingsystem/",
+      "<rootDir>/src/core/messagesystem/"
+    ],
     "testPathIgnorePatterns": [
-      "src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",
-      "src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"
+      "<rootDir>/src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",
+      "<rootDir>/src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"
     ]
   }
 }

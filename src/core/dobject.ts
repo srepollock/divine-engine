@@ -15,13 +15,14 @@ export class DObject {
          * Default message type for the stream.
          */
         public type: MessageType = MessageType.Global;
-        constructor() {
-            super();
+        constructor({messageQueueReference}: {messageQueueReference: Array<Message>}) {
+            super({messageQueueReference});
         }
     };
     public tag: string;
+    public messageQueue: Array<Message> = new Array<Message>();
     private _id: string;
-    private _dobjectStream = new DObject.ObjectStream();
+    private _dobjectStream = new DObject.ObjectStream({messageQueueReference: this.messageQueue});
     /**
      * DObject Constructor.
      * Tag is an additional identifier for the DObject.

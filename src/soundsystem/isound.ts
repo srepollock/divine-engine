@@ -6,4 +6,5 @@ import { SoundAction } from "./soundaction";
 export interface ISound {
     url: string;
     action: SoundAction;
+    callback: () => any;
 }

@@ -1,4 +1,9 @@
+import { SoundSystem } from "../../../src";
 describe("SoundSystem Unit Tests", () => {
-    // TODO: Test the SoundSystem class.
-    expect(true).toBe(false);
+    beforeEach(() => {
+        SoundSystem.initialize();
+    });
+    it("should initialize and have no messages in the stream", () => {
+        expect(SoundSystem.instance.messageQueue.length).toBe(0);
+    });
 });

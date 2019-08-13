@@ -65,6 +65,12 @@ describe("Matrix4 Unit Tests", () => {
             new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 10, 10, 10, 0]));
     });
     it("should create a basic perspective matrix when given an identity matrix, 45deg FOV, 0.1 near, 100 far", () => {
+        expect(new Matrix4().perspective(45 * Math.PI / 180, 800 / 600).matrix).toMatchObject(
+            new Float32Array([1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 0, 0, 0, 0, -1.0020020008087158, -1, 
+                0, 0, -0.20020020008087158, 0])
+        );
+    });
+    it("should create a basic perspective matrix when given an identity matrix, 45deg FOV, 0.1 near, 100 far", () => {
         expect(new Matrix4().perspective(45 * Math.PI / 180, 800 / 600, 0.1, 100.0).matrix).toMatchObject(
             new Float32Array([1.8106601238250732, 0, 0, 0, 0, 2.4142136573791504, 0, 0, 0, 0, -1.0020020008087158, -1, 
                 0, 0, -0.20020020008087158, 0])

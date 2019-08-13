@@ -43,11 +43,8 @@ export class PhysicsBodyComponent extends Component {
         if (!id) {
             log(LogLevel.warning, `No force was removed as no id was specificed for removal.`);
             return false;
-        } else if (id) {
-            return this._forces.delete(id);
         } else {
-            log(LogLevel.critical, `Something went horribly wrong getting the index of the force in the PhyicsSystem.`);
-            return false;
+            return this._forces.delete(id);
         }
     }
 }

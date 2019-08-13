@@ -1,6 +1,6 @@
 import { Component, PhysicsBodyComponent } from "src/components";
 import { log, LogLevel } from "../core/loggingsystem";
-import { Message, MessageType } from "../core/messagesystem";
+import { Message } from "../core/messagesystem";
 import { PhysicsStream } from "../core/streams";
 import { System } from "../core/system";
 
@@ -26,7 +26,7 @@ export class PhysicsSystem extends System {
      */
     private constructor() {
         super("physicssystem");
-        this._systemStream = new PhysicsStream();
+        this.systemStream = new PhysicsStream({messageQueueReference: this.messageQueue});
         this._physicsBodies = new Map<string, PhysicsBodyComponent>();
         PhysicsSystem._instance = this;
     }
@@ -56,14 +56,14 @@ export class PhysicsSystem extends System {
      */
     public cleanup(): void {
         this._physicsBodies = new Map<string, PhysicsBodyComponent>();
-        this._systemStream.removeAllListeners();
+        this.systemStream.removeAllListeners();
     }
     /**
      * Starts the PhysicsSystem. This method adds all listeners needed for the message streams to connect properly.
      * @returns void
      */
     public start(): void {
-        this._systemStream.on("data", (data) => {
+        this.systemStream.on("data", (data) => {
             
         });
     }
@@ -82,10 +82,10 @@ export class PhysicsSystem extends System {
         PhysicsSystem.instance.cleanup();
     }
     public update(delta: number): void {
-        this._messageQueue.forEach((element) => {
+        this.messageQueue.forEach((element) => {
             this.parseMessage(element);
         });
-        this._messageQueue = new Array<Message>();
+        this.messageQueue = new Array<Message>();
         this._physicsBodies.forEach((value, key) => {
             // TODO: REVIEW: Get the entity and apply the force.
             log(LogLevel.debug, `The force of ${value} has been applied to ${key}`);

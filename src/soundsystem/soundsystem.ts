@@ -3,7 +3,6 @@ import { Message } from "../core/messagesystem/src";
 import { SoundStream } from "../core/streams";
 import { System } from "../core/system";
 import { ISound } from "./isound";
-import { stringify } from "querystring";
 
 /**
  * Sound System for the Divine Engine.
@@ -14,7 +13,6 @@ import { stringify } from "querystring";
  */
 export class SoundSystem extends System {
     private static _instance: SoundSystem;
-    protected messageQueue: Array<Message> = new Array<Message>();
     private _sounds: Map<string, ISound>;
     /**
      * Gets the sound system's instance.
@@ -32,7 +30,7 @@ export class SoundSystem extends System {
     }
     private constructor() {
         super("soundsystem");
-        this._systemStream = new SoundStream();
+        this.systemStream = new SoundStream({messageQueueReference: this.messageQueue});
         this._sounds = new Map<string, ISound>();
         SoundSystem._instance = this;
     }
@@ -51,15 +49,15 @@ export class SoundSystem extends System {
      */
     public cleanup(): void {
         this._sounds = new Map<string, ISound>();
-        this._systemStream.removeAllListeners();
+        this.systemStream.removeAllListeners();
     }
     /**
-     * Starts the SoundSystem.
+     * Starts the system. Sets all stream listeners in the meantime.
      * @returns void
      */
     public start(): void {
-        this._systemStream.on("data", (data) => {
-            this.messageQueue.push(data as Message);
+        this.systemStream.on("data", (data) => {
+            this.messageQueue.push(Object.assign(new Message(), JSON.parse(data)));
         });
         this.running = true;
     }
@@ -70,18 +68,20 @@ export class SoundSystem extends System {
     public stop(): void {
         this.running = false;
     }
+    /**
+     * The update function for the system.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         if (this.running) {
             this.messageQueue.forEach((element) => {
-                this.parseMessage(element);
+                this.onMessage(element);
             });
             this.messageQueue = new Array<Message>();
         }
     }
     public onMessage(message: Message): void {
-        log(LogLevel.debug, message.toString());
-    }
-    public parseMessage(message: Message): void {
         log(LogLevel.debug, message.toString());
     }
 }
