@@ -5,6 +5,7 @@ import { Message, SystemStream } from "./messagesystem";
  * Abstract System class. This is the base class of all other Systems in the Engine.
  */
 export abstract class System extends DObject {
+    public running: boolean = false;
     protected _messageQueue: Array<Message> = new Array<Message>();
     protected _systemStream: SystemStream = new SystemStream();
     /**
@@ -16,13 +17,12 @@ export abstract class System extends DObject {
         super(tag);
     }
     /**
-     * Cleans anything that is not automatically garbage collected.
+     * Cleans anything that is not automatically garbage collected. This will also remove all listeners from this 
+     * system's _systemStream.
      * Called in shutdown.
      * @returns void
      */
-    public cleanup(): void {
-
-    }
+    public abstract cleanup(): void;
     /**
      * Shutsdown the system. This should be called from the Engine class.
      * You shouldn't need to override this method, however if you do always call super if overriding this method. 
@@ -33,32 +33,21 @@ export abstract class System extends DObject {
         this.cleanup();
     }
     /**
-     * Starts the system.
+     * Starts the system. 
      * @returns void
      */
-    public start(): void {
-
-    }
+    public abstract start(): void;
     /**
      * Stops the system.
      * @returns void
      */
-    public stop(): void {
-        
-    }
+    public abstract stop(): void;
     /**
      * System update function called in the Engine's update function.
      * @param  {number} delta
      * @returns void
      */
-    public update(delta: number): void {
-        // if (this.normalMessageQueue.length !== 0) {
-        //     this.normalMessageQueue.forEach((message) => {
-        //         log(LogLevel.warning, `Base System message handler called. Did you forget to override?
-        //             Handling message: ${message!.toString()}`, ErrorCode.OK);
-        //     });
-        // }
-    }
+    public abstract update(delta: number): void;
     
     /**
      * Default system message handler. 
@@ -67,7 +56,5 @@ export abstract class System extends DObject {
      * @param  {Message} message
      * @returns void
      */
-    public onMessage(message: Message): void {
-        
-    }
+    public abstract onMessage(message: Message): void;
 }

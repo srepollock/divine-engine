@@ -279,8 +279,8 @@ export class Engine {
         log(LogLevel.debug, "Engine Arguments:" + JSON.stringify(args));
         new Engine(args);
         if (Engine._instance === undefined) {
-            log(LogLevel.critical, 
-                "Engine was not initialized immediately after constructor called", ErrorCode.EngineInstanceUndefined);
+            log(LogLevel.critical, "Engine was not initialized immediately after constructor called", 
+                ErrorCode.EngineInstanceUndefined);
         }
         Engine._instance!.gameWindow = new GameWindow(args.title, Engine._instance!.client, 
             Engine._instance!._container!);
@@ -292,17 +292,22 @@ export class Engine {
          * They are held in reference by the engine. As it will shut everything down as well.
          */
         // NOTE: Render System
-        RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height, scenes: args.scenes});
-        Engine._instance!._renderSystem =  RenderSystem.instance;
+        Engine._instance!._renderSystem = RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height, 
+            scenes: args.scenes});
         if (Engine._instance!._renderSystem === undefined) {
             // tslint:disable-next-line:max-line-length
             log(LogLevel.critical, "Render system was not initialized immediately after constructor called", ErrorCode.RenderSystemUndefined);
         }
         // NOTE: Physics System
-        PhysicsSystem.initialize();
-        Engine._instance!._physicsSystem = PhysicsSystem.instance;
+        Engine._instance!._physicsSystem = PhysicsSystem.initialize();
         if (Engine._instance!._physicsSystem === undefined) {
             log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
+            Engine.shutdown();
+        }
+        // NOTE: Sound System
+        Engine._instance!._soundSystem = SoundSystem.initialize();
+        if (Engine._instance!._physicsSystem === undefined) {
+            log(LogLevel.critical, "Sound System was not initialized properly.", ErrorCode.SoundSystemUndefined);
             Engine.shutdown();
         }
         Engine.play();

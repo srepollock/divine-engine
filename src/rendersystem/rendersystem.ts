@@ -1,5 +1,5 @@
 import { Camera, PerspectiveCamera, WebGLRenderer } from "three";
-import { RenderStream } from "../core";
+import { Message, RenderStream } from "../core";
 import { log, LogLevel } from "../core/loggingsystem/src";
 import { System } from "../core/system";
 import { DScene } from "./dscene";
@@ -89,17 +89,18 @@ export class RenderSystem extends System {
         width?: number, 
         height?: number,
         scenes?: Array<DScene>,
-    } = {}): void {
+    } = {}): RenderSystem {
         new RenderSystem({width, height, scenes});
         RenderSystem.instance.start();
+        return RenderSystem._instance;
     }
     /**
-     * Cleans up the RenderSystem to shutdown.
+     * Cleans up the RenderSystem on shutdown.
      * @returns void
-     * @override
      */
     public cleanup(): void {
         RenderSystem.instance._sceneManager.shutdown();
+        this._systemStream.removeAllListeners();
     }
     /**
      * Called when the RenderSystem needs to cleanup and shutdown.
@@ -150,5 +151,8 @@ export class RenderSystem extends System {
             RenderSystem._instance._renderer.render(RenderSystem._instance._sceneManager.scene.threeScene, 
                 RenderSystem._instance._camera);
         }
+    }
+    public onMessage(message: Message): void {
+        log(LogLevel.debug, message.toString());
     }
 }

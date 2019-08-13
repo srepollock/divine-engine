@@ -85,7 +85,7 @@ export class IOSystem extends System {
     public update(delta: number): void {
         
     }
-    public onMessge(message: Message): void {
+    public onMessage(message: Message): void {
         log(LogLevel.debug, message.toString());
     }
     public parseMessage(message: Message): void {

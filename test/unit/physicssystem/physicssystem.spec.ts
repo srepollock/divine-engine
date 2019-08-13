@@ -1,5 +1,5 @@
 import { Component, PhysicsBodyComponent } from "../../../src/components";
-import { Entity, PhysicsStream } from "../../../src/core";
+import { Entity } from "../../../src/core";
 import { guid } from "../../../src/helper";
 import { Vector3 } from "../../../src/math";
 import { PhysicsSystem } from "../../../src/physicssystem";

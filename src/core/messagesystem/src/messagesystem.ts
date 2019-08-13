@@ -2,7 +2,7 @@ import { Transform, TransformCallback } from "stream";
 import { Message } from "./message";
 
 /**
- * Message system for the engine. This is saved in the engine itself.
+ * Message system for the Divine Engine.
  */
 export class MessageSystem extends Transform {
     constructor() {

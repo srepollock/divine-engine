@@ -10,7 +10,7 @@
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ Message\\ System\\ API --out docs --mode file --target ESNext --readme none src/*",
     "lint": "tslint src/**/*.ts -c tslint.json",
     "semantic-release": "semantic-release",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register test/**/*.spec.ts --timeout 5000 --exit"
   },
   "repository": {
     "type": "git",
@@ -38,10 +38,10 @@
     "cz-conventional-changelog": "^2.1.0",
     "handlebars": "^4.1.2",
     "js-yaml": "^3.13.1",
-    "marked": "^0.6.2",
+    "marked": "^0.7.0",
     "ts-node": "^8.0.3",
     "tslint": "^5.15.0",
-    "typedoc": "^0.14.2"
+    "typedoc": "^0.15.0"
   },
   "dependencies": {
     "chai": "^4.2.0",

@@ -1,6 +1,6 @@
 import { Component, PhysicsBodyComponent } from "src/components";
 import { log, LogLevel } from "../core/loggingsystem";
-import { Message } from "../core/messagesystem";
+import { Message, MessageType } from "../core/messagesystem";
 import { PhysicsStream } from "../core/streams";
 import { System } from "../core/system";
 
@@ -35,9 +35,10 @@ export class PhysicsSystem extends System {
      * @returns void
      */
     public static initialize({}: 
-        {} = {}): void {
+        {} = {}): PhysicsSystem {
         new PhysicsSystem();
         PhysicsSystem._instance.start();
+        return PhysicsSystem._instance;
     }
     /**
      * Adds a PhysicsBodyComponent to the list of current PhysicsBodies.
@@ -49,18 +50,22 @@ export class PhysicsSystem extends System {
         return PhysicsSystem._instance._physicsBodies.size > 0;
     }
     /**
-     * Cleans up the PhysicsSystem when it shutsdown.
+     * Cleans up the PhysicsSystem when it shutsdown. This will also remove all listeners from this system's 
+     * _systemStream.
      * @returns void
      */
     public cleanup(): void {
         this._physicsBodies = new Map<string, PhysicsBodyComponent>();
+        this._systemStream.removeAllListeners();
     }
     /**
-     * Starts the PhysicsSystem.
+     * Starts the PhysicsSystem. This method adds all listeners needed for the message streams to connect properly.
      * @returns void
      */
     public start(): void {
-
+        this._systemStream.on("data", (data) => {
+            
+        });
     }
     /**
      * Called when the PhysicsSystem is stopped.
