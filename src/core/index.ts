@@ -6,3 +6,4 @@ export * from "./messagesystem/src";
 export * from "./gamewindow";
 export * from "./enginearguments";
 export * from "./system";
+export * from "./streams";

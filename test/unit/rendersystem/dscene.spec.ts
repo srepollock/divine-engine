@@ -1,4 +1,5 @@
-import { DScene, Entity } from "../../../src";
+import { Entity } from "../../../src/core";
+import { DScene } from "../../../src/rendersystem";
 
 describe("DScene Unit Tests", () => {
     it("should create a basic scene with no parameters", () => {
@@ -23,5 +24,11 @@ describe("DScene Unit Tests", () => {
     it("should get an empty scene as a JSON stringed message", () => {
         let scene = new DScene();
         expect(scene.asMessage()).not.toBe(undefined);
+    });
+    it("should set the scene to ready for rendering when the scene is fully loaded", () => {
+        let scene = new DScene("Testing scene", new Array<Entity>(
+            new Entity({tag: "player"})
+        ));
+        expect(scene.ready).toBe(true);
     });
 });

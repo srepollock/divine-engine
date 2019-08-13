@@ -1,9 +1,9 @@
-import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial, Sprite, SpriteMaterial, Texture } from "three";
+import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial, Sprite, SpriteMaterial, Texture, TextureLoader, SphereGeometry } from "three";
 import { Component } from "../components/component";
 import { Vector3 } from "../math";
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Engine } from "./engine";
+import { MessageType } from "./messagesystem/src";
 
 /**
  * The Divine's entity object for game objects. The engine uses a Scene->
@@ -15,19 +15,45 @@ export class Entity extends DObject {
     public components: Array<Component>;
     public children: Array<Entity>;
     public transform: Vector3;
-    public mesh: Mesh;
-    public material: Material;
-    public geometry?: Geometry | undefined;
-    public sprite?: Sprite | undefined;
-    public texture?: Texture | undefined;
+    private _geometry?: Geometry | undefined;
+    private _mesh?: Mesh | undefined;
+    private _material?: Material | undefined;
     private _parent: string;
+    private _ready: boolean = false;
+    private _sprite?: Sprite | undefined;
+    private _texture?: Texture | undefined;
+    /**
+     * Gets if the entity is ready to render or not.
+     * @returns boolean
+     */
+    public get ready(): boolean {
+        return this._ready;
+    }
+    /**
+     * Gets the mesh from the class. Check if this is undefined before using.
+     * 
+     * Use in 3D Games.
+     * @returns Mesh
+     */
+    public get mesh(): Mesh | undefined {
+        return this._mesh;
+    }
+    /**
+     * Gets the sprite from the class. Check if this is undefined before using.
+     * 
+     * Use in 2D games.
+     * @returns Sprite
+     */
+    public get sprite(): Sprite | undefined {
+        return this._sprite;
+    }
     /**
      * Entity constructor
      * @param {string} name
      * @param {string} tag
      * @param {Vector3} transform
-     * @param {Geometry} geometry
-     * @param {Material} material
+     * @param {Geometry|BoxGeometry|SphereGeometry} geometry
+     * @param {Material|MeshBasicMaterial|SpriteMaterial} material
      * @param {Array<Component>} components Entities components as an array attached to the object.
      * These can be engine default components or user defined components. 
      * Any new component that derives from the base Component class can be used 
@@ -41,10 +67,10 @@ export class Entity extends DObject {
         name?: string,
         tag?: string,
         transform?: Vector3,
-        geometry?: Geometry,
-        material?: Material,
+        geometry?: Geometry | BoxGeometry | SphereGeometry,
+        material?: Material | MeshBasicMaterial | SpriteMaterial,
         sprite?: Sprite,
-        texture?: Texture,
+        texture?: string,
         components?: Array<Component>,
         parent?: Entity,
         children?: Array<Entity>
@@ -55,24 +81,26 @@ export class Entity extends DObject {
         if (geometry !== undefined && sprite !== undefined) {
             log(LogLevel.warning, 
                 `Both Geometry and Sprite cannot be defined for the same object. Defaulting to geometry.`);
-        }
-        if (!geometry && sprite) {
-            this.geometry = undefined;
-            this.sprite = (sprite) ? sprite : new Sprite();
-            this.material = (material) ? material : new SpriteMaterial();
-            this.texture = (texture) ? texture : new Texture();
+        } else if (!geometry && (sprite || material || texture)) {// REVIEW: Which sould come first? Sprite or Geometry?
+            this._texture = (texture) ? this.loadTexture(texture) : new Texture();
+            this._material = (material) ? material : new SpriteMaterial({map: this._texture});
+            this._sprite = (sprite) ? sprite : new Sprite(this._material as SpriteMaterial);
+        } else if ((geometry || material) && !sprite) {
+            this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
+            this._material = (material) ? material : new MeshBasicMaterial({color: 0xff0000});
+            this._mesh = new Mesh(this._geometry, this._material);
         } else {
-            // tslint:disable-next-line: max-line-length
-            log(LogLevel.error, `Something went wrong loading ${this.tag}'s sprite and texture.`)
+            log(LogLevel.warning, `Entity was not given a sprite or geometry. Creating default sprite.`);
+            this._texture = new Texture();
+            this._material = new SpriteMaterial({map: this._texture, color: 0xffffff});
+            this._sprite = new Sprite(this._material as SpriteMaterial);
         }
-        this.geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
-        this.material = (material) ? material : new MeshBasicMaterial({color: 0x000000});
-        this.mesh = new Mesh(geometry, material);
         this.components = (components) ? components : new Array();
         log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
         this._parent = (parent) ? parent.id : "";
         this.children = (children) ? children : new Array();
         for (let i in this.children) this.children[i].setParent(this);
+        this._ready = true;
     }
     /**
      * Gets the parent object's ID.
@@ -147,6 +175,19 @@ export class Entity extends DObject {
         }
     }
     /**
+     * Called on the entity to add it to the scene. This will handle 3D or 2D, but it's called within the DScene.
+     * 
+     * @see DScene
+     * @returns any
+     */
+    public addToScene(): any {
+        if (this._sprite && !this._geometry) {
+            return this._sprite;
+        } else {
+            return this._mesh;
+        }
+    }
+    /**
      * Checks if the entity has the child or not.
      * @param  {string} id Entity unique id
      * @returns boolean
@@ -195,7 +236,7 @@ export class Entity extends DObject {
     /**
      * Gets the component named that is attached to the entity.
      * @param  {string} type
-     * @returns Component
+     * @returns Component | undefined
      */
     public getComponent(type: string): Component | undefined {
         let comp = this.components!.filter((comp) => comp.tag! === type).shift();
@@ -222,5 +263,24 @@ export class Entity extends DObject {
      */
     public update(delta: number): void {
         
+    }
+    /**
+     * Use ThreeJS TextureLoader and it's callback functions create the texture from file and load return it once 
+     * completely loaded. Will also give the progress and/or error when loading.
+     * @param  {string} texture
+     * @returns Texture
+     */
+    private loadTexture(texture: string): Texture {
+        let loadedTexture = new TextureLoader().load(texture, (loadedTexture) => {
+            this.sendMessage("", MessageType.Render, true);
+            return loadedTexture;
+        }, (progress) => {
+            log(LogLevel.info, 
+                `Loading texture ${texture} for enitty ${this.id}: ${(progress.loaded / progress.total) * 100}%`);
+        }, () => {
+            log(LogLevel.error, `Entity: ${this.id} texture: ${texture} could not be loaded.`, 
+                ErrorCode.TextureNotLoaded);
+        });
+        return loadedTexture;
     }
 }

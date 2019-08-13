@@ -1,4 +1,7 @@
-import { Component, DObject, Entity, guid, Vector3 } from "../../../src";
+import { Component } from "../../../src/components";
+import { DObject, Entity } from "../../../src/core";
+import { guid } from "../../../src/helper";
+import { Vector3 } from "../../../src/math";
 describe("Entity Class Unit Tests", () => {
     var entity: Entity;
     beforeEach(() => {
@@ -63,6 +66,9 @@ describe("Entity Class Unit Tests", () => {
         });
         it("should be able to print the object with asMessage()", () => {
             expect(go1.asMessage()).toStrictEqual(JSON.stringify(go1));
+        });
+        it("should be set to ready when the entire entity is loaded", () => {
+            expect(go1.ready).toBe(true);
         });
     });
     describe("Entity object with tag", () => {

@@ -1,4 +1,4 @@
-import { Vector3 } from "../../../src";
+import { Vector3 } from "../../../src/math";
 
 describe("", () => {
     let v: Vector3;

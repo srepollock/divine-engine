@@ -1,5 +1,5 @@
-import { Message, MessageSystem, MessageType } from "../../src";
-import { EngineStream, IOStream } from "../../src/core/systemstreams";
+import { Message, MessageSystem, MessageType } from "../../src/core/messagesystem";
+import { EngineStream, IOStream } from "../../src/core/streams";
 
 describe("Message system, EngineStream and IOStream incrementals tests", () => {
     var messageSystem: MessageSystem = new MessageSystem();

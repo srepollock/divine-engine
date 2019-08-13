@@ -1,4 +1,4 @@
-import { EngineArguments } from "../../../src";
+import { EngineArguments } from "../../../src/core";
 
 describe("EngineArguments Unit Tests", () => {
     it("should have default values with no parameters given", () => {

@@ -1,4 +1,4 @@
-import { Matrix3 } from "../../../src";
+import { Matrix3 } from "../../../src/math";
 describe("Matrix Unit Tests", () => {
     it("should give an identity matrix when called on", () => {
         expect(new Matrix3().matrix).toMatchObject(new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 0]));

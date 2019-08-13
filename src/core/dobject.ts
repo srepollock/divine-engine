@@ -14,7 +14,7 @@ export class DObject {
         /**
          * Default message type for the stream.
          */
-        public type: MessageType = MessageType.Render;
+        public type: MessageType = MessageType.Global;
         constructor() {
             super();
         }
@@ -48,7 +48,6 @@ export class DObject {
         // public onMessage(type: MessageType, callback: () => {}): void {
         // REVIEW:
         // Should this be called on update?
-        // Should this be called in the scene manager update? Or on the scene?
         log(LogLevel.debug, `${this.tag} receiving: ${message.toString()}`);
     }
     /**

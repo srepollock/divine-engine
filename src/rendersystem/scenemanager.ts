@@ -1,11 +1,13 @@
-import { Entity } from "../core";
+import { Entity, Message, MessageType } from "../core";
 import { ErrorCode, log, LogLevel } from "../core";
+import { SceneManagerStream } from "../core/streams/scenemanagerstream";
 import { DScene } from "./dscene";
 export class SceneManager {
     // REVIEW: Change this to the number of the scene in the map
     private _scene: DScene;
     // REVIEW: Change this to a map
     private _scenes: Array<DScene>;
+    private _sceneManagerStream: SceneManagerStream = new SceneManagerStream();
     constructor(scenes?: Array<DScene>) {
         if (scenes !== undefined) {
             this._scenes = scenes;
@@ -39,9 +41,12 @@ export class SceneManager {
      * @returns void
      */
     public start(): void {
-        if (this._scene.checkSaved()) {
-            // load the instance and continue.
-            // this.scene = this.scene.loadPreviousSave()
+        if (!this._scene.checkSaved()) {
+            this._scene.loadScene();
+        } else {
+            this.sendMessage(JSON.stringify({name: this._scene.name}), MessageType.Asset, true);
+            // TODO: Wait for the callback.
+            // this._scene.loadPreviousSave();
         }
     }
     /**
@@ -53,7 +58,6 @@ export class SceneManager {
         this._scenes.forEach((scene) => {
             scene.shutdown();
         });
-        
     }
     /**
      * Creates a new DScene and adds it to the end of the scene manager's scene list.
@@ -62,6 +66,7 @@ export class SceneManager {
      */
     public createScene(sceneName?: string): DScene {
         let scene = new DScene(sceneName);
+        scene.addEntity(new Entity({tag: "box"}));
         this._scenes.push(scene);
         return scene;
     }
@@ -72,7 +77,6 @@ export class SceneManager {
      */
     public createEmptyScene(sceneName: string = "Defualt DScene Template"): DScene {
         let emptyScene: DScene = new DScene(sceneName);
-        emptyScene.addEntity(new Entity({tag: "box"}));
         this._scenes.push(emptyScene);
         return emptyScene;
     }
@@ -91,8 +95,10 @@ export class SceneManager {
             log(LogLevel.error, `Scene could not be loaded ${name}. Please load another scene or add it to the list first.`);
             return false;
         }
+        this._scene.unloadScene();
         this._scene = tempScene;
-        log(LogLevel.debug, `Scene loaded ${JSON.stringify(this.scene)}`);
+        this._scene.loadScene();
+        log(LogLevel.debug, `The ${this.scene.name} scene was loaded.`);
         return true;
     }
     /**
@@ -102,7 +108,7 @@ export class SceneManager {
      */
     public addScene(scene: DScene): boolean {
         this._scenes.push(scene);
-        log(LogLevel.debug, `Scene loaded ${JSON.stringify(scene)}`);
+        log(LogLevel.debug, `The ${this._scene.name} was added`);
         return this._scenes.length >= 1 ? true : false;
     }
     /**
@@ -114,8 +120,45 @@ export class SceneManager {
     public addScenes(scenes: Array<DScene>): boolean {
         scenes.forEach((scene) => {
             this._scenes.push(scene);
+            log(LogLevel.debug, `The ${this._scene.name} was added`);
         });
         return this._scenes.length >= scenes.length ? true : false;
+    }
+    /**
+     * Sets the next scene in the list to active.
+     * @returns boolean
+     */
+    public nextScene(): boolean {
+        let tempIndex = this._scenes.indexOf(this._scene);
+        if (tempIndex === -1) {
+            log(LogLevel.error, `Next scene could not be loaded, please select a different scene.`, 
+                ErrorCode.SceneNotFound);
+            return false;
+        }
+        this.loadScene(this._scenes[++tempIndex].name);
+        return true;
+    }
+    /**
+     * DObjects base messasge handler receiving messages.
+     * This can and most likely will be rewritten.
+     * @param  {Message} message
+     * @returns void
+     */
+    public onMessge(message: Message): void {
+        // public onMessage(type: MessageType, callback: () => {}): void {
+        // REVIEW:
+        // Should this be called on update?
+        log(LogLevel.debug, `SceneManager receiving: ${message.toString()}`);
+    }
+    public previousScene(): boolean {
+        let tempIndex = this._scenes.indexOf(this._scene);
+        if (tempIndex === -1) {
+            log(LogLevel.error, `Next scene could not be loaded, please select a different scene.`, 
+                ErrorCode.SceneNotFound);
+            return false;
+        }
+        this.loadScene(this._scenes[--tempIndex].name);
+        return true;
     }
     /**
      * Removes a scene from the list of scenes in the manager array.
@@ -126,5 +169,15 @@ export class SceneManager {
     public removeScene(name: string): boolean {
         let scene = this._scenes.filter((e) => e.name === name).shift();
         return scene !== undefined ? true : false;
+    }
+    /**
+     * Sends a message to the engine stream.
+     * @param  {string} data
+     * @param  {MessageType} type
+     * @param  {boolean} single?
+     * @returns void
+     */
+    public sendMessage(data: string, type: MessageType, single?: boolean): void {
+        this._sceneManagerStream.write(new Message(data, type, single));
     }
 }

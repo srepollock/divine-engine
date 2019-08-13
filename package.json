@@ -69,6 +69,12 @@
       "text"
     ],
     "preset": "ts-jest",
+    "moduleFileExtensions": [
+      "js", "ts", "tsx"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ],
     "testPathIgnorePatterns": [
       "src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",
       "src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"

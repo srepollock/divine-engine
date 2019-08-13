@@ -1,8 +1,7 @@
-import { Engine, GameWindow } from "../core";
+import { Engine, GameWindow, IOStream } from "../core";
 import { log, LogLevel } from "../core/loggingsystem";
 import { Message, MessageType } from "../core/messagesystem";
 import { System } from "../core/system";
-import { MouseStream } from "../core/systemstreams/mousestream";
 import { Vector2 } from "../math";
 
 export class IOSystem extends System {
@@ -11,7 +10,6 @@ export class IOSystem extends System {
     private static _mousePosition: Vector2;
     private static _pressedMap: Map<string, boolean>;
     private static _right: boolean;
-    private mouseStream: MouseStream;
     /**
      * Gets the absolute position of the mouse on the client screen.
      * @returns Vector2
@@ -31,6 +29,7 @@ export class IOSystem extends System {
      */
     constructor() {
         super("iosystem");
+        this._systemStream = new IOStream();
         // Keyboard Setup
         Engine.instance!.container!.addEventListener("keydown", (e) => {
             IOSystem._pressedMap.set(e.key, true);
@@ -41,7 +40,6 @@ export class IOSystem extends System {
             this.sendMessage(JSON.stringify(IOSystem._pressedMap.get(e.key)), MessageType.IO);
         });
         // Mouse setup
-        this.mouseStream = new MouseStream();
         IOSystem._mouseAbsolute = new Vector2();
         IOSystem._mousePosition = new Vector2();
         Engine.instance!.container!.addEventListener("mousemove", (e: any) => {

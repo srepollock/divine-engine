@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import * as path from "path";
-import { DScene, Engine, EngineArguments, SceneManager } from "../../../src";
+import { DScene, SceneManager } from "../../../src/rendersystem";
 
 describe("SceneManager Unit Tests", () => {
     var sm: SceneManager = new SceneManager();
@@ -18,5 +18,17 @@ describe("SceneManager Unit Tests", () => {
         expect(sm.loadScene("testscene")).toBe(true);
         expect(sm.scene.name).toBe("testscene");
         expect(sm.scene).not.toBe(scene); // NOTE: Does not equal the old scene.
+    });
+    it("should be able to create a scene", () => {
+        let scene = sm.createScene();
+        expect(scene).toBeInstanceOf(new DScene());
+        expect(scene.name).toBe("Divine Engine Scene");
+        expect(scene.getSceneEntities().length).toBe(1);
+        expect(scene.getSceneEntities()[0].tag).toBe("box");
+    });
+    it("should be able to create an empty scene", () => {
+        let scene = sm.createEmptyScene();
+        expect(scene).toBeInstanceOf(new DScene());
+        expect(scene.name).toBe("Default DScene Template");
     });
 });

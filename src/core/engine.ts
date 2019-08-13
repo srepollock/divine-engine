@@ -282,17 +282,16 @@ export class Engine {
             log(LogLevel.critical, 
                 "Engine was not initialized immediately after constructor called", ErrorCode.EngineInstanceUndefined);
         }
-        // tslint:disable-next-line: max-line-length
-        Engine._instance!.gameWindow = new GameWindow(args.title, Engine._instance!.client, Engine._instance!._container!);
+        Engine._instance!.gameWindow = new GameWindow(args.title, Engine._instance!.client, 
+            Engine._instance!._container!);
         Engine._running = true;
         log(LogLevel.debug, "Engine started");
         /**
-         * NOTE: Start subsystems. This is where the rest of the systems `.start()` functions get called. 
-         * NOTE: Message system started in Constructor
+         * Start subsystems. This is where the rest of the systems `.start()` functions get called. 
+         * *Message system started in Constructor*
          * They are held in reference by the engine. As it will shut everything down as well.
          */
         // NOTE: Render System
-        // tslint:disable-next-line: max-line-length
         RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height, scenes: args.scenes});
         Engine._instance!._renderSystem =  RenderSystem.instance;
         if (Engine._instance!._renderSystem === undefined) {
@@ -300,7 +299,8 @@ export class Engine {
             log(LogLevel.critical, "Render system was not initialized immediately after constructor called", ErrorCode.RenderSystemUndefined);
         }
         // NOTE: Physics System
-        Engine._instance!._physicsSystem = new PhysicsSystem();
+        PhysicsSystem.initialize();
+        Engine._instance!._physicsSystem = PhysicsSystem.instance;
         if (Engine._instance!._physicsSystem === undefined) {
             log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
             Engine.shutdown();
@@ -380,7 +380,7 @@ export class Engine {
         if (obj.hasOwnProperty("threeScene")) { // Handling a DScene Message
             // NOTE: Handle as a DScene message
             log(LogLevel.debug, `Loading scene: ${obj.name}`);
-            this._sceneManager!.loadScene(obj);
+            this._sceneManager!.loadScene(obj); // TODO: Remove the scene manager here. Only available in the renderer.
         }  else if (obj.hasOwnProperty("transform")) { // Handling an Entity Message
             // NOTE: Handle as a DScene message
         }

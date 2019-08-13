@@ -1,4 +1,5 @@
-import { DObject } from "../../../src";
+import { DObject } from "../../../src/core";
+
 describe("DObject Class Unit Tests", () => {
     describe("empty object instantiation", () => {
         var obj: DObject;

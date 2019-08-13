@@ -1,6 +1,5 @@
 export * from "./enginestream";
 export * from "./iostream";
-export * from "./mousestream";
-export * from "./pysicsstream";
+export * from "./physicsstream";
 export * from "./renderstream";
 export * from "./soundstream";
