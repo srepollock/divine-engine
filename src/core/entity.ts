@@ -1,9 +1,9 @@
-import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial, Sprite, SpriteMaterial, Texture, TextureLoader, SphereGeometry } from "three";
+import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial, SphereGeometry, Sprite, SpriteMaterial, Texture, TextureLoader } from "three";
 import { Component } from "../components/component";
 import { Vector3 } from "../math";
 import { DObject } from "./dobject";
 import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { MessageType } from "./messagesystem/src";
+import { Message, MessageType } from "./messagesystem/src";
 
 /**
  * The Divine's entity object for game objects. The engine uses a Scene->
@@ -78,29 +78,15 @@ export class Entity extends DObject {
         super(tag);
         this.name = (name) ? name : `${this.tag + " " + this.id}`;
         this.transform = (transform) ? transform : new Vector3();
-        if (geometry !== undefined && sprite !== undefined) {
-            log(LogLevel.warning, 
-                `Both Geometry and Sprite cannot be defined for the same object. Defaulting to geometry.`);
-        } else if (!geometry && (sprite || material || texture)) {// REVIEW: Which sould come first? Sprite or Geometry?
-            this._texture = (texture) ? this.loadTexture(texture) : new Texture();
-            this._material = (material) ? material : new SpriteMaterial({map: this._texture});
-            this._sprite = (sprite) ? sprite : new Sprite(this._material as SpriteMaterial);
-        } else if ((geometry || material) && !sprite) {
-            this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
-            this._material = (material) ? material : new MeshBasicMaterial({color: 0xff0000});
-            this._mesh = new Mesh(this._geometry, this._material);
-        } else {
-            log(LogLevel.warning, `Entity was not given a sprite or geometry. Creating default sprite.`);
-            this._texture = new Texture();
-            this._material = new SpriteMaterial({map: this._texture, color: 0xffffff});
-            this._sprite = new Sprite(this._material as SpriteMaterial);
-        }
+        this.determineRenderObjects(geometry, sprite, material, texture);
         this.components = (components) ? components : new Array();
         log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
         this._parent = (parent) ? parent.id : "";
         this.children = (children) ? children : new Array();
         for (let i in this.children) this.children[i].setParent(this);
-        this._ready = true;
+        if ((this._geometry && this._material) || (this._texture && this._material && this._sprite)) {
+            this._ready = true;
+        }
     }
     /**
      * Gets the parent object's ID.
@@ -175,8 +161,7 @@ export class Entity extends DObject {
         }
     }
     /**
-     * Called on the entity to add it to the scene. This will handle 3D or 2D, but it's called within the DScene.
-     * 
+     * Called on the entity to add it to the scene. This will handle 2D or 3D, but it's called within the DScene.
      * @see DScene
      * @returns any
      */
@@ -262,25 +247,71 @@ export class Entity extends DObject {
      * @returns void
      */
     public update(delta: number): void {
-        
+        this.messageQueue.forEach((element) => {
+            this.onMessage(element);
+        });
+        this.messageQueue = new Array<Message>();
     }
     /**
-     * Use ThreeJS TextureLoader and it's callback functions create the texture from file and load return it once 
-     * completely loaded. Will also give the progress and/or error when loading.
-     * @param  {string} texture
-     * @returns Texture
+     * Entity message handler. This is how the Entity class handles the messages from the system.
+     * @override DObject.onMessage
+     * @param  {Message} message
+     * @returns void
      */
-    private loadTexture(texture: string): Texture {
-        let loadedTexture = new TextureLoader().load(texture, (loadedTexture) => {
-            this.sendMessage("", MessageType.Render, true);
-            return loadedTexture;
-        }, (progress) => {
-            log(LogLevel.info, 
-                `Loading texture ${texture} for enitty ${this.id}: ${(progress.loaded / progress.total) * 100}%`);
-        }, () => {
-            log(LogLevel.error, `Entity: ${this.id} texture: ${texture} could not be loaded.`, 
-                ErrorCode.TextureNotLoaded);
-        });
-        return loadedTexture;
+    public onMessage(message: Message): void {
+        let data = JSON.parse(message.data);
+        switch (message.type) {
+            case MessageType.Asset:
+                if (data.id === this.id && data.texture) {
+                    this.updateSprite(data.texture);
+                }
+                break;
+            default:
+                log(LogLevel.debug, `Entity.${this.id} discarded a message`);
+                break;
+        }
+    }
+    /**
+     * Determines what to set the rendering objects to.
+     * The RenderSystem handles which is used for rendering.
+     * @param  {Geometry|BoxGeometry|SphereGeometry|undefined} geometry
+     * @param  {Sprite|undefined} sprite
+     * @param  {Material|MeshBasicMaterial|SpriteMaterial|undefined} material
+     * @param  {string|undefined} texture
+     * @returns void
+     */
+    private determineRenderObjects(
+        geometry: Geometry | BoxGeometry | SphereGeometry | undefined, 
+        sprite: Sprite | undefined, 
+        material: Material | MeshBasicMaterial | SpriteMaterial | undefined, 
+        texture: string | undefined): void {
+        if (geometry !== undefined && sprite !== undefined) {
+            log(LogLevel.warning, 
+                `Both Geometry and Sprite cannot be defined for the same object. Defaulting to default sprite.`);
+            this._texture = new Texture();
+            this._material = new SpriteMaterial({ map: this._texture, color: 0xffffff });
+            this._sprite = new Sprite(this._material as SpriteMaterial);
+        } else if (!geometry && (sprite || material || texture)) {
+            this.sendMessage(JSON.stringify({ id: this.id, url: texture }), MessageType.IO, true);
+        } else if ((geometry || material) && !sprite) {
+            this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
+            this._material = (material) ? material : new MeshBasicMaterial({ color: 0xff0000 });
+            this._mesh = new Mesh(this._geometry, this._material);
+        } else {
+            log(LogLevel.warning, `Entity was not given a sprite or geometry. Creating default sprite.`);
+            this._texture = new Texture();
+            this._material = new SpriteMaterial({ map: this._texture, color: 0xffffff });
+            this._sprite = new Sprite(this._material as SpriteMaterial);
+        }
+    }
+    /**
+     * Updates the Sprite for the Entity. Called when the message is sent to the Entity containing texture data.
+     * @param  {Texture} texture
+     */
+    private updateSprite(texture: Texture): void {
+        this._texture = (texture) ? texture : new Texture();
+        this._material = new SpriteMaterial({ map: this._texture, color: 0xffffff });
+        this._sprite = new Sprite(this._material as SpriteMaterial);
+        this._ready = true; // NOTE: Texture finally loaded on a Sprite Entity
     }
 }

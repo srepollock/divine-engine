@@ -1,4 +1,4 @@
-import { Entity, Message, MessageType } from "../core";
+import { Entity, Message, MessageType, Engine } from "../core";
 import { ErrorCode, log, LogLevel } from "../core";
 import { SceneManagerStream } from "../core/streams/scenemanagerstream";
 import { DScene } from "./dscene";
@@ -32,7 +32,7 @@ export class SceneManager {
      * @returns void
      */
     public save(): void {
-        this._scene.save();
+        this._scene.save(Engine.instance!.engineArguments.defaultSaveLocation);
     }
     /**
      * 

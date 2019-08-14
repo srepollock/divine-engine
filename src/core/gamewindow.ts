@@ -95,6 +95,7 @@ export class GameWindow extends DObject {
             var remote = require("electron").remote;
             GameWindow.browserWindow = remote.getCurrentWindow();
             GameWindow.screen = remote.screen;
+            GameWindow.container = document.getElementsByTagName("body")[0];
         } else if (GameWindow.client === Client.Browser) {
             if (container !== undefined || container !== null) {
                 GameWindow.container = container;

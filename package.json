@@ -8,7 +8,7 @@
   "scripts": {
     "bundle": "tsc; rollup -c",
     "clean": "rm -rf lib/*",
-    "commit": "npm run lint; git add --all; git-cz",
+    "commit": "npm run lint; git add --all; git-cz; git push",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --target ESNext --readme none src/*",
     "lint": "tslint src/**/*.ts -c tslint.json",
     "semantic-release": "semantic-release",
@@ -90,12 +90,14 @@
     },
     "preset": "ts-jest",
     "moduleFileExtensions": [
-      "js", "ts", "tsx"
+      "js",
+      "ts",
+      "tsx"
     ],
     "modulePaths": [
       "<rootDir>"
     ],
-    "coveragePathIgnorePatterns:": [
+    "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/src/core/loggingsystem/",
       "<rootDir>/src/core/messagesystem/"

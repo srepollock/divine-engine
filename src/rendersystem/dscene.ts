@@ -1,3 +1,4 @@
+import { Message, MessageType } from "src/core";
 import { PointLight, Scene } from "three";
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
@@ -47,7 +48,7 @@ export class DScene extends DObject {
         this._scene.add(new PointLight(0xffffff)); // REVIEW: Is this necessary?
         if (entities !== undefined) {
             log(LogLevel.debug, `Adding entities to the scene.`);
-            this._entities = entities;
+            this._entities = entities as Array<Entity>;
         }
         this.checkReady();
     }
@@ -102,7 +103,7 @@ export class DScene extends DObject {
     public loadScene(): boolean {
         this._active = true;
         if (this._active) {
-            this._entities.forEach((entity) => {
+            this._entities.forEach((entity: Entity) => {
                 this._scene.add(entity.addToScene());
             });
             this.checkReady();
@@ -115,15 +116,16 @@ export class DScene extends DObject {
      * Saves the current state of the scene. This should only be called on the current scene from the scene manager.
      * @returns boolean
      */
-    public save(): boolean {
-        let saveOK: boolean = false;
-        // TODO: This is where the scene saves the data to a JSON file.
-        let sceneData = this.asMessage();
-        // write the stuff with fs.write.
-        // 1. this.CheckSaved() (remove and write)
-        // 2. Save the file yyyymmdd_{scene.title}.des (Divine Engine Scene)
-        // 3. Check if the save went ok, else try one more time then throw a fail and return false.
-        return saveOK;
+    public save(path: string): void {
+        let sceneData: string = this.asMessage();
+        // write the stuff with fs.write in the IOSystem
+        // 1. Save the file yyyymmdd_{scene.title}.des (Divine Engine Scene)
+            // By default it overwrites the scene if there is a previous save.
+        let date = `${new Date().getFullYear}${new Date().getMonth}${new Date().getDate}`;
+        let filename: string = `${date}_${this._name}.des`;
+        this.sendMessage(JSON.stringify({path, data: sceneData, filename}), MessageType.IO, true);
+        // 2. Check if the save went ok, else try one more time then throw a fail and return false.
+            // This is checked in the update // TODO: add an update function here, chains to scenemanager update.
     }
     /**
      * Called when the game is shutting down. Saves the data to a disk space.

@@ -59,6 +59,7 @@ export class SoundSystem extends System {
         this.systemStream.on("data", (data) => {
             this.messageQueue.push(Object.assign(new Message(), JSON.parse(data)));
         });
+        log(LogLevel.debug, "Sound System started, all system listeners added");
         this.running = true;
     }
     /**

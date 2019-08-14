@@ -1,8 +1,10 @@
+import { FileLoader, Texture, TextureLoader } from "three";
 import { Engine, GameWindow, IOStream } from "../core";
-import { log, LogLevel } from "../core/loggingsystem";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem";
 import { Message, MessageType } from "../core/messagesystem";
 import { System } from "../core/system";
 import { Vector2 } from "../math";
+import { FileType } from "./filetype";
 
 export class IOSystem extends System {
     private static _instance: IOSystem;
@@ -103,6 +105,10 @@ export class IOSystem extends System {
      * @returns void
      */
     public start(): void {
+        this.systemStream.on("data", (data) => {
+            this.messageQueue.push(Object.assign(new Message(), JSON.parse(data)));
+        });
+        log(LogLevel.debug, "IO System started, all system listeners added");
         this.running = true;
     }
     /**
@@ -127,5 +133,66 @@ export class IOSystem extends System {
     }
     public onMessage(message: Message): void {
         log(LogLevel.debug, message.toString());
+        let data = JSON.parse(message.data);
+        switch (message.type) {
+            case (MessageType.IO):
+                // REVIEW: handle more than one type of image (png, jpg, etc.) on the enigne?
+                if (new RegExp(".*\.(png|jpg)$").test(data.url as string)) {
+                    this.loadTexture(data.id, data.url);
+                } else {
+                    log(LogLevel.error, `The file ${data.url} is not one of the supported image types.`, 
+                        ErrorCode.FileTypeNotAcceptable);
+                    this.sendMessage(JSON.stringify({id: data.id, texture: new Texture()}), MessageType.Asset);
+                }
+                break;
+            default:
+                log(LogLevel.debug, `IOSystem discarded a message`);
+                break;
+            
+        }
     }
+    /**
+     * Use ThreeJS TextureLoader and it's callback functions create the texture from file and load return it once 
+     * completely loaded. Will also give the progress and/or error when loading.
+     * @param  {string} texture
+     * @returns Texture
+     */
+    private loadTexture(id: string, url: string): void {
+        new TextureLoader().load(url, (texture: any) => {
+            this.sendMessage(JSON.stringify({id, texture}), MessageType.Asset);
+        }, 
+        // tslint:disable-next-line: max-line-length
+        undefined, // NOTE: Progress is depricated for TextureLoader; https://threejs.org/docs/index.html#api/en/loaders/TextureLoader
+        () => {
+            log(LogLevel.error, `Entity: ${this.id} texture: ${url} could not be loaded.`, 
+                ErrorCode.TextureNotLoaded);
+        });
+    }
+    // public loadFile(url: string, filetype: FileType): any {
+    //     function loaded(data: any): any {
+    //         this.sendMessage(new Message(data, MessageType.Asset));
+    //     }
+    //     function loadingProgression(xhr: any): any {
+    //         log(LogLevel.info, `${url} ${(xhr.loaded / xhr.total * 100)} % loaded`);
+    //     }
+    //     function loadingError(err: any): any {
+    //         log(LogLevel.error, `Something happend when loading ${url}. File was not loaded.`, 
+    //             ErrorCode.LoadAssetFailed);
+    //     }
+    //     switch (filetype) {
+    //         case FileType.image:
+    //             return new FileLoader().load(url, loaded, loadingProgression, loadingError);
+    //             break;
+    //         case FileType.sound:
+                
+    //             break;
+    //         case FileType.scene:
+                
+    //             break;
+    //         default:
+    //             log(LogLevel.error, `FileType ${filetype} is not an acceptable FileType for the engine.`, 
+    //                 ErrorCode.FileTypeNotAcceptable);
+    //             break;
+    //     }
+    // }
 }

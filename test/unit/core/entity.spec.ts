@@ -1,5 +1,5 @@
 import { Component } from "../../../src/components";
-import { DObject, Entity } from "../../../src/core";
+import { DObject, Entity, log, LogLevel } from "../../../src/core";
 import { guid } from "../../../src/helper";
 import { Vector3 } from "../../../src/math";
 describe("Entity Class Unit Tests", () => {
@@ -8,6 +8,8 @@ describe("Entity Class Unit Tests", () => {
         entity = new Entity();
     });
     it("should be an instance of DObject", () => {
+        // NOTE: Generate a simple player entity
+        // log(LogLevel.info, JSON.stringify(new Entity({tag: "player"})));
         expect(new Entity()).toBeInstanceOf(DObject);
     });
     describe("Child entity objects", () => {

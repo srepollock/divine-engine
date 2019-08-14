@@ -1,15 +1,20 @@
+import * as path from "path";
 import { Entity } from "../../../src/core";
 import { DScene } from "../../../src/rendersystem";
 
 describe("DScene Unit Tests", () => {
-    it("should create a basic scene with no parameters", () => {
+    it("should create a basic scene  with no parameters", () => {
         let scene = new DScene();
         expect(scene.name).toBe("Divine Engine Scene");
         expect(scene.threeScene).not.toBe(undefined);
         expect(scene.getSceneEntities()).toStrictEqual([]);
     });
     it("should save the scene", () => {
-        expect(true).toBe(false);
+        let scene = new DScene("testscene", new Array<Entity>(
+            new Entity({tag: "player"})
+        ));
+        scene.save(path.resolve(__dirname, "../../assets/"));
+        expect(path.resolve(__dirname, "../../assets/testscene.des"));
     });
     it("should load a saved scene from file", () => {
         expect(true).toBe(false);

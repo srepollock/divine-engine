@@ -66,13 +66,15 @@ export class PhysicsSystem extends System {
         this.systemStream.on("data", (data) => {
             
         });
+        log(LogLevel.debug, "Physics System started, all system listeners added");
+        this.running = true;
     }
     /**
      * Called when the PhysicsSystem is stopped.
      * @returns void
      */
     public stop(): void {
-
+        this.running = false;
     }
     /**
      * Called when the PhysicsSystem needs to cleanup and shutdown.

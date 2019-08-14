@@ -1,73 +1,9 @@
 {
     "_id": "1da6a30f-82fec173-68bd8a3e-e02df141",
     "_name": "testscene",
-    "_entities": [{
-        "_geometry": {
-            "depth": 1,
-            "height": 1,
-            "metadata": {
-                "generator": "Geometry.toJSON",
-                "type": "Geometry",
-                "version": 4.5
-            },
-            "type": "BoxGeometry",
-            "uuid": "466162D3-93F5-4815-8C1F-BA9ABC28A9EB",
-            "width": 1
-        },
-        "_id": "36373ccd-27bcf4fe-f208a812-08307857",
-        "_material": {
-            "color": 65280,
-            "depthFunc": 3,
-            "depthTest": true,
-            "depthWrite": true,
-            "metadata": {
-                "generator": "Material.toJSON",
-                "type": "Material",
-                "version": 4.5
-            },
-            "type": "MeshBasicMaterial",
-            "uuid": "0630670E-983B-46CB-9CF5-E6E955900272"
-        },
-        "_mesh": {
-            "geometries": [{
-                "data": {
-                    "attributes": {}
-                },
-                "type": "BufferGeometry",
-                "uuid": "07A98042-4B9D-4084-A145-4A567A295A95"
-            }],
-            "materials": [{
-                "color": 8273001,
-                "depthFunc": 3,
-                "depthTest": true,
-                "depthWrite": true,
-                "type": "MeshBasicMaterial",
-                "uuid": "B978188D-56C7-4C38-B9C5-17C4B3A7C2A3"
-            }],
-            "metadata": {
-                "generator": "Object3D.toJSON",
-                "type": "Object",
-                "version": 4.5
-            },
-            "object": {
-                "geometry": "07A98042-4B9D-4084-A145-4A567A295A95",
-                "layers": 1,
-                "material": "B978188D-56C7-4C38-B9C5-17C4B3A7C2A3",
-                "matrix": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-                "type": "Mesh",
-                "uuid": "B3F5F074-C913-42DD-A7B3-8560DD86C819"
-            }
-        },
-        "_parent": "",
-        "children": [],
-        "components": [],
-        "tag": "box",
-        "transform": {
-            "x": 0,
-            "y": 0,
-            "z": 0
-        }
-    }],
+    "_entities": [
+        {"messageQueue":[],"_dobjectStream":"\"_dobjectStream\"","_id":"3c709520-1dae6ddb-dfba6abb-0e84ec26","tag":"player","_ready":true,"name":"player 3c709520-1dae6ddb-dfba6abb-0e84ec26","transform":{"x":0,"y":0,"z":0},"_texture":{"metadata":{"version":4.5,"type":"Texture","generator":"Texture.toJSON"},"uuid":"D2E0207A-4210-426B-AC56-F23E95B0650D","name":"","mapping":300,"repeat":[1,1],"offset":[0,0],"center":[0,0],"rotation":0,"wrap":[1001,1001],"format":1023,"type":1009,"encoding":3000,"minFilter":1008,"magFilter":1006,"anisotropy":1,"flipY":true,"premultiplyAlpha":false,"unpackAlignment":4},"_material":{"metadata":{"version":4.5,"type":"Material","generator":"Material.toJSON"},"uuid":"5E89C17B-F6DB-4177-8FFC-231EF4762725","type":"SpriteMaterial","color":16777215,"map":"D2E0207A-4210-426B-AC56-F23E95B0650D","sizeAttenuation":true,"transparent":true,"depthFunc":3,"depthTest":true,"depthWrite":true,"stencilWrite":false,"stencilFunc":519,"stencilRef":0,"stencilMask":255,"stencilFail":7680,"stencilZFail":7680,"stencilZPass":7680,"textures":[{"uuid":"D2E0207A-4210-426B-AC56-F23E95B0650D","name":"","mapping":300,"repeat":[1,1],"offset":[0,0],"center":[0,0],"rotation":0,"wrap":[1001,1001],"format":1023,"type":1009,"encoding":3000,"minFilter":1008,"magFilter":1006,"anisotropy":1,"flipY":true,"premultiplyAlpha":false,"unpackAlignment":4}]},"_sprite":{"metadata":{"version":4.5,"type":"Object","generator":"Object3D.toJSON"},"materials":[{"uuid":"5E89C17B-F6DB-4177-8FFC-231EF4762725","type":"SpriteMaterial","color":16777215,"map":"D2E0207A-4210-426B-AC56-F23E95B0650D","sizeAttenuation":true,"transparent":true,"depthFunc":3,"depthTest":true,"depthWrite":true,"stencilWrite":false,"stencilFunc":519,"stencilRef":0,"stencilMask":255,"stencilFail":7680,"stencilZFail":7680,"stencilZPass":7680}],"textures":[{"uuid":"D2E0207A-4210-426B-AC56-F23E95B0650D","name":"","mapping":300,"repeat":[1,1],"offset":[0,0],"center":[0,0],"rotation":0,"wrap":[1001,1001],"format":1023,"type":1009,"encoding":3000,"minFilter":1008,"magFilter":1006,"anisotropy":1,"flipY":true,"premultiplyAlpha":false,"unpackAlignment":4}],"object":{"uuid":"9DC1F8DA-0DDA-4498-8364-1D03A8CE0AC2","type":"Sprite","layers":1,"matrix":[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],"material":"5E89C17B-F6DB-4177-8FFC-231EF4762725"}},"components":[],"_parent":"","children":[]}
+    ],
     "_threeScene": {
         "geometries": [{
             "data": {

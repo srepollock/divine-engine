@@ -286,6 +286,7 @@ export class Engine {
         }
         Engine._instance!.gameWindow = new GameWindow(args.title, Engine._instance!.client, 
             Engine._instance!._container!);
+        if (!Engine._instance!._container) Engine._instance!._container = GameWindow.container!;
         Engine._running = true;
         log(LogLevel.debug, "Engine started");
         /**

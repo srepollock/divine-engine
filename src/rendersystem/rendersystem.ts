@@ -106,6 +106,7 @@ export class RenderSystem extends System {
      * @returns void
      */
     public start(): void {
+        // TODO: This should be moved to the physcis system.
         if (!RenderSystem.instance.running) {
             // var geometry = new BoxGeometry( 1, 1, 1 );
             // var material = new MeshBasicMaterial( { color: 0x00ff00 } );
@@ -113,6 +114,10 @@ export class RenderSystem extends System {
             // this._sceneManager.scene.threeScene.add( this._cube );
             this._camera.position.z = 5;
         }
+        this.systemStream.on("data", (data) => {
+            this.messageQueue.push(Object.assign(new Message(), JSON.parse(data)));
+        });
+        log(LogLevel.debug, "Render System started, all system listeners added");
         this.running = true;
     }
     /**

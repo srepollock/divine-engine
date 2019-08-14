@@ -45,7 +45,7 @@ export class DObject {
      * @param  {Message} message
      * @returns void
      */
-    public onMessge(message: Message): void {
+    public onMessage(message: Message): void {
         // public onMessage(type: MessageType, callback: () => {}): void {
         // REVIEW:
         // Should this be called on update?
