@@ -60,7 +60,7 @@
     "skipLibCheck": true                      /* Remove library checking when bundling */
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
   ],
   "exclude": [
     "src/core/messagesystem/test",
