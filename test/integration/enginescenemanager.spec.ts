@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
 import * as path from "path";
 import { Engine, EngineArguments } from "../../src/core";
-import { DScene } from "../../src/rendersystem";
+import { DScene, SceneManager } from "../../src/rendersystem";
 
 describe("engine's scene manager", () => {
     beforeEach(() => {
@@ -19,7 +19,7 @@ describe("engine's scene manager", () => {
         expect(Engine.scene.name).toBe("testscene");
     });
     it("should add the \"blankscene\" testing scene and remove the \"Default DScene Template\"", () => {
-        Engine.instance!.sceneManager.addScene(Engine.instance!.sceneManager.createEmptyScene());
+        Engine.instance!.sceneManager.addScene(SceneManager.createEmptyScene());
         expect(Engine.instance!.sceneManager.removeScene("Default DScene Template")).toBe(true);
         expect(Engine.instance!.sceneManager.loadScene("Default DScene Template")).toBe(false);
         expect(Engine.instance!.scene.name).toBe("blankscene");

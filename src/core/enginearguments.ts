@@ -15,12 +15,12 @@ export class EngineArguments {
      * **Default arguments are defined.**
      */
     constructor({title, fps, scenes, defaultSaveLocation, debug}: {
-            title?: string,
-            fps?: number,
-            scenes?: Array<DScene>,
-            defaultSaveLocation?: string,
-            debug?: boolean
-        } = {}
+        title?: string,
+        fps?: number,
+        scenes?: Array<DScene>,
+        defaultSaveLocation?: string,
+        debug?: boolean
+    } = {}
     ) {
         this.title = (title) ? title : "";
         this.fps = (fps) ? fps : 60;

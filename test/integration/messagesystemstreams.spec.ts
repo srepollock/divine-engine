@@ -3,16 +3,18 @@ import { EngineStream, IOStream } from "../../src/core/streams";
 
 describe("Message system, EngineStream and IOStream incrementals tests", () => {
     var messageSystem: MessageSystem = new MessageSystem();
-    var engineStream: EngineStream = new EngineStream();
-    var ioStream: IOStream = new IOStream();
+    let eMessageQueue = new Array<Message>();
+    let iMessageQueue = new Array<Message>();
+    var engineStream: EngineStream = new EngineStream({messageQueueReference: eMessageQueue});
+    var ioStream: IOStream = new IOStream({messageQueueReference: iMessageQueue});
     beforeEach(() => {
         messageSystem.removeAllListeners();
         engineStream.removeAllListeners();
         ioStream.removeAllListeners();
         messageSystem.emit("close");
         messageSystem = new MessageSystem();
-        engineStream = new EngineStream();
-        ioStream = new IOStream();
+        engineStream = new EngineStream({messageQueueReference: eMessageQueue});
+        ioStream = new IOStream({messageQueueReference: iMessageQueue});
     });
     afterEach(() => {
         messageSystem.removeAllListeners();

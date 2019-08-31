@@ -1,4 +1,4 @@
-import { BoxGeometry, Geometry, Material, Mesh, MeshBasicMaterial, SphereGeometry, Sprite, SpriteMaterial, Texture, TextureLoader } from "three";
+import * as three from "three";
 import { Component } from "../components/component";
 import { Vector3 } from "../math";
 import { DObject } from "./dobject";
@@ -15,13 +15,13 @@ export class Entity extends DObject {
     public components: Array<Component>;
     public children: Array<Entity>;
     public transform: Vector3;
-    private _geometry?: Geometry | undefined;
-    private _mesh?: Mesh | undefined;
-    private _material?: Material | undefined;
+    private _geometry?: three.Geometry | undefined;
+    private _mesh?: three.Mesh | undefined;
+    private _material?: three.Material | undefined;
     private _parent: string;
     private _ready: boolean = false;
-    private _sprite?: Sprite | undefined;
-    private _texture?: Texture | undefined;
+    private _sprite?: three.Sprite | undefined;
+    private _texture?: three.Texture | undefined;
     /**
      * Gets if the entity is ready to render or not.
      * @returns boolean
@@ -35,7 +35,7 @@ export class Entity extends DObject {
      * Use in 3D Games.
      * @returns Mesh
      */
-    public get mesh(): Mesh | undefined {
+    public get mesh(): three.Mesh | undefined {
         return this._mesh;
     }
     /**
@@ -44,7 +44,7 @@ export class Entity extends DObject {
      * Use in 2D games.
      * @returns Sprite
      */
-    public get sprite(): Sprite | undefined {
+    public get sprite(): three.Sprite | undefined {
         return this._sprite;
     }
     /**
@@ -52,8 +52,8 @@ export class Entity extends DObject {
      * @param {string} name
      * @param {string} tag
      * @param {Vector3} transform
-     * @param {Geometry|BoxGeometry|SphereGeometry} geometry
-     * @param {Material|MeshBasicMaterial|SpriteMaterial} material
+     * @param {three.Geometry|three.BoxGeometry|three.SphereGeometry} geometry
+     * @param {three.Material|three.MeshBasicMaterial|three.SpriteMaterial} material
      * @param {Array<Component>} components Entities components as an array attached to the object.
      * These can be engine default components or user defined components. 
      * Any new component that derives from the base Component class can be used 
@@ -67,9 +67,9 @@ export class Entity extends DObject {
         name?: string,
         tag?: string,
         transform?: Vector3,
-        geometry?: Geometry | BoxGeometry | SphereGeometry,
-        material?: Material | MeshBasicMaterial | SpriteMaterial,
-        sprite?: Sprite,
+        geometry?: three.Geometry | three.BoxGeometry | three.SphereGeometry,
+        material?: three.Material | three.MeshBasicMaterial | three.SpriteMaterial,
+        sprite?: three.Sprite,
         texture?: string,
         components?: Array<Component>,
         parent?: Entity,
@@ -83,7 +83,9 @@ export class Entity extends DObject {
         log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
         this._parent = (parent) ? parent.id : "";
         this.children = (children) ? children : new Array();
-        for (let i in this.children) this.children[i].setParent(this);
+        for (let i in this.children) {
+            this.children[i].setParent(this);
+        }
         if ((this._geometry && this._material) || (this._texture && this._material && this._sprite)) {
             this._ready = true;
         }
@@ -165,12 +167,35 @@ export class Entity extends DObject {
      * @see DScene
      * @returns any
      */
-    public addToScene(): Sprite | Mesh {
+    public addToScene(): three.Sprite | three.Mesh {
         if (this._sprite && !this._geometry) {
             return this._sprite!;
         } else {
             return this._mesh!;
         }
+    }
+    /**
+     * 
+     * @override DObject.asMessage
+     * @returns string
+     */
+    public asMessage(): string {
+        
+        let message: string = "";
+        message += this.name;
+        this.components.forEach((component) => {
+            message += component.asMessage();
+        });
+        message += this.children;
+        message += this.transform;
+        message += this._geometry;
+        message += this._mesh;
+        message += this._material;
+        message += this._parent;
+        message += this._ready;
+        message += this._sprite;
+        message += this._texture!.toString();
+        return message;
     }
     /**
      * Checks if the entity has the child or not.
@@ -274,44 +299,44 @@ export class Entity extends DObject {
     /**
      * Determines what to set the rendering objects to.
      * The RenderSystem handles which is used for rendering.
-     * @param  {Geometry|BoxGeometry|SphereGeometry|undefined} geometry
-     * @param  {Sprite|undefined} sprite
-     * @param  {Material|MeshBasicMaterial|SpriteMaterial|undefined} material
+     * @param  {three.Geometry|three.BoxGeometry|three.SphereGeometry|undefined} geometry
+     * @param  {three.Sprite|undefined} sprite
+     * @param  {three.Material|three.MeshBasicMaterial|three.SpriteMaterial|undefined} material
      * @param  {string|undefined} texture
      * @returns void
      */
     private determineRenderObjects(
-        geometry: Geometry | BoxGeometry | SphereGeometry | undefined, 
-        sprite: Sprite | undefined, 
-        material: Material | MeshBasicMaterial | SpriteMaterial | undefined, 
+        geometry: three.Geometry | three.BoxGeometry | three.SphereGeometry | undefined, 
+        sprite: three.Sprite | undefined, 
+        material: three.Material | three.MeshBasicMaterial | three.SpriteMaterial | undefined, 
         texture: string | undefined): void {
         if (geometry !== undefined && sprite !== undefined) {
             log(LogLevel.warning, 
                 `Both Geometry and Sprite cannot be defined for the same object. Defaulting to default sprite.`);
-            this._texture = new Texture();
-            this._material = new SpriteMaterial({ map: this._texture, color: 0xffffff });
-            this._sprite = new Sprite(this._material as SpriteMaterial);
+            this._texture = new three.Texture();
+            this._material = new three.SpriteMaterial({ map: this._texture, color: 0xffffff });
+            this._sprite = new three.Sprite(this._material as three.SpriteMaterial);
         } else if (!geometry && (sprite || material || texture)) {
             this.sendMessage(JSON.stringify({ id: this.id, url: texture }), MessageType.IO, true);
         } else if ((geometry || material) && !sprite) {
-            this._geometry = (geometry) ? geometry : new BoxGeometry(1, 1, 1);
-            this._material = (material) ? material : new MeshBasicMaterial({ color: 0xff0000 });
-            this._mesh = new Mesh(this._geometry, this._material);
+            this._geometry = (geometry) ? geometry : new three.BoxGeometry(1, 1, 1);
+            this._material = (material) ? material : new three.MeshBasicMaterial({ color: 0xff0000 });
+            this._mesh = new three.Mesh(this._geometry, this._material);
         } else {
             log(LogLevel.warning, `Entity was not given a sprite or geometry. Creating default sprite.`);
-            this._texture = new Texture();
-            this._material = new SpriteMaterial({ map: this._texture, color: 0xffffff });
-            this._sprite = new Sprite(this._material as SpriteMaterial);
+            this._texture = new three.Texture();
+            this._material = new three.SpriteMaterial({ map: this._texture, color: 0xffffff });
+            this._sprite = new three.Sprite(this._material as three.SpriteMaterial);
         }
     }
     /**
      * Updates the Sprite for the Entity. Called when the message is sent to the Entity containing texture data.
-     * @param  {Texture} texture
+     * @param  {three.Texture} texture
      */
-    private updateSprite(texture: Texture): void {
-        this._texture = (texture) ? texture : new Texture();
-        this._material = new SpriteMaterial({ map: this._texture, color: 0xffffff });
-        this._sprite = new Sprite(this._material as SpriteMaterial);
+    private updateSprite(texture: three.Texture): void {
+        this._texture = (texture) ? texture : new three.Texture();
+        this._material = new three.SpriteMaterial({ map: this._texture, color: 0xffffff });
+        this._sprite = new three.Sprite(this._material as three.SpriteMaterial);
         this._ready = true; // NOTE: Texture finally loaded on a Sprite Entity
     }
 }

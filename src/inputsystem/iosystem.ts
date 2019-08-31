@@ -1,10 +1,9 @@
-import { FileLoader, Texture, TextureLoader } from "three";
+import { Texture, TextureLoader } from "three";
 import { Engine, GameWindow, IOStream } from "../core";
 import { ErrorCode, log, LogLevel } from "../core/loggingsystem";
 import { Message, MessageType } from "../core/messagesystem";
 import { System } from "../core/system";
 import { Vector2 } from "../math";
-import { FileType } from "./filetype";
 
 export class IOSystem extends System {
     private static _instance: IOSystem;
@@ -74,7 +73,7 @@ export class IOSystem extends System {
     }
     /**
      * Initializes the system. This is how the Engine starts and gets a handle of the system.
-     * @returns void
+     * @returns IOSystem
      */
     public static initialize(): IOSystem {
         new IOSystem();
@@ -133,16 +132,18 @@ export class IOSystem extends System {
     }
     public onMessage(message: Message): void {
         log(LogLevel.debug, message.toString());
-        let data = JSON.parse(message.data);
-        switch (message.type) {
+        let data: any = JSON.parse(message.data);
+        switch (data) {
             case (MessageType.IO):
+                
                 // REVIEW: handle more than one type of image (png, jpg, etc.) on the enigne?
-                if (new RegExp(".*\.(png|jpg)$").test(data.url as string)) {
+                if (data.url && new RegExp(".*\.(png|jpg)$").test(data.url as string)) {
                     this.loadTexture(data.id, data.url);
                 } else {
                     log(LogLevel.error, `The file ${data.url} is not one of the supported image types.`, 
                         ErrorCode.FileTypeNotAcceptable);
-                    this.sendMessage(JSON.stringify({id: data.id, texture: new Texture()}), MessageType.Asset);
+                    this.sendMessage(JSON.stringify({forID: data.id, texture: new Texture()}), 
+                        MessageType.Asset);
                 }
                 break;
             default:
@@ -159,7 +160,7 @@ export class IOSystem extends System {
      */
     private loadTexture(id: string, url: string): void {
         new TextureLoader().load(url, (texture: any) => {
-            this.sendMessage(JSON.stringify({id, texture}), MessageType.Asset);
+            this.sendMessage(JSON.stringify({forID: id, texture}), MessageType.Asset);
         }, 
         // tslint:disable-next-line: max-line-length
         undefined, // NOTE: Progress is depricated for TextureLoader; https://threejs.org/docs/index.html#api/en/loaders/TextureLoader

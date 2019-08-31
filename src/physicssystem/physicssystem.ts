@@ -34,8 +34,7 @@ export class PhysicsSystem extends System {
      * Initializes the PhysicsSystem to start.
      * @returns void
      */
-    public static initialize({}: 
-        {} = {}): PhysicsSystem {
+    public static initialize(): PhysicsSystem {
         new PhysicsSystem();
         PhysicsSystem._instance.start();
         return PhysicsSystem._instance;

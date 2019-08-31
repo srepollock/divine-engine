@@ -1,6 +1,7 @@
 import { guid } from "../helper";
 import { log, LogLevel } from "./loggingsystem/src";
-import { Message, MessageType, SystemStream } from "./messagesystem";
+import { Message, MessageType } from "./messagesystem";
+import { ObjectStream } from "./streams";
 
 export class DObject {
     /**
@@ -10,19 +11,10 @@ export class DObject {
     public get id(): string {
         return this._id;
     }
-    private static ObjectStream = class extends SystemStream {
-        /**
-         * Default message type for the stream.
-         */
-        public type: MessageType = MessageType.Global;
-        constructor({messageQueueReference}: {messageQueueReference: Array<Message>}) {
-            super({messageQueueReference});
-        }
-    };
     public tag: string;
     public messageQueue: Array<Message> = new Array<Message>();
     private _id: string;
-    private _dobjectStream = new DObject.ObjectStream({messageQueueReference: this.messageQueue});
+    private _dobjectStream = new ObjectStream({messageQueueReference: this.messageQueue});
     /**
      * DObject Constructor.
      * Tag is an additional identifier for the DObject.
@@ -33,11 +25,21 @@ export class DObject {
         this.tag = tag;
     }
     /**
+     * Returns a DObject from a string.
+     * Help from : https://stackoverflow.com/a/10916838/5078905
+     * @param  {string} message
+     * @returns DObject
+     */
+    public static fromMessage(message: string): DObject {
+        return Object.assign(Object.create(DObject), JSON.parse(message));
+    }
+    /**
      * Returns this object as a JSON string to send in messages.
      * @returns string
      */
     public asMessage(): string {
-        return JSON.stringify(this);
+        let str = JSON.stringify(this);
+        return str;
     }
     /**
      * DObjects base messasge handler receiving messages.
@@ -47,8 +49,7 @@ export class DObject {
      */
     public onMessage(message: Message): void {
         // public onMessage(type: MessageType, callback: () => {}): void {
-        // REVIEW:
-        // Should this be called on update?
+        // REVIEW: Should this be called on update?
         log(LogLevel.debug, `${this.tag} receiving: ${message.toString()}`);
     }
     /**

@@ -1,4 +1,4 @@
-import { Entity, Message, MessageType, Engine } from "../core";
+import { Engine, Entity, Message, MessageType } from "../core";
 import { ErrorCode, log, LogLevel } from "../core";
 import { SceneManagerStream } from "../core/streams/scenemanagerstream";
 import { DScene } from "./dscene";
@@ -17,10 +17,29 @@ export class SceneManager {
             this._scenes = scenes;
         } else {
             this._scenes = new Array<DScene>();
-            this._scenes.push(this.createEmptyScene());
+            this._scenes.push(SceneManager.createEmptyScene());
         }
         this._scene = this._scenes[0];
         this.start();
+    }
+    /**
+     * Creates a new DScene and adds it to the end of the scene manager's scene list.
+     * @param  {string} sceneName?
+     * @returns DScene
+     */
+    public static createBasicScene(sceneName?: string): DScene {
+        let scene = new DScene(sceneName);
+        scene.addEntity(new Entity({tag: "box"}));
+        return scene;
+    }
+    /**
+     * Creates a new Scene with a default name. Adds the new scene to the end of the scene manager's scene list.
+     * @param  {string="DefualtDSceneTemplate"} sceneName
+     * @returns DScene
+     */
+    public static createEmptyScene(sceneName: string = "Default DScene Template"): DScene {
+        let emptyScene: DScene = new DScene(sceneName);
+        return emptyScene;
     }
     /**
      * 
@@ -59,27 +78,6 @@ export class SceneManager {
         this._scenes.forEach((scene) => {
             scene.shutdown();
         });
-    }
-    /**
-     * Creates a new DScene and adds it to the end of the scene manager's scene list.
-     * @param  {string} sceneName?
-     * @returns DScene
-     */
-    public createScene(sceneName?: string): DScene {
-        let scene = new DScene(sceneName);
-        scene.addEntity(new Entity({tag: "box"}));
-        this._scenes.push(scene);
-        return scene;
-    }
-    /**
-     * Creates a new Scene with a default name. Adds the new scene to the end of the scene manager's scene list.
-     * @param  {string="DefualtDSceneTemplate"} sceneName
-     * @returns DScene
-     */
-    public createEmptyScene(sceneName: string = "Defualt DScene Template"): DScene {
-        let emptyScene: DScene = new DScene(sceneName);
-        this._scenes.push(emptyScene);
-        return emptyScene;
     }
     /**
      * Sets the current scene to a scene in the array, 

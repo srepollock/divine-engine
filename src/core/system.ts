@@ -17,13 +17,6 @@ export abstract class System extends DObject {
         super(tag);
     }
     /**
-     * Cleans anything that is not automatically garbage collected. This will also remove all listeners from this 
-     * system's _systemStream.
-     * Called in shutdown.
-     * @returns void
-     */
-    public abstract cleanup(): void;
-    /**
      * Shutsdown the system. This should be called from the Engine class.
      * You shouldn't need to override this method, however if you do always call super if overriding this method. 
      * It ensures the cleanup is called.
@@ -32,6 +25,13 @@ export abstract class System extends DObject {
     public shutdown(): void {
         this.cleanup();
     }
+    /**
+     * Cleans anything that is not automatically garbage collected. This will also remove all listeners from this 
+     * system's _systemStream.
+     * Called in shutdown.
+     * @returns void
+     */
+    public abstract cleanup(): void;
     /**
      * Starts the system. 
      * @returns void

@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as path from "path";
 import { Entity } from "../../../src/core";
 import { DScene } from "../../../src/rendersystem";
@@ -14,10 +15,13 @@ describe("DScene Unit Tests", () => {
             new Entity({tag: "player"})
         ));
         scene.save(path.resolve(__dirname, "../../assets/"));
-        expect(path.resolve(__dirname, "../../assets/testscene.des"));
+        let fileExists: boolean = fs.existsSync(path.resolve(__dirname, "../../assets/testscene.des"));
+        expect(fileExists).toBe(true);
     });
     it("should load a saved scene from file", () => {
-        expect(true).toBe(false);
+        let fileData: string = fs.readFileSync(path.resolve(__dirname, "../../assets/testscene.des"), "utf8");
+        let scene: DScene = DScene.loadPreviousSave(fileData);
+        expect(scene.getSceneEntities().length).toBe(1);
     });
     it("should create a scene with a name and a 2 entities (player and enemy)", () => {
         let scene = new DScene("Testing Scene", new Array<Entity>(

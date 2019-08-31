@@ -1,4 +1,4 @@
-import { Message, MessageType } from "src/core";
+import { MessageType } from "src/core";
 import { PointLight, Scene } from "three";
 import { DObject } from "../core/dobject";
 import { Entity } from "../core/entity";
@@ -53,13 +53,36 @@ export class DScene extends DObject {
         this.checkReady();
     }
     /**
+     * Loads the previously saved file. This is in conjunction with the MessageSystem and IOSystem to read and send the 
+     * file data.
+     * @see MessageSystem
+     * @see IOSystem
+     * @param {string} scene
+     * @returns boolean
+     */
+    public static loadPreviousSave(jsonScene: string): DScene {
+        let scene: DScene = Object.assign(new DScene(), JSON.parse(jsonScene));
+        scene._scene = Object.assign(new Scene(), scene._scene);
+        let tempEntities: Array<Entity> = new Array<Entity>();
+        scene._entities.forEach((entity) => {
+            tempEntities.push(Object.assign(new Entity(), entity));
+        });
+        scene._entities = tempEntities;
+        return scene;
+    }
+    /**
      * Adds an entity to the Scene list.
      * @param  {Entity} entity
      * @returns void
      */
-    public addEntity(entity: Entity): void {
+    public addEntity(entity: Entity): boolean {
         // TODO: Check if the entity is already part of the scene.
-        this._entities.push(entity);
+        if (this._entities.filter((e) => e.id === entity.id).shift()) {
+            log(LogLevel.warning, `Entity ${entity.name}.${entity.id} already exists in the scene. You cannot have two` 
+                + `of the exact same entities in the scene.`);
+            return false;
+        }
+        return this._entities.push(entity) > 0;
     }
     /**
      * Returns this object as a JSON string to send in messages.
@@ -85,29 +108,16 @@ export class DScene extends DObject {
         return this._entities;
     }
     /**
-     * Loads the previously saved file. This is in conjunction with the MessageSystem and IOSystem to read and send the 
-     * file data.
-     * // REVIEW: Should this be here or in the scene manager?
-     * @see MessageSystem
-     * @see IOSystem
-     * @param {string} scene
-     * @returns boolean
-     */
-    public loadPreviousSave(scene: string): DScene {
-        return Object.assign(new DScene(), JSON.parse(scene));
-    }
-    /**
      * Adds all the entities to the ThreeJS scene.
      * @returns boolean
      */
     public loadScene(): boolean {
         this._active = true;
         if (this._active) {
-            this._entities.forEach((entity: Entity) => {
-                this._scene.add(entity.addToScene());
+            this._entities.forEach((entity) => {
+                (this._scene as Scene).add(entity.addToScene());
             });
-            this.checkReady();
-            return true;
+            return this.checkReady();
         }
         log(LogLevel.error, `The ${this._name} scene is not active and cannot be loaded.`, ErrorCode.SceneNotActive);
         return false;
@@ -120,12 +130,12 @@ export class DScene extends DObject {
         let sceneData: string = this.asMessage();
         // write the stuff with fs.write in the IOSystem
         // 1. Save the file yyyymmdd_{scene.title}.des (Divine Engine Scene)
-            // By default it overwrites the scene if there is a previous save.
+        // By default it overwrites the scene if there is a previous save.
         let date = `${new Date().getFullYear}${new Date().getMonth}${new Date().getDate}`;
         let filename: string = `${date}_${this._name}.des`;
         this.sendMessage(JSON.stringify({path, data: sceneData, filename}), MessageType.IO, true);
         // 2. Check if the save went ok, else try one more time then throw a fail and return false.
-            // This is checked in the update // TODO: add an update function here, chains to scenemanager update.
+        // This is checked in the update // TODO: add an update function here, chains to scenemanager update.
     }
     /**
      * Called when the game is shutting down. Saves the data to a disk space.
@@ -158,14 +168,15 @@ export class DScene extends DObject {
     }
     /**
      * Checks if the scene is loaded and ready.
-     * @returns void
+     * @returns boolean
      */
-    private checkReady(): void {
+    private checkReady(): boolean {
         let time: number = Date.now();
         while (!this._ready) {
             if (time > time + 10000) {
                 log(LogLevel.critical, "The scene took too long to load, please debug and try again.", 
                     ErrorCode.SceneTimedOut);
+                break;
             }
             let count: number = 0;
             this._entities.forEach((entity) => {
@@ -173,9 +184,13 @@ export class DScene extends DObject {
                     return count++;
                 }
             });
-            if (count === this._entities.length) this._ready = true;
-            log(LogLevel.info, `Loading scene ${this._name}: ${(count / this._entities.length) * 100}%`);
+            if (count === this._entities.length) {
+                this._ready = true;
+            }
+            let percentage = ((count / this._entities.length) * 100) ? (count / this._entities.length) * 100 : 100;
+            log(LogLevel.info, `Loading scene ${this._name}: ${percentage}%`);
         }
         log(LogLevel.debug, `The ${this.name} is ready.`);
+        return this._ready;
     }
 }

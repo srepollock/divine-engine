@@ -13,7 +13,7 @@ describe("DObject Class Unit Tests", () => {
             expect(obj.tag).toBe("");
         });
         it("should get the object as a message in JSON format", () => {
-            expect(obj.asMessage()).toStrictEqual(JSON.stringify(obj));
+            expect(obj.asMessage()).toEqual(JSON.stringify(obj));
         });
     });
     describe("filled out object instantiation", () => {

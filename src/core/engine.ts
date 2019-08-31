@@ -52,8 +52,8 @@ export class Engine {
      */
     public static get messageSystem(): MessageSystem {
         if (Engine.instance! !== undefined &&
-            Engine._instance!._messageSystem! !== undefined) {
-                return Engine.instance!._messageSystem!;
+            Engine._instance!._messageSystem !== undefined) {
+            return Engine.instance._messageSystem;
         }
         log(LogLevel.critical, `Engine.instance or MessageSystem was not defined.`);
         return new MessageSystem(); // REVIEW: This should be fixed later; but not now.\?
@@ -430,7 +430,8 @@ export class Engine {
      */
     private update(delta: number): void {
         log(LogLevel.debug, `Update loop | delta = ${delta}`);
-        this._messageSystem!.write(new Message(delta.toString(), MessageType.Global));
+        // REVIEW: Is this what's causing the delay on build?
+        // TODO: Test this here.
         Stream.pipeline(this._messageSystem, Engine._instance!._ioSystem!.systemStream, 
             Engine._instance!._physicsSystem!.systemStream, Engine._instance!._soundSystem!.systemStream,
             Engine._instance!._renderSystem!.systemStream);

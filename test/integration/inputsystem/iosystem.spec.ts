@@ -1,4 +1,4 @@
-import { IOSystem, Engine, EngineArguments } from "../../../src";
+import { Engine, EngineArguments, IOSystem } from "../../../src";
 
 describe("IOSystem Unit Tests, relies on Engine", () => {
     Engine.start(new EngineArguments());

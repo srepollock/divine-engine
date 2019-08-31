@@ -12,23 +12,23 @@ describe("SceneManager Unit Tests", () => {
     });
     it("should unload the previous scene when loading the scene", () => {
         expect(sm.scene).toBeDefined(); // NOTE: The scene should be undefined from the previous test
-        let scene = sm.scene;
-        expect(sm.addScene(Object.assign(new DScene(), JSON.parse(readFileSync(path.resolve(__dirname, 
-            "../../assets/testscene.des"), "utf8"))))).toBe(true);
+        let previousScene: DScene = sm.scene;
+        let fileData: string = readFileSync(path.resolve(__dirname, "../../assets/testscene.des"), "utf8");
+        let scene: DScene = DScene.loadPreviousSave(fileData);
+        expect(sm.addScene(scene)).toBe(true);
         expect(sm.loadScene("testscene")).toBe(true);
         expect(sm.scene.name).toBe("testscene");
-        expect(sm.scene).not.toBe(scene);
+        expect(sm.scene).not.toBe(previousScene);
     });
     it("should be able to create a scene", () => {
-        let scene = sm.createScene();
-        expect(typeof(scene)).toBeInstanceOf(typeof(new DScene()));
+        let scene = SceneManager.createBasicScene();
         expect(scene.name).toBe("Divine Engine Scene");
         expect(scene.getSceneEntities().length).toBe(1);
         expect(scene.getSceneEntities()[0].tag).toBe("box");
     });
     it("should be able to create an empty scene", () => {
-        let scene = sm.createEmptyScene();
-        expect(typeof(scene)).toBe(typeof(new DScene()));
+        let scene = SceneManager.createEmptyScene();
         expect(scene.name).toBe("Default DScene Template");
+        expect(scene.getSceneEntities.length).toBe(0);
     });
 });

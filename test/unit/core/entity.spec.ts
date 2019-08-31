@@ -66,9 +66,6 @@ describe("Entity Class Unit Tests", () => {
         it("should have no children", () => {
             expect(go1.components).toEqual([]);
         });
-        it("should be able to print the object with asMessage()", () => {
-            expect(go1.asMessage()).toStrictEqual(JSON.stringify(go1));
-        });
         it("should be set to ready when the entire entity is loaded", () => {
             expect(go1.ready).toBe(true);
         });
@@ -160,5 +157,10 @@ describe("Entity Class Unit Tests", () => {
             go6.removeParent();
             expect(go6.parent).toBe("");
         });
+    });
+    it("should get the entity fully from a JSON string", () => {
+        let jsonEntity: string = entity.asMessage();
+        let objectEntity = Object.assign(Object.create(Entity), JSON.parse(jsonEntity));
+        expect(objectEntity).toStrictEqual(entity);
     });
 });

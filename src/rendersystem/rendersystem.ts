@@ -61,7 +61,6 @@ export class RenderSystem extends System {
             this._sceneManager = new SceneManager(scenes);
         } else {
             this._sceneManager = new SceneManager();
-            this._sceneManager.createEmptyScene();
         }
         if (width === undefined || height === undefined) {
             width = window.innerWidth;
@@ -75,7 +74,7 @@ export class RenderSystem extends System {
     }
     /**
      * Initializes the system.
-     * @returns void
+     * @returns RenderSystem
      */
     public static initialize({ width, height, scenes }: {
         width?: number, 
@@ -83,7 +82,7 @@ export class RenderSystem extends System {
         scenes?: Array<DScene>,
     } = {}): RenderSystem {
         new RenderSystem({width, height, scenes});
-        RenderSystem.instance.start();
+        RenderSystem._instance.start();
         return RenderSystem._instance;
     }
     /**

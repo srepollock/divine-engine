@@ -242,9 +242,9 @@ export class Matrix3 {
             a20 = this.matrix[6],
             a21 = this.matrix[7],
             a22 = this.matrix[8];
-            this._matrix[6] = x * a00 + y * a10 + a20;
-            this._matrix[7] = x * a01 + y * a11 + a21;
-            this._matrix[8] = x * a02 + y * a12 + a22;
+        this._matrix[6] = x * a00 + y * a10 + a20;
+        this._matrix[7] = x * a01 + y * a11 + a21;
+        this._matrix[8] = x * a02 + y * a12 + a22;
         return this;
     }
     /** Gets the dot product:

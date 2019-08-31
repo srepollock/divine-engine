@@ -4,7 +4,8 @@ describe("GameWindow Integration Tests", () => {
     // TODO: This will need puppeteer for both electron and browser
     expect(false).toBeTruthy;
     describe("Browser tests", () => {
-        // new GameWindow("Browser GameWindow Integration Test", Client.Console);
+        new GameWindow("Browser GameWindow Integration Test", Client.Console);
+        expect(false).toBeTruthy;
         // it("should create a window that is a reference to the browser window", () => {
         //     expect(GameWindow.height).not.toBe(-1);
         //     expect(GameWindow.width).not.toBe(-1);
@@ -44,6 +45,7 @@ describe("GameWindow Integration Tests", () => {
     });
     describe("Electron tests", () => {
         new GameWindow("Electron GameWindow Integration Test", Client.Console);
+        expect(false).toBeTruthy;
         // it("should create a window that is a reference to the browser window", () => {
         //     expect(GameWindow.height).not.toBe(-1);
         //     expect(GameWindow.width).not.toBe(-1);
