@@ -1,11 +1,31 @@
-import { DObject } from "../core/dobject";
-export class Component extends DObject {
-    /**
-     * The Component constructor.
-     * *Note: All components must have a tag as such: {component_name}.component.*
-     * @param  {string="component"} tag
-     */
-    constructor(tag: string = "component") {
-        super(tag);
+import { IComponent, IComponentData } from ".";
+
+import { Entity, Shader } from "src";
+
+export abstract class Component implements IComponent {
+    public name: string;
+    protected _owner: Entity | undefined;
+    protected _data: IComponentData;
+    public get owner(): Entity | undefined {
+        return this._owner;
+    }
+    constructor(data: IComponentData) {
+        this._data = data;
+        this.name = this._data.name;
+    }
+    public load(): void {
+        
+    }
+    public render(shader: Shader): void {
+
+    }
+    public setOwner(owner: Entity): void {
+        this._owner = owner;
+    }
+    public update(delta: number): void {
+
+    }
+    public updateReady(): void {
+        
     }
 }

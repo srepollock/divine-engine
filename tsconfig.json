@@ -63,7 +63,6 @@
     "src/**/*",
   ],
   "exclude": [
-    "src/core/messagesystem/test",
     "src/core/loggingsystem/test"
   ]
 }

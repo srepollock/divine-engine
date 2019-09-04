@@ -7,10 +7,11 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "bundle": "tsc; rollup -c",
-    "clean": "rm -rf lib/*",
+    "clean": "rm -rf lib/* docs/* dist/*",
     "commit": "npm run lint; git add --all; git-cz; git push",
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --target ESNext --readme none src/*",
-    "lint": "eslint -c .eslintrc.json src/**/*.ts",
+    "lint": "eslint -c .eslintrc.json src/**/*.ts --quiet",
+    "lint:fix": "eslint -c .eslintrc.json src/**/*.ts --fix --quiet",
     "semantic-release": "semantic-release",
     "test": "npm run test:all",
     "test:all": "jest --coverage",

@@ -1,525 +1,167 @@
-import { Stream } from "stream";
-import { guid } from "../helper";
-import { Client } from "../helper";
-import { IOSystem } from "../inputsystem";
-import { PhysicsSystem } from "../physicssystem";
-import { RenderSystem, SceneManager } from "../rendersystem";
-import { DScene } from "../rendersystem/dscene";
-import { SoundSystem } from "../soundsystem";
-import { EngineArguments } from "./enginearguments";
-import { GameWindow } from "./gamewindow";
-import { ErrorCode, log, LogLevel } from "./loggingsystem";
-import { Message, MessageSystem, MessageType, SystemStream } from "./messagesystem";
-/**
- * The Divine Game Engine class.
- */
-export class Engine {
-    /**
-     * Gets the engine's client type.
-     * @returns Client
-     */
-    public static get client(): Client {
-        return Engine._instance!.client;
-    }
-    /**
-     * Get's the engine's exit variable.
-     * @returns boolean
-     */
-    public static get exit(): boolean {
-        return Engine._exit;
-    }
-    /**
-     * Gets the current game window's height.
-     * @returns number
-     */
-    public static get height(): number {
-        return this._instance!._height;
-    }
-    /**
-     * Get the engine's instance.
-     * @returns Engine
-     */
-    public static get instance(): Engine | undefined {
-        if (Engine._instance !== undefined) {
-            return Engine._instance;
-        }
-        log(LogLevel.error, "Called on get Engine.instance", ErrorCode.EngineInstanceUndefined);
-        return undefined;
-    }
-    /**
-     * Gets the enigine message system, returns a new one if none-existant? (Will throw error first.)
-     * @returns MessageSystem
-     */
-    public static get messageSystem(): MessageSystem {
-        if (Engine.instance! !== undefined &&
-            Engine._instance!._messageSystem !== undefined) {
-            return Engine.instance._messageSystem;
-        }
-        log(LogLevel.critical, `Engine.instance or MessageSystem was not defined.`);
-        return new MessageSystem(); // REVIEW: This should be fixed later; but not now.\?
-    }
-    /**
-     * Gets the engine's current time.
-     * @returns number
-     */
-    public static get now(): number {
-        return Engine._instance!._now;
-    }
-    /**
-     * Gets the engine's running variable.
-     * @returns boolean
-     */
-    public static get running(): boolean {
-        return Engine._running;
-    }
-    /**
-     * Gets the scene from the Engine's scene manager.
-     * @returns DScene
-     */
-    public static get scene(): DScene {
-        return Engine._instance!.sceneManager.scene;
-    }
-    /**
-     * Gets the engine's started variable.
-     * @returns boolean
-     */
-    public static get started(): boolean {
-        return Engine._started;
-    }
-    /**
-     * Gets the current game window's width.
-     * @returns number
-     */
-    public static get width(): number {
-        return this._instance!._width;
-    }
-    /**
-     * Returns game client
-     * @returns Client
-     */
-    public get client(): Client {
-        return this._client;
-    }
-    /**
-     * Returns the HTMLElement (or the contianer) for the game.
-     * @returns HTMLElement
-     */
-    public get container(): HTMLElement | null {
-        return Engine._instance!._container;
-    }
-    /**
-     * Sets the engine's arguments
-     * @param  {EngineArguments} engineArguments
-     * @returns EngineArguments
-     */
-    public set engineArguments(engineArguments: EngineArguments) {
-        this._engineArguments = engineArguments;
-    }
-    /**
-     * Returns this engine's arguements
-     * @returns EngineArguments
-     */
-    public get engineArguments(): EngineArguments {
-        return this._engineArguments;
-    }
-    private static ObjectStream = class extends SystemStream {
-        /**
-         * Default message type for the stream.
-         */
-        public type: MessageType = MessageType.Render;
-        constructor() {
-            super({messageQueueReference: Engine._messageQueue});
-        }
-    };
-    /**
-     * Gets the engines current GameWindow object.
-     * @returns GameWindow
-     */
-    public get gameWindow(): GameWindow {
-        if (this._gameWindow) return this._gameWindow;
-        log(LogLevel.error, "The engine's game window is not defined", ErrorCode.EngineWindowUndefined);
-        throw ErrorCode.EngineWindowUndefined;
-    }
-    /**
-     * Sets the engine's game window
-     * @param  {GameWindow} gw
-     */
-    public set gameWindow(gw: GameWindow) {
-        this._gameWindow = gw as GameWindow;
-    }
-    /**
-     * Gets the engine's guid.
-     * @returns string
-     */
-    public get id(): string {
-        return this._id;
-    }
-    /**
-     * Get's this Engine's now time.
-     * @returns number
-     */
-    public get now(): number {
-        return this._now;
-    }
-    /**
-     * Get's the engine's Render System
-     * @returns RenderSystem
-     */
-    public get renderSystem(): RenderSystem {
-        if (this._renderSystem !== undefined) {
-            return this._renderSystem;
-        }
-        log(LogLevel.critical, "Render system is undefined", ErrorCode.RenderSystemUndefined);
-        throw ErrorCode.RenderSystemUndefined;
-    }
-    /**
-     * Returns current scene manager's scene.
-     * @returns DScene
-     */
-    public get scene(): DScene {
-        if (this._sceneManager!.scene !== undefined) {
-            return this._sceneManager!.scene;
-        }
-        log(LogLevel.critical, "Scene is undefined", ErrorCode.SceneUndefined);
-        throw ErrorCode.SceneUndefined;
-    }
-    /**
-     * Gets the scene manager.
-     * @returns SceneManager
-     */
-    public get sceneManager(): SceneManager {
-        if (this._sceneManager !== undefined) return this._sceneManager;
-        else {
-            log(LogLevel.critical, "Engine's scene manager is not defiend when calling get function.", 
-                ErrorCode.SceneManagerUndefined);
-            throw ErrorCode.SceneManagerUndefined;
-        }
-    }
-    /**
-     * Sets the engines scene manager
-     * @param  {SceneManager} SceneManager
-     */
-    public set sceneManager(sceneManager: SceneManager) {
-        this._sceneManager = sceneManager;
-    }
-    private static _exit: boolean = false;
-    private static _instance: Engine | undefined = undefined;
-    private static _running: boolean = false;
-    private static _started: boolean = false;
-    private static _messageQueue: Array<Message> = new Array<Message>();
-    private _client: Client;
-    private _container: HTMLElement | null = null;
-    private _engineArguments: EngineArguments = new EngineArguments();
-    private _systemStream = new Engine.ObjectStream();
-    private _messageSystem: MessageSystem;
-    private _fps: number = 0;
-    private _framesThisSecond: number = 0;
-    private _gameWindow: GameWindow | undefined = undefined;
-    private _height: number = 0;
-    private _id: string;
+import { AssetManager } from "../assets/assetmanager";
+import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
+import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { KeyboardMovementBehaviourBuilder } from "../behaviours/keyboardmovementbehaviourbuilder";
+import { PlayerBehaviourBuilder } from "../behaviours/playerbehaviourbuilder";
+import { RotationBehaviourBuilder } from "../behaviours/rotationbehaviourbuilder";
+import { AnimatedSpriteComponentBuilder } from "../components/animatedspritecomponentbuilder";
+import { CollisionComponentBuilder } from "../components/collisioncomponentbuilder";
+import { ComponentManager } from "../components/componentmanager";
+import { SpriteComponentBuilder } from "../components/spritecomponentbuilder";
+import { Material } from "../core/material";
+import { IMessageHandler } from "../core/messagesystem/imessagehandler";
+import { Message } from "../core/messagesystem/message";
+import { MessageBus } from "../core/messagesystem/messagebus";
+import { InputManager } from "../inputsystem/inputmanager";
+import { MouseContext } from "../inputsystem/mousecontext";
+import { Matrix4 } from "../math/matrix4";
+import { CollisionManager } from "../physicssystem/collisionmanager";
+import { BasicShader } from "../rendersystem/basicshader";
+import { Color } from "../rendersystem/color";
+import { GLUtility } from "../rendersystem/glutility";
+import { MaterialManager } from "../rendersystem/materialmanager";
+import { Sprite } from "../rendersystem/sprite";
+import { AudioManager } from "../soundsystem/audiomanager";
+import { ZoneManager } from "../zones/zonemanager";
+import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
+import { MessageType } from "./messagesystem/messagetype";
+
+export class Engine implements IMessageHandler {
+    private static _instance: Engine;
     private _last: number = 0;
-    private _now: number = 0;
-    private _ioSystem: IOSystem | undefined = undefined;
-    private _physicsSystem: PhysicsSystem | undefined = undefined;
-    private _renderSystem: RenderSystem | undefined = undefined;
-    private _sceneManager: SceneManager | undefined = undefined;
-    private _soundSystem: SoundSystem | undefined = undefined;
-    private _startTime: number;
-    private _width: number = 0;
-    /**
-     * Initializes an Engine object.
-     */
-    private constructor(args: EngineArguments) {
-        this._id = guid();
-        this.setEngineArguments(args);
-        this._messageSystem = new MessageSystem();
-        if (this._messageSystem === undefined) {
-            log(LogLevel.critical, "Engine called MessageSystem.initialization and it failed", 
-                ErrorCode.MessageSystemInitialization);
-            Engine.shutdown();
-        }
-        if (Engine._instance !== undefined) {
-            log(LogLevel.debug, JSON.stringify(Engine._instance));
-            log(LogLevel.critical, "Engine already has an instance in the class", ErrorCode.EngineRunning);
-            Engine.shutdown();
-        }
-        if (!Engine._started) {
-            log(LogLevel.critical, "The engine instance must be started from the start function", 
-                ErrorCode.EngineStartedEarly);
-            Engine.shutdown();
-        }
-        Engine._instance = this;
-        this._client = Client.Console;
-        if (typeof(window) !== "undefined") { // There is a window; we are in the browser
-            const w = (window as any);
-            if (w.process !== undefined 
-                && w.process.versions !== undefined 
-                && w.process.versions.electron !== undefined) {
-                this._client = Client.Electron;
-            } else if (typeof(document) !== "undefined") {
-                this._client = Client.Browser;
-                this._container = document.getElementsByTagName("body")[0];
-            } else {
-                log(LogLevel.critical, "the 'document' object is undefined", ErrorCode.ContainerUndefined);
-                Engine.shutdown();
-            }
-        } else {
-            log(LogLevel.warning, "the 'window' object is not globally defined. If using Electron,"
-                + " make sure you are calling this in the render process", ErrorCode.WindowUndefined);
-        }
-        this._startTime = Date.now();
-        this._last = this._startTime;
+    private _framesThisSecond: number = 0;
+    private _fps: number = -1;
+    private _running: boolean = false;
+    private _basicShader: BasicShader | null = null;
+    private _sprite: Sprite | undefined;
+    private _projection: Matrix4 | undefined;
+    private _gameWidth?: number;
+    private _gameHeight?: number;
+    public static get instance(): Engine {
+        return Engine._instance;
     }
-    /**
-     * This is the intialization, startup and begins running the game engine. The engine can only be setup and started 
-     * through this function.
-     * @param  {EngineArguments} args
-     * @returns void
-     */
-    public static start(args: EngineArguments): void {
-        Engine._started = true;
-        log(LogLevel.debug, "Engine Arguments:" + JSON.stringify(args));
-        new Engine(args);
-        if (Engine._instance === undefined) {
-            log(LogLevel.critical, "Engine was not initialized immediately after constructor called", 
-                ErrorCode.EngineInstanceUndefined);
+    private constructor(width?: number, height?: number) {
+        GLUtility.initialize();
+        if (!GLUtility.instance) {
+            log(LogLevel.error, "GLUtility class was not initialized.", ErrorCode.GLUtilityNotInitialized);
         }
-        Engine._instance!.gameWindow = new GameWindow(args.title, Engine._instance!.client, 
-            Engine._instance!._container!);
-        if (!Engine._instance!._container) Engine._instance!._container = GameWindow.container!;
-        Engine._running = true;
-        log(LogLevel.debug, "Engine started");
-        /**
-         * Start subsystems. This is where the rest of the systems `.start()` functions get called. 
-         * *Message system started in Constructor*
-         * They are held in reference by the engine. As it will shut everything down as well.
-         */
-        Engine._instance!._renderSystem = RenderSystem.initialize({width: GameWindow.width, height: GameWindow.height, 
-            scenes: args.scenes});
-        if (Engine._instance!._renderSystem === undefined) {
-            log(LogLevel.critical, "Render system was not initialized immediately after constructor called", 
-                ErrorCode.RenderSystemUndefined);
-        }
-        Engine._instance!._physicsSystem = PhysicsSystem.initialize();
-        if (Engine._instance!._physicsSystem === undefined) {
-            log(LogLevel.critical, "Phyiscs System was not initialized properly.", ErrorCode.PhysicsSystemUndefined);
-            Engine.shutdown();
-        }
-        Engine._instance!._soundSystem = SoundSystem.initialize();
-        if (Engine._instance!._soundSystem === undefined) {
-            log(LogLevel.critical, "Sound System was not initialized properly.", ErrorCode.SoundSystemUndefined);
-            Engine.shutdown();
-        }
-        Engine._instance!._ioSystem = IOSystem.initialize();
-        if (Engine._instance!._ioSystem === undefined) {
-            log(LogLevel.critical, "IO System was not initialized properly.", ErrorCode.IOSystemUndefined);
-            Engine.shutdown();
-        }
+        this._gameWidth = width;
+        this._gameHeight = height;
+        this.resize();
+        AssetManager.initialize();
+        ZoneManager.initialize();
+        InputManager.initialize();
+        AudioManager.initialize();
+        CollisionManager.initialize();
+        ComponentManager.registerBuilder(new SpriteComponentBuilder());
+        ComponentManager.registerBuilder(new AnimatedSpriteComponentBuilder());
+        ComponentManager.registerBuilder(new CollisionComponentBuilder());
+        BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
+        BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());
+        BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
+        BehaviourManager.registerBuilder(new PlayerBehaviourBuilder());
+        Engine._instance = this;
+    }
+    public static play(): void {
+        Engine._instance._running = true;
+        GLUtility.gl.clearColor(146 / 255, 206 / 255, 247 / 255, 1);
+        GLUtility.gl.enable(GLUtility.gl.BLEND);
+        GLUtility.gl.blendFunc(GLUtility.gl.SRC_ALPHA, GLUtility.gl.ONE_MINUS_SRC_ALPHA);
+        Engine._instance!._last = performance.now();
+        Engine._instance.loop();
+    }
+    public static start({assets, width, height}: {assets: any, width?: number, height?: number} = {assets: {}}): void {
+        new Engine(width, height);
+        Engine.instance._basicShader = new BasicShader();
+        Engine.instance._basicShader.use();
+        Engine.instance.loadAssets(assets);
+        Engine.instance._projection = Matrix4.orthographic(0, GLUtility.instance.canvas.width, 0, 
+            GLUtility.instance.canvas.height, -100.0, 100.0);
+        ZoneManager.changeZone(0);
+        Message.subscribe(MessageType.MOUSE_DOWN, Engine.instance);
         Engine.play();
     }
-    /**
-     * This stops the engine and calls the shutdown. Once the engine is stopped
-     * a new engine will need to be setup through the start function.
-     * @see Engine.start
-     * @returns void
-     */
     public static stop(): void {
-        Engine._running = false;
+        Engine._instance._running = false;
+        Engine._instance.shutdown();
     }
-    /**
-     * Begins running the engine.
-     * @returns void
-     */
-    public static play(): void {
-        if (Engine._instance === undefined) {
-            log(LogLevel.critical, "Tried to play a null engine", ErrorCode.EngineInstanceUndefined);
+    public resize(): void {
+        if (GLUtility.instance.canvas !== undefined) {
+            GLUtility.instance.canvas.width = (this._gameWidth !== undefined) ? this._gameWidth : window.innerWidth;
+            GLUtility.instance.canvas.height = (this._gameHeight !== undefined) ? this._gameHeight : window.innerHeight;
+            GLUtility.instance.canvas.style.width = `${this._gameWidth}px`;
+            GLUtility.instance.canvas.style.height = `${this._gameWidth}px`;
+            GLUtility.gl.viewport(0, 0, GLUtility.instance.canvas.width, GLUtility.instance.canvas.height);
+            this._projection = Matrix4.orthographic(0, GLUtility.instance.canvas.width, 
+                GLUtility.instance.canvas.height, 0, -100.0, 100.0);
         }
-        // NOTE: This should be called on typescript recompilation!! Flag for this?
-        // if (!Engine._running && Engine._instance!._engineArguments !== undefined) {
-        //     Engine.start(this._instance!._engineArguments); // Restart the engine
-        // }
-        Engine._running = true; // Start running
-        Engine._instance!._last = this._instance!.timestamp(); // Sets the last timestep to now (for the first frame)
-        // Call the first frame update - End of the function
-        if (this.client === Client.Browser) Engine._instance!.browserFrame();
-        else if (this.client === Client.Electron) Engine._instance!.electronFrame();
-        else if (this.client === Client.Console) Engine._instance!.consoleFrame();
-        else log(LogLevel.error, "Client has not been set by the engine.", ErrorCode.EngineClientNotSet);
     }
-    /**
-     * Pauses the engine running.
-     * @returns void
-     */
-    public static pause(): void {
-        Engine._running = false;
-    }
-    /**
-     * Shutsdown the engine completely. The entire application should close on 
-     * this call.
-     * @returns void
-     */
-    public static shutdown(): void {
-        if (!Engine._started && !Engine._running && Engine._instance === undefined) { // NOTE: This can silently fail
-            log(LogLevel.warning, "Engine instance null on shutdown call", ErrorCode.EngineInstanceUndefined);
+    public loadAssets(assets: any): void {
+        if (assets.zones === undefined) {
+            throw new Error(`No zones given. There were no zones given and therefore none to load.`);
         }
-        if (Engine._started && Engine._running) Engine.stop();
-        if (Engine._instance !== undefined) {
-            Engine._instance!.cleanup();
-            Engine._started = false;
-            Engine._exit = true;
-            if (Engine._instance!._client === Client.Electron) {
-                const remote = require("electron").remote;
-                const win = remote.getCurrentWindow();
-                win.close();
+        (assets.zones as Array<Object>).forEach((a: any) => {
+            if (a.path !== undefined) {
+                ZoneManager.registerZone(String(a.path));
             }
-            log(LogLevel.debug, `Engine.shutdown() set Engine instance to: ${this._instance}`);
-            this._instance = undefined;
-            log(LogLevel.debug, `Engine.shutdown() set Engine instance to: ${this._instance}`);
-        } else {
-            // tslint:disable-next-line:max-line-length
-            log(LogLevel.warning, "Engine instance is 'undefined'. It has already been shutdown.", ErrorCode.EngineInstanceUndefined);
+        });
+        if (assets.materials !== undefined) {
+            (assets.materials as Array<Object>).forEach((a: any) => {
+                if (a.name !== undefined && a.path !== undefined) {
+                    MaterialManager.registerMaterial(new Material(String(a.name), String(a.path), Color.white));
+                }
+            });
+        }
+        if (assets.sounds !== undefined) {
+            (assets.sounds as Array<Object>).forEach((a: any) => {
+                if (a.name !== undefined && a.path !== undefined) {
+                    AudioManager.loadSoundFile(String(a.name), String(a.path), (a.loop !== undefined) ? a.loop : false);
+                }
+            });
         }
     }
-    /**
-     * Message handler.
-     * @param  {Message} message
-     * @returns void
-     */
+    public loop(): void {
+        if (!Engine._instance._running) {
+            console.warn("Enigne is not running. Please call start before running the loop.");
+            return;
+        }
+        this.resize();
+        let now = performance.now();
+        if (now > (Engine._instance._last + 2000)) { // update every second
+            Engine._instance._fps = 0.25 * Engine._instance._framesThisSecond; // new FPS
+            console.debug(`FPS: ${Engine._instance!._fps}`);
+            Engine._instance._last = now;
+            Engine._instance._framesThisSecond = 0;
+        }
+        let delta: number = (now - Engine._instance!._last) / 1000;
+        MessageBus.update(delta);
+        ZoneManager.update(delta);
+        CollisionManager.update(delta);
+        Engine._instance.update(delta);
+        Engine._instance._framesThisSecond++;
+        requestAnimationFrame(this.loop.bind(this));
+    }
+    public update(delta: number): void {
+        // console.log(`Delta: ${delta}`);
+        GLUtility.gl.clear(GLUtility.gl.COLOR_BUFFER_BIT);
+        ZoneManager.render(this._basicShader!);
+        let projectionPosition = this._basicShader!.getUniformLocation("u_projection");
+        GLUtility.gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection!.matrix));
+        
+    }
     public onMessage(message: Message): void {
-        let obj = JSON.parse(message.data);
-        if (obj.hasOwnProperty("threeScene")) { // Handling a DScene Message
-            // NOTE: Handle as a DScene message
-            log(LogLevel.debug, `Loading scene: ${obj.name}`);
-            this._sceneManager!.loadScene(obj); // TODO: Remove the scene manager here. Only available in the renderer.
-        }  else if (obj.hasOwnProperty("transform")) { // Handling an Entity Message
-            // NOTE: Handle as a DScene message
+        if (message.code === "MOUSE_UP") {
+            // let context = message.context as MouseContext;
+            // document.title = `Position ${context.position.x}, ${context.position.y}`;
+        } else if (message.code === "MOUSE_DOWN") {
+            let context = message.context as MouseContext;
+            AudioManager.playSound("zone1");
         }
     }
-    /**
-     * Sends a message to the engine stream.
-     * @param  {string} data
-     * @param  {MessageType} type
-     * @param  {boolean} single?
-     * @returns void
-     */
-    public sendMessage(data: string, type: MessageType, single?: boolean): void {
-        this._systemStream.write(new Message(data, type, single));
+    private cleanup(): void  {
+        this._sprite!.destroy();
     }
-    /**
-     * Call's system shutdown files.
-     * Call in reverese order of startup.
-     * @returns void
-     */
-    private cleanup(): void {
-        log(LogLevel.debug, "Engine cleanup called");
-        try {
-            Engine._instance!._ioSystem!.shutdown();
-            Engine._instance!._soundSystem!.shutdown();
-            Engine._instance!._physicsSystem!.shutdown();
-            Engine._instance!._renderSystem!.shutdown();
-            this._messageSystem!.destroy();
-        } catch (e) {
-            console.trace(e);
-            log(LogLevel.warning, `Cleanup on Engine cleanup failed. NOTE: TypeScript "should" clean this`, 
-                ErrorCode.EngineCleanupFailed);
-        }
-    }
-    /**
-     * Main update loop. Updates the system streams with a message pipeline. Calls all other system updates.
-     * @returns void
-     */
-    private update(delta: number): void {
-        log(LogLevel.debug, `Update loop | delta = ${delta}`);
-        // REVIEW: Is this what's causing the delay on build?
-        // TODO: Test this here.
-        Stream.pipeline(this._messageSystem, Engine._instance!._ioSystem!.systemStream, 
-            Engine._instance!._physicsSystem!.systemStream, Engine._instance!._soundSystem!.systemStream,
-            Engine._instance!._renderSystem!.systemStream);
-        Engine._instance!._ioSystem!.update(delta);
-        Engine._instance!._physicsSystem!.update(delta);
-        Engine._instance!._soundSystem!.update(delta);
-        Engine._instance!._renderSystem!.update(delta);
-    }
-    /**
-     * Browser game loop.
-     * @returns void
-     */
-    private browserFrame(): void {
-        if (!Engine._running) return;
-        else {
-            Engine._instance!._now = Engine._instance!.timestamp();
-            if (Engine._instance!._now > (Engine._instance!._last + 1000)) { // update every second
-                Engine._instance!._fps = 0.25 * Engine._instance!._framesThisSecond; // new FPS
-                Engine._instance!._framesThisSecond = 0;
-            }
-            log(LogLevel.debug, `FPS: ${Engine._instance!._fps}`);
-            let delta: number = (Engine._instance!._now - Engine._instance!._last) / 1000;
-            Engine._instance!.update(delta);
-            Engine._instance!._last = Engine._instance!._now;
-            Engine._instance!._framesThisSecond++;
-            requestAnimationFrame(Engine._instance!.browserFrame);
-        }
-    }
-    /**
-     * Electron game loop.
-     * @returns void
-     */
-    private electronFrame(): void {
-        if (!Engine._running) return;
-        else {
-            Engine._instance!._now = Engine._instance!.timestamp();
-            if (Engine._instance!._now > (Engine._instance!._last + 1000)) { // update every second
-                Engine._instance!._fps = 0.25 * Engine._instance!._framesThisSecond; // new FPS
-                let delta: number = (Engine._instance!._now - Engine._instance!._last) / 1000;
-                Engine._instance!.update(delta);
-                Engine._instance!._last = Engine._instance!._now;
-                Engine._instance!._framesThisSecond = 0;
-            }
-            Engine._instance!._framesThisSecond++;
-            window.requestAnimationFrame(Engine._instance!.browserFrame);
-        }
-    }
-    /**
-     * Gets the hour time in milliseconds.
-     * @returns number
-     */
-    private hrtimeMs(): number {
-        let time = process.hrtime();
-        return time[0] * 1000 + time[1] / 1000000;
-    }
-    /**
-     * Console game loop.
-     * @returns void
-     */
-    private consoleFrame(): void {
-        if (!Engine._running) return;
-        else {
-            // setTimeout(this.consoleFrame, 1000 / this._fps);
-            // tslint:disable-next-line: max-line-length
-            setTimeout(() => Engine._instance!.consoleFrame(), 1000 / this._fps); // NOTE: Goes infinite unless stopped externally
-            Engine._instance!._now = Engine._instance!.hrtimeMs();
-            let delta = (Engine._instance!._now - Engine._instance!._last) / 1000;
-            Engine._instance!.update(delta); // game logic would go here
-            Engine._instance!._last = Engine._instance!._now;
-        }
-    }
-    /**
-     * Sets the engine arguments to the engine. This is setup at initial run
-     * and saved in the engine for restarting the engine.
-     * @param  {EngineArguments} args
-     * @returns void
-     */
-    private setEngineArguments(args: EngineArguments): void {
-        this._engineArguments = args;
-        this._fps = this._engineArguments.fps;
-        process.env.NODE_DEBUG = (args.debug) ? "true" : "false"; 
-        // TODO: Set a debugging variable or something for Browser/Electron
-    }
-    /**
-     * Gets the current timestamp.
-     * @returns number
-     */
-    private timestamp(): number {
-        return new Date().getTime();
+    private shutdown(): void {
+        this.cleanup();
     }
 }

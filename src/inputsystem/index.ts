@@ -1,3 +1,3 @@
-export * from "./iosystem";
-export * from "./key";
-export * from "./filetype";
+export * from "./keys";
+export * from "./inputmanager";
+export * from "./mousecontext";

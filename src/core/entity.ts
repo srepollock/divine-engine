@@ -1,342 +1,172 @@
-import * as three from "three";
-import { Component } from "../components/component";
-import { Vector3 } from "../math";
-import { DObject } from "./dobject";
-import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
-import { Message, MessageType } from "./messagesystem/src";
+import { IBehaviour } from "../behaviours/ibehaviour";
+import { IComponent } from "../components/icomponent";
+import { Transform } from "../core/transform";
+import { guid } from "../helper/guid";
+import { Matrix4 } from "../math/matrix4";
+import { Vector3 } from "../math/vector3";
+import { Shader } from "../rendersystem/shader";
+import { Scene } from "../scene/scene";
 
-/**
- * The Divine's entity object for game objects. The engine uses a Scene->
- * Entity->Component system for all game objects for easy object manipulation
- * and game object creation.
- */
-export class Entity extends DObject {
-    public name: string;
-    public components: Array<Component>;
-    public children: Array<Entity>;
-    public transform: Vector3;
-    private _geometry?: three.Geometry | undefined;
-    private _mesh?: three.Mesh | undefined;
-    private _material?: three.Material | undefined;
-    private _parent: string;
-    private _ready: boolean = false;
-    private _sprite?: three.Sprite | undefined;
-    private _texture?: three.Texture | undefined;
-    /**
-     * Gets if the entity is ready to render or not.
-     * @returns boolean
-     */
-    public get ready(): boolean {
-        return this._ready;
+export class Entity {
+    public transform: Transform = new Transform();
+    private _id: string;
+    private _name: string;
+    private _tag: string;
+    private _children: Array<Entity> = new Array();
+    private _components: Array<IComponent> = new Array();
+    private _behaviours: Array<IBehaviour> = new Array();
+    private _isLoaded: boolean = false;
+    private _parent: Entity | undefined;
+    private _localMatrix: Matrix4 = new Matrix4();
+    private _worldMatrix: Matrix4 = new Matrix4();
+    private _scene: Scene | undefined;
+    private _isVisible: boolean = true;
+    public get id(): string {
+        return this._id;
     }
-    /**
-     * Gets the mesh from the class. Check if this is undefined before using.
-     * 
-     * Use in 3D Games.
-     * @returns Mesh
-     */
-    public get mesh(): three.Mesh | undefined {
-        return this._mesh;
+    public get isLoaded(): boolean {
+        return this._isLoaded;
     }
-    /**
-     * Gets the sprite from the class. Check if this is undefined before using.
-     * 
-     * Use in 2D games.
-     * @returns Sprite
-     */
-    public get sprite(): three.Sprite | undefined {
-        return this._sprite;
+    public set isVisible(value: boolean) {
+        this._isVisible = value;
     }
-    /**
-     * Entity constructor
-     * @param {string} name
-     * @param {string} tag
-     * @param {Vector3} transform
-     * @param {three.Geometry|three.BoxGeometry|three.SphereGeometry} geometry
-     * @param {three.Material|three.MeshBasicMaterial|three.SpriteMaterial} material
-     * @param {Array<Component>} components Entities components as an array attached to the object.
-     * These can be engine default components or user defined components. 
-     * Any new component that derives from the base Component class can be used 
-     * here.
-     * @see Component
-     * @param {Array<Entity>} children Entities child objects as there can be children attached 
-     * to the entity.
-     * @param {parent} parent
-     */
-    constructor({name, tag, transform, geometry, material, sprite, texture, components, children, parent}: {
-        name?: string,
-        tag?: string,
-        transform?: Vector3,
-        geometry?: three.Geometry | three.BoxGeometry | three.SphereGeometry,
-        material?: three.Material | three.MeshBasicMaterial | three.SpriteMaterial,
-        sprite?: three.Sprite,
-        texture?: string,
-        components?: Array<Component>,
-        parent?: Entity,
-        children?: Array<Entity>
-    } = {}) {
-        super(tag);
-        this.name = (name) ? name : `${this.tag + " " + this.id}`;
-        this.transform = (transform) ? transform : new Vector3();
-        this.determineRenderObjects(geometry, sprite, material, texture);
-        this.components = (components) ? components : new Array();
-        log(LogLevel.debug, `Setting parent of ${this.id} to ${parent}`);
-        this._parent = (parent) ? parent.id : "";
-        this.children = (children) ? children : new Array();
-        for (let i in this.children) {
-            this.children[i].setParent(this);
-        }
-        if ((this._geometry && this._material) || (this._texture && this._material && this._sprite)) {
-            this._ready = true;
-        }
+    public get isVisible(): boolean {
+        return this._isVisible;
     }
-    /**
-     * Gets the parent object's ID.
-     * @returns (parent object's ID | "")
-     */
-    public get parent(): string {
-        if (this._parent !== "") return this._parent;
-        log(LogLevel.error, `You tried to get the parent of ${this.id} that has no parent`, 
-            ErrorCode.EntityParentUndefined);
-        return "";
+    public get parent(): Entity | undefined {
+        return this._parent;
     }
-    /**
-     * Sets parent object of entity.
-     * @param  {Entity} entity
-     */
-    public setParent(entity: Entity): void {
-        this._parent = entity.id;
+    public get localMatrix(): Matrix4 {
+        return this._localMatrix;
     }
-    /**
-     * Removes the parent from the entity.
-     * @returns void
-     */
-    public removeParent(): void {
-        this._parent = "";
+    public get worldMatrix(): Matrix4 {
+        return this._worldMatrix;
     }
-    /**
-     * Adds a child to the array
-     * @param  {Entity} entity
-     * @returns void
-     */
-    public addChild(entity: Entity): void {
-        if (!this.hasChild(entity.id)) {
-            entity.setParent(this);
-            this.children!.push(entity);
-        } else {
-            log(LogLevel.error, `${this.id} already has child ${entity.id}`, ErrorCode.EntityAlreadyHasChild);
-        }
+    constructor({ name, tag, scene}: { name: string; tag?: string; scene?: Scene}) {
+        this._id = guid();
+        this._name = name;
+        this._tag = (tag) ? tag : "";
+        this._scene = (scene) ? scene : undefined;
     }
-    /**
-     * Add multiple children to the object.
-     * @param  {Array<Entity>} entities
-     * @returns void
-     */
-    public addChildren(entities: Array<Entity>): void {
-        entities.forEach((entity) => {
-            this.addChild(entity);
+    public addChild(child: Entity): void {
+        child.onAdded(this._scene!);
+        child._parent = this;
+        this._children.push(child);
+    }
+    public addComponent(component: IComponent): void {
+        component.setOwner(this);
+        this._components.push(component);
+    }
+    public addBehaviour(behaviour: IBehaviour): void {
+        behaviour.setOwner(this);
+        this._behaviours.push(behaviour);
+    }
+    public load(): void {
+        this._isLoaded = true;
+        this._children.forEach((child) => {
+            child.load();
+        });
+        this._components.forEach((component) => {
+            component.load();
         });
     }
-    /**
-     * Add a component to the entity. There can only be one instance of a 
-     * component type on the object at one time. This will log an error if
-     * there is a breach of this rule.
-     * @param  {Component} component The component to be added.
-     * @returns void
-     */
-    public addComponent(component: Component): void {
-        if (!this.hasComponent(component.tag)) {
-            this.components!.push(component);
-        } else {
-            // tslint:disable-next-line:max-line-length
-            log(LogLevel.error, `This entity object alread has the ${component.id} attached.`, ErrorCode.EntityAlreadyHasComponent);
-        }
-    }
-    /**
-     * Add multiple components as an array to the entity object.
-     * @param  {Array<Component>} ...components
-     */
-    public addComponents(components: Array<Component>): void {
-        for (let comp of components) {
-            this.addComponent(comp);
-            // this.components!.push(comp);
-        }
-    }
-    /**
-     * Called on the entity to add it to the scene. This will handle 2D or 3D, but it's called within the DScene.
-     * @see DScene
-     * @returns any
-     */
-    public addToScene(): three.Sprite | three.Mesh {
-        if (this._sprite && !this._geometry) {
-            return this._sprite!;
-        } else {
-            return this._mesh!;
-        }
-    }
-    /**
-     * 
-     * @override DObject.asMessage
-     * @returns string
-     */
-    public asMessage(): string {
-        
-        let message: string = "";
-        message += this.name;
-        this.components.forEach((component) => {
-            message += component.asMessage();
+    public getBehaviourByName(name: string): IBehaviour | undefined {
+        this._behaviours.forEach((b) => {
+            if (b.name === name) return b;
         });
-        message += this.children;
-        message += this.transform;
-        message += this._geometry;
-        message += this._mesh;
-        message += this._material;
-        message += this._parent;
-        message += this._ready;
-        message += this._sprite;
-        message += this._texture!.toString();
-        return message;
-    }
-    /**
-     * Checks if the entity has the child or not.
-     * @param  {string} id Entity unique id
-     * @returns boolean
-     */
-    public hasChild(id: string): boolean {
-        // https://stackoverflow.com/questions/46348749/ts-property-find-does-not-exist-on-type-myarray
-        // let entity = this.children.find((e) => e.id === id);
-        let entity = this.children.filter((e) => e.id === id).shift();
-        if (entity !== undefined) return true;
-        else return false;
-    }
-    /**
-     * Checks if the entity has the component or not.
-     * REVIEW: This should be searching by ID
-     * @param  {string} type Component tag name
-     * @returns boolean
-     */
-    public hasComponent(type: string): boolean {
-        let comp = this.components!.filter((comp) => comp.tag! === type).shift();
-        if (comp !== undefined) return true;
-        else return false;
-    }
-    /**
-     * Gets child entity from children.
-     * TODO: This should be handled in hasChild(string). There needs to be 
-     * another way of doing this.
-     * @param  {string} id
-     * @returns Entity
-     */
-    public getChild(id: string): Entity | undefined {
-        let entity = this.children!.filter((entity) => entity.id === id).shift();
-        if (entity !== undefined) { 
-            return entity!;
-        } else {
-            log(LogLevel.warning, `Child ${id} not found`, ErrorCode.EntityChildNotFound);
-            return undefined;
-        }
-    }
-    /**
-     * Gets all the children from the object.
-     * @returns Array
-     */
-    public getChildren(): Array<Entity> {
-        return this.children;
-    }
-    /**
-     * Gets the component named that is attached to the entity.
-     * @param  {string} type
-     * @returns Component | undefined
-     */
-    public getComponent(type: string): Component | undefined {
-        let comp = this.components!.filter((comp) => comp.tag! === type).shift();
-        if (comp !== undefined) { 
-            return comp!;
-        } else {
-            log(LogLevel.warning, "Component not found", ErrorCode.EntityComponentNotFound);
-            return undefined;
-        }
-    }
-    /**
-     * Returns the object as a string.
-     * @returns string
-     */
-    public toString(): string {
-        let objectString = `Entity [id:${this.id}]`;
-        log(LogLevel.debug, objectString);
-        return objectString;
-    }
-    /**
-     * Udpates the current object
-     * @param  {number} delta
-     * @returns void
-     */
-    public update(delta: number): void {
-        this.messageQueue.forEach((element) => {
-            this.onMessage(element);
+        this._children.forEach((b) => {
+            let behaviour = b.getBehaviourByName(name);
+            if (behaviour !== undefined) return behaviour;
         });
-        this.messageQueue = new Array<Message>();
+        return undefined;
     }
-    /**
-     * Entity message handler. This is how the Entity class handles the messages from the system.
-     * @override DObject.onMessage
-     * @param  {Message} message
-     * @returns void
-     */
-    public onMessage(message: Message): void {
-        let data = JSON.parse(message.data);
-        switch (message.type) {
-            case MessageType.Asset:
-                if (data.id === this.id && data.texture) {
-                    this.updateSprite(data.texture);
+    public getComponentByName(name: string): IComponent | undefined {
+        for (let c of this._components) {
+            if (c.name === name) return c;
+        }
+        for (let c of this._children) {
+            let component = c.getComponentByName(name);
+            if (component !== undefined) return component;
+        }
+        return undefined;
+    }
+    public getObjectByName(name: string): Entity | undefined {
+        if (this._name === name) {
+            return this;
+        } else {
+            this._children.forEach((child) => {
+                let result = child.getObjectByName(name);
+                if (result !== undefined) {
+                    return result;
                 }
-                break;
-            default:
-                log(LogLevel.debug, `Entity.${this.id} discarded a message`);
-                break;
+            });
+        }
+        console.warn(`Entity ${name} could not be found.`);
+        return undefined;
+    }
+    public getWorldPosition(): Vector3 {
+        return new Vector3(this._worldMatrix.matrix[12], this._worldMatrix.matrix[13], this._worldMatrix.matrix[14]);
+    }
+    public removeChild(child: Entity): void {
+        let index = this._children.indexOf(child);
+        if (index !== -1) {
+            child._parent = undefined;
+            this._children.splice(index, 1);
         }
     }
-    /**
-     * Determines what to set the rendering objects to.
-     * The RenderSystem handles which is used for rendering.
-     * @param  {three.Geometry|three.BoxGeometry|three.SphereGeometry|undefined} geometry
-     * @param  {three.Sprite|undefined} sprite
-     * @param  {three.Material|three.MeshBasicMaterial|three.SpriteMaterial|undefined} material
-     * @param  {string|undefined} texture
-     * @returns void
-     */
-    private determineRenderObjects(
-        geometry: three.Geometry | three.BoxGeometry | three.SphereGeometry | undefined, 
-        sprite: three.Sprite | undefined, 
-        material: three.Material | three.MeshBasicMaterial | three.SpriteMaterial | undefined, 
-        texture: string | undefined): void {
-        if (geometry !== undefined && sprite !== undefined) {
-            log(LogLevel.warning, 
-                `Both Geometry and Sprite cannot be defined for the same object. Defaulting to default sprite.`);
-            this._texture = new three.Texture();
-            this._material = new three.SpriteMaterial({ map: this._texture, color: 0xffffff });
-            this._sprite = new three.Sprite(this._material as three.SpriteMaterial);
-        } else if (!geometry && (sprite || material || texture)) {
-            this.sendMessage(JSON.stringify({ id: this.id, url: texture }), MessageType.IO, true);
-        } else if ((geometry || material) && !sprite) {
-            this._geometry = (geometry) ? geometry : new three.BoxGeometry(1, 1, 1);
-            this._material = (material) ? material : new three.MeshBasicMaterial({ color: 0xff0000 });
-            this._mesh = new three.Mesh(this._geometry, this._material);
+    public removeComponent(name: string): void {
+        let component: IComponent | undefined = this.getComponentByName(name);
+        if (component === undefined) {
+            console.warn(`Component ${name} could not be found on entity ${this._name}.`);
+            return;
+        }
+        let index = this._components.indexOf(component!);
+        if (index !== -1) {
+            this._components.splice(index, 1);
+        }
+    }
+    public render(shader: Shader): void {
+        if (this._isVisible) {
+            this._components.forEach((component) => {
+                component.render(shader);
+            });
+            this._children.forEach((child) => {
+                child.render(shader);
+            });
+        }
+    }
+    public update(delta: number): void {
+        this._localMatrix = this.transform.getTransformMatrix(); // Not fast; only run when it has changed
+        this.updateWorldMatrix((this._parent !== undefined) ? this._parent.worldMatrix : undefined);
+        this._components.forEach((component) => {
+            component.update(delta);
+        });
+        this._behaviours.forEach((behaviour) => {
+            behaviour.update(delta);
+        });
+        this._children.forEach((child) => {
+            child.update(delta);
+        });
+    }
+    public updateReady(): void {
+        this._components.forEach((component) => {
+            component.updateReady();
+        });
+        this._behaviours.forEach((behaviour) => {
+            behaviour.updateReady();
+        });
+        this._children.forEach((child) => {
+            child.updateReady();
+        });
+    }
+    protected onAdded(scene: Scene): void {
+        this._scene = scene;
+    }
+    private updateWorldMatrix(parentWorldMatrix: Matrix4 | undefined): void {
+        if (parentWorldMatrix !== undefined) {
+            this._worldMatrix = Matrix4.multiply(parentWorldMatrix, this._localMatrix);
         } else {
-            log(LogLevel.warning, `Entity was not given a sprite or geometry. Creating default sprite.`);
-            this._texture = new three.Texture();
-            this._material = new three.SpriteMaterial({ map: this._texture, color: 0xffffff });
-            this._sprite = new three.Sprite(this._material as three.SpriteMaterial);
+            Matrix4.copy(this._worldMatrix, this._localMatrix);
         }
-    }
-    /**
-     * Updates the Sprite for the Entity. Called when the message is sent to the Entity containing texture data.
-     * @param  {three.Texture} texture
-     */
-    private updateSprite(texture: three.Texture): void {
-        this._texture = (texture) ? texture : new three.Texture();
-        this._material = new three.SpriteMaterial({ map: this._texture, color: 0xffffff });
-        this._sprite = new three.Sprite(this._material as three.SpriteMaterial);
-        this._ready = true; // NOTE: Texture finally loaded on a Sprite Entity
     }
 }

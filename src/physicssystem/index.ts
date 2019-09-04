@@ -1,1 +1,2 @@
-export * from "./physicssystem";
+export * from "./collisiondata";
+export * from "./collisionmanager";

@@ -1,8 +1,7 @@
-import { Engine, EngineArguments } from "../../../src/core";
+import { Engine } from "../../../src/core";
 process.env.NODE_DEBUG = "true";
 describe("Engine Class Unit Tests", () => {
-    let engArgs: EngineArguments = JSON.parse(JSON.stringify({width: 100, height: 100, debug: false}));
-    Engine.start(engArgs);
+    Engine.start();
     it("should not throw an exception on getting the instance", () => {
         expect(() => {Engine.instance!; }).not.toThrowError();
     });
