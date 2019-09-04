@@ -14,7 +14,7 @@ export abstract class Behaviour implements IBehaviour {
 
     }
     public setFromJson(json: any): void {
-        throw new Error("Method not implemented.");
+        
     }
     public setOwner(owner: Entity): void {
         this._owner = owner;

@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { IBehaviourData } from "./ibehaviourdata";
 
 export class KeyboardMovementBehaviourData implements IBehaviourData {
@@ -5,7 +6,7 @@ export class KeyboardMovementBehaviourData implements IBehaviourData {
     public speed: number = 1;
     public setFromJson(json: any): void {
         if (json.name === undefined) {
-            throw new Error(`Name must be defined in behaviour data.`);
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
         }
         if (json.speed !== undefined) {
             this.speed = Number(json.speed);

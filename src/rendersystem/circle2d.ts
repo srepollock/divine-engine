@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { Vector2 } from "../math/vector2";
 import { IShape2D } from "./ishape2d";
 import { Rectangle2D } from "./rectangle2d";
@@ -17,7 +18,7 @@ export class Circle2D implements IShape2D {
             this.origin.setFromJson(json.origin);
         }
         if (json.radius === undefined) {
-            throw new Error(`Rectangle requires radius to be set.`);
+            log(LogLevel.error, `Circle requires radius to be set.`, ErrorCode.NoRadius);
         } else {
             this.radius = json.radius;
         }

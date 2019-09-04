@@ -1,5 +1,6 @@
 import { Vector2 } from "../math/vector2";
 import { IBehaviourData } from "./ibehaviourdata";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 
 export class PlayerBehaviourData implements IBehaviourData {
     public name!: string;
@@ -12,29 +13,33 @@ export class PlayerBehaviourData implements IBehaviourData {
     public maxVelocityY: number = 5;
     public setFromJson(json: any): void {
         if (json.name === undefined) {
-            throw new Error(`Name must be defined in behaviour data.`);
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
         }
         this.name = String(json.name);
         if (json.acceleration !== undefined) {
             this.acceleration.setFromJson(json.acceleration);
         }
         if (json.playerCollisionComponent === undefined) {
-            throw new Error(`playerCollisionComponent must be defined for player collision.`);
+            log(LogLevel.error, `playerCollisionComponent must be defined for player collision.`, 
+                ErrorCode.NoPlayerCollisionComponentName);
         } else {
-            this.playerCollisionComponent = json.playerCollisionComponent;
+            this.playerCollisionComponent = json.playerCollisionComponentName;
         }
         if (json.groundCollisionComponent === undefined) {
-            throw new Error(`groundCollisionComponent must be defined for player collision.`);
+            log(LogLevel.error, `groundCollisionComponent must be defined for player collision.`, 
+                ErrorCode.NoGroundCollisionComponentName);
         } else {
             this.groundCollisionComponent = json.groundCollisionComponent;
         }
         if (json.enemyCollisionComponent === undefined) {
-            throw new Error(`enemyCollisionComponent must be defined for player collision.`);
+            log(LogLevel.error, `enemyCollisionComponent must be defined for player collision.`, 
+                ErrorCode.NoEnemyCollisionComponentName);
         } else {
             this.enemyCollisionComponent = json.enemyCollisionComponent;
         }
         if (json.animatedSpriteName === undefined) {
-            throw new Error(`animatedSpriteName must be defined for player collision.`);
+            log(LogLevel.error, `animatedSpriteName must be defined for player collision.`, 
+                ErrorCode.NoAnimatedSpriteName);
         } else {
             this.animatedSpriteName = String(json.animatedSpriteName);
         }

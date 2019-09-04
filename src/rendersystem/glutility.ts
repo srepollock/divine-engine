@@ -1,3 +1,5 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+
 export class GLUtility {
     public static gl: WebGLRenderingContext;
     private static _instance: GLUtility;
@@ -9,7 +11,7 @@ export class GLUtility {
         this.canvas = document.body.appendChild(document.createElement("canvas"));
         if (this.canvas.getContext("experimental-webgl") === undefined || 
             this.canvas.getContext("experimental-webgl") === null) {
-            throw new Error(`Unable to initialize Experimental WebGL.`);
+            log(LogLevel.error, `Unable to initialize Experimental WebGL.`, ErrorCode.WebGLNotInitialized);
         }
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;

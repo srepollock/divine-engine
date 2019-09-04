@@ -1,6 +1,8 @@
-import { Circle2D, IShape2D } from ".";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { Vector2 } from "../math/vector2";
+import { Circle2D } from "./circle2d";
+import { IShape2D } from "./ishape2d";
 
-import { Vector2 } from "src";
 
 export class Rectangle2D implements IShape2D {
     public height: number = 0;
@@ -24,12 +26,12 @@ export class Rectangle2D implements IShape2D {
             this.origin.setFromJson(json.origin);
         }
         if (json.width === undefined) {
-            throw new Error(`Rectangle requires width to be set.`);
+            log(LogLevel.error, `Rectangle requires width to be set.`, ErrorCode.NoWidth);
         } else {
             this.width = Number(json.width);
         }
         if (json.height === undefined) {
-            throw new Error(`Rectangle requires height to be set.`);
+            log(LogLevel.error, `Rectangle requires height to be set.`, ErrorCode.NoHeight);
         } else {
             this.height = Number(json.height);
         }

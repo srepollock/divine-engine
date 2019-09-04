@@ -1,11 +1,12 @@
 import { BehaviourManager } from "../behaviours/behaviourmanager";
 import { ComponentManager } from "../components/componentmanager";
 import { Entity } from "../core/entity";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { guid } from "../helper";
 import { Shader } from "../rendersystem/shader";
 import { Scene } from "../scene/scene";
+import { ZoneState } from "./zonestate";
 
-import { ZoneState } from ".";
 
 export class Zone {
     private _id: string;
@@ -38,7 +39,7 @@ export class Zone {
     }
     public initialize(zoneData: any): void {
         if (zoneData.objects === undefined) {
-            throw new Error(`Zone initialization error: Zone has no objects data.`);
+            log(LogLevel.error, `Zone initialization error: Zone has no objects data.`, ErrorCode.ZoneHasNoObjects);
         }
         (zoneData.objects as Array<Object>).forEach((obj) => {
             this.loadEntity(obj, this._scene.root);
@@ -70,9 +71,9 @@ export class Zone {
         
     }
     private loadEntity(dataSection: any, parent?: Entity): void {
-        let name: string;
+        let name!: string;
         if (dataSection.name === undefined) {
-            throw new Error(`Zone initialization error: Object has no name.`);
+            log(LogLevel.error, `Zone initialization error: Object has no name.`, ErrorCode.NoName);
         } else {
             name = String(dataSection.name);
         }

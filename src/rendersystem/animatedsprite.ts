@@ -1,5 +1,6 @@
 import { AssetManager } from "../assets/assetmanager";
 import { ImageAsset } from "../assets/imageasset";
+import { log, LogLevel } from "../core/loggingsystem/src";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { Vector2 } from "../math/vector2";
@@ -58,7 +59,8 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
     }
     public setFrame(frameNumber: number): void {
         if (frameNumber >= this._frameCount) {
-            throw new Error(`Frame ${frameNumber} is out of range. FrameCount: ${this._frameCount}`);
+            log(LogLevel.warning, `Frame ${frameNumber} is out of range. FrameCount: ${this._frameCount}`);
+            frameNumber = 0;
         }
         this._currentFrame = frameNumber;
     }

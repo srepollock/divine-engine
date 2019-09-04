@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { Vector3 } from "../math/vector3";
 import { IComponentData } from "./icomponentdata";
 import { SpriteComponentData } from "./spritecomponentdata";
@@ -12,22 +13,26 @@ export class AnimatedSpriteComponentData extends SpriteComponentData implements 
     public setFromJson(json: any): void {
         super.setFromJson(json);
         if (json.frameWidth === undefined) {
-            throw new Error(`AnimatedSpriteComponent requires frameWidth to be defined.`);
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameWidth to be defined.`, 
+                ErrorCode.NoFrameWidth);
         } else {
             this.frameWidth = Number(json.frameWidth);
         }
         if (json.frameHeight === undefined) {
-            throw new Error(`AnimatedSpriteComponent requires frameHeight to be defined.`);
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameHeight to be defined.`,
+                ErrorCode.NoFrameHeight);
         } else {
             this.frameHeight = Number(json.frameHeight);
         }
         if (json.frameCount === undefined) {
-            throw new Error(`AnimatedSpriteComponent requires frameCount to be defined.`);
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameCount to be defined.`,
+                ErrorCode.NoFrameCount);
         } else {
             this.frameCount = Number(json.frameCount);
         }
         if (json.frameSequence === undefined) {
-            throw new Error(`AnimatedSpriteComponent requires frameSequence to be defined.`);
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameSequence to be defined.`,
+                ErrorCode.NoFrameSequence);
         } else {
             this.frameSequence = json.frameSequence;
         }

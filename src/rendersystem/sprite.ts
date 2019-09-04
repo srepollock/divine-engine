@@ -1,5 +1,13 @@
-import { Material, Matrix4, Vector3, Vertex } from "src";
-import { AttributeInfo, GLBuffer, GLUtility, MaterialManager, Shader } from ".";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { Material } from "../core/material";
+import { Matrix4, } from "../math/matrix4";
+import { Vector3 } from "../math/vector3";
+import { Vertex } from "../math/vertex";
+import { AttributeInfo } from "../rendersystem/attributeinfo";
+import { GLBuffer } from "../rendersystem/GLBuffer";
+import { GLUtility } from "../rendersystem/glutility";
+import { MaterialManager } from "../rendersystem/materialmanager";
+import { Shader } from "../rendersystem/shader";
 
 export class Sprite {
     protected _name: string;
@@ -49,7 +57,7 @@ export class Sprite {
     public load(): void {
         this._buffer = new GLBuffer();
         if (this._buffer === null) { 
-            throw new Error("WebGLBuffer is null.");
+            log(LogLevel.error, "WebGLBuffer is null.", ErrorCode.WebGLBuffer);
         }
         let positionAttribute: AttributeInfo = new AttributeInfo(0, 3);
         this._buffer.addAttributeLocation(positionAttribute);

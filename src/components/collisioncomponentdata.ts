@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { Circle2D, IShape2D, Rectangle2D } from "../rendersystem";
 import { IComponentData } from "./icomponentdata";
 
@@ -16,10 +17,11 @@ export class CollisionComponentData implements IComponentData {
             this.static = Boolean(json.static);
         }
         if (json.shape === undefined) {
-            throw new Error(`Collision component data requires shape to be defined.`);
+            log(LogLevel.error, `Collision component data requires shape to be defined.`, ErrorCode.NoShape);
         } else {
             if (json.shape.type === undefined) {
-                throw new Error(`Collision component data requires shape type to be defined.`);
+                log(LogLevel.error, `Collision component data requires shape type to be defined.`, 
+                    ErrorCode.NoShapeType);
             } else {
                 switch (String(json.shape.type).toLowerCase()) {
                     case "rectangle":
@@ -29,7 +31,8 @@ export class CollisionComponentData implements IComponentData {
                         this.shape = new Circle2D();
                         break;
                     default:
-                        throw new Error(`Shape ${String(json.shape.type)} cannot be handled.`);
+                        log(LogLevel.error, `Shape ${String(json.shape.type)} cannot be handled.`, 
+                            ErrorCode.ShapeNotAllowed);
                 }
             }
             this.shape.setFromJson(json.shape);

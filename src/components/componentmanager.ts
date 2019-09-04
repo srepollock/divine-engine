@@ -1,4 +1,6 @@
-import { IComponent, IComponentBuilder } from ".";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { IComponent } from "./icomponent";
+import { IComponentBuilder } from "./icomponentbuilder";
 
 export class ComponentManager {
     private static _registeredBuilders: Map<string, IComponentBuilder> = new Map();
@@ -10,8 +12,9 @@ export class ComponentManager {
             if (ComponentManager._registeredBuilders.get(String(json.type)) !== undefined) {
                 return ComponentManager._registeredBuilders.get(String(json.type).toLowerCase())!.buildFromJson(json);
             }
-            throw new Error(`Component manager error: Type is missing or builder is not registered for type.`);
+            log(LogLevel.error, `Component manager error: Type is missing or builder is not registered for type.`, 
+                ErrorCode.MissingTypeBuilder);
         }
-        throw new Error(`Component type was undefined.`);
+        log(LogLevel.error, `Component type was undefined.`, ErrorCode.TypeUndefined);
     }
 }

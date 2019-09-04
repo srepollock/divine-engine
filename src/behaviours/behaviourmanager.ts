@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";
 
@@ -11,8 +12,9 @@ export class BehaviourManager {
             if (BehaviourManager._registeredBuilders.get(String(json.type)) !== undefined) {
                 return BehaviourManager._registeredBuilders.get(String(json.type).toLowerCase())!.buildFromJson(json);
             }
-            throw new Error(`Behaviour manager error: Type is missing or builder is not registered for type.`);
+            log(LogLevel.error, `Behaviour manager error: Type is missing or builder is not registered for type.`, 
+                ErrorCode.MissingTypeBuilder);
         }
-        throw new Error(`Behaviour type was undefined.`);
+        log(LogLevel.error, `Behaviour type was undefined.`, ErrorCode.TypeUndefined);
     }
 }

@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { Vector2 } from "../math/vector2";
 import { IBehaviourData } from "./ibehaviourdata";
 
@@ -8,7 +9,7 @@ export class AIMovementBehaviourData implements IBehaviourData {
     public direction!: Vector2;
     public setFromJson(json: any): void {
         if (json.name === undefined) {
-            throw new Error(`Name must be defined in behaviour data.`);
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
         }
         this.name = String(json.name);
         if (json.start !== undefined) {

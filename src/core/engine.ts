@@ -98,7 +98,8 @@ export class Engine implements IMessageHandler {
     }
     public loadAssets(assets: any): void {
         if (assets.zones === undefined) {
-            throw new Error(`No zones given. There were no zones given and therefore none to load.`);
+            log(LogLevel.error, `No zones given. There were no zones given and therefore none to load.`, 
+                ErrorCode.LoadAssetFailed);
         }
         (assets.zones as Array<Object>).forEach((a: any) => {
             if (a.path !== undefined) {

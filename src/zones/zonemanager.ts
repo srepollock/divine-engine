@@ -1,5 +1,6 @@
 import { AssetManager } from "../assets/assetmanager";
 import { JsonAsset } from "../assets/jsonasset";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { Shader } from "../rendersystem/shader";
@@ -32,7 +33,7 @@ export class ZoneManager implements IMessageHandler {
                 AssetManager.loadAsset(ZoneManager._registeredZones.get(index)!);
             }
         } else {
-            throw new Error(`Zone ID ${index} does not exist.`);
+            log(LogLevel.error, `Zone ID ${index} does not exist.`, ErrorCode.ZoneDoesNotExist);
         }
     }
     public static update(delta: number): void {
@@ -50,21 +51,21 @@ export class ZoneManager implements IMessageHandler {
     }
     private static loadZone(asset: JsonAsset): void {
         let zoneData = asset.data;
-        let zoneID: number;
+        let zoneID!: number;
         if (zoneData.id === undefined) {
-            throw new Error(`Zone file format exception: Zone ID not valid.`);
+            log(LogLevel.error, `Zone ID not valid.`, ErrorCode.ZoneID);
         } else {
             zoneID = Number(zoneData.id);
         }
-        let zoneName: string;
+        let zoneName!: string;
         if (zoneData.name === undefined) {
-            throw new Error(`Zone file format exception: Zone name not valid.`);
+            log(LogLevel.error, `Zone name not valid.`, ErrorCode.NoName);
         } else {
             zoneName = String(zoneData.name);
         }
-        let zoneDescription: string;
+        let zoneDescription!: string;
         if (zoneData.description === undefined) {
-            throw new Error(`Zone file format exception: Zone description not valid.`);
+            log(LogLevel.error, `Zone description not valid.`, ErrorCode.ZoneDescription);
         } else {
             zoneDescription = String(zoneData.description);
         }

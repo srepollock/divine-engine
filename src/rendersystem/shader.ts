@@ -1,4 +1,5 @@
-import { GLUtility } from ".";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { GLUtility } from "./glutility";
 
 export abstract class Shader {
     private _name: string;
@@ -17,13 +18,13 @@ export abstract class Shader {
     }
     public getAttribLocation(name: string): number {
         if (this._attributes.get(name) === undefined) {
-            throw new Error(`Attribute ${name} could not be found.`);
+            log(LogLevel.error, `Attribute ${name} could not be found.`, ErrorCode.NoName);
         }
         return this._attributes.get(name)!;
     }
     public getUniformLocation(name: string): WebGLUniformLocation {
         if (this._uniforms.get(name) === undefined) {
-            throw new Error(`Attribute ${name} could not be found.`);
+            log(LogLevel.error, `Attribute ${name} could not be found.`, ErrorCode.NoName);
         }
         return this._uniforms.get(name)!;
     }
@@ -40,53 +41,53 @@ export abstract class Shader {
     private loadShader(source: string, type: number): WebGLShader {
         let shader: WebGLShader | null = GLUtility.gl.createShader(type);
         if (!shader) {
-            throw new Error(`Could not load shader ${type}`);
+            log(LogLevel.error, `Could not load shader ${type}`, ErrorCode.ShaderType);
         }
         GLUtility.gl.shaderSource(shader!, source);
         GLUtility.gl.compileShader(shader!);
         let error = GLUtility.gl.getShaderInfoLog(shader!)!.trim();
         if (error !== "") {
-            throw new Error(`Could not compile shader ${this._name}: ${error}`);
+            log(LogLevel.error, `Could not compile shader ${this._name}: ${error}`, ErrorCode.ShaderLoad);
         }
         return shader!;
     }
     private createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader): void {
         this._program = GLUtility.gl.createProgram();
         if (this._program === null) {
-            throw new Error(`WebGLProgram could not be created.`);
+            log(LogLevel.error, `WebGLProgram could not be created.`, ErrorCode.WebGLProgram);
         }
-        GLUtility.gl.attachShader(this._program, vertexShader);
-        GLUtility.gl.attachShader(this._program, fragmentShader);
-        GLUtility.gl.linkProgram(this._program);
-        let error = GLUtility.gl.getProgramInfoLog(this._program)!.trim();
+        GLUtility.gl.attachShader(this._program!, vertexShader);
+        GLUtility.gl.attachShader(this._program!, fragmentShader);
+        GLUtility.gl.linkProgram(this._program!);
+        let error = GLUtility.gl.getProgramInfoLog(this._program!)!.trim();
         if (error !== "") {
-            throw new Error(`WebGLProgram error: ${error}.`);
+            log(LogLevel.error, `WebGLProgram error: ${error}.`, ErrorCode.WebGLProgram);
         }
     }
     private detectAttributes(): void {
         if (!this._program) {
-            throw new Error("WebGL program was not created");
+            log(LogLevel.error, "WebGL program was not created", ErrorCode.WebGLProgram);
         }
-        let attribCount: number = GLUtility.gl.getProgramParameter(this._program, GLUtility.gl.ACTIVE_ATTRIBUTES);
+        let attribCount: number = GLUtility.gl.getProgramParameter(this._program!, GLUtility.gl.ACTIVE_ATTRIBUTES);
         for (let i = 0; i < attribCount; i++) {
-            let attribInfo: WebGLActiveInfo | null = GLUtility.gl.getActiveAttrib(this._program, i);
+            let attribInfo: WebGLActiveInfo | null = GLUtility.gl.getActiveAttrib(this._program!, i);
             if (!attribInfo) {
                 break;
             }
-            this._attributes.set(attribInfo.name, GLUtility.gl.getAttribLocation(this._program, attribInfo.name)!);
+            this._attributes.set(attribInfo.name, GLUtility.gl.getAttribLocation(this._program!, attribInfo.name)!);
         }
     }
     private detectUniforms(): void {
         if (!this._program) {
-            throw new Error("WebGL program was not created");
+            log(LogLevel.error, "WebGL program was not created", ErrorCode.WebGLProgram);
         }
-        let uniformCount: number = GLUtility.gl.getProgramParameter(this._program, GLUtility.gl.ACTIVE_UNIFORMS);
+        let uniformCount: number = GLUtility.gl.getProgramParameter(this._program!, GLUtility.gl.ACTIVE_UNIFORMS);
         for (let i = 0; i < uniformCount; i++) {
-            let uniformInfo: WebGLActiveInfo | null = GLUtility.gl.getActiveUniform(this._program, i);
+            let uniformInfo: WebGLActiveInfo | null = GLUtility.gl.getActiveUniform(this._program!, i);
             if (!uniformInfo) {
                 break;
             }
-            this._uniforms.set(uniformInfo.name, GLUtility.gl.getUniformLocation(this._program, uniformInfo.name)!);
+            this._uniforms.set(uniformInfo.name, GLUtility.gl.getUniformLocation(this._program!, uniformInfo.name)!);
         }
     }
 }

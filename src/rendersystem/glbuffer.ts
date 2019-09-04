@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { AttributeInfo } from "./attributeinfo";
 import { GLUtility } from "./glutility";
 
@@ -10,7 +11,7 @@ export class GLBuffer {
     private _targetBufferType: number;
     private _dataType: number;
     private _mode: number;
-    private _typeSize: number;
+    private _typeSize: number = 0;
     private _data: Array<number> = new Array();
     constructor(dataType: number = GLUtility.gl.FLOAT, 
         targetBufferType: number = GLUtility.gl.ARRAY_BUFFER, 
@@ -34,12 +35,13 @@ export class GLBuffer {
                 this._typeSize = 1;
                 break;
             default:
-                throw new Error(`Unrecognized data type for (${dataType.toString}).`);
+                log(LogLevel.error, `Unrecognized data type for (${dataType.toString}).`, 
+                    ErrorCode.DataTypeNotRecognized);
         }
         this._stride = this._elementSize * this._typeSize;
         let tempBuffer = GLUtility.gl.createBuffer();
-        if (tempBuffer === null) throw new Error(`No WebGL buffer was created.`);
-        this._buffer = tempBuffer;
+        if (tempBuffer === null) log(LogLevel.error, `No WebGL buffer was created.`, ErrorCode.WebGLBufferNotCreated);
+        this._buffer = tempBuffer!;
     }
     public addAttributeLocation(info: AttributeInfo): void {
         this._hasAttributeLocation = true;
