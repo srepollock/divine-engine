@@ -6,6 +6,7 @@ import { guid } from "../helper";
 import { Shader } from "../rendersystem/shader";
 import { Scene } from "../scene/scene";
 import { ZoneState } from "./zonestate";
+import { MessageBus, Message } from "src/core/messagesystem";
 
 
 export class Zone {

@@ -28,7 +28,7 @@ export class MessageBus {
             return;
         }
         let nodeIndex = MessageBus._subscriptions.get(code)!.indexOf(handler);
-        if (nodeIndex === -1) {
+        if (nodeIndex !== -1) {
             MessageBus._subscriptions.get(code)!.splice(nodeIndex, 1);
         }
     }

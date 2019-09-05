@@ -4,9 +4,9 @@ import { IBehaviourData } from "./ibehaviourdata";
 
 export class AIMovementBehaviourData implements IBehaviourData {
     public name!: string;
-    public start!: Vector2;
-    public end!: Vector2;
-    public direction!: Vector2;
+    public start: Vector2 = new Vector2();
+    public end: Vector2 = new Vector2();
+    public direction: Vector2 = new Vector2(1, 0);
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

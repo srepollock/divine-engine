@@ -2,6 +2,7 @@ import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
 import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
+import { GUIBehaviourBuilder } from "../behaviours/guibehaviourbuilder";
 import { KeyboardMovementBehaviourBuilder } from "../behaviours/keyboardmovementbehaviourbuilder";
 import { PlayerBehaviourBuilder } from "../behaviours/playerbehaviourbuilder";
 import { RotationBehaviourBuilder } from "../behaviours/rotationbehaviourbuilder";
@@ -61,6 +62,7 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
         BehaviourManager.registerBuilder(new FlagBehaviourBuilder());
         BehaviourManager.registerBuilder(new PlayerBehaviourBuilder());
+        BehaviourManager.registerBuilder(new GUIBehaviourBuilder());
         Engine._instance = this;
     }
     public static play(): void {
@@ -152,7 +154,7 @@ export class Engine implements IMessageHandler {
         
     }
     public onMessage(message: Message): void {
-        AudioManager.playSound("zone1");
+        // AudioManager.playSound("zone1");
     }
     private cleanup(): void  {
         this._sprite!.destroy();

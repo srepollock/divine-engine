@@ -43,6 +43,10 @@ export class Sprite {
     }
     public draw(shader: Shader, model: Matrix4): void {
         let colorLocation = shader.getUniformLocation("u_tint");
+        if (this._material === undefined) {
+            log(LogLevel.warning, `${this._name}'s material is undefined.`);
+            return;
+        }
         GLUtility.gl.uniform4fv(colorLocation, this._material!.tint.toFloat32Array());
         let modelLocation = shader.getUniformLocation("u_model");
         GLUtility.gl.uniformMatrix4fv(modelLocation, false, model.matrix);

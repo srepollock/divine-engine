@@ -23,8 +23,8 @@ export class ZoneManager implements IMessageHandler {
     }
     public static changeZone(index: number): void {
         if (ZoneManager._activeZone !== undefined) {
-            ZoneManager._activeZone.onDeactivated();
-            ZoneManager._activeZone.unload();
+            ZoneManager._activeZone.onDeactivated(); // REVIEW: unsubscribe
+            ZoneManager._activeZone.unload(); // REVIEW: unsubscribe?
             ZoneManager._activeZone = undefined;
         }
         if (ZoneManager._registeredZones.get(index) !== undefined) {
