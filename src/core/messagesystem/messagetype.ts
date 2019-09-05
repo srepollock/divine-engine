@@ -1,4 +1,5 @@
 export enum MessageType {
+    EXIT = "EXIT",
     MOUSE_UP = "MOUSE_UP",
     MOUSE_DOWN = "MOUSE_DOWN",
     KEY_UP = "KEY_UP",

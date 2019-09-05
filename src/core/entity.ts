@@ -71,13 +71,13 @@ export class Entity {
         });
     }
     public getBehaviourByName(name: string): IBehaviour | undefined {
-        this._behaviours.forEach((b) => {
+        for (let b of this._behaviours) {
             if (b.name === name) return b;
-        });
-        this._children.forEach((b) => {
+        }
+        for (let b of this._children) {
             let behaviour = b.getBehaviourByName(name);
             if (behaviour !== undefined) return behaviour;
-        });
+        }
         return undefined;
     }
     public getComponentByName(name: string): IComponent | undefined {
@@ -93,13 +93,12 @@ export class Entity {
     public getObjectByName(name: string): Entity | undefined {
         if (this._name === name) {
             return this;
-        } else {
-            this._children.forEach((child) => {
-                let result = child.getObjectByName(name);
-                if (result !== undefined) {
-                    return result;
-                }
-            });
+        }
+        for (let child of this._children) {
+            let result = child.getObjectByName(name);
+            if (result !== undefined) {
+                return result;
+            }
         }
         console.warn(`Entity ${name} could not be found.`);
         return undefined;

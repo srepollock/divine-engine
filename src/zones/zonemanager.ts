@@ -18,6 +18,14 @@ export class ZoneManager implements IMessageHandler {
     private constructor() {
         ZoneManager._instance = this;
     }
+    public static getRegisteredZoneIndex(zoneName: string): number | undefined {
+        for (let [key, value] of ZoneManager._registeredZones.entries()) {
+            if (value.includes(zoneName)) {
+                return key;
+            }
+        }
+        return undefined;
+    }
     public static initialize(): void {
         new ZoneManager();
     }

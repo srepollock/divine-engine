@@ -3,9 +3,12 @@ import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbui
 import { BehaviourManager } from "../behaviours/behaviourmanager";
 import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
 import { GUIBehaviourBuilder } from "../behaviours/guibehaviourbuilder";
+import { GUIButtonBehaviourBuilder } from "../behaviours/guibuttonbehaviourbuilder";
 import { KeyboardMovementBehaviourBuilder } from "../behaviours/keyboardmovementbehaviourbuilder";
+import { OpeningGUIBehaviourBuilder } from "../behaviours/openingguibehaviourbuilder";
 import { PlayerBehaviourBuilder } from "../behaviours/playerbehaviourbuilder";
 import { RotationBehaviourBuilder } from "../behaviours/rotationbehaviourbuilder";
+import { SoundBehaviourBuilder } from "../behaviours/soundbehaviourbuilder";
 import { AnimatedSpriteComponentBuilder } from "../components/animatedspritecomponentbuilder";
 import { CollisionComponentBuilder } from "../components/collisioncomponentbuilder";
 import { ComponentManager } from "../components/componentmanager";
@@ -62,7 +65,10 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
         BehaviourManager.registerBuilder(new FlagBehaviourBuilder());
         BehaviourManager.registerBuilder(new PlayerBehaviourBuilder());
+        BehaviourManager.registerBuilder(new OpeningGUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIBehaviourBuilder());
+        BehaviourManager.registerBuilder(new GUIButtonBehaviourBuilder());
+        BehaviourManager.registerBuilder(new SoundBehaviourBuilder());
         Engine._instance = this;
     }
     public static play(): void {

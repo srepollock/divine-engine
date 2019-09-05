@@ -28,6 +28,12 @@ export class Sprite {
         this._origin = value;
         this.recalculateVertices();
     }
+    public get height(): number {
+        return this._height;
+    }
+    public get width(): number {
+        return this._width;
+    }
     constructor(name: string, materialName: string, width: number = 100, height: number = 100) {
         this._name = name;
         this._height = height;
