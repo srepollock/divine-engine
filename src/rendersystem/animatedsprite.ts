@@ -3,6 +3,7 @@ import { ImageAsset } from "../assets/imageasset";
 import { log, LogLevel } from "../core/loggingsystem/src";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
+import { MessageType } from "../core/messagesystem/messagetype";
 import { Vector2 } from "../math/vector2";
 import { MaterialManager } from "./materialmanager";
 import { Sprite } from "./sprite";
@@ -82,23 +83,25 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
             this._currentTime = 0;
             if (this._currentFrame >= this._frameSequence.length) {
                 this._currentFrame = 0;
+                Message.send(MessageType.ANIMATION_COMPLETE, this, this._materialName);
             }
-            let frameUVIndex: number = this._frameSequence[this._currentFrame];
-            this._vertices[0].texCoords.copy( this._frameUV[frameUVIndex].min );
-            this._vertices[1].texCoords = new Vector2( this._frameUV[frameUVIndex].min.x, 
-                this._frameUV[frameUVIndex].max.y );
-            this._vertices[2].texCoords.copy( this._frameUV[frameUVIndex].max );
-            this._vertices[3].texCoords.copy( this._frameUV[frameUVIndex].max );
-            this._vertices[4].texCoords = new Vector2( this._frameUV[frameUVIndex].max.x, 
-                this._frameUV[frameUVIndex].min.y );
-            this._vertices[5].texCoords.copy( this._frameUV[frameUVIndex].min );
-            this._buffer!.clear();
-            this._vertices.forEach((v) => {
-                this._buffer!.push(v.toArray());
-            });
-            this._buffer!.unbind();
+            this.updateVerticies();
         }
         super.update(delta);
+    }
+    public updateVerticies(): void {
+        let frameUVIndex: number = this._frameSequence[this._currentFrame];
+        this._vertices[0].texCoords.copy(this._frameUV[frameUVIndex].min);
+        this._vertices[1].texCoords = new Vector2(this._frameUV[frameUVIndex].min.x, this._frameUV[frameUVIndex].max.y);
+        this._vertices[2].texCoords.copy(this._frameUV[frameUVIndex].max);
+        this._vertices[3].texCoords.copy(this._frameUV[frameUVIndex].max);
+        this._vertices[4].texCoords = new Vector2(this._frameUV[frameUVIndex].max.x, this._frameUV[frameUVIndex].min.y);
+        this._vertices[5].texCoords.copy(this._frameUV[frameUVIndex].min);
+        this._buffer!.clear();
+        this._vertices.forEach((v) => {
+            this._buffer!.push(v.toArray());
+        });
+        this._buffer!.unbind();
     }
     private calculateUV(): void {
         let totalWidth: number = 0;
@@ -127,6 +130,7 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
                     this._assetWidth = material!.diffuseTexture!.width;
                     this._assetLoaded = true;
                     this.calculateUV();
+                    this.updateVerticies();
                 }
             }
         }

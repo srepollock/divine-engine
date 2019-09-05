@@ -5,7 +5,7 @@ import { Vector3 } from "src";
 export class SpriteComponentData implements IComponentData {
     public name!: string;
     public materialName!: string;
-    public origin: Vector3 = new Vector3();
+    public origin: Vector3 = new Vector3(0.5, 0.5);
     public width!: number;
     public height!: number;
     constructor(json: any) {

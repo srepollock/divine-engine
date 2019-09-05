@@ -9,8 +9,12 @@ import { Zone } from "./zone";
 export class ZoneManager implements IMessageHandler {
     private static _instance: ZoneManager;
     private static _registeredZonesCount: number = -1;
+    private static _zoneCounter: number = -1;
     private static _registeredZones: Map<number, string> = new Map();
     private static _activeZone: Zone | undefined;
+    public static get activeZoneIndex(): number {
+        return ZoneManager._activeZone!.index;
+    }
     private constructor() {
         ZoneManager._instance = this;
     }
@@ -51,11 +55,9 @@ export class ZoneManager implements IMessageHandler {
     }
     private static loadZone(asset: JsonAsset): void {
         let zoneData = asset.data;
-        let zoneID!: number;
-        if (zoneData.id === undefined) {
-            log(LogLevel.error, `Zone ID not valid.`, ErrorCode.ZoneID);
-        } else {
-            zoneID = Number(zoneData.id);
+        let zoneIndex: number = ++ZoneManager._zoneCounter;
+        if (zoneData.index !== undefined) {
+            zoneIndex = Number(zoneData.index);
         }
         let zoneName!: string;
         if (zoneData.name === undefined) {
@@ -69,7 +71,7 @@ export class ZoneManager implements IMessageHandler {
         } else {
             zoneDescription = String(zoneData.description);
         }
-        ZoneManager._activeZone = new Zone({index: zoneID, name: zoneName, description: zoneDescription});
+        ZoneManager._activeZone = new Zone({index: zoneIndex, name: zoneName, description: zoneDescription});
         ZoneManager._activeZone.initialize(zoneData);
         ZoneManager._activeZone!.onActivated();
         ZoneManager._activeZone!.load();

@@ -17,7 +17,7 @@ export class Sprite {
     protected _buffer: GLBuffer | undefined;
     protected _materialName: string | undefined;
     protected _material: Material | undefined;
-    protected _origin: Vector3 = new Vector3();
+    protected _origin: Vector3 = new Vector3(0.5, 0.5);
     public get name(): string {
         return this._name;
     }
@@ -98,6 +98,7 @@ export class Sprite {
         this._vertices[3].position.set({x: maxX, y: maxY});
         this._vertices[4].position.set({x: maxX, y: minY});
         this._vertices[5].position.set({x: minX, y: minY});
+        this._buffer!.clear();
         this._vertices.forEach((v) => {
             this._buffer!.push(v.toArray());
         });

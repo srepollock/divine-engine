@@ -1,16 +1,16 @@
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { Vector2 } from "../math/vector2";
 import { IBehaviourData } from "./ibehaviourdata";
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 
 export class PlayerBehaviourData implements IBehaviourData {
     public name!: string;
-    public acceleration: Vector2 = new Vector2(0, 920);
+    public acceleration: Vector2 = new Vector2(0, 0);
     public playerCollisionComponent!: string;
     public groundCollisionComponent!: string;
     public enemyCollisionComponent!: string;
     public animatedSpriteName!: string;
     public maxVelocityX: number = 2;
-    public maxVelocityY: number = 5;
+    public maxVelocityY: number = 15;
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

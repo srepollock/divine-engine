@@ -1,3 +1,4 @@
+import { log, LogLevel } from "../core/loggingsystem/src";
 import { Vector2 } from "../math/vector2";
 import { CollisionManager } from "../physicssystem/collisionmanager";
 import { IShape2D } from "../rendersystem/ishape2d";
@@ -29,17 +30,19 @@ export class CollisionComponent extends Component {
         super.render(shader);
     }
     public update(delta: number): void {
-        super.update(delta);
         this._shape.position.copy(new Vector2(this.owner!.getWorldPosition().x, 
             this.owner!.getWorldPosition().y).add(this._shape.offset));
+        super.update(delta);
     }
     public onCollisionEntry(other: CollisionComponent): void {
-        console.debug("onCollisionEntry:", this, other);
+        log(LogLevel.debug, `onCollisionEntry: ${this} ${other}`);
+        console.log(this, other);
     }
     public onCollisionUpdate(other: CollisionComponent): void {
-        // console.debug("onCollisionUpdate:", this, other);
+        
     }
     public onCollisionExit(other: CollisionComponent): void {
-        console.debug("onCollisionExit:", this, other);
+        log(LogLevel.debug, `onCollisionExit: ${this} ${other}`);
+        console.log(this, other);
     }
 }

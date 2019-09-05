@@ -1,6 +1,7 @@
 import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
 import { KeyboardMovementBehaviourBuilder } from "../behaviours/keyboardmovementbehaviourbuilder";
 import { PlayerBehaviourBuilder } from "../behaviours/playerbehaviourbuilder";
 import { RotationBehaviourBuilder } from "../behaviours/rotationbehaviourbuilder";
@@ -13,7 +14,6 @@ import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { MessageBus } from "../core/messagesystem/messagebus";
 import { InputManager } from "../inputsystem/inputmanager";
-import { MouseContext } from "../inputsystem/mousecontext";
 import { Matrix4 } from "../math/matrix4";
 import { CollisionManager } from "../physicssystem/collisionmanager";
 import { BasicShader } from "../rendersystem/basicshader";
@@ -59,6 +59,7 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
         BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());
         BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
+        BehaviourManager.registerBuilder(new FlagBehaviourBuilder());
         BehaviourManager.registerBuilder(new PlayerBehaviourBuilder());
         Engine._instance = this;
     }
@@ -151,13 +152,7 @@ export class Engine implements IMessageHandler {
         
     }
     public onMessage(message: Message): void {
-        if (message.code === "MOUSE_UP") {
-            // let context = message.context as MouseContext;
-            // document.title = `Position ${context.position.x}, ${context.position.y}`;
-        } else if (message.code === "MOUSE_DOWN") {
-            let context = message.context as MouseContext;
-            AudioManager.playSound("zone1");
-        }
+        AudioManager.playSound("zone1");
     }
     private cleanup(): void  {
         this._sprite!.destroy();

@@ -15,9 +15,6 @@ export class AnimatedSpriteComponent extends Component {
         this._autoPlay = data.autoPlay;
         this._sprite = new AnimatedSprite(name, data.materialName, data.frameWidth, data.frameHeight, data.frameWidth, 
             data.frameHeight, data.frameCount, data.frameSequence);
-        if (data.origin.equals(new Vector3())) {
-            this._sprite.origin.copy(data.origin);
-        }
     }
     public isPlaying(): boolean {
         return this._sprite.isPlaying;

@@ -14,7 +14,7 @@ import { PlayerBehaviourData } from "./playerbehaviourdata";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
-    private _acceleration: Vector2 = new Vector2(0, 920);
+    private _acceleration: Vector2 = new Vector2(0, 0);
     private _velocity: Vector2 = new Vector2();
     private _isAlive: boolean = true;
     private _isJumping: boolean = false;
@@ -37,7 +37,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         this._maxVelocityY = data.maxVelocityY;
         Message.subscribe(MessageType.KEY_DOWN, this);
         Message.subscribe(MessageType.KEY_UP, this);
-        Message.subscribe(MessageType.COLLISION_ENTRY + this._playerCollisionComponent, this);
+        Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
     public updateReady(): void {
         super.updateReady();
@@ -53,7 +53,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             return;
         }
         if (this._isJumping) {
-            this._acceleration.y += 9.75;
+            this._acceleration.y += (9.75 * delta);
         }
         this._velocity.add(this._acceleration.clone().scale(delta));
         if (this._velocity.x > this._maxVelocityX) {
@@ -61,7 +61,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         } else if (this._velocity.x < -this._maxVelocityX) {
             this._velocity.x = -this._maxVelocityX;
         }
-        this._owner.transform.position.add(new Vector3(this._velocity.x, 0, 0));
+        this._owner.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
         super.update(delta); 
     }
     public onMessage(message: Message): void {
@@ -70,9 +70,9 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 switch (message.context) {
                     case Keys.LeftArrow:
                     case Keys.RightArrow:
-                        this._velocity = new Vector3(0, 0, 0);
+                        this._velocity = new Vector3(0, this._velocity.y, 0);
                     case Keys.Space:
-                        this._acceleration = new Vector3(0, 0, 0);
+                        this._acceleration = new Vector3(0, this._velocity.y, 0);
                         this.changeSprite("peasent_idle", [0, 1, 2, 1]);
                         break;
                 }
@@ -99,8 +99,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 let data: CollisionData = (message.context as CollisionData);
                 if (data.a.name === this._groundCollisionComponent || data.b.name === this._groundCollisionComponent) {
                     this._isJumping = false;
+                    this._velocity.y = 0;
+                    this._acceleration.y = 0;
                 }
-                if (data.a.name === this._enemyCollisionComponent || data.b.name === this._enemyCollisionComponent) {
+                if ((data.a.name === this._enemyCollisionComponent && 
+                    data.b.name === this._sprite!.sprite.materialName) ||
+                    (data.a.name === this._sprite!.sprite.materialName && 
+                    data.b.name === this._enemyCollisionComponent)) {
                     if (!this._isAttacking) {
                         this.onTakeDamage();
                         if (this._isAlive) {
@@ -111,20 +116,21 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 }
                 break;
             case MessageType.ANIMATION_COMPLETE:
-                if (message.context === this._animatedSpriteName) {
-                    if (this._animatedSpriteName === "peasent_die") {
+                switch (message.context) {
+                    case "peasent_die":
                         this._sprite!.stop();
-                    }
-                    Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
-                    this.changeSprite("peasent_idle", [0, 1, 2, 1]);
+                        Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
+                        break;
+                    case "peasent_attack":
+                    case "peasent_jump":
+                        this.changeSprite("peasent_idle", [0, 1, 2, 1]);
+                        Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
+                        break;
                 }
-                break;
         }
     }
-    private isFalling(): boolean {
-        return this._velocity.y < this._maxVelocityY;
-    }
     private onTakeDamage(): void {
+        this._owner.transform.position.add(new Vector3(-3, 0, 0));
         if (!this._isAttacking) {
             this.changeSprite("peasent_hit", [0, 1, 0, 1]);
             if (--this._hitPoints <= -1) {
@@ -149,18 +155,20 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             this._owner.addComponent(newSpriteComponent);
             this._sprite = this._owner.getComponentByName("peasentsprite") as AnimatedSpriteComponent;
             this._sprite.load();
+            Message.subscribe(MessageType.ANIMATION_COMPLETE, this);
         }
     }
     private die(): void {
         this._isAlive = false;
         this.changeSprite("peasent_die", [0, 1, 2, 3, 4]);
+        AudioManager.stopAll();
         AudioManager.playSound("death");
         AudioManager.playSound("deathmusic");
     }
     private onJump(): void {
         if (this._isAlive && !this._isJumping) {
             this._isJumping = true;
-            this._acceleration = new Vector3(this._acceleration.x, this._maxVelocityY, 0);
+            this._acceleration = new Vector3(this._acceleration.x, -this._maxVelocityY, 0);
             this.changeSprite("peasent_jump", [0, 1, 2, 3, 3, 3, 3]);
             AudioManager.playSound("jump");
         }
@@ -170,11 +178,5 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             this.changeSprite("peasent_attack", [0, 1, 2]);
             AudioManager.playSound("attack");
         }
-    }
-    private onRestart(): void {
-        this._owner.transform.rotation.z = 20;
-        this._owner.transform.position.y = 445;
-        this._isAlive = true;
-        this._sprite!.play();
     }
 }

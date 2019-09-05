@@ -1,3 +1,4 @@
+import { log, LogLevel } from "../loggingsystem/src";
 import { IMessageHandler } from "./imessagehandler";
 import { Message } from "./message";
 import { MessagePriority } from "./messagepriority";
@@ -15,15 +16,15 @@ export class MessageBus {
         if (MessageBus._subscriptions.get(code) === undefined) {
             MessageBus._subscriptions.set(code, new Array());
         }
-        if (MessageBus._subscriptions.get(code)!.indexOf(handler) !== -1) {
-            console.warn(`Attempting to add a duplicate of code: ${code}. Subscription not added.`);
+        if (MessageBus._subscriptions.get(code)!.includes(handler)) {
+            log(LogLevel.warning, `Attempting to add a duplicate of code: ${code}. Subscription not added.`);
         } else {
             MessageBus._subscriptions.get(code)!.push(handler);
         }
     }
     public static removeSubscription(code: string, handler: IMessageHandler): void {
         if (MessageBus._subscriptions.get(code) === undefined) {
-            console.warn(`Cannot unsubscribe from code: ${code} because the code is not subscribed to.`);
+            log(LogLevel.warning, `Cannot unsubscribe from code: ${code} because the code is not subscribed to.`);
             return;
         }
         let nodeIndex = MessageBus._subscriptions.get(code)!.indexOf(handler);
@@ -32,7 +33,7 @@ export class MessageBus {
         }
     }
     public static post(message: Message): void {
-        console.log(`Message posted: code ${message.code} context ${message.context}`);
+        log(LogLevel.debug, `Message posted: code ${message.code} context ${message.context}`);
         let handlers = MessageBus._subscriptions.get(message.code);
         if (handlers === undefined) {
             return;

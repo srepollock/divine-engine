@@ -57,10 +57,8 @@ export class Rectangle2D implements IShape2D {
     public pointInShape(point: Vector2): boolean {
         let x = this.width < 0 ? this.position.x - this.width : this.position.x;
         let y = this.height < 0 ? this.position.y - this.height : this.position.y;
-
         let extentX = this.width < 0 ? this.position.x : this.position.x + this.width;
         let extentY = this.height < 0 ? this.position.y : this.position.y + this.height;
-
         if (point.x >= x && point.x <= extentX && point.y >= y && point.y <= extentY) {
             return true;
         }

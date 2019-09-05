@@ -30,8 +30,8 @@ export class Zone {
     public get scene(): Scene {
         return this._scene;
     }
-    constructor({ id, index, name, description }: { id?: string; index: number, name: string; description: string; }) {
-        this._id = (id) ? id : guid();
+    constructor({ index, name, description }: { index: number, name: string; description: string; }) {
+        this._id = guid();
         this._index = index;
         this._name = name;
         this._description = description;
