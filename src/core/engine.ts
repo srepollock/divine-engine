@@ -157,7 +157,7 @@ export class Engine implements IMessageHandler {
         requestAnimationFrame(this.loop.bind(this));
     }
     public update(delta: number): void {
-        log(LogLevel.debug, `Delta: ${delta}`);
+        // log(LogLevel.debug, `Delta: ${delta}`);
         GLUtility.gl.clear(GLUtility.gl.COLOR_BUFFER_BIT);
         ZoneManager.render(this._basicShader!);
         let projectionPosition = this._basicShader!.getUniformLocation("u_projection");

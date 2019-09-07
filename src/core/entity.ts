@@ -6,6 +6,7 @@ import { Matrix4 } from "../math/matrix4";
 import { Vector3 } from "../math/vector3";
 import { Shader } from "../rendersystem/shader";
 import { Scene } from "../scene/scene";
+import { Message, IMessageHandler } from "./messagesystem";
 
 export class Entity {
     public transform: Transform = new Transform();
@@ -22,6 +23,9 @@ export class Entity {
     private _scene: Scene | undefined;
     private _isVisible: boolean = true;
     private _isAlive: boolean = true;
+    public get children(): Array<Entity> {
+        return this._children;
+    }
     public get id(): string {
         return this._id;
     }
@@ -39,6 +43,9 @@ export class Entity {
     }
     public set isAlive(value: boolean) {
         this._isAlive = value;
+    }
+    public get name(): string {
+        return this._name;
     }
     public get parent(): Entity | undefined {
         return this._parent;
@@ -170,6 +177,18 @@ export class Entity {
         });
         this._children.forEach((child) => {
             child.updateReady();
+        });
+    }
+    public unsubscribeAll(): void {
+        this._components.forEach((component) => {
+            Message.unsubscribeHandlerFromAll(component as unknown as IMessageHandler);
+        });
+        this._behaviours.forEach((behaviour) => {
+            Message.unsubscribeHandlerFromAll(behaviour as unknown as IMessageHandler);
+        });
+        this._children.forEach((child) => {
+            Message.unsubscribeHandlerFromAll(child as unknown as IMessageHandler);
+            child.unsubscribeAll();
         });
     }
     protected onAdded(scene: Scene): void {

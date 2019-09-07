@@ -32,6 +32,14 @@ export class MessageBus {
             MessageBus._subscriptions.get(code)!.splice(nodeIndex, 1);
         }
     }
+    public static removeHandlerFromAll(handler: IMessageHandler): void {
+        MessageBus._subscriptions.forEach((key) => {
+            let nodeIndex = key.indexOf(handler);
+            if (nodeIndex !== -1) {
+                key.splice(nodeIndex, 1);
+            }
+        });
+    }
     public static post(message: Message): void {
         log(LogLevel.debug, `Message posted: code ${message.code} context ${message.context}`);
         let handlers = MessageBus._subscriptions.get(message.code);

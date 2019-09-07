@@ -1,28 +1,44 @@
 import { Entity } from "../core/entity";
+import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { IMessageHandler, Message, MessageType } from "../core/messagesystem";
-import { Vector2 } from "../math/vector2";
 import { CollisionData } from "../physicssystem/collisiondata";
 import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { FlagBehaviourData } from "./flagbehaviourdata";
 export class FlagBehaviour extends Behaviour implements IMessageHandler {
-    private _position!: Vector2;
+    private _zoneName: string;
+    private _playerCollisionComponent: string;
+    private _flagCollisionComponent: string;
     constructor(data: FlagBehaviourData) {
         super(data);
+        this._zoneName = data.zoneName;
+        this._flagCollisionComponent = data.flagCollisionComponent;
+        this._playerCollisionComponent = data.playerCollisionComponent;
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
     public setOwner(owner: Entity): void {
         this._owner = owner;
-        this._position = new Vector2(this._owner.getWorldPosition().x, this._owner.getWorldPosition().y);
     }
     public update(delta: number): void {
         super.update(delta);
     }
     public onMessage(message: Message): void {
+        log(LogLevel.debug, `${this.name} Collision`);
         let data: CollisionData = (message.context as CollisionData);
-        if ((data.a.name === this.name && data.b.name === "playercollision" )
-            || (data.b.name === this.name && data.a.name === "playercollision" )) {
-            ZoneManager.changeZone(ZoneManager.activeZoneIndex + 1);
+        switch (message.code) {
+            case MessageType.COLLISION_ENTRY:
+                if ((data.a.name === this._flagCollisionComponent && 
+                    data.b.name === this._playerCollisionComponent)
+                    || (data.b.name === this._flagCollisionComponent && 
+                    data.a.name === this._playerCollisionComponent )) {
+                    let zoneIndex = ZoneManager.getRegisteredZoneIndex(this._zoneName);
+                    if (zoneIndex === undefined) {
+                        log(LogLevel.error, `The Zone index of ${this._zoneName} could not be found!`, 
+                            ErrorCode.ZoneDoesNotExist);
+                    }
+                    ZoneManager.changeZone(zoneIndex!);
+                }
+                break;
         }
     }
 }

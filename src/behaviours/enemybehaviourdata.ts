@@ -19,6 +19,7 @@ export class EnemyBehaviourData implements IBehaviourData {
     public start: Vector2 = new Vector2();
     public end: Vector2 = new Vector2();
     public direction: Vector2 = new Vector2();
+    public jumping: boolean = false;
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
@@ -104,6 +105,9 @@ export class EnemyBehaviourData implements IBehaviourData {
         }
         if (json.maxVelocityY !== undefined) {
             this.maxVelocityY = Number(json.maxVelocityY);
+        }
+        if (json.jumping !== undefined) {
+            this.jumping = Boolean(json.jumping);
         }
     }
 }

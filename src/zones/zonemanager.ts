@@ -30,6 +30,7 @@ export class ZoneManager implements IMessageHandler {
         new ZoneManager();
     }
     public static changeZone(index: number): void {
+        log(LogLevel.debug, `Changing zone to: ${ZoneManager._registeredZones.get(index)}.`);
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.onDeactivated(); // REVIEW: unsubscribe
             ZoneManager._activeZone.unload(); // REVIEW: unsubscribe?

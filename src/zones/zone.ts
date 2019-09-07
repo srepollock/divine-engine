@@ -8,6 +8,7 @@ import { Scene } from "../scene/scene";
 import { ZoneState } from "./zonestate";
 import { MessageBus, Message } from "src/core/messagesystem";
 import { AudioManager } from "src/soundsystem";
+import { CollisionManager } from "src/physicssystem";
 
 
 export class Zone {
@@ -54,7 +55,8 @@ export class Zone {
         this._state = ZoneState.UPDATING;
     }
     public unload(): void {
-
+        this._scene = new Scene();
+        CollisionManager.clear();
     }
     public update(delta: number): void {
         if (this._state === ZoneState.UPDATING) {
@@ -70,6 +72,9 @@ export class Zone {
 
     }
     public onDeactivated(): void {
+        this._scene.root.children.forEach((child: Entity) => {
+            child.unsubscribeAll();
+        });
         AudioManager.stopAll();
     }
     private loadEntity(dataSection: any, parent?: Entity): void {

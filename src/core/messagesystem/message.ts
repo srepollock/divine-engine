@@ -25,4 +25,7 @@ export class Message {
     public static unsubscribe(code: string, handler: IMessageHandler): void {
         MessageBus.removeSubscription(code, handler);
     }
+    public static unsubscribeHandlerFromAll(handler: IMessageHandler): void {
+        MessageBus.removeHandlerFromAll(handler);
+    }
 }

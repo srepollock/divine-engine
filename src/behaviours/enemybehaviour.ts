@@ -7,6 +7,7 @@ import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
 import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
+import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviourData } from "./enemybehaviourdata";
@@ -34,6 +35,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     private _start: Vector2;
     private _end: Vector2;
     private _direction: Vector2;
+    private _jumping: boolean;
     constructor(data: EnemyBehaviourData) {
         super(data);
         this._acceleration = data.acceleration;
@@ -52,6 +54,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         this._end = data.end;
         this._direction = data.direction;
         this._acceleration = this._direction;
+        this._jumping = data.jumping;
 
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
@@ -67,6 +70,11 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     public update(delta: number): void {
         if (!this._isAlive) {
             return;
+        }
+        if (this._isJumping) {
+            this._acceleration.y += (9.75);
+        } else if (this._jumping) {
+            this.onJump();
         }
         this._velocity.add(this._acceleration.clone().scale(delta));
         if (this._velocity.x > this._maxVelocityX) {
@@ -86,6 +94,12 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     public onMessage(message: Message): void {
         switch (message.code) {
             case MessageType.COLLISION_ENTRY:
+                let data: CollisionData = (message.context as CollisionData);
+                if (data.a.name === this._groundCollisionComponent || data.b.name === this._groundCollisionComponent) {
+                    this._isJumping = false;
+                    this._velocity.y = 0;
+                    this._acceleration.y = 0;
+                }
                 break;
             case MessageType.ANIMATION_COMPLETE:
                 switch (message.context) {
@@ -140,5 +154,12 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         this._acceleration = new Vector2();
         this._velocity = new Vector2();
         (this._owner!.getComponentByName(this._enemyCollisionComponent) as CollisionComponent).isStatic = true;
+    }
+    private onJump(): void {
+        if (this._isAlive && !this._isJumping) {
+            this._isJumping = true;
+            this._velocity.y = -(this._maxVelocityY);
+            this.changeSprite(this._jumpSpriteName, [0, 1, 2, 3, 3, 3, 3]);
+        }
     }
 }
