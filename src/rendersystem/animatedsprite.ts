@@ -22,6 +22,9 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
     private _currentTime: number = 0;
     private _assetLoaded: boolean = false;
     private _isPlaying: boolean = true;
+    public get frameCount(): number {
+        return this._frameCount;
+    }
     public get isPlaying(): boolean {
         return this._isPlaying;
     }
@@ -64,6 +67,17 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
             frameNumber = 0;
         }
         this._currentFrame = frameNumber;
+    }
+    public setFrameOnce(frameNumber: number): void {
+        if (frameNumber >= this._frameCount) {
+            log(LogLevel.warning, `Frame ${frameNumber} is out of range. FrameCount: ${this._frameCount}`);
+            frameNumber = 0;
+        }
+        this._isPlaying = true;
+        this._currentFrame = frameNumber;
+        this._currentTime = Number.MAX_VALUE;
+        this.update(0);
+        this._isPlaying = false;
     }
     public stop(): void {
         this._isPlaying = false;

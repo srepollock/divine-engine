@@ -39,8 +39,8 @@ export class GUIBehaviour extends Behaviour implements IMessageHandler {
                         if (this._cursorIndex < 0) {
                             this._cursorIndex = this._buttons.length - 1;
                         }
-                        button = this._owner.getObjectByName(this._buttons[this._cursorIndex]);
-                        cursor = this._owner.getObjectByName(this._cursor);
+                        button = this._owner!.getObjectByName(this._buttons[this._cursorIndex]);
+                        cursor = this._owner!.getObjectByName(this._cursor);
                         cursor!.transform.position.y = button!.transform.position.y + 30;
                         break;
                     case "moveCursorDown":
@@ -48,12 +48,12 @@ export class GUIBehaviour extends Behaviour implements IMessageHandler {
                         if (this._cursorIndex > this._buttons.length - 1) {
                             this._cursorIndex = 0;
                         }
-                        button = this._owner.getObjectByName(this._buttons[this._cursorIndex]);
-                        cursor = this._owner.getObjectByName(this._cursor);
+                        button = this._owner!.getObjectByName(this._buttons[this._cursorIndex]);
+                        cursor = this._owner!.getObjectByName(this._cursor);
                         cursor!.transform.position.y = button!.transform.position.y + 30;
                         break;
                     case "cursorSelect":
-                        button = this._owner.getObjectByName(this._buttons[this._cursorIndex]);
+                        button = this._owner!.getObjectByName(this._buttons[this._cursorIndex]);
                         if (button === undefined) {
                             log(LogLevel.error, 
                                 `Button ${this._buttons[this._cursorIndex]} does not exist in the Zone!`, 

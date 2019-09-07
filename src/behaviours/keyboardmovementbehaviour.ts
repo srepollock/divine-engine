@@ -12,16 +12,16 @@ export class KeyboardMovementBehaviour extends Behaviour {
     public update(delta: number): void {
         super.update(delta);
         if (InputManager.isKeyDown(Keys.DownArrow)) {
-            this._owner.transform.position.y += this.speed;
+            this._owner!.transform.position.y += this.speed;
         }
         if (InputManager.isKeyDown(Keys.UpArrow)) {
-            this._owner.transform.position.y -= this.speed;
+            this._owner!.transform.position.y -= this.speed;
         }
         if (InputManager.isKeyDown(Keys.LeftArrow)) {
-            this._owner.transform.position.x -= this.speed;
+            this._owner!.transform.position.x -= this.speed;
         }
         if (InputManager.isKeyDown(Keys.RightArrow)) {
-            this._owner.transform.position.x += this.speed;
+            this._owner!.transform.position.x += this.speed;
         }
     }
 }

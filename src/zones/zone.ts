@@ -7,6 +7,7 @@ import { Shader } from "../rendersystem/shader";
 import { Scene } from "../scene/scene";
 import { ZoneState } from "./zonestate";
 import { MessageBus, Message } from "src/core/messagesystem";
+import { AudioManager } from "src/soundsystem";
 
 
 export class Zone {
@@ -69,7 +70,7 @@ export class Zone {
 
     }
     public onDeactivated(): void {
-        
+        AudioManager.stopAll();
     }
     private loadEntity(dataSection: any, parent?: Entity): void {
         let name!: string;

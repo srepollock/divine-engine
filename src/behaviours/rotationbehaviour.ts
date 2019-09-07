@@ -9,7 +9,7 @@ export class RotationBehaviour extends Behaviour {
         this._rotation = data.rotation;
     }
     public update(delta: number): void {
-        this._owner.transform.rotation.add(this._rotation); 
+        this._owner!.transform.rotation.add(this._rotation); 
         super.update(delta);
     }
 }

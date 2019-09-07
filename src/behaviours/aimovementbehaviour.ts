@@ -24,12 +24,12 @@ export class AIMovementBehaviour extends Behaviour {
         } else if (this._velocity.x < -this._maxVelocityX) {
             this._velocity.x = -this._maxVelocityX;
         }
-        this._owner.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
-        if (!(this._owner.transform.position.x > this._start.x &&
-            this._end.x > this._owner.transform.position.x)) {
+        this._owner!.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
+        if (!(this._owner!.transform.position.x > this._start.x &&
+            this._end.x > this._owner!.transform.position.x)) {
             this._acceleration.x = -(this._acceleration.x);
             this._velocity.x = -(this._velocity.x);
-            this._owner.transform.rotation.y = (this._owner.transform.rotation.y === 3.14159) ? 0 : 3.14159;
+            this._owner!.transform.rotation.y = (this._owner!.transform.rotation.y === 3.14159) ? 0 : 3.14159;
         }
         super.update(delta);
     }

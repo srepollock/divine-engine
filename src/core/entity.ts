@@ -21,6 +21,7 @@ export class Entity {
     private _worldMatrix: Matrix4 = new Matrix4();
     private _scene: Scene | undefined;
     private _isVisible: boolean = true;
+    private _isAlive: boolean = true;
     public get id(): string {
         return this._id;
     }
@@ -32,6 +33,12 @@ export class Entity {
     }
     public get isVisible(): boolean {
         return this._isVisible;
+    }
+    public get isAlive(): boolean {
+        return this._isAlive;
+    }
+    public set isAlive(value: boolean) {
+        this._isAlive = value;
     }
     public get parent(): Entity | undefined {
         return this._parent;
@@ -60,6 +67,9 @@ export class Entity {
     public addBehaviour(behaviour: IBehaviour): void {
         behaviour.setOwner(this);
         this._behaviours.push(behaviour);
+    }
+    public destroy(): void {
+        this.die();
     }
     public load(): void {
         this._isLoaded = true;
@@ -135,17 +145,21 @@ export class Entity {
         }
     }
     public update(delta: number): void {
-        this._localMatrix = this.transform.getTransformMatrix(); // Not fast; only run when it has changed
-        this.updateWorldMatrix((this._parent !== undefined) ? this._parent.worldMatrix : undefined);
-        this._components.forEach((component) => {
-            component.update(delta);
-        });
-        this._behaviours.forEach((behaviour) => {
-            behaviour.update(delta);
-        });
-        this._children.forEach((child) => {
-            child.update(delta);
-        });
+        if (this._isAlive) {
+            this._localMatrix = this.transform.getTransformMatrix(); // Not fast; only run when it has changed
+            this.updateWorldMatrix((this._parent !== undefined) ? this._parent.worldMatrix : undefined);
+            this._components.forEach((component) => {
+                component.update(delta);
+            });
+            this._behaviours.forEach((behaviour) => {
+                behaviour.update(delta);
+            });
+            this._children.forEach((child) => {
+                child.update(delta);
+            });
+        } else {
+            this.die();
+        }
     }
     public updateReady(): void {
         this._components.forEach((component) => {
@@ -160,6 +174,17 @@ export class Entity {
     }
     protected onAdded(scene: Scene): void {
         this._scene = scene;
+    }
+    private die(): void {
+        this._components.forEach((component) => {
+            component.destroy();
+        });
+        this._behaviours.forEach((behaviour) => {
+            behaviour.destroy();
+        });
+        this._children.forEach((child) => {
+            child.destroy();
+        });
     }
     private updateWorldMatrix(parentWorldMatrix: Matrix4 | undefined): void {
         if (parentWorldMatrix !== undefined) {

@@ -31,7 +31,7 @@ export class CollisionManager {
             for (let o = 0; o < CollisionManager._components.length; o++) {
                 let b = CollisionManager._components[o];
                 if (a === b) continue;
-                if (a.isStatic && b.isStatic) continue;
+                if (a.isStatic || b.isStatic) continue;
                 if (a.shape.intersect(b.shape)) {
                     let exists: boolean = false;
                     for (let d = 0; d < CollisionManager._collisionData.length; ++d) {

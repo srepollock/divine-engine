@@ -15,6 +15,9 @@ export class CollisionComponent extends Component {
     public get isStatic(): boolean {
         return this._static;
     }
+    public set isStatic(value: boolean) {
+        this._static = value;
+    }
     public constructor(data: CollisionComponentData) {
         super(data);
         this._shape = data.shape;

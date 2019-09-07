@@ -1,6 +1,7 @@
 import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { EnemyBehaviourBuilder } from "../behaviours/enemybehaviourbuilder";
 import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
 import { GUIBehaviourBuilder } from "../behaviours/guibehaviourbuilder";
 import { GUIButtonBehaviourBuilder } from "../behaviours/guibuttonbehaviourbuilder";
@@ -33,8 +34,10 @@ import { MessageType } from "./messagesystem/messagetype";
 export class Engine implements IMessageHandler {
     private static _instance: Engine;
     private _last: number = 0;
-    private _framesThisSecond: number = 0;
-    private _fps: number = -1;
+    private _startTime: number = 0;
+    private _elapsed: number = 0;
+    private _fps: number = 60;
+    private _frameCount: number = 0;
     private _running: boolean = false;
     private _basicShader: BasicShader | null = null;
     private _sprite: Sprite | undefined;
@@ -65,6 +68,7 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
         BehaviourManager.registerBuilder(new FlagBehaviourBuilder());
         BehaviourManager.registerBuilder(new PlayerBehaviourBuilder());
+        BehaviourManager.registerBuilder(new EnemyBehaviourBuilder());
         BehaviourManager.registerBuilder(new OpeningGUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIButtonBehaviourBuilder());
@@ -76,7 +80,8 @@ export class Engine implements IMessageHandler {
         GLUtility.gl.clearColor(146 / 255, 206 / 255, 247 / 255, 1);
         GLUtility.gl.enable(GLUtility.gl.BLEND);
         GLUtility.gl.blendFunc(GLUtility.gl.SRC_ALPHA, GLUtility.gl.ONE_MINUS_SRC_ALPHA);
-        Engine._instance!._last = performance.now();
+        Engine._instance!._last = Date.now();
+        Engine._instance!._startTime = Date.now();
         Engine._instance.loop();
     }
     public static start({assets, width, height}: {assets: any, width?: number, height?: number} = {assets: {}}): void {
@@ -86,7 +91,7 @@ export class Engine implements IMessageHandler {
         Engine.instance.loadAssets(assets);
         Engine.instance._projection = Matrix4.orthographic(0, GLUtility.instance.canvas.width, 0, 
             GLUtility.instance.canvas.height, -100.0, 100.0);
-        ZoneManager.changeZone(0);
+        ZoneManager.changeZone(0); // NOTE: Change here for scene testing
         Message.subscribe(MessageType.MOUSE_DOWN, Engine.instance);
         Engine.play();
     }
@@ -130,29 +135,29 @@ export class Engine implements IMessageHandler {
             });
         }
     }
+    /**
+     * Main game loop. This calls all necessary update functions.
+     * // REVIEW: Updated the engine to use FPS controlled loops
+     * @returns void
+     */
     public loop(): void {
         if (!Engine._instance._running) {
             console.warn("Enigne is not running. Please call start before running the loop.");
             return;
         }
         this.resize();
-        let now = performance.now();
-        if (now > (Engine._instance._last + 2000)) { // update every second
-            Engine._instance._fps = 0.25 * Engine._instance._framesThisSecond; // new FPS
-            console.debug(`FPS: ${Engine._instance!._fps}`);
-            Engine._instance._last = now;
-            Engine._instance._framesThisSecond = 0;
-        }
-        let delta: number = (now - Engine._instance!._last) / 1000;
+        let now = Date.now();
+        Engine.instance._elapsed = Math.floor(now - Engine._instance._startTime) / 1000;
+        let delta = Math.floor(now - Engine._instance._last) / 1000;
+        Engine._instance._last = now;
         MessageBus.update(delta);
         ZoneManager.update(delta);
         CollisionManager.update(delta);
         Engine._instance.update(delta);
-        Engine._instance._framesThisSecond++;
         requestAnimationFrame(this.loop.bind(this));
     }
     public update(delta: number): void {
-        // console.log(`Delta: ${delta}`);
+        log(LogLevel.debug, `Delta: ${delta}`);
         GLUtility.gl.clear(GLUtility.gl.COLOR_BUFFER_BIT);
         ZoneManager.render(this._basicShader!);
         let projectionPosition = this._basicShader!.getUniformLocation("u_projection");

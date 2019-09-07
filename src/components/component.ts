@@ -13,6 +13,9 @@ export abstract class Component implements IComponent {
         this._data = data;
         this.name = this._data.name;
     }
+    public destroy(): void {
+        this._owner = undefined;
+    }
     public load(): void {
         
     }
