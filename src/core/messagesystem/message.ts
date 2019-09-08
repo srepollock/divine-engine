@@ -1,63 +1,31 @@
-import { MessageType } from "./messagetype";
+import { IMessageHandler } from "./imessagehandler";
+import { MessageBus } from "./messagebus";
+import { MessagePriority } from "./messagepriority";
 
-/**
- * Engine messages
- */
 export class Message {
-    /**
-     * Unique ID for the message
-     */
-    private _uid: string = this.guid();
-    /**
-     * Message constructor
-     * @param  {string=""} private_data Message data; default empty
-     * @param  {MessageType=MessageType.Global} private_type Message Type; default global
-     * @param  {boolean=false} private_single If the message should be handled once or not; default true
-     */
-    constructor(
-        private _data: string = "",
-        private _type: MessageType = MessageType.Global, 
-        private _single: boolean = false) { }
-    /**
-     * Gets the message unique id.
-     * @returns string Unique ID
-     */
-    public get uid(): string {
-        return this._uid;
+    public code: string;
+    public context: any;
+    public sender: any;
+    public priority: MessagePriority;
+    constructor(code: string, sender: any, context?: any, priority: MessagePriority = MessagePriority.NORMAL) {
+        this.code = code;
+        this.sender = sender;
+        this.context = context;
+        this.priority = priority;
     }
-    /**
-     * Gets the message type.
-     * @returns MessageType Type
-     */
-    public get type(): MessageType {
-        return this._type;
+    public static send(code: string, sender: any, context?: any): void {
+        MessageBus.post(new Message(code, sender, context, MessagePriority.NORMAL));
     }
-    /**
-     * Gets if the message is single or not.
-     * @returns boolean True or false
-     */
-    public get single(): boolean {
-        return this._single;
+    public static sendPriority(code: string, sender: any, context?: any): void {
+        MessageBus.post(new Message(code, sender, context, MessagePriority.HIGH));
     }
-    /**
-     * Gets the message's data
-     * @returns string Data
-     */
-    public get data(): string {
-        return this._data;
+    public static subscribe(code: string, handler: IMessageHandler): void {
+        MessageBus.addSubscription(code, handler);
     }
-    /**
-     * Returns the message as a string.
-     * @returns string
-     */
-    public toString(): string {
-        return JSON.stringify(this);
+    public static unsubscribe(code: string, handler: IMessageHandler): void {
+        MessageBus.removeSubscription(code, handler);
     }
-    /**
-     * Creates the unique id for the message.
-     * @returns string Unique ID
-     */
-    private guid(): string {
-        return "" + Math.random().toString(36).substr(2, 9);
+    public static unsubscribeHandlerFromAll(handler: IMessageHandler): void {
+        MessageBus.removeHandlerFromAll(handler);
     }
 }

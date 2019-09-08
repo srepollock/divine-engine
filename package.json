@@ -1,93 +1,120 @@
 {
-  "name": "sunset-engine",
-  "version": "0.0.1",
-  "description": "The Sunset Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
-  "main": "./lib/sunset.umd.js",
-  "module": "./lib/sunset.es.js",
+  "name": "divine-engine",
+  "version": "0.3.3",
+  "description": "The Divine Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
+  "main": "./lib/divine.umd.js",
+  "module": "./lib/divine.es.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf build/* dist/* lib/*",
-    "commit": "npm run lint; git add --all && git-cz",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Sunset\\ Engine\\ API --out docs --mode file --module commonjs --target ESNext --readme none src/*",
-    "lint": "tslint src/**/*.ts -c tslint.json",
-    "prepare": "npm run clean; npm run build;",
+    "bundle": "tsc; rollup -c",
+    "clean": "rm -rf lib/* docs/* dist/*",
+    "commit": "npm run lint; git add --all; git-cz; git push",
+    "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --target ESNext --readme none src/*",
+    "lint": "eslint -c .eslintrc.json src/**/*.ts --quiet",
+    "lint:fix": "eslint -c .eslintrc.json src/**/*.ts --fix --quiet",
     "semantic-release": "semantic-release",
-    "setup:all": "npm run setup:semantic-release; npm run setup:commitizen; npm run setup:update-package-json",
-    "setup:update-package-json": "sed -i '3s/.*/\"version\": 0.0.0-semantically-released,/' package.json",
-    "setup:commitizen": "commitizen init cz-conventional-changelog --save-dev --save-exact",
-    "setup:semantic-release": "semantic-release-cli setup",
     "test": "npm run test:all",
-    "test:all": "nyc mocha --opts mocha.opts \"test/**/*.spec.{ts,tsx}\" --exit",
-    "test:browser": "mocha --opts mocha.opts \"test/browser/*.spec.ts\" --exit",
-    "test:functional": "mocha --opts mocha.opts \"test/functional/**/*.spec.ts\"",
-    "test:integration": "mocha --opts mocha.opts \"test/integration/**/*.spec.ts\"",
-    "test:unit": "mocha --opts mocha.opts \"test/unit/**/*.spec.ts\"",
-    "watch": "mocha -w t--opts .mocha est/**/*.spec.ts"
+    "test:all": "jest --coverage",
+    "test:functional": "jest test/functional/**/*\\.spec\\.[jt]s",
+    "test:integration": "jest test/integration/**/*\\.spec\\.[jt]s",
+    "test:unit": "jest test/unit/**/*\\.spec\\.[jt]s",
+    "watch": "tsc; rollup -c --watch.exclude \"node_modules/**\" "
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/srepollock/sunset-engine.git"
+    "url": "git+https://github.com/srepollock/divine-engine.git"
   },
   "keywords": [
     "typescript",
     "game-engine",
-    "game-development",
-    "game-framework"
+    "game-development"
   ],
   "author": "Spencer Pollock <spencer@spollock.ca> (http://spollock.ca)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/srepollock/sunset-engine/issues"
+    "url": "https://github.com/srepollock/divine-engine/issues"
   },
-  "homepage": "http://spollock.ca/sunset-engine",
-  "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.18",
-    "@types/puppeteer": "^1.11.1",
-    "chai": "^4.2.0",
-    "codecov": "^3.1.0",
-    "commitizen": "^3.0.5",
-    "cz-conventional-changelog": "^2.1.0",
-    "electron": "^2.0.16",
-    "event-stream": "3.3.4",
-    "mocha": "^5.2.0",
-    "node": "^10.14.2",
-    "nyc": "^12.0.2",
-    "puppeteer": "^1.11.0",
-    "semver": ">=4.3.2",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.12.0",
-    "typedoc": "^0.11.1"
-  },
+  "homepage": "http://spollock.ca/divine-engine",
   "dependencies": {
-    "typescript": "^3.3.3"
+    "typescript": "^3.5.3"
   },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "exclude": [
-      "test/helperfiles",
-      "**/*.d.ts",
-      "**/*.spec.ts",
-      "dist",
-      "docs",
-      "coverage",
-      "lib"
-    ],
-    "reporter": [
-      "html",
-      "text-summary"
-    ],
-    "all": true
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/electron": "^1.6.10",
+    "@types/jest": "^24.0.15",
+    "@types/lodash": "^4.14.136",
+    "@types/node": "^12.7.2",
+    "@types/three": "^0.103.2",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "babel-jest": "^24.8.0",
+    "braces": ">=2.3.1",
+    "codecov": "^3.5.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^6.2.0",
+    "jest": "^24.8.0",
+    "lodash": ">=4.17.15",
+    "rollup": "^1.17.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-typescript2": "^0.22.0",
+    "three": "^0.107.0",
+    "ts-jest": "^24.0.2",
+    "tslint-to-eslint-config": "^0.2.4",
+    "typedoc": "^0.15.0"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "jest": {
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "functions": 70,
+        "branches": 50,
+        "lines": 70,
+        "statements": 50
+      },
+      "./src/math": {
+        "functions": 100,
+        "branches": 100,
+        "lines": 100,
+        "statements": 100
+      },
+      "./src/helper": {
+        "functions": 100,
+        "branches": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "preset": "ts-jest",
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/core/loggingsystem/",
+      "<rootDir>/src/core/messagesystem/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",
+      "<rootDir>/src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"
+    ]
   }
 }

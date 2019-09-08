@@ -1,0 +1,9 @@
+import { Material } from "src";
+
+export class MaterialReferenceNode {
+    public material: Material;
+    public referenceCount: number = 1;
+    constructor(material: Material) {
+        this.material = material;
+    }
+}

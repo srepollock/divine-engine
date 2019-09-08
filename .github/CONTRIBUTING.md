@@ -2,9 +2,9 @@
 
 So you’d like to add to this project, that’s great! There are a few steps you need to follow first:
 
-1. Check out the [Project Description](https://github.com/srepollock/sunset-engine/wiki/project-description) page for what this project is working towards and why it’s important.
-2. [Your Project](https://github.com/srepollock/sunset-engine/wiki/your-project)
-3. Check out open [issues](https://github.com/srepollock/sunset-engine/issues) to see if any issues stand out that you'd like to tackle!
+1. Check out the [Project Description](https://github.com/srepollock/divine-engine/wiki/project-description) page for what this project is working towards and why it’s important.
+2. [Your Project](https://github.com/srepollock/divine-engine/wiki/your-project)
+3. Check out open [issues](https://github.com/srepollock/divine-engine/issues) to see if any issues stand out that you'd like to tackle!
 
 After you’ve read and followed these steps, now you’re ready to get to work!
 
@@ -86,4 +86,4 @@ There are issue templates setup for the project. Please select one that is best 
 
 ## Pull Requests
 
-Have you added a new feature that has been requested? Have you fixed an issue sitting on the [issues](https://github.com/srepollock/sunset-engine/issues) page? Have you fixed your own issue? Well now you want to submit a pull request I reckon. If that’s the case, you’ve come to the right place. The Sunset Engine has a few rules put in place to ensure quick pull requests for new features to test and develop. As long as you have been using `npm run commit` you will be setup to write a great pull request. Please try and be as descriptive as possible in your commit messages, as well as your pull requests for the best detail!
+Have you added a new feature that has been requested? Have you fixed an issue sitting on the [issues](https://github.com/srepollock/divine-engine/issues) page? Have you fixed your own issue? Well now you want to submit a pull request I reckon. If that’s the case, you’ve come to the right place. The Sunset Engine has a few rules put in place to ensure quick pull requests for new features to test and develop. As long as you have been using `npm run commit` you will be setup to write a great pull request. Please try and be as descriptive as possible in your commit messages, as well as your pull requests for the best detail!
