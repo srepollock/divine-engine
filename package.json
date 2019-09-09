@@ -6,6 +6,7 @@
   "module": "./lib/divine.es.js",
   "types": "./lib/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "bundle": "tsc; rollup -c",
     "clean": "rm -rf lib/* docs/* dist/*",
     "commit": "npm run lint; git add --all; git-cz; git push",
@@ -35,39 +36,28 @@
     "url": "https://github.com/srepollock/divine-engine/issues"
   },
   "homepage": "http://spollock.ca/divine-engine",
-  "dependencies": {
-    "typescript": "^3.5.3"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
-    "@babel/preset-typescript": "^7.3.3",
-    "@types/electron": "^1.6.10",
+    "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
     "@types/jest": "^24.0.15",
-    "@types/lodash": "^4.14.136",
     "@types/node": "^12.7.2",
-    "@types/three": "^0.103.2",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/eslint-plugin-tslint": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "babel-jest": "^24.8.0",
-    "bl": ">=0.9.5",
-    "braces": ">=2.3.1",
-    "codecov": "^3.5.0",
-    "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^2.1.0",
+    "commitizen": "*",
+    "cz-conventional-changelog": "*",
     "eslint": "^6.2.0",
+    "git-cz": "*",
     "jest": "^24.8.0",
-    "lodash": ">=4.17.15",
     "rollup": "^1.17.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-typescript2": "^0.22.0",
-    "semver": ">=4.3.2",
-    "three": "^0.107.0",
+    "semantic-release": "^15.13.24",
     "ts-jest": "^24.0.2",
     "tslint-to-eslint-config": "^0.2.4",
-    "typedoc": "^0.15.0"
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.3"
   },
   "config": {
     "commitizen": {

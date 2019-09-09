@@ -16,8 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: 
-          - 11
+        node_version:
           - 12
         os: 
           - macOS-latest
@@ -25,21 +24,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+        with:
+          submodules: true
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@master
         with:
           version: ${{ matrix.node_version }}
       - run: |
           npm install
-          npm run build
+          npm run bundle
 
   test:
     name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: 
-          - 11
+        node_version:
           - 12
         os: 
           - macOS-latest
@@ -53,7 +53,6 @@ jobs:
           version: ${{ matrix.node_version }}
       - run: |
           npm install
-          npm run build
           npm run test
   
   coverage:
@@ -70,7 +69,11 @@ jobs:
         run: |
           npm install -g codecov
           npm install
-          npm run coverage
+          npm run test:all
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   docs:
     needs: [build, test]
@@ -98,39 +101,41 @@ jobs:
         with:
           version: 12
       - name: GitHub Pages Deploy
-        uses: maxheld83/ghpages@v0.2.1
+        uses: maxheld83/ghpages@master
         env:
-          BUILD_DIR: "gh_pages"
+          BUILD_DIR: "."
           GH_PAT: ${{secrets.GITHUB_TOKEN}}
 
   publish_npm:
     needs: [build, test, coverage, docs]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with: 
-          version: 12
-          registry-url: https://registry.npmjs.org/
+      - uses: actions/checkout@master
       - name: Update package version
         run: |
+          npm install --save-dev semantic-release
           npm run semantic-release
-          npm publish
+      - uses: actions/setup-node@v1
+        with: 
+          version: 12
+          registry-url: "https://registry.npmjs.org/"
+      - run: npm install
+      - run: npm publish
         if: github.event == 'push'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
 
-  publish-gpr:
+  publish_gh:
     needs: [build, test, coverage, docs]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: https://npm.pkg.github.com/
+          registry-url: "https://npm.pkg.github.com/"
           scope: '@srepollock'
+          always-auth: true
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

@@ -1,6 +1,6 @@
 import { Entity } from "../core/entity";
 import { IBehaviour } from "./ibehaviour";
-import { IBehaviourData } from "./IBehaviourData";
+import { IBehaviourData } from "./ibehaviourdata";
 
 export abstract class Behaviour implements IBehaviour {
     public name: string;   
