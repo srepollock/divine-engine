@@ -4,7 +4,7 @@ import { Matrix4, } from "../math/matrix4";
 import { Vector3 } from "../math/vector3";
 import { Vertex } from "../math/vertex";
 import { AttributeInfo } from "../rendersystem/attributeinfo";
-import { GLBuffer } from "../rendersystem/GLBuffer";
+import { GLBuffer } from "../rendersystem/glbuffer";
 import { GLUtility } from "../rendersystem/glutility";
 import { MaterialManager } from "../rendersystem/materialmanager";
 import { Shader } from "../rendersystem/shader";
