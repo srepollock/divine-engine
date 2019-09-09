@@ -1,5 +1,5 @@
 import typescript from 'rollup-plugin-typescript2';
-import builtins from "rollup-plugin-node-builtins";
+import builtins from "@joseph184/rollup-plugin-node-builtins";
 import globals from "rollup-plugin-node-globals";
 import pkg from "./package.json";
 

@@ -129,12 +129,18 @@ export class Vector3 extends Vector2 {
     public setFromJson(json: any): void {
         if (json.x !== undefined) {
             this.x = Number(json.x);
+        } else {
+            this.x = 0;
         }
         if (json.y !== undefined) {
             this.y = Number(json.y);
+        } else {
+            this.y = 0;
         }
         if (json.z !== undefined) {
             this.z = Number(json.z);
+        } else {
+            this.z = 0;
         }
     }
     public toArray(): Array<number> {

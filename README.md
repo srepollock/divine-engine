@@ -3,7 +3,7 @@
 [![TypeScript](https://badges.frapsoft.com/typescript/version/typescript-next.svg?v=101)](https://github.com/ellerbrock/typescript-badges/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![Build Status](https://travis-ci.com/srepollock/divine-engine.svg?token=vCpX1PnxzAGLJBhzSWzt&branch=master)](https://travis-ci.com/srepollock/divine-engine)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fsrepollock%2Fdivine-engine%2Fbadge&style=popout)](https://actions-badge.atrox.dev/srepollock/divine-engine/goto)
 [![codecov](https://codecov.io/gh/srepollock/divine-engine/branch/master/graph/badge.svg?token=xxUigA222v)](https://codecov.io/gh/srepollock/divine-engine)
 
 ---
