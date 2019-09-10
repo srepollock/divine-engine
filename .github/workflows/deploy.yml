@@ -20,6 +20,9 @@ jobs:
         env:
           BUILD_DIR: "."
           GH_PAT: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{secrets.gh_token}}
+          GITHUB_TOKEN: ${{secrets.gh_token}}
+          NPM_TOKEN: ${{secrets.npm_token}}
 
   release_gh:
     runs-on: macos-latest
@@ -43,6 +46,8 @@ jobs:
           npm run release
         env:
           GH_TOKEN: ${{secrets.gh_token}}
+          GITHUB_TOKEN: ${{secrets.gh_token}}
+          NPM_TOKEN: ${{secrets.npm_token}}
   
   publish_npm:
     runs-on: ubuntu-latest
