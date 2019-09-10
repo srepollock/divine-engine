@@ -28,11 +28,16 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
+      - name: Install Wine
       - run: |
           sudo dpkg --add-architecture i386
           sudo apt-get update
           sudo apt-get install wine32
           sudo apt-get install wine64
+      - name: Conigure Git
+      - run: |
+          git config --global user.email "spencer@spollock.ca"
+          git config --global user.name "Spencer Pollock"
       - run: |
           npm install
           npm run build
