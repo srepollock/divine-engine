@@ -33,8 +33,8 @@ jobs:
       - run: |
           npm install
           npm run build
+          npm run bundle
           npm run release
-          npm run dist
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
