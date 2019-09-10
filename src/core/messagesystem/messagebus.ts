@@ -1,4 +1,4 @@
-import { log, LogLevel } from "../loggingsystem/src";
+import { log, LogLevel } from "de-loggingsystem";
 import { IMessageHandler } from "./imessagehandler";
 import { Message } from "./message";
 import { MessagePriority } from "./messagepriority";

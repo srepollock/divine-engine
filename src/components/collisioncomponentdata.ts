@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Circle2D, IShape2D, Rectangle2D } from "../rendersystem";
 import { IComponentData } from "./icomponentdata";
 

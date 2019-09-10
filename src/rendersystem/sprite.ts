@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Material } from "../core/material";
 import { Matrix4, } from "../math/matrix4";
 import { Vector3 } from "../math/vector3";

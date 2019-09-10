@@ -1,5 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
-import { Vector2 } from "../math/vector2";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IBehaviourData } from "./ibehaviourdata";
 
 export class FlagBehaviourData implements IBehaviourData {

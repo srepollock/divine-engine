@@ -1,7 +1,7 @@
-import { OpeningGUIBehaviour } from "./openingguibehaviour";
-import { OpeningGUIBehaviourData } from "./openingguibehaviourdata";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";
+import { OpeningGUIBehaviour } from "./openingguibehaviour";
+import { OpeningGUIBehaviourData } from "./openingguibehaviourdata";
 
 export class OpeningGUIBehaviourBuilder implements IBehaviourBuilder {
     public name!: string;

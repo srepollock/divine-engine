@@ -1,6 +1,7 @@
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
+import { CollisionComponent } from "../components";
 import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
 import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
@@ -13,7 +14,6 @@ import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
-import { CollisionComponent } from "src/components";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;

@@ -1,6 +1,6 @@
+import { log, LogLevel } from "de-loggingsystem";
 import { AssetManager } from "../assets/assetmanager";
 import { ImageAsset } from "../assets/imageasset";
-import { log, LogLevel } from "../core/loggingsystem/src";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";

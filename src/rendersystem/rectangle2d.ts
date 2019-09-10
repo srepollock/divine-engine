@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Vector2 } from "../math/vector2";
 import { Circle2D } from "./circle2d";
 import { IShape2D } from "./ishape2d";

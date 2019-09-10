@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IComponent } from "./icomponent";
 import { IComponentBuilder } from "./icomponentbuilder";
 

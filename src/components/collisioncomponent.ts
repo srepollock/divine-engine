@@ -1,4 +1,4 @@
-import { log, LogLevel } from "../core/loggingsystem/src";
+import { log, LogLevel } from "de-loggingsystem";
 import { Vector2 } from "../math/vector2";
 import { CollisionManager } from "../physicssystem/collisionmanager";
 import { IShape2D } from "../rendersystem/ishape2d";
