@@ -2,11 +2,11 @@ import { IBehaviour } from "../behaviours/ibehaviour";
 import { IComponent } from "../components/icomponent";
 import { Transform } from "../core/transform";
 import { guid } from "../helper/guid";
+import { Message, IMessageHandler } from "./messagesystem";
 import { Matrix4 } from "../math/matrix4";
 import { Vector3 } from "../math/vector3";
 import { Shader } from "../rendersystem/shader";
 import { Scene } from "../scene/scene";
-import { Message, IMessageHandler } from "./messagesystem";
 
 export class Entity {
     public transform: Transform = new Transform();

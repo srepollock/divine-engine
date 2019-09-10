@@ -37,7 +37,9 @@
     "url": "https://github.com/srepollock/divine-engine/issues"
   },
   "homepage": "http://spollock.ca/divine-engine",
-  "dependencies": {},
+  "dependencies": {
+    "de-loggingsystem": "0.0.1"
+  },
   "devDependencies": {
     "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
     "@types/jest": "^24.0.15",
@@ -102,11 +104,9 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
-      "<rootDir>/src/core/loggingsystem/",
       "<rootDir>/src/core/messagesystem/"
     ],
     "testPathIgnorePatterns": [
-      "<rootDir>/src/core/loggingsystem/test/.*(test|spec)\\.[jt]sx?$",
       "<rootDir>/src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"
     ]
   }

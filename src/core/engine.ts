@@ -1,3 +1,4 @@
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
@@ -28,7 +29,6 @@ import { MaterialManager } from "../rendersystem/materialmanager";
 import { Sprite } from "../rendersystem/sprite";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
-import { ErrorCode, log, LogLevel } from "./loggingsystem/src";
 import { MessageType } from "./messagesystem/messagetype";
 
 export class Engine implements IMessageHandler {

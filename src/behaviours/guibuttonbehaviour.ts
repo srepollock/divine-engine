@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IBehaviourData } from "./ibehaviourdata";
 
 export class GUIButtonBehaviourData implements IBehaviourData {
