@@ -13,7 +13,6 @@
     "docs": "typedoc --excludeExternals --externalPattern \"node_modules/**\" --ignoreCompilerErrors --name Divine\\ Engine\\ API --out docs --mode file --target ESNext --readme none src/*",
     "lint": "eslint -c .eslintrc.json src/**/*.ts --quiet",
     "lint:fix": "eslint -c .eslintrc.json src/**/*.ts --fix --quiet",
-    "postinstall": "npm run bundle",
     "release": "standard-version",
     "test": "npm run test:all",
     "test:all": "jest --coverage",
