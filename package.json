@@ -1,6 +1,6 @@
 {
   "name": "divine-engine",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "The Divine Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "./lib/divine.umd.js",
   "module": "./lib/divine.es.js",
@@ -14,7 +14,7 @@
     "lint": "eslint -c .eslintrc.json src/**/*.ts --quiet",
     "lint:fix": "eslint -c .eslintrc.json src/**/*.ts --fix --quiet",
     "postinstall": "npm run bundle",
-    "semantic-release": "semantic-release",
+    "release": "standard-version",
     "test": "npm run test:all",
     "test:all": "jest --coverage",
     "test:functional": "jest test/functional/**/*\\.spec\\.[jt]s",
@@ -38,7 +38,8 @@
   },
   "homepage": "http://spollock.ca/divine-engine",
   "dependencies": {
-    "de-loggingsystem": "0.0.1"
+    "de-loggingsystem": "0.0.1",
+    "standard-version": "^7.0.0"
   },
   "devDependencies": {
     "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
@@ -56,7 +57,6 @@
     "rollup": "^1.17.0",
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-typescript2": "^0.22.0",
-    "semantic-release": "^15.13.24",
     "ts-jest": "^24.0.2",
     "tslint-to-eslint-config": "^0.2.4",
     "typedoc": "^0.15.0",
@@ -108,6 +108,12 @@
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/src/core/messagesystem/test/.*(test|spec)\\.[jt]sx?$"
+    ]
+  },
+  "release": {
+    "plubins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator"
     ]
   }
 }
