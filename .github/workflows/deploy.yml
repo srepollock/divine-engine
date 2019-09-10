@@ -1,0 +1,45 @@
+name: Deployment Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish_pages:
+    name: Deploys the README to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - name: GitHub Pages Deploy
+        uses: maxheld83/ghpages@master
+        env:
+          BUILD_DIR: "."
+          GH_PAT: ${{secrets.GITHUB_TOKEN}}
+
+  release_gh:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: |
+          brew install wine
+      - run: |
+          npm install
+          npm run build
+          npm run release
+          npm run dist
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Release
+        uses: mikeal/merge-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
