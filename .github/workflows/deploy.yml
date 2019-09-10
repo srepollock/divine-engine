@@ -22,14 +22,16 @@ jobs:
           GH_PAT: ${{secrets.GITHUB_TOKEN}}
 
   release_gh:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
           node-version: 12
       - run: |
-          brew install wine
+          sudo  dpkg --add-architecture i386 && apt-get update
+          sudo apt-get update && sudo apt-get install wine32
+          sudo apt install wine64
       - run: |
           npm install
           npm run build
