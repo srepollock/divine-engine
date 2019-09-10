@@ -63,4 +63,4 @@ jobs:
           npm publish
         env:
           GITHUB_TOKEN: ${{secrets.gh_token}}
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NPM_TOKEN: ${{secrets.npm_token}}
