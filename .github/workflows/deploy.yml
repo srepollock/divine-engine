@@ -36,7 +36,7 @@ jobs:
           git config --global user.name "Spencer Pollock"
       - uses: actions/setup-node@v1
         with:
-            node-version: 12
+          node-version: 12
       - run: |
           npm install
           npm run bundle
