@@ -230,9 +230,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         Message.unsubscribe(MessageType.KEY_DOWN, this);
         Message.unsubscribe(MessageType.KEY_UP, this);
         setTimeout(() => {
-            let zoneIndex = ZoneManager.getRegisteredZoneIndex("titlescreen");
+            let zoneIndex = ZoneManager.getRegisteredZoneIndex("deathscreen.sequence");
             if (zoneIndex === undefined) {
-                log(LogLevel.error, `The Zone index of titlescreen could not be found!`, ErrorCode.ZoneDoesNotExist);
+                log(LogLevel.error, `The Zone index of deathscreen.sequence could not be found!`, 
+                    ErrorCode.ZoneDoesNotExist);
             }
             ZoneManager.changeZone(zoneIndex!);
         }, 10000);
