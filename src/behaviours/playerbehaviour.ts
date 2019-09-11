@@ -13,6 +13,7 @@ import { AudioManager } from "../soundsystem/audiomanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
+import { ZoneManager } from "src/zones";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
@@ -27,6 +28,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _groundCollisionComponent: string;
     private _enemyCollisionComponent: string;
     private _flagCollisionComponent: string;
+    private _deathCollisionComponent: string = "";
+    private _wallCollisionComponent: string = "";
     private _animatedSpriteName: string;
     private _attackSpriteName: string;
     private _hitSpriteName: string;
@@ -44,6 +47,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         this._groundCollisionComponent = data.groundCollisionComponent;
         this._enemyCollisionComponent = data.enemyCollisionComponent;
         this._flagCollisionComponent = data.flagCollisionComponent;
+        this._deathCollisionComponent = data.deathCollisionComponent;
+        this._wallCollisionComponent = data.wallCollisionComponent;
         this._animatedSpriteName = data.animatedSpriteName;
         this._attackSpriteName = data.attackSpriteName;
         this._hitSpriteName = data.hitSpriteName;
@@ -56,6 +61,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         Message.subscribe(MessageType.KEY_DOWN, this);
         Message.subscribe(MessageType.KEY_UP, this);
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
+        Message.subscribe(MessageType.COLLISION_EXIT, this);
     }
     public updateReady(): void {
         super.updateReady();
@@ -88,6 +94,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         super.update(delta); 
     }
     public onMessage(message: Message): void {
+        let data: CollisionData;
         switch (message.code) {
             case MessageType.KEY_UP:
                 switch (message.context) {
@@ -121,7 +128,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 }
                 break;
             case MessageType.COLLISION_ENTRY:
-                let data: CollisionData = (message.context as CollisionData);
+                data = (message.context as CollisionData);
                 if (data.a.name.includes(this._groundCollisionComponent) && 
                     data.b.name === this._playerCollisionComponent || 
                     data.b.name === this._playerCollisionComponent && 
@@ -129,6 +136,12 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     this._isJumping = false;
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
+                }
+                if (data.a.name.includes(this._wallCollisionComponent) && 
+                    data.b.name === this._playerCollisionComponent || 
+                    data.b.name === this._playerCollisionComponent && 
+                    data.a.name.includes(this._wallCollisionComponent)) {
+                    // TODO: don't allow the player to pass through the object.
                 }
                 if ((data.a.name === this._enemyCollisionComponent && 
                     data.b.name === this._playerCollisionComponent) ||
@@ -144,6 +157,21 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                         (this._owner!.parent!.getObjectByName(
                             data.a.owner!.name)!.getBehaviourByName("enemycontroller")! as EnemyBehaviour).takeDamage();
                     }
+                }
+                if (data.a.name === this._deathCollisionComponent && 
+                    data.b.name === this._playerCollisionComponent || 
+                    data.b.name === this._playerCollisionComponent && 
+                    data.a.name === this._deathCollisionComponent) {
+                    this.die();
+                }
+                break;
+            case MessageType.COLLISION_EXIT:
+                data = (message.context as CollisionData);
+                if (data.a.name === this._groundCollisionComponent && 
+                    data.b.name === this._playerCollisionComponent || 
+                    data.b.name === this._playerCollisionComponent && 
+                    data.a.name === this._groundCollisionComponent) {
+                    this._isJumping = true; // NOTE: Triggers falling
                 }
                 break;
             case MessageType.ANIMATION_COMPLETE:
@@ -201,6 +229,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         (this._owner!.getComponentByName(this._playerCollisionComponent) as CollisionComponent).isStatic = true;
         Message.unsubscribe(MessageType.KEY_DOWN, this);
         Message.unsubscribe(MessageType.KEY_UP, this);
+        setTimeout(() => {
+            let zoneIndex = ZoneManager.getRegisteredZoneIndex("titlescreen");
+            if (zoneIndex === undefined) {
+                log(LogLevel.error, `The Zone index of titlescreen could not be found!`, ErrorCode.ZoneDoesNotExist);
+            }
+            ZoneManager.changeZone(zoneIndex!);
+        }, 10000);
     }
     private onJump(): void {
         if (this._isAlive && !this._isJumping) {
