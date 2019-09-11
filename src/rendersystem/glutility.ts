@@ -8,7 +8,12 @@ export class GLUtility {
         return GLUtility._instance;
     }
     private constructor() {
-        this.canvas = document.body.appendChild(document.createElement("canvas"));
+        let c = document.getElementById("de-canvas");
+        if (c === undefined) {
+            this.canvas = document.body.appendChild(document.createElement("canvas"));
+        } else {
+            this.canvas = (c as HTMLCanvasElement);
+        }
         if (this.canvas.getContext("experimental-webgl") === undefined || 
             this.canvas.getContext("experimental-webgl") === null) {
             log(LogLevel.error, `Unable to initialize Experimental WebGL.`, ErrorCode.WebGLNotInitialized);

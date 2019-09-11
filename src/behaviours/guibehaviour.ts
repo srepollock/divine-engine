@@ -1,5 +1,6 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Entity } from "../core/entity";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IMessageHandler, Message, MessageType } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
