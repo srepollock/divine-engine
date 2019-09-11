@@ -15,6 +15,9 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12
+        run: |
+          npm install
+          npm run docs
       - name: GitHub Pages Deploy
         uses: maxheld83/ghpages@master
         env:

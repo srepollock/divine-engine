@@ -7,6 +7,11 @@ export class AIMovementBehaviourData implements IBehaviourData {
     public start: Vector2 = new Vector2();
     public end: Vector2 = new Vector2();
     public direction: Vector2 = new Vector2(1, 0);
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

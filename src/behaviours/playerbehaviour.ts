@@ -37,6 +37,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _sprite: AnimatedSpriteComponent | undefined;
     private _maxVelocityX: number;
     private _maxVelocityY: number;
+    /**
+     * Class constructor.
+     * @param  {PlayerBehaviourData} data
+     */
     constructor(data: PlayerBehaviourData) {
         super(data);
         this._acceleration = data.acceleration;
@@ -57,6 +61,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         Message.subscribe(MessageType.KEY_UP, this);
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
+    /**
+     * Checks if the behaviour is ready to update.
+     * @returns void
+     */
     public updateReady(): void {
         super.updateReady();
         this._sprite = this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent;
@@ -66,6 +74,11 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 ErrorCode.SpriteNotAttached);
         }
     }
+    /**
+     * Updates the owner's position based on velocity (based on acceleration and the delta).
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         if (!this._isAlive) {
             return;
@@ -87,6 +100,11 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         this._owner!.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
         super.update(delta); 
     }
+    /**
+     * Called when the behaviour handles a message.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         switch (message.code) {
             case MessageType.KEY_UP:
@@ -162,6 +180,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 }
         }
     }
+    /**
+     * Called when the owner takes damage. Usually collided with an enemy.
+     * @returns void
+     */
     private onTakeDamage(): void {
         this._owner!.transform.position.add(new Vector3(-20, 0, 0));
         if (!this._isAttacking) {
@@ -172,6 +194,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             }
         }
     }
+    /**
+     * Changes the sprite of the owner.
+     * *NOTE*: This can only be done for animated sprite materials.
+     * @param  {string} materialName
+     * @param  {Array<number>} frameSequence
+     * @returns void
+     */
     private changeSprite(materialName: string, frameSequence: Array<number>): void {
         if (this._sprite!.sprite.materialName !== materialName) {
             let newSpriteComponent = new AnimatedSpriteComponent(
@@ -192,6 +221,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             Message.subscribe(MessageType.ANIMATION_COMPLETE, this);
         }
     }
+    /**
+     * Kills the owner entity.
+     * @returns void
+     */
     private die(): void {
         this._isAlive = false;
         this.changeSprite(this._dieSpriteName, [0, 1, 2, 3, 4]);
@@ -202,6 +235,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         Message.unsubscribe(MessageType.KEY_DOWN, this);
         Message.unsubscribe(MessageType.KEY_UP, this);
     }
+    /**
+     * Causes the owner to perform a jump.
+     * @returns void
+     */
     private onJump(): void {
         if (this._isAlive && !this._isJumping) {
             log(LogLevel.debug, `Player jumping ${-this._maxVelocityY}`);
@@ -211,6 +248,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             AudioManager.playSound("playerjump");
         }
     }
+    /**
+     * Causes the owner to perform an attack.
+     * @returns void
+     */
     private onAttack(): void {
         if (this._sprite!.sprite.materialName === this._idleSpriteName) this._isAttacking = false;
         if (this._isAlive && !this._isAttacking) {
