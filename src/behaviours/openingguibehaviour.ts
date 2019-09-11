@@ -1,4 +1,4 @@
-import { log, LogLevel } from "../core/loggingsystem/src";
+import { log, LogLevel } from "de-loggingsystem";
 import { IMessageHandler, Message } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";

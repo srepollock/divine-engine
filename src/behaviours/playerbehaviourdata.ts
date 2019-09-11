@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Vector2 } from "../math/vector2";
 import { IBehaviourData } from "./ibehaviourdata";
 

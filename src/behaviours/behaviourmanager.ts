@@ -1,4 +1,4 @@
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";
 

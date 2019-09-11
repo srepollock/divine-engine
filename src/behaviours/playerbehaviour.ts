@@ -1,6 +1,7 @@
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
+import { CollisionComponent } from "../components";
 import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
 import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
@@ -9,11 +10,9 @@ import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
 import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
-import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
-import { CollisionComponent } from "src/components";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
@@ -123,8 +122,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 break;
             case MessageType.COLLISION_ENTRY:
                 let data: CollisionData = (message.context as CollisionData);
-                if (data.a.name === this._groundCollisionComponent && data.b.name === this._playerCollisionComponent || 
-                    data.b.name === this._playerCollisionComponent && data.a.name === this._groundCollisionComponent) {
+                if (data.a.name.includes(this._groundCollisionComponent) && 
+                    data.b.name === this._playerCollisionComponent || 
+                    data.b.name === this._playerCollisionComponent && 
+                    data.a.name.includes(this._groundCollisionComponent)) {
                     this._isJumping = false;
                     this._velocity.y = 0;
                     this._acceleration.y = 0;

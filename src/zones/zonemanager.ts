@@ -1,6 +1,6 @@
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AssetManager } from "../assets/assetmanager";
 import { JsonAsset } from "../assets/jsonasset";
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { Shader } from "../rendersystem/shader";

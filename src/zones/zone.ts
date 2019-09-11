@@ -1,7 +1,7 @@
 import { BehaviourManager } from "../behaviours/behaviourmanager";
 import { ComponentManager } from "../components/componentmanager";
 import { Entity } from "../core/entity";
-import { ErrorCode, log, LogLevel } from "../core/loggingsystem/src";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { guid } from "../helper";
 import { Shader } from "../rendersystem/shader";
 import { Scene } from "../scene/scene";
