@@ -10,7 +10,6 @@ export class PlayerBehaviourData implements IBehaviourData {
     public enemyCollisionComponent!: string;
     public flagCollisionComponent!: string;
     public deathCollisionComponent: string = "";
-    public wallCollisionComponent: string = "";
     public animatedSpriteName!: string;
     public attackSpriteName!: string;
     public hitSpriteName!: string;
@@ -55,9 +54,6 @@ export class PlayerBehaviourData implements IBehaviourData {
         }
         if (json.deathCollisionComponent !== undefined) {
             this.deathCollisionComponent = String(json.deathCollisionComponent);
-        }
-        if (json.wallCollisionComponent !== undefined) {
-            this.wallCollisionComponent = String(json.wallCollisionComponent);
         }
         if (json.animatedSpriteName === undefined) {
             log(LogLevel.error, `animatedSpriteName must be defined for player controller.`, 

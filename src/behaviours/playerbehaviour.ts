@@ -10,10 +10,10 @@ import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
 import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
+import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
-import { ZoneManager } from "src/zones";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
@@ -24,12 +24,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _isAlive: boolean = true;
     private _isJumping: boolean = false;
     private _isAttacking: boolean = false;
+    private _isBouncingLeft: boolean = false;
+    private _isBouncingRight: boolean = false;
     private _playerCollisionComponent: string;
     private _groundCollisionComponent: string;
     private _enemyCollisionComponent: string;
     private _flagCollisionComponent: string;
     private _deathCollisionComponent: string = "";
-    private _wallCollisionComponent: string = "";
     private _animatedSpriteName: string;
     private _attackSpriteName: string;
     private _hitSpriteName: string;
@@ -38,6 +39,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _idleSpriteName: string;
     private _jumpSpriteName: string;
     private _sprite: AnimatedSpriteComponent | undefined;
+    private _bounceFactor: number = 0.8;
     private _maxVelocityX: number;
     private _maxVelocityY: number;
     constructor(data: PlayerBehaviourData) {
@@ -48,7 +50,6 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         this._enemyCollisionComponent = data.enemyCollisionComponent;
         this._flagCollisionComponent = data.flagCollisionComponent;
         this._deathCollisionComponent = data.deathCollisionComponent;
-        this._wallCollisionComponent = data.wallCollisionComponent;
         this._animatedSpriteName = data.animatedSpriteName;
         this._attackSpriteName = data.attackSpriteName;
         this._hitSpriteName = data.hitSpriteName;
@@ -78,6 +79,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         }
         if (this._isJumping) {
             this._acceleration.y += (9.75);
+        }
+        if (this._isBouncingLeft) {
+            this._velocity.x = -this._maxVelocityX;
+            this._velocity.x *= -this._bounceFactor;
+        } else if (this._isBouncingRight) {
+            this._velocity.x = this._maxVelocityX;
+            this._velocity.x *= -this._bounceFactor;
         }
         this._velocity.add(this._acceleration.clone().scale(delta));
         if (this._velocity.x > this._maxVelocityX) {
@@ -137,12 +145,6 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
                 }
-                if (data.a.name.includes(this._wallCollisionComponent) && 
-                    data.b.name === this._playerCollisionComponent || 
-                    data.b.name === this._playerCollisionComponent && 
-                    data.a.name.includes(this._wallCollisionComponent)) {
-                    // TODO: don't allow the player to pass through the object.
-                }
                 if ((data.a.name === this._enemyCollisionComponent && 
                     data.b.name === this._playerCollisionComponent) ||
                     (data.a.name === this._playerCollisionComponent && 
@@ -164,6 +166,18 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     data.a.name === this._deathCollisionComponent) {
                     this.die();
                 }
+                if (data.a.name === "leftboundary" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "leftboundary" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingLeft = true;
+                }
+                if (data.a.name === "rightboundary" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "rightboundary" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingRight = true;
+                }
                 break;
             case MessageType.COLLISION_EXIT:
                 data = (message.context as CollisionData);
@@ -172,6 +186,18 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     data.b.name === this._playerCollisionComponent && 
                     data.a.name === this._groundCollisionComponent) {
                     this._isJumping = true; // NOTE: Triggers falling
+                }
+                if (data.a.name === "leftboundary" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "leftboundary" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingLeft = false;
+                }
+                if (data.a.name === "rightboundary" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "rightboundary" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingRight = false;
                 }
                 break;
             case MessageType.ANIMATION_COMPLETE:
