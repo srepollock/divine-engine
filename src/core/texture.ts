@@ -13,18 +13,40 @@ export class Texture implements IMessageHandler {
     private _isLoaded: boolean = false;
     private _width: number;
     private _height: number;
+    /**
+     * Gets the name of the texture.
+     * @returns string
+     */
     public get name(): string {
         return this._name;
     }
+    /**
+     * Gets if the texture is loaded.
+     * @returns boolean
+     */
     public get isLoaded(): boolean {
         return this._isLoaded;
     }
+    /**
+     * Gets the height of the texture.
+     * @returns number
+     */
     public get height(): number {
         return this._height;
     }
+    /**
+     * Gets the width of the texture.
+     * @returns number
+     */
     public get width(): number {
         return this._width;
     }
+    /**
+     * Class constructor.
+     * @param  {string} name
+     * @param  {number=1} width
+     * @param  {number=1} height
+     */
     constructor(name: string, width: number = 1, height: number = 1) {
         this._name = name;
         this._width = width;
@@ -39,24 +61,51 @@ export class Texture implements IMessageHandler {
             this.loadTextureFromAsset((asset as ImageAsset));
         }
     }
+    /**
+     * Activates and binds the texture to the GLBuffer.
+     * @param  {number=0} textureUnit
+     * @returns void
+     */
     public activateAndBind(textureUnit: number = 0): void {
         GLUtility.gl.activeTexture(GLUtility.gl.TEXTURE0 + textureUnit);
         this.bind();
     }
+    /**
+     * Binds the texture to the GLBuffer.
+     * @returns void
+     */
     public bind(): void {
         GLUtility.gl.bindTexture(GLUtility.gl.TEXTURE_2D, this._handle);
     }
+    /**
+     * Destroys the texture.
+     * @returns void
+     */
     public destroy(): void {
         GLUtility.gl.deleteTexture(this._handle);
     }
+    /**
+     * Texture message handler.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         if (message.code === AssetManager.MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name) {
             this.loadTextureFromAsset(message.context as ImageAsset);
         }
     }
+    /**
+     * Unbinds the texture.
+     * @returns void
+     */
     public unbind(): void {
         GLUtility.gl.bindTexture(GLUtility.gl.TEXTURE_2D, null);
     }
+    /**
+     * Loads the texture from an image asset.
+     * @param  {ImageAsset} asset
+     * @returns void
+     */
     private loadTextureFromAsset(asset: ImageAsset): void {
         this._width = asset.width;
         this._height = asset.height;
@@ -76,9 +125,18 @@ export class Texture implements IMessageHandler {
         GLUtility.gl.texParameteri(GLUtility.gl.TEXTURE_2D, GLUtility.gl.TEXTURE_MAG_FILTER, GLUtility.gl.NEAREST);
         this._isLoaded = true;
     }
+    /**
+     * Gets if the texture's width and height is a power of two.
+     * @returns boolean
+     */
     private isPowerOf2(): boolean {
         return this.isValuePowreOf2(this._width) && this.isValuePowreOf2(this._height);
     }
+    /**
+     * Gets the value if it's a power of two.
+     * @param  {number} value
+     * @returns boolean
+     */
     private isValuePowreOf2(value: number): boolean {
         return (value & (value - 1)) === 0;
     }
