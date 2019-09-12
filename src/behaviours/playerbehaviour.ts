@@ -14,6 +14,7 @@ import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
+import { Entity } from "src/core";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
@@ -26,6 +27,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _isAttacking: boolean = false;
     private _isBouncingLeft: boolean = false;
     private _isBouncingRight: boolean = false;
+    private _isBouncingUp: boolean = false;
     private _playerCollisionComponent: string;
     private _groundCollisionComponent: string;
     private _enemyCollisionComponent: string;
@@ -62,6 +64,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         Message.subscribe(MessageType.KEY_DOWN, this);
         Message.subscribe(MessageType.KEY_UP, this);
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
+        Message.subscribe(MessageType.COLLISION_UPDATE, this);
         Message.subscribe(MessageType.COLLISION_EXIT, this);
     }
     public updateReady(): void {
@@ -86,13 +89,19 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         } else if (this._isBouncingRight) {
             this._velocity.x = this._maxVelocityX;
             this._velocity.x *= -this._bounceFactor;
+        } else if (this._isBouncingUp) {
+            this._velocity.y = 3;
+            this._velocity.y *= -this._bounceFactor;
+            this._acceleration.y = 0;
         }
+        // NOTE: Updates the velocity by the acceleration scaled by delta (times)
         this._velocity.add(this._acceleration.clone().scale(delta));
         if (this._velocity.x > this._maxVelocityX) {
             this._velocity.x = this._maxVelocityX;
         } else if (this._velocity.x < -this._maxVelocityX) {
             this._velocity.x = -this._maxVelocityX;
         }
+        // NOTE: Limit maxVelocity x or y
         if (this._velocity.y > this._maxVelocityY) {
             this._velocity.y = this._maxVelocityY;
         } else if (this._velocity.y < -this._maxVelocityY) {
@@ -160,6 +169,12 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                             data.a.owner!.name)!.getBehaviourByName("enemycontroller")! as EnemyBehaviour).takeDamage();
                     }
                 }
+                if (data.a.name === "platformcollision" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "platformcollision" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingUp = true;
+                }
                 if (data.a.name === this._deathCollisionComponent && 
                     data.b.name === this._playerCollisionComponent || 
                     data.b.name === this._playerCollisionComponent && 
@@ -186,6 +201,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     data.b.name === this._playerCollisionComponent && 
                     data.a.name === this._groundCollisionComponent) {
                     this._isJumping = true; // NOTE: Triggers falling
+                }
+                if (data.a.name === "platformcollision" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "platformcollision" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingUp = false;
+                    this._isJumping = true;
                 }
                 if (data.a.name === "leftboundary" && 
                     data.b.name === this._playerCollisionComponent ||
