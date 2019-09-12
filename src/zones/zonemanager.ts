@@ -15,6 +15,9 @@ export class ZoneManager implements IMessageHandler {
     public static get activeZoneIndex(): number {
         return ZoneManager._activeZone!.index;
     }
+    public static get instance(): ZoneManager {
+        return ZoneManager._instance;
+    }
     private constructor() {
         ZoneManager._instance = this;
     }
