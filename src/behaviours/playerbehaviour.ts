@@ -14,7 +14,6 @@ import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
-import { Entity } from "src/core";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
@@ -82,6 +81,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         }
         if (this._isJumping) {
             this._acceleration.y += (9.75);
+        } else {
+            this._acceleration.y = 0;
         }
         if (this._isBouncingLeft) {
             this._velocity.x = -this._maxVelocityX;
@@ -142,6 +143,10 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     case Keys.Z:
                         this.onAttack();
                         break;
+                    case Keys.D:
+                        log(LogLevel.debug, `${this._owner!.getWorldPosition().x}, \
+                            ${this._owner!.getWorldPosition().y}, ${this._owner!.getWorldPosition().z}`);
+                        break;
                 }
                 break;
             case MessageType.COLLISION_ENTRY:
@@ -194,6 +199,16 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     this._isBouncingRight = true;
                 }
                 break;
+            case MessageType.COLLISION_UPDATE:
+                data = (message.context as CollisionData);
+                if (data.a.name.includes(this._groundCollisionComponent) && 
+                    data.b.name === this._playerCollisionComponent || 
+                    data.b.name === this._playerCollisionComponent && 
+                    data.a.name.includes(this._groundCollisionComponent)) {
+                    this._isJumping = false;
+                    this._acceleration.y = 0;
+                }
+                break;
             case MessageType.COLLISION_EXIT:
                 data = (message.context as CollisionData);
                 if (data.a.name === this._groundCollisionComponent && 
@@ -201,6 +216,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     data.b.name === this._playerCollisionComponent && 
                     data.a.name === this._groundCollisionComponent) {
                     this._isJumping = true; // NOTE: Triggers falling
+                    // REVIEW: This also causes the player to fall through the level on a zone change.
                 }
                 if (data.a.name === "platformcollision" && 
                     data.b.name === this._playerCollisionComponent ||
@@ -284,7 +300,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     ErrorCode.ZoneDoesNotExist);
             }
             ZoneManager.changeZone(zoneIndex!);
-        }, 10000);
+        }, 5000);
     }
     private onJump(): void {
         if (this._isAlive && !this._isJumping) {
