@@ -13,8 +13,8 @@ export class GLBuffer {
     private _mode: number;
     private _typeSize: number = 0;
     private _data: Array<number> = new Array();
-    constructor(dataType: number = GLUtility.gl.FLOAT, 
-        targetBufferType: number = GLUtility.gl.ARRAY_BUFFER, 
+    constructor(dataType: number = GLUtility.gl.FLOAT,
+        targetBufferType: number = GLUtility.gl.ARRAY_BUFFER,
         mode: number = GLUtility.gl.TRIANGLES) {
         this._elementSize = 0;
         this._dataType = dataType;
@@ -30,13 +30,13 @@ export class GLBuffer {
             case GLUtility.gl.UNSIGNED_SHORT:
                 this._typeSize = 2;
                 break;
-            case GLUtility.gl.BYTE:
-            case GLUtility.gl.UNSIGNED_BYTE:
-                this._typeSize = 1;
-                break;
-            default:
-                log(LogLevel.error, `Unrecognized data type for (${dataType.toString}).`, 
-                    ErrorCode.DataTypeNotRecognized);
+                case GLUtility.gl.BYTE:
+                case GLUtility.gl.UNSIGNED_BYTE:
+                    this._typeSize = 1;
+                    break;
+                default:
+        log(LogLevel.error, `Unrecognized data type for (${dataType.toString}).`,
+            ErrorCode.DataTypeNotRecognized);
         }
         this._stride = this._elementSize * this._typeSize;
         let tempBuffer = GLUtility.gl.createBuffer();
@@ -54,7 +54,7 @@ export class GLBuffer {
         GLUtility.gl.bindBuffer(this._targetBufferType, this._buffer);
         if (this._hasAttributeLocation) {
             this._attributes.forEach((attribute: AttributeInfo) => {
-                GLUtility.gl.vertexAttribPointer(attribute.location, attribute.size, this._dataType, normalize, 
+                GLUtility.gl.vertexAttribPointer(attribute.location, attribute.size, this._dataType, normalize,
                     this._stride, attribute.offset * this._typeSize);
                 GLUtility.gl.enableVertexAttribArray(attribute.location);
             });

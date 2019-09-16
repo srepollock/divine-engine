@@ -37,7 +37,7 @@
   },
   "homepage": "http://spollock.ca/divine-engine",
   "dependencies": {
-    "de-loggingsystem": "0.0.1",
+    "de-loggingsystem": "^1.1.1",
     "standard-version": "^7.0.0"
   },
   "devDependencies": {
