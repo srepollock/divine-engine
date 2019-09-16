@@ -7,6 +7,7 @@ export class AIMovementBehaviourData implements IBehaviourData {
     public start: Vector2 = new Vector2();
     public end: Vector2 = new Vector2();
     public direction: Vector2 = new Vector2(1, 0);
+    public rotate: boolean = true;
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
@@ -20,6 +21,9 @@ export class AIMovementBehaviourData implements IBehaviourData {
         }
         if (json.direction !== undefined) {
             this.direction.setFromJson(json.direction);
+        }
+        if (json.rotate !== undefined) {
+            this.rotate = Boolean(json.rotate);
         }
     }
 }

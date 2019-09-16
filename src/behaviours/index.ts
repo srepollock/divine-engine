@@ -15,3 +15,6 @@ export * from "./playerbehaviourdata";
 export * from "./rotationbehaviour";
 export * from "./rotationbehaviourbuilder";
 export * from "./rotationbehviourdata";
+export * from "./sequencebehaviour";
+export * from "./sequencebehaviourdata";
+export * from "./sequencebehaviourbuilder";

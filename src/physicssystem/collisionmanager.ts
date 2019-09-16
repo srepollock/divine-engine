@@ -1,5 +1,6 @@
 import { CollisionComponent } from "../components/collisioncomponent";
 import { Message } from "../core/messagesystem/message";
+import { MessageType } from "../core/messagesystem/messagetype";
 import { CollisionData } from "./collisiondata";
 
 export class CollisionManager {
@@ -40,6 +41,7 @@ export class CollisionManager {
                             a.onCollisionUpdate(b);
                             b.onCollisionUpdate(a);
                             data.time = CollisionManager._totalTime;
+                            Message.sendPriority(MessageType.COLLISION_UPDATE, undefined, data);
                             exists = true;
                             break;
                         }
@@ -48,7 +50,7 @@ export class CollisionManager {
                         let col = new CollisionData(CollisionManager._totalTime, a, b);
                         a.onCollisionEntry(b);
                         b.onCollisionEntry(a);
-                        Message.sendPriority("COLLISION_ENTRY", undefined, col);
+                        Message.sendPriority(MessageType.COLLISION_ENTRY, undefined, col);
                         CollisionManager._collisionData.push(col);
                     }
                 }
@@ -60,7 +62,7 @@ export class CollisionManager {
                 removeData.push(d);
                 d.a.onCollisionExit(d.b);
                 d.b.onCollisionExit(d.a);
-                Message.sendPriority("COLLISION_EXIT", undefined, d);
+                Message.sendPriority(MessageType.COLLISION_EXIT, undefined, d);
             }
         });
         while (removeData.length !== 0) {

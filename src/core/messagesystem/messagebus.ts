@@ -41,7 +41,6 @@ export class MessageBus {
         });
     }
     public static post(message: Message): void {
-        log(LogLevel.debug, `Message posted: code ${message.code} context ${message.context}`);
         let handlers = MessageBus._subscriptions.get(message.code);
         if (handlers === undefined) {
             return;

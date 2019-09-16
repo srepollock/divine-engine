@@ -1,15 +1,11 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
-import { Vector2 } from "../math/vector2";
+import { AnimatedSpriteComponent } from "../components";
+import { Vector3 } from "../math";
 import { IBehaviourData } from "./ibehaviourdata";
+import { Action } from "./sequencebehaviour";
 
-export class PlayerBehaviourData implements IBehaviourData {
+export class SequenceBehaviourData implements IBehaviourData {
     public name!: string;
-    public acceleration: Vector2 = new Vector2(0, 0);
-    public playerCollisionComponent!: string;
-    public groundCollisionComponent!: string;
-    public enemyCollisionComponent!: string;
-    public flagCollisionComponent!: string;
-    public deathCollisionComponent: string = "";
     public animatedSpriteName!: string;
     public attackSpriteName!: string;
     public hitSpriteName!: string;
@@ -17,44 +13,16 @@ export class PlayerBehaviourData implements IBehaviourData {
     public walkSpriteName!: string;
     public idleSpriteName!: string;
     public jumpSpriteName!: string;
-    public maxVelocityX: number = 5;
-    public maxVelocityY: number = 15;
+    public sprite: AnimatedSpriteComponent | undefined;
+    public maxVelocityX!: number;
+    public maxVelocityY!: number;
+    public actionIndex: number = 0;
+    public actions: Array<Action> = new Array();
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
         }
         this.name = String(json.name);
-        if (json.acceleration !== undefined) {
-            this.acceleration.setFromJson(json.acceleration);
-        }
-        if (json.playerCollisionComponent === undefined) {
-            log(LogLevel.error, `playerCollisionComponent must be defined for player controller.`, 
-                ErrorCode.NoPlayerCollisionComponentName);
-        } else {
-            this.playerCollisionComponent = json.playerCollisionComponent;
-        }
-        if (json.groundCollisionComponent === undefined) {
-            log(LogLevel.error, `groundCollisionComponent must be defined for player controller.`, 
-                ErrorCode.NoGroundCollisionComponentName);
-        } else {
-            this.groundCollisionComponent = json.groundCollisionComponent;
-        }
-        if (json.enemyCollisionComponent === undefined) {
-            log(LogLevel.error, `enemyCollisionComponent must be defined for player controller.`, 
-                ErrorCode.NoEnemyCollisionComponentName);
-        } else {
-            this.enemyCollisionComponent = json.enemyCollisionComponent;
-        }
-        if (json.flagCollisionComponent === undefined) {
-            log(LogLevel.error, 
-                `flagCollisionComponent must be defined for player controller. This is for scene exiting.`, 
-                ErrorCode.NoFlagCollisionComponentName);
-        } else {
-            this.flagCollisionComponent = json.flagCollisionComponent;
-        }
-        if (json.deathCollisionComponent !== undefined) {
-            this.deathCollisionComponent = String(json.deathCollisionComponent);
-        }
         if (json.animatedSpriteName === undefined) {
             log(LogLevel.error, `animatedSpriteName must be defined for player controller.`, 
                 ErrorCode.NoAnimatedSpriteName);
@@ -102,6 +70,19 @@ export class PlayerBehaviourData implements IBehaviourData {
         }
         if (json.maxVelocityY !== undefined) {
             this.maxVelocityY = Number(json.maxVelocityY);
+        }
+        if (json.actions === undefined) {
+            log(LogLevel.error, `Actions have not been defined for the sequence behaviour.`, ErrorCode.NoActions);
+        } else {
+            json.actions.forEach((element: Action) => {
+                let start = new Vector3();
+                start.setFromJson(element.start);
+                let end = new Vector3();
+                end.setFromJson(element.end);
+                let time = (element.time !== undefined) ? Number(element.time) : 0;
+                let skip = (element.skip !== undefined) ? Boolean(element.skip) : false;
+                this.actions.push({start, end, time, skip});
+            });
         }
     }
 }

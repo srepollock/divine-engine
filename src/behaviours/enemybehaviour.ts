@@ -36,6 +36,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     private _end: Vector2;
     private _direction: Vector2;
     private _jumping: boolean;
+    private _rotate: boolean = true;
     constructor(data: EnemyBehaviourData) {
         super(data);
         this._acceleration = data.acceleration;
@@ -55,6 +56,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         this._direction = data.direction;
         this._acceleration = this._direction;
         this._jumping = data.jumping;
+        this._rotate = data.rotate;
 
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
@@ -81,13 +83,24 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
             this._velocity.x = this._maxVelocityX;
         } else if (this._velocity.x < -this._maxVelocityX) {
             this._velocity.x = -this._maxVelocityX;
+        } else if (this._velocity.y < -this._maxVelocityY) {
+            this._velocity.y = -this._maxVelocityY;
+        } else if (this._velocity.y > this._maxVelocityY) {
+            this._velocity.y = this._maxVelocityY;
         }
         this._owner!.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
-        if ((this._owner!.transform.position.x > this._start.x &&
+        if (!(this._owner!.transform.position.x > this._start.x &&
             this._end.x > this._owner!.transform.position.x)) {
             this._acceleration.x = -(this._acceleration.x);
             this._velocity.x = -(this._velocity.x);
-            this._owner!.transform.rotation.y = (this._owner!.transform.rotation.y === 3.14159) ? 0 : 3.14159;
+            if (this._rotate) {
+                this._owner!.transform.rotation.y = (this._owner!.transform.rotation.y === 3.14159) ? 0 : 3.14159;
+            }
+        }
+        if (!(this._owner!.transform.position.y > this._start.y &&
+            this._end.y > this._owner!.transform.position.y)) {
+            this._acceleration.y = -(this._acceleration.y);
+            this._velocity.y = -(this._velocity.y);
         }
         super.update(delta); 
     }
@@ -95,7 +108,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         switch (message.code) {
             case MessageType.COLLISION_ENTRY:
                 let data: CollisionData = (message.context as CollisionData);
-                if (data.a.name === this._groundCollisionComponent || data.b.name === this._groundCollisionComponent) {
+                if (data.a.name.includes(this._groundCollisionComponent) && 
+                    data.b.name === this._enemyCollisionComponent || 
+                    data.b.name === this._enemyCollisionComponent && 
+                    data.a.name.includes(this._groundCollisionComponent)) {
                     this._isJumping = false;
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
