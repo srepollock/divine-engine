@@ -9,15 +9,31 @@ export class Rectangle2D implements IShape2D {
     public origin: Vector2 = new Vector2(0.5, 0.5);
     public position: Vector2 = new Vector2();
     public width: number = 0;
+    /**
+     * Gets the offset of the shape to the origin.
+     * @returns Vector2
+     */
     public get offset(): Vector2 {
         return new Vector2((this.width * this.origin.x), (this.height * this.origin.y));
     }
+    /**
+     * Class constructor.
+     * @param  {number=0} x
+     * @param  {number=0} y
+     * @param  {number=0} width
+     * @param  {number=0} height
+     */
     constructor(x: number = 0, y: number = 0, width: number = 0, height: number = 0) {
         this.position.x = x;
         this.position.y = y;
         this.width = width;
         this.height = height;
     }
+    /**
+     * Sets the rectangle data from JSON data.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.position !== undefined) {
             this.position.setFromJson(json.position);
@@ -36,6 +52,11 @@ export class Rectangle2D implements IShape2D {
             this.height = Number(json.height);
         }
     }
+    /**
+     * Checks if the shape given intersects with the shape called on.
+     * @param  {IShape2D} other
+     * @returns boolean
+     */
     public intersect(other: IShape2D): boolean {
         if (other instanceof Rectangle2D) {
             let a = this.getExtents(this);
@@ -54,6 +75,11 @@ export class Rectangle2D implements IShape2D {
         }
         return false;
     }
+    /**
+     * Checks if the point given is within the shape.
+     * @param  {Vector2} point
+     * @returns boolean
+     */
     public pointInShape(point: Vector2): boolean {
         let x = this.width < 0 ? this.position.x - this.width : this.position.x;
         let y = this.height < 0 ? this.position.y - this.height : this.position.y;
@@ -65,6 +91,11 @@ export class Rectangle2D implements IShape2D {
 
         return false;
     }
+    /**
+     * Gets the extents of the shape.
+     * @param  {Rectangle2D} shape
+     * @returns Rectangle2D
+     */
     private getExtents( shape: Rectangle2D ): Rectangle2D {
         let x = shape.width < 0 ? shape.position.x - shape.width : shape.position.x;
         let y = shape.height < 0 ? shape.position.y - shape.height : shape.position.y;

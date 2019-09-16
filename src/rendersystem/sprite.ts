@@ -18,22 +18,49 @@ export class Sprite {
     protected _materialName: string | undefined;
     protected _material: Material | undefined;
     protected _origin: Vector3 = new Vector3(0.5, 0.5);
+    /**
+     * Gets the name of the sprite.
+     * @returns string
+     */
     public get name(): string {
         return this._name;
     }
+    /**
+     * Gets the origin of the sprite.
+     * @returns Vector3
+     */
     public get origin(): Vector3 {
         return this._origin;
     }
+    /**
+     * Sets the origin of the sprite.
+     * @param  {Vector3} value
+     */
     public set origin(value: Vector3) {
         this._origin = value;
         this.recalculateVertices();
     }
+    /**
+     * Gets the height of the sprite.
+     * @returns number
+     */
     public get height(): number {
         return this._height;
     }
+    /**
+     * Gets the width of the sprite.
+     * @returns number
+     */
     public get width(): number {
         return this._width;
     }
+    /**
+     * Class constructor.
+     * @param  {string} name
+     * @param  {string} materialName
+     * @param  {number=100} width
+     * @param  {number=100} height
+     */
     constructor(name: string, materialName: string, width: number = 100, height: number = 100) {
         this._name = name;
         this._height = height;
@@ -41,12 +68,22 @@ export class Sprite {
         this._materialName = materialName;
         this._material = MaterialManager.getMaterial(this._materialName)!;
     }
+    /**
+     * Destroys the sprite.
+     * @returns void
+     */
     public destroy(): void {
         this._buffer!.destroy();
         MaterialManager.releaseMaterial(this._materialName!);
         this._material = undefined;
         this._materialName = undefined;
     }
+    /**
+     * Draws the sprite.
+     * @param  {Shader} shader
+     * @param  {Matrix4} model
+     * @returns void
+     */
     public draw(shader: Shader, model: Matrix4): void {
         let colorLocation = shader.getUniformLocation("u_tint");
         if (this._material === undefined) {
@@ -64,6 +101,10 @@ export class Sprite {
         this._buffer!.bind();
         this._buffer!.draw();
     }
+    /**
+     * Loads the sprite.
+     * @returns void
+     */
     public load(): void {
         this._buffer = new GLBuffer();
         if (this._buffer === null) { 
@@ -79,9 +120,18 @@ export class Sprite {
         });
         this._buffer.unbind();
     }
+    /**
+     * Updates the sprite.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         
     }
+    /**
+     * Calculates the sprites verticies.
+     * @returns void
+     */
     protected calculateVertices(): void {
         let minX = -(this._width * this._origin.x);
         let maxX = this._width * (1.0 - this._origin.x);
@@ -97,6 +147,10 @@ export class Sprite {
             new Vertex(minX, minY, 0, 0, 0)
         ];
     }
+    /**
+     * Recalculates the sprites verticies fully.
+     * @returns void
+     */
     protected recalculateVertices(): void {
         let minX = -(this._width * this._origin.x);
         let maxX = this._width * (1.0 * this._origin.x);
