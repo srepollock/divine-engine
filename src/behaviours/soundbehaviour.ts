@@ -1,6 +1,6 @@
-import { SoundBehaviourData } from "./soundbehaviourdata";
+import { AudioManager } from "../soundsystem";
 import { Behaviour } from "./behaviour";
-import { AudioManager } from "src/soundsystem";
+import { SoundBehaviourData } from "./soundbehaviourdata";
 export class SoundBehaviour extends Behaviour {
     private _soundName: string;
     constructor(data: SoundBehaviourData) {

@@ -7,7 +7,7 @@ export class GUIButtonBehaviour extends Behaviour {
     public zoneName: string;
     constructor(data: GUIButtonBehaviourData) {
         super(data);
-        this.zoneName = data.zoneName
+        this.zoneName = data.zoneName;
     }
     public update(delta: number): void {
         super.update(delta);
