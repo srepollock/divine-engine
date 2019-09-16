@@ -5,15 +5,12 @@ import { CollisionComponent } from "../components/collisioncomponent";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
-import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
-import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
-import { CollisionComponent } from "../components/collisioncomponent";
 import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
-import { Behaviour } from "./behaviour";
-import { EnemyBehaviourData } from "./enemybehaviourdata";
 import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
+import { Behaviour } from "./behaviour";
+import { EnemyBehaviourData } from "./enemybehaviourdata";
 
 export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 1;
