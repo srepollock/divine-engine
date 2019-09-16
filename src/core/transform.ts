@@ -5,14 +5,20 @@ export class Transform {
     public position: Vector3 = Vector3.zero();
     public rotation: Vector3 = Vector3.zero();
     public scale: Vector3 = Vector3.one();
-    constructor() {
-
-    }
+    /**
+     * Copies the transforms position, rotation and scale to the texture.
+     * @param  {Transform} t
+     * @returns void
+     */
     public copy(t: Transform): void {
         this.position.copy(t.position);
         this.rotation.copy(t.rotation);
         this.scale.copy(t.scale);
     }
+    /**
+     * Gets the transform's position, rotation and scale as a matrix.
+     * @returns Matrix4
+     */
     public getTransformMatrix(): Matrix4 {
         let translation: Matrix4 = Matrix4.translate(new Matrix4(), this.position.x, this.position.y, this.position.z);
         let rotation: Matrix4 = Matrix4.rotateXYZ(new Matrix4(), this.rotation.x, this.rotation.y, this.rotation.z);
@@ -20,6 +26,11 @@ export class Transform {
         // Scale * Rotation * Translation
         return Matrix4.multiply(Matrix4.multiply(scale, rotation), translation);
     }
+    /**
+     * Sets the transform from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.position !== undefined) {
             this.position.setFromJson(json.position);

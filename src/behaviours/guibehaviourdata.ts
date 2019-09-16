@@ -6,6 +6,11 @@ export class GUIBehaviourData implements IBehaviourData {
     public actions: Map<string, Map<number, string>> = new Map();
     public cursor!: string;
     public buttons: Array<string> = new Array();
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

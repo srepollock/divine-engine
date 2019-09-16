@@ -7,24 +7,50 @@ export class CollisionManager {
     private static _totalTime: number = 0;
     private static _components: Array<CollisionComponent> = new Array();
     private static _collisionData: Array<CollisionData> = new Array();
+    /**
+     * Class constructor.
+     */
     private constructor() {
 
     }
+    /**
+     * Initializes the Collision manager.
+     * @returns void
+     */
     public static initialize(): void {
         
     }
+    /**
+     * Registers a collision component to the manager.
+     * @param  {CollisionComponent} component
+     * @returns void
+     */
     public static registerCollisionComponent(component: CollisionComponent): void {
         CollisionManager._components.push(component);
     }
+    /**
+     * Unregisters a collision component from the manager.
+     * @param  {CollisionComponent} component
+     * @returns void
+     */
     public static unregisterCollisionComponent(component: CollisionComponent): void {
         let collisionIndex: number = CollisionManager._components.indexOf(component);
         if (collisionIndex !== -1) {
             CollisionManager._components.slice(collisionIndex, 1);
         }
     }
+    /**
+     * Clears the collision manager of all collisions.
+     * @returns void
+     */
     public static clear(): void {
         CollisionManager._components.length = 0;
     }
+    /**
+     * Updates the collisions in the collision system and looks for new ones.
+     * @param  {number} delta
+     * @returns void
+     */
     public static update(delta: number): void {
         CollisionManager._totalTime += delta;
         for (let c = 0; c < CollisionManager._components.length; c++) { // Using for loops for break/continue

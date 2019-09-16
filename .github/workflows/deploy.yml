@@ -1,0 +1,74 @@
+name: Deployment Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish_pages:
+    name: Deploys the README to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+        run: |
+          npm install
+          npm run docs
+      - name: GitHub Pages Deploy
+        uses: maxheld83/ghpages@master
+        env:
+          BUILD_DIR: "."
+          GH_PAT: ${{secrets.GITHUB_TOKEN}}
+          GH_TOKEN: ${{secrets.gh_token}}
+          GITHUB_TOKEN: ${{secrets.gh_token}}
+          NPM_TOKEN: ${{secrets.npm_token}}
+
+  release_gh:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+            fetch-level: 1
+      - name: Install Wine
+        run: |
+            brew install wine
+      - name: Conigure Git
+        run: |
+          git config --global user.email "spencer@spollock.ca"
+          git config --global user.name "Spencer Pollock"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: |
+          npm install
+          npm run bundle
+          npm run release
+        env:
+          GH_TOKEN: ${{secrets.gh_token}}
+          GITHUB_TOKEN: ${{secrets.gh_token}}
+          NPM_TOKEN: ${{secrets.npm_token}}
+  
+  publish_npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+            fetch-level: 1
+      - name: Conigure Git
+        run: |
+          git config --global user.email "spencer@spollock.ca"
+          git config --global user.name "Spencer Pollock"
+      - uses: actions/setup-node@v1
+        with:
+            node-version: 12
+      - run: |
+          npm install
+          npm run bundle
+          npm publish
+        env:
+          GITHUB_TOKEN: ${{secrets.gh_token}}
+          NPM_TOKEN: ${{secrets.npm_token}}

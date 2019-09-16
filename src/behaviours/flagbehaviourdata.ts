@@ -7,6 +7,11 @@ export class FlagBehaviourData implements IBehaviourData {
     public zoneName!: string;
     public flagCollisionComponent!: string;
     public playerCollisionComponent!: string;
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

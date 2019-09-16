@@ -136,12 +136,7 @@
                         "allow-named-functions"
                     ],
                     "ordered-imports": [
-                        true,
-                        {
-                            "import-sources-order": "case-insensitive",
-                            "module-source-path": "full",
-                            "named-imports-order": "case-insensitive"
-                        }
+                        false
                     ],
                     "quotemark": [
                         true,

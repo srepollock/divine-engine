@@ -13,8 +13,14 @@ export class GLBuffer {
     private _mode: number;
     private _typeSize: number = 0;
     private _data: Array<number> = new Array();
-    constructor(dataType: number = GLUtility.gl.FLOAT,
-        targetBufferType: number = GLUtility.gl.ARRAY_BUFFER,
+    /**
+     * Class constructor.
+     * @param  {number=GLUtility.gl.FLOAT} dataType
+     * @param  {number=GLUtility.gl.ARRAY_BUFFER} targetBufferType
+     * @param  {number=GLUtility.gl.TRIANGLES} mode
+     */
+    constructor(dataType: number = GLUtility.gl.FLOAT, 
+        targetBufferType: number = GLUtility.gl.ARRAY_BUFFER, 
         mode: number = GLUtility.gl.TRIANGLES) {
         this._elementSize = 0;
         this._dataType = dataType;
@@ -43,6 +49,11 @@ export class GLBuffer {
         if (tempBuffer === null) log(LogLevel.error, `No WebGL buffer was created.`, ErrorCode.WebGLBufferNotCreated);
         this._buffer = tempBuffer!;
     }
+    /**
+     * Adds an attribute location to the buffer.
+     * @param  {AttributeInfo} info
+     * @returns void
+     */
     public addAttributeLocation(info: AttributeInfo): void {
         this._hasAttributeLocation = true;
         info.offset = this._elementSize;
@@ -50,6 +61,11 @@ export class GLBuffer {
         this._elementSize += info.size;
         this._stride = this._elementSize * this._typeSize;
     }
+    /**
+     * Binds the current buffer to read or write from.
+     * @param  {boolean=false} normalize
+     * @returns void
+     */
     public bind(normalize: boolean = false): void {
         GLUtility.gl.bindBuffer(this._targetBufferType, this._buffer);
         if (this._hasAttributeLocation) {
@@ -60,6 +76,10 @@ export class GLBuffer {
             });
         }
     }
+    /**
+     * Draws the data in the buffer.
+     * @returns void
+     */
     public draw(): void {
         if (this._targetBufferType === GLUtility.gl.ARRAY_BUFFER) {
             GLUtility.gl.drawArrays(this._mode, 0, this._data.length / this._elementSize);
@@ -67,6 +87,11 @@ export class GLBuffer {
             GLUtility.gl.drawElements(this._mode, this._data.length, this._dataType, 0);
         }
     }
+    /**
+     * Pushes data to the buffer.
+     * @param  {number[]} data
+     * @returns void
+     */
     public push(data: number[]): void {
         data.forEach(n => {
             this._data.push(n);
@@ -98,13 +123,26 @@ export class GLBuffer {
         }
         GLUtility.gl.bufferData(this._targetBufferType, bufferData!, GLUtility.gl.STATIC_DRAW);
     }
+    /**
+     * Clears the current buffer.
+     * @returns void
+     */
     public clear(): void {
         this._data.length = 0;
     }
+    /**
+     * Sets the data of the buffer.
+     * @param  {Array<number>} data
+     * @returns void
+     */
     public setData(data: Array<number>): void {
         this.clear();
         this.push(data);
     }
+    /**
+     * Unbinds the buffer.
+     * @returns void
+     */
     public unbind(): void {
         if (this._hasAttributeLocation) {
             this._attributes.forEach(attribute => {
@@ -113,6 +151,10 @@ export class GLBuffer {
         }
         GLUtility.gl.bindBuffer(this._targetBufferType, null);
     }
+    /**
+     * Destroys the buffer.
+     * @returns void
+     */
     public destroy(): void {
         GLUtility.gl.deleteBuffer(this._buffer);
     }

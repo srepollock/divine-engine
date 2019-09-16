@@ -10,6 +10,11 @@ export class AnimatedSpriteComponentData extends SpriteComponentData implements 
     public frameSequence!: Array<number>;
     public autoPlay: boolean = true;
     public origin: Vector3 = new Vector3();
+    /**
+     * Builds the component from JSON.
+     * @param  {any} json
+     * @returns IComponent
+     */
     public setFromJson(json: any): void {
         super.setFromJson(json);
         if (json.frameWidth === undefined) {

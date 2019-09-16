@@ -1,15 +1,22 @@
-import { InputManager } from "../inputsystem/inputmanager";
-import { Keys } from "../inputsystem/keys";
-import { Behaviour } from "./behaviour";
-import { GUIButtonBehaviourData } from "./guibuttonbehaviour";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
+import { IBehaviourData } from "./ibehaviourdata";
 
-export class GUIButtonBehaviour extends Behaviour {
-    public zoneName: string;
-    constructor(data: GUIButtonBehaviourData) {
-        super(data);
-        this.zoneName = data.zoneName
-    }
-    public update(delta: number): void {
-        super.update(delta);
+export class GUIButtonBehaviourData implements IBehaviourData {
+    public name!: string;
+    public zoneName!: string;
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
+    public setFromJson(json: any): void {
+        if (json.name === undefined) {
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
+        }
+        this.name = String(json.name);
+        if (json.zoneName === undefined) {
+            log(LogLevel.error, `ZoneName must be defined in behaviour data.`, ErrorCode.NoName);
+        }
+        this.zoneName = String(json.zoneName);
     }
 }

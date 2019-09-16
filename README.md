@@ -67,17 +67,10 @@ Coding styles must be followed in this project. To ensure that users are followi
 * [TypeScript](https://www.typescriptlang.org/)
 * [Rollup](https://rollupjs.org/guide/en)
 * [Jest](https://jestjs.io/en/)
-* [ThreeJS](https://threejs.org/)
-* [HowlerJS](https://howlerjs.com/)
-* [TravisCI](https://travis-ci.com/)
 
 ## Contributing
 
 Please read [CONTRIBUTING](https://github.com/srepollock/sunset-engine/blob/master/.github/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/srepollock/divine-engine/tags).
 
 ## Authors
 

@@ -11,6 +11,10 @@ export class AIMovementBehaviour extends Behaviour {
     private _maxVelocityX: number = 2;
     private _maxVelocityY: number = 2;
     private _rotate: boolean = true;
+    /**
+     * Class constructor
+     * @param  {AIMovementBehaviourData} data
+     */
     constructor(data: AIMovementBehaviourData) {
         super(data);
         this._start = data.start;
@@ -19,6 +23,11 @@ export class AIMovementBehaviour extends Behaviour {
         this._acceleration = this._direction;
         this._rotate = data.rotate;
     }
+    /**
+     * The update call from the owner. Update the movement here.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         this._velocity.add(this._acceleration.clone().scale(delta));
         if (this._velocity.x > this._maxVelocityX) {
