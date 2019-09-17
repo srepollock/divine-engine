@@ -12,15 +12,31 @@ export class ZoneManager implements IMessageHandler {
     private static _zoneCounter: number = -1;
     private static _registeredZones: Map<number, string> = new Map();
     private static _activeZone: Zone | undefined;
+    /**
+     * Gets the current activated zone index.
+     * @returns number
+     */
     public static get activeZoneIndex(): number {
         return ZoneManager._activeZone!.index;
     }
+    /**
+     * Gets the ZoneManager's instance.
+     * @returns void
+     */
     public static get instance(): ZoneManager {
         return ZoneManager._instance;
     }
+    /**
+     * Class constructor.
+     */
     private constructor() {
         ZoneManager._instance = this;
     }
+    /**
+     * Gets the current registered zone index by the zone name.
+     * @param  {string} zoneName
+     * @returns number
+     */
     public static getRegisteredZoneIndex(zoneName: string): number | undefined {
         for (let [key, value] of ZoneManager._registeredZones.entries()) {
             if (value.includes(zoneName)) {
@@ -29,9 +45,18 @@ export class ZoneManager implements IMessageHandler {
         }
         return undefined;
     }
+    /**
+     * Initializes the ZoneManager.
+     * @returns void
+     */
     public static initialize(): void {
         new ZoneManager();
     }
+    /**
+     * Changes the zone by the index given.
+     * @param  {number} index
+     * @returns void
+     */
     public static changeZone(index: number): void {
         log(LogLevel.debug, `Changing zone to: ${ZoneManager._registeredZones.get(index)}.`);
         if (ZoneManager._activeZone !== undefined) {
@@ -52,19 +77,39 @@ export class ZoneManager implements IMessageHandler {
             log(LogLevel.error, `Zone ID ${index} does not exist.`, ErrorCode.ZoneDoesNotExist);
         }
     }
+    /**
+     * Updates the ZoneManager
+     * @param  {number} delta
+     * @returns void
+     */
     public static update(delta: number): void {
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.update(delta);
         }
     }
+    /**
+     * Registers the zone to the manager.
+     * @param  {string} path
+     * @returns void
+     */
     public static registerZone(path: string): void {
         ZoneManager._registeredZones.set(++ZoneManager._registeredZonesCount, path);
     }
+    /**
+     * Renders the zone by calling render on the activated zone.
+     * @param  {Shader} shader
+     * @returns void
+     */
     public static render(shader: Shader): void {
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.render(shader);
         }
     }
+    /**
+     * Loads the zone from an JsonAsset.
+     * @param  {JsonAsset} asset
+     * @returns void
+     */
     private static loadZone(asset: JsonAsset): void {
         let zoneData = asset.data;
         let zoneIndex: number = ++ZoneManager._zoneCounter;
@@ -88,6 +133,11 @@ export class ZoneManager implements IMessageHandler {
         ZoneManager._activeZone!.onActivated();
         ZoneManager._activeZone!.load();
     }
+    /**
+     * Message handler.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         if (message.code.indexOf(AssetManager.MESSAGE_ASSET_LOADER_ASSET_LOADED) !== undefined) {
             let asset = message.context as JsonAsset;
