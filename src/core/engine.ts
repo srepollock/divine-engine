@@ -30,6 +30,7 @@ import { Sprite } from "../rendersystem/sprite";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { MessageType } from "./messagesystem/messagetype";
+import { SequenceBehaviourBuilder } from "src/behaviours";
 
 export class Engine implements IMessageHandler {
     private static _instance: Engine;
@@ -72,6 +73,7 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new OpeningGUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIButtonBehaviourBuilder());
+        BehaviourManager.registerBuilder(new SequenceBehaviourBuilder());
         BehaviourManager.registerBuilder(new SoundBehaviourBuilder());
         Engine._instance = this;
     }

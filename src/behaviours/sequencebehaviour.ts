@@ -5,14 +5,16 @@ import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
 import { Vector3 } from "../math/vector3";
+import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
 import { SequenceBehaviourData } from "./sequencebehaviourdata";
+import { MessageBus } from "src/core/messagesystem";
 
 export class Action {
     constructor(
         public start: Vector3 = new Vector3(), 
         public end: Vector3 = new Vector3(), 
-        public time: number = 0, 
+        public time: number = 0,
         public skip: boolean = false) {
         
     }
@@ -70,27 +72,48 @@ export class SequenceBehaviour extends Behaviour implements IMessageHandler {
         }
     }
     public update(delta: number): void {
-        // this._timeCount += delta;
-        // if (this._timeCount > this._actions[this._actionIndex].time) {
-        //     this._timeCount = 0;
-        //     this._actionIndex++;
-        // }
-        // let interprolation: number = (delta / this._actions[this._actionIndex].time);
-        // let step: Vector3 = new Vector3().copy(this._actions[this._actionIndex].start.multiply(
-        //     new Vector3(interprolation, interprolation, interprolation)).add((
-        //     this._actions[this._actionIndex].end.multiply(new Vector3((1 - interprolation), (1 - interprolation), 
-        //         (1 - interprolation)))))); 
-        //     // REVIEW: Update or change this
-        // this._owner!.transform.position.add(step);
+        this._timeCount += delta;
+        if (this._timeCount >= this._actions[this._actionIndex].time) {
+            this._timeCount = 0;
+            this._actionIndex += 1;
+        }
+        if (this._actionIndex > this._actions.length - 1) {
+            let zoneIndex = ZoneManager.getRegisteredZoneIndex("zone1");
+            if (zoneIndex === undefined) {
+                log(LogLevel.error, `The Zone index of zone1 could not be found!`, 
+                    ErrorCode.ZoneDoesNotExist);
+            }
+            ZoneManager.changeZone(zoneIndex!);
+            return;
+        }
+        let direction: Vector3 = this._actions[this._actionIndex].end.clone().subtract(
+            this._actions[this._actionIndex].start);
+        if (direction.x < 0) {
+            this._owner!.transform.rotation.y = 3.14159;
+        } else {
+            this._owner!.transform.rotation.y = 0;
+        }
+        let interprolation: number = (delta / this._actions[this._actionIndex].time);
+        let step: Vector3 = direction.multiply(new Vector3(interprolation, interprolation, interprolation));
+        this._owner!.transform.position.add(step);
         super.update(delta); 
     }
     public onMessage(message: Message): void {
         let skippable = this._actions[this._actionIndex].skip;
         switch (message.code) {
-            case MessageType.KEY_UP:
             case MessageType.KEY_DOWN:
                 if (skippable) {
                     // works on any key
+                    this._actionIndex += 1;
+                    if (this._actionIndex > this._actions.length - 1) {
+                        let zoneIndex = ZoneManager.getRegisteredZoneIndex("zone1");
+                        if (zoneIndex === undefined) {
+                            log(LogLevel.error, `The Zone index of zone1 could not be found!`, 
+                                ErrorCode.ZoneDoesNotExist);
+                        }
+                        ZoneManager.changeZone(zoneIndex!);
+                        return;
+                    }
                 }
                 break;
         }
