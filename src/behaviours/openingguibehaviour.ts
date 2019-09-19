@@ -1,4 +1,4 @@
-import { log, LogLevel } from "de-loggingsystem";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IMessageHandler, Message } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
@@ -28,6 +28,16 @@ export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
                         this.unsubscribeAll();
                     }
                     break;
+                case "titlescreen":
+                    if (this._totalTime > 2 && ZoneManager.activeZone !== undefined) {
+                        let zoneIndex = ZoneManager.getRegisteredZoneIndex("titlescreen");
+                        if (zoneIndex === undefined) {
+                            log(LogLevel.error, `The Zone index of titlescreen could not be found!`, 
+                                ErrorCode.ZoneDoesNotExist);
+                        }
+                        ZoneManager.changeZone(zoneIndex!);
+                        this.unsubscribeAll();
+                    }
             }
         }
     }

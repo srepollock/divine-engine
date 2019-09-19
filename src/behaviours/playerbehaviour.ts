@@ -116,8 +116,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         switch (message.code) {
             case MessageType.KEY_UP:
                 switch (message.context) {
-                    case Keys.LeftArrow:
-                    case Keys.RightArrow:
+                    case Keys.A:
+                    case Keys.D:
                         this._velocity = new Vector3(0, this._velocity.y, 0);
                     case Keys.Space:
                         this._acceleration = new Vector3(0, this._velocity.y, 0);
@@ -127,20 +127,20 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 break;
             case MessageType.KEY_DOWN:
                 switch (message.context) {
-                    case Keys.LeftArrow:
+                    case Keys.A:
                         this._acceleration.add(new Vector3(-this._maxVelocityX, 0, 0));
                         this.changeSprite(this._walkSpriteName, [0, 1, 2, 3, 4, 5, 6, 7]);
                         this._owner!.transform.rotation.y = 3.14159;
                         break;
-                    case Keys.RightArrow:
+                    case Keys.D:
                         this._acceleration.add(new Vector3(this._maxVelocityX, 0, 0));
                         this.changeSprite(this._walkSpriteName, [0, 1, 2, 3, 4, 5, 6, 7]);
                         this._owner!.transform.rotation.y = 0;
                         break;
-                    case Keys.Space:
+                    case Keys.K:
                         this.onJump();
                         break;
-                    case Keys.Z:
+                    case Keys.L:
                         this.onAttack();
                         break;
                     case Keys.I:
