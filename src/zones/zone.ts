@@ -32,6 +32,11 @@ export class Zone {
     public get scene(): Scene {
         return this._scene;
     }
+    /**
+     * 
+     * *NOTE*: Zone names (in file) must match their file names up to json exactly.
+     * @param param0 
+     */
     constructor({ index, name, description }: { index: number, name: string; description: string; }) {
         this._id = guid();
         this._index = index;

@@ -143,7 +143,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     case Keys.Z:
                         this.onAttack();
                         break;
-                    case Keys.D:
+                    case Keys.I:
                         log(LogLevel.debug, `${this._owner!.getWorldPosition().x}, \
                             ${this._owner!.getWorldPosition().y}, ${this._owner!.getWorldPosition().z}`);
                         break;

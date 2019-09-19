@@ -2,6 +2,7 @@ import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Entity } from "../core/entity";
 import { IMessageHandler, Message, MessageType } from "../core/messagesystem";
 import { CollisionData } from "../physicssystem/collisiondata";
+import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { FlagBehaviourData } from "./flagbehaviourdata";
@@ -36,6 +37,8 @@ export class FlagBehaviour extends Behaviour implements IMessageHandler {
                         log(LogLevel.error, `The Zone index of ${this._zoneName} could not be found!`, 
                             ErrorCode.ZoneDoesNotExist);
                     }
+                    AudioManager.playSound("zonecomplete");
+                    setTimeout(() => {}, 2000);
                     ZoneManager.changeZone(zoneIndex!);
                 }
                 break;

@@ -6,12 +6,14 @@ import { OpeningGUIBehaviourData } from "./openingguibehaviourdata";
 
 export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
     private _actions: Map<string, string> = new Map();
+    private _totalTime: number = 0;
     constructor(data: OpeningGUIBehaviourData) {
         super(data);
         this._actions = data.actions;
         this.subscribeAll();
     }
     public update(delta: number): void {
+        this._totalTime += delta;
         super.update(delta);
     }
     public onMessage(message: Message): void {
@@ -21,8 +23,10 @@ export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
         if (this._actions.get(message.code) !== undefined) {
             switch (this._actions.get(message.code)) {
                 case "nextScene":
-                    ZoneManager.changeZone(ZoneManager.activeZoneIndex + 1);
-                    this.unsubscribeAll();
+                    if (this._totalTime > 2 && ZoneManager.activeZone !== undefined) {
+                        ZoneManager.changeZone(ZoneManager.activeZoneIndex + 1);
+                        this.unsubscribeAll();
+                    }
                     break;
             }
         }

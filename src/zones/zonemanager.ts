@@ -9,9 +9,11 @@ import { Zone } from "./zone";
 export class ZoneManager implements IMessageHandler {
     private static _instance: ZoneManager;
     private static _registeredZonesCount: number = -1;
-    private static _zoneCounter: number = -1;
     private static _registeredZones: Map<number, string> = new Map();
     private static _activeZone: Zone | undefined;
+    public static get activeZone(): Zone | undefined {
+        return ZoneManager._activeZone;
+    }
     public static get activeZoneIndex(): number {
         return ZoneManager._activeZone!.index;
     }
@@ -64,7 +66,16 @@ export class ZoneManager implements IMessageHandler {
     }
     private static loadZone(asset: JsonAsset): void {
         let zoneData = asset.data;
-        let zoneIndex: number = ++ZoneManager._zoneCounter;
+        let zoneIndex: number = -1;
+        ZoneManager._registeredZones.forEach((value, key) => {
+            if (value.includes(asset.data.name)) {
+                zoneIndex = key;
+            }
+        });
+        if (zoneIndex === -1) {
+            log(LogLevel.critical, 
+                `No zone was found with the name ${asset.data.name} loaded in the ZoneManager.`, ErrorCode.ZoneID);
+        }
         if (zoneData.index !== undefined) {
             zoneIndex = Number(zoneData.index);
         }

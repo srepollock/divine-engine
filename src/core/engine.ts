@@ -2,6 +2,7 @@ import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { DialogBehaviourBuilder } from "../behaviours/dialogbehaviour";
 import { EnemyBehaviourBuilder } from "../behaviours/enemybehaviourbuilder";
 import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
 import { GUIBehaviourBuilder } from "../behaviours/guibehaviourbuilder";
@@ -10,6 +11,7 @@ import { KeyboardMovementBehaviourBuilder } from "../behaviours/keyboardmovement
 import { OpeningGUIBehaviourBuilder } from "../behaviours/openingguibehaviourbuilder";
 import { PlayerBehaviourBuilder } from "../behaviours/playerbehaviourbuilder";
 import { RotationBehaviourBuilder } from "../behaviours/rotationbehaviourbuilder";
+import { SequenceBehaviourBuilder } from "../behaviours/sequencebehaviourbuilder";
 import { SoundBehaviourBuilder } from "../behaviours/soundbehaviourbuilder";
 import { AnimatedSpriteComponentBuilder } from "../components/animatedspritecomponentbuilder";
 import { CollisionComponentBuilder } from "../components/collisioncomponentbuilder";
@@ -30,7 +32,6 @@ import { Sprite } from "../rendersystem/sprite";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { MessageType } from "./messagesystem/messagetype";
-import { SequenceBehaviourBuilder } from "src/behaviours";
 
 export class Engine implements IMessageHandler {
     private static _instance: Engine;
@@ -64,6 +65,7 @@ export class Engine implements IMessageHandler {
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
         ComponentManager.registerBuilder(new AnimatedSpriteComponentBuilder());
         ComponentManager.registerBuilder(new CollisionComponentBuilder());
+
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
         BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());
         BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
@@ -75,6 +77,7 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new GUIButtonBehaviourBuilder());
         BehaviourManager.registerBuilder(new SequenceBehaviourBuilder());
         BehaviourManager.registerBuilder(new SoundBehaviourBuilder());
+        BehaviourManager.registerBuilder(new DialogBehaviourBuilder());
         Engine._instance = this;
     }
     public static play(): void {
