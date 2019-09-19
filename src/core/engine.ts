@@ -29,7 +29,6 @@ import { BasicShader } from "../rendersystem/basicshader";
 import { Color } from "../rendersystem/color";
 import { GLUtility } from "../rendersystem/glutility";
 import { MaterialManager } from "../rendersystem/materialmanager";
-import { Sprite } from "../rendersystem/sprite";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { MessageType } from "./messagesystem/messagetype";
@@ -125,7 +124,7 @@ export class Engine implements IMessageHandler {
         Engine.instance.loadAssets(assets);
         Engine.instance._projection = Matrix4.orthographic(0, GLUtility.instance.canvas.width, 0, 
             GLUtility.instance.canvas.height, -100.0, 100.0);
-        ZoneManager.changeZone(18); // NOTE: Change here for scene testing
+        ZoneManager.changeZone(0); // NOTE: Change here for scene testing
         Message.subscribe(MessageType.MOUSE_DOWN, Engine.instance);
         Engine.play();
     }
