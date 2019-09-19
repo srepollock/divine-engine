@@ -14,6 +14,7 @@ import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
+import { BossBehaviour } from "./bosscontrollerbehavoiur";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _hitPoints: number = 3;
@@ -187,9 +188,26 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                             this.die();
                             Message.send(MessageType.PLAYER_DIED, this);
                         }
-                    } else {
-                        (this._owner!.parent!.getObjectByName(
-                            data.a.owner!.name)!.getBehaviourByName("enemycontroller")! as EnemyBehaviour).takeDamage();
+                    } else if (data.a.name === this._enemyCollisionComponent) {
+                        if (data.a.owner!.name === "boss") {
+                            (this._owner!.parent!.getObjectByName(
+                                data.a.owner!.name)!.getBehaviourByName(
+                                    "enemycontroller")! as BossBehaviour).takeDamage();
+                        } else {
+                            (this._owner!.parent!.getObjectByName(
+                                data.a.owner!.name)!.getBehaviourByName(
+                                    "enemycontroller")! as EnemyBehaviour).takeDamage();
+                        }
+                    } else if (data.b.name === this._enemyCollisionComponent) {
+                        if (data.b.owner!.name === "boss") {
+                            (this._owner!.parent!.getObjectByName(
+                                data.b.owner!.name)!.getBehaviourByName(
+                                    "enemycontroller")! as BossBehaviour).takeDamage();
+                        } else {
+                            (this._owner!.parent!.getObjectByName(
+                                data.b.owner!.name)!.getBehaviourByName(
+                                    "enemycontroller")! as EnemyBehaviour).takeDamage();
+                        }
                     }
                 }
                 if (data.a.name === "platformcollision" && 

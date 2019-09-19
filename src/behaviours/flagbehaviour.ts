@@ -45,7 +45,7 @@ export class FlagBehaviour extends Behaviour implements IMessageHandler {
                             ErrorCode.ZoneDoesNotExist);
                     }
                     AudioManager.playSound("zonecomplete");
-                    setTimeout(() => {}, 2000);
+                    setTimeout(() => {}, 3000);
                     ZoneManager.changeZone(zoneIndex!);
                 }
                 break;
