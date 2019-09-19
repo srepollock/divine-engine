@@ -1,0 +1,17 @@
+{
+    "name": "testzone",
+    "description": "testzone",
+    "id": "",
+    "objects": [{
+        "name": "testobject",
+        "transform": {
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        "children": [],
+        "components": [],
+        "behaviours": []
+    }]
+}

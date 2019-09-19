@@ -6,31 +6,63 @@ export abstract class Shader {
     private _program: WebGLProgram | null = null;
     private _attributes: Map<string, number> = new Map();
     private _uniforms: Map<string, WebGLUniformLocation> = new Map();
+    /**
+     * Gets the name of the shader.
+     * @returns string
+     */
     public get name(): string {
         return this._name;
     }
+    /**
+     * Class constructor.
+     * @param  {string} name
+     */
     constructor(name: string) {
         this._name = name;
         
     }
+    /**
+     * Destroys the shader.
+     * @returns void
+     */
     public destroy(): void {
         
     }
+    /**
+     * Gets the attribute location of the shader.
+     * @param  {string} name
+     * @returns number
+     */
     public getAttribLocation(name: string): number {
         if (this._attributes.get(name) === undefined) {
             log(LogLevel.error, `Attribute ${name} could not be found.`, ErrorCode.NoName);
         }
         return this._attributes.get(name)!;
     }
+    /**
+     * Gets the uniform location of the shader.
+     * @param  {string} name
+     * @returns WebGLUniformLocation
+     */
     public getUniformLocation(name: string): WebGLUniformLocation {
         if (this._uniforms.get(name) === undefined) {
             log(LogLevel.error, `Attribute ${name} could not be found.`, ErrorCode.NoName);
         }
         return this._uniforms.get(name)!;
     }
+    /**
+     * Uses this shader in the program.
+     * @returns void
+     */
     public use(): void {
         GLUtility.gl.useProgram(this._program);
     }
+    /**
+     * Loads the vertex and fragment sources given.
+     * @param  {string} vertexSource
+     * @param  {string} fragmentSource
+     * @returns void
+     */
     protected load(vertexSource: string, fragmentSource: string): void {
         let vertexShader = this.loadShader(vertexSource, GLUtility.gl.VERTEX_SHADER);
         let fragmentShader = this.loadShader(fragmentSource, GLUtility.gl.FRAGMENT_SHADER);
@@ -38,6 +70,12 @@ export abstract class Shader {
         this.detectAttributes();
         this.detectUniforms();
     }
+    /**
+     * Loads the shader from source and by the type.
+     * @param  {string} source
+     * @param  {number} type WebGL constant (VERTEX_SHADER or FRAGMENT_SHADER)
+     * @returns WebGLShader
+     */
     private loadShader(source: string, type: number): WebGLShader {
         let shader: WebGLShader | null = GLUtility.gl.createShader(type);
         if (!shader) {
@@ -51,6 +89,12 @@ export abstract class Shader {
         }
         return shader!;
     }
+    /**
+     * Creates a WebGL program using the shaders given.
+     * @param  {WebGLShader} vertexShader
+     * @param  {WebGLShader} fragmentShader
+     * @returns void
+     */
     private createProgram(vertexShader: WebGLShader, fragmentShader: WebGLShader): void {
         this._program = GLUtility.gl.createProgram();
         if (this._program === null) {
@@ -64,6 +108,10 @@ export abstract class Shader {
             log(LogLevel.error, `WebGLProgram error: ${error}.`, ErrorCode.WebGLProgram);
         }
     }
+    /**
+     * Detects the attributes in the WebGL shaders.
+     * @returns void
+     */
     private detectAttributes(): void {
         if (!this._program) {
             log(LogLevel.error, "WebGL program was not created", ErrorCode.WebGLProgram);
@@ -77,6 +125,10 @@ export abstract class Shader {
             this._attributes.set(attribInfo.name, GLUtility.gl.getAttribLocation(this._program!, attribInfo.name)!);
         }
     }
+    /**
+     * Detects the uniforms in the WebGL shaders.
+     * @returns void
+     */
     private detectUniforms(): void {
         if (!this._program) {
             log(LogLevel.error, "WebGL program was not created", ErrorCode.WebGLProgram);

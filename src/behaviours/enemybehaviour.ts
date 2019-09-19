@@ -37,6 +37,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     private _direction: Vector2;
     private _jumping: boolean;
     private _rotate: boolean = true;
+    /**
+     * Class constructor
+     * @param  {EnemyBehaviourData} data
+     */
     constructor(data: EnemyBehaviourData) {
         super(data);
         this._acceleration = data.acceleration;
@@ -60,6 +64,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
 
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
+    /**
+     * Checks if the behaviour is ready to update.
+     * @returns void
+     */
     public updateReady(): void {
         super.updateReady();
         this._sprite = this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent;
@@ -69,6 +77,11 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
                 ErrorCode.SpriteNotAttached);
         }
     }
+    /**
+     * Updates the behaviour.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         if (!this._isAlive) {
             return;
@@ -104,6 +117,11 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         }
         super.update(delta); 
     }
+    /**
+     * Called when the behaviour handles a message.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         switch (message.code) {
             case MessageType.COLLISION_ENTRY:
@@ -132,6 +150,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
                 }
         }
     }
+    /**
+     * Has the owner of the behaviour take damage.
+     * @returns void
+     */
     public takeDamage(): void {
         AudioManager.playSound("enemyhit");
         this._owner!.transform.position.add(new Vector3(-3, 0, 0));
@@ -140,6 +162,13 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
             this.die();
         }
     }
+    /**
+     * Changes the sprtie of the owner based on the material and frameSequence.
+     * *NOTE*: This can only change to animated sprite materials.
+     * @param  {string} materialName
+     * @param  {Array<number>} frameSequence
+     * @returns void
+     */
     private changeSprite(materialName: string, frameSequence: Array<number>): void {
         if (this._sprite!.sprite.materialName !== materialName) {
             let frameWidth = (
@@ -164,6 +193,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
             Message.subscribe(MessageType.ANIMATION_COMPLETE, this);
         }
     }
+    /**
+     * Kills the owner object.
+     * @returns void
+     */
     private die(): void {
         this._isAlive = false;
         this.changeSprite(this._dieSpriteName, [0, 1, 2, 3, 4]);
@@ -171,6 +204,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         this._velocity = new Vector2();
         (this._owner!.getComponentByName(this._enemyCollisionComponent) as CollisionComponent).isStatic = true;
     }
+    /**
+     * Causes the owner to perform a jump.
+     * @returns void
+     */
     private onJump(): void {
         if (this._isAlive && !this._isJumping) {
             this._isJumping = true;

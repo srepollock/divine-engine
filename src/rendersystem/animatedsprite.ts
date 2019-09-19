@@ -22,15 +22,38 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
     private _currentTime: number = 0;
     private _assetLoaded: boolean = false;
     private _isPlaying: boolean = true;
+    /**
+     * Gets the current frame count.
+     * @returns number
+     */
     public get frameCount(): number {
         return this._frameCount;
     }
+    /**
+     * Gets if the sprite is playing or not.
+     * @returns boolean
+     */
     public get isPlaying(): boolean {
         return this._isPlaying;
     }
+    /**
+     * Gets the material name.
+     * @returns string
+     */
     public get materialName(): string {
         return this._materialName!;
     }
+    /**
+     * Class constructor.
+     * @param  {string} name
+     * @param  {string} materialName
+     * @param  {number=100} width
+     * @param  {number=100} height
+     * @param  {number=10} frameWidth
+     * @param  {number=10} frameHeight
+     * @param  {number=1} frameCount
+     * @param  {Array<number>=newArray(} frameSequence
+     */
     constructor(name: string, materialName: string, width: number = 100, height: number = 100, frameWidth: number = 10, 
         frameHeight: number = 10, frameCount: number = 1, frameSequence: Array<number> = new Array()) {
         super(name, materialName, width, height);
@@ -40,15 +63,28 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         this._frameSequence = frameSequence;
         Message.subscribe(AssetManager.MESSAGE_ASSET_LOADER_ASSET_LOADED + this._materialName, this);
     }
+    /**
+     * Destroys the animated sprite.
+     * @returns void
+     */
     public destroy(): void {
         super.destroy();
     }
+    /**
+     * Loads the animated sprite.
+     * @returns void
+     */
     public load(): void {
         super.load();
         if (this._assetLoaded) {
             this.setupFromMaterial();
         }
     }
+    /**
+     * Handles messages sent to the animated sprite.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         if (message.code.indexOf(AssetManager.MESSAGE_ASSET_LOADER_ASSET_LOADED) !== undefined) {
             this._assetLoaded = true;
@@ -58,9 +94,18 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
             this.calculateUV();
         }
     }
+    /**
+     * Plays the animated sprite component.
+     * @returns void
+     */
     public play(): void {
         this._isPlaying = true;
     }
+    /**
+     * Sets the frame number to play the animation at.
+     * @param  {number} frameNumber
+     * @returns void
+     */
     public setFrame(frameNumber: number): void {
         if (frameNumber >= this._frameCount) {
             log(LogLevel.warning, `Frame ${frameNumber} is out of range. FrameCount: ${this._frameCount}`);
@@ -68,6 +113,11 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         }
         this._currentFrame = frameNumber;
     }
+    /**
+     * Sets the frame number to play the animation at one time.
+     * @param  {number} frameNumber
+     * @returns void
+     */
     public setFrameOnce(frameNumber: number): void {
         if (frameNumber >= this._frameCount) {
             log(LogLevel.warning, `Frame ${frameNumber} is out of range. FrameCount: ${this._frameCount}`);
@@ -79,9 +129,18 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         this.update(0);
         this._isPlaying = false;
     }
+    /**
+     * Stops running the sprite.
+     * @returns void
+     */
     public stop(): void {
         this._isPlaying = false;
     }
+    /**
+     * Updates the animated sprite.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         if ( !this._assetLoaded ) {
             if ( !this._assetLoaded ) {
@@ -103,6 +162,10 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         }
         super.update(delta);
     }
+    /**
+     * Updates the sprite's vertex coordinates.
+     * @returns void
+     */
     public updateVerticies(): void {
         let frameUVIndex: number = this._frameSequence[this._currentFrame];
         this._vertices[0].texCoords.copy(this._frameUV[frameUVIndex].min);
@@ -117,6 +180,10 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         });
         this._buffer!.unbind();
     }
+    /**
+     * Calculates the (u,v) textuer coordinates.
+     * @returns void
+     */
     private calculateUV(): void {
         let totalWidth: number = 0;
         let yValue: number = 0;
@@ -135,6 +202,10 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
             this._frameUV.push(new UVInfo(min, max));
         }
     }
+    /**
+     * Sets up the material from loaded assets.
+     * @returns void
+     */
     private setupFromMaterial(): void {
         if ( !this._assetLoaded ) {
             let material = MaterialManager.getMaterial(this._materialName!);

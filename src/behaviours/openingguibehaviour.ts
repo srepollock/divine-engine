@@ -7,15 +7,29 @@ import { OpeningGUIBehaviourData } from "./openingguibehaviourdata";
 export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
     private _actions: Map<string, string> = new Map();
     private _totalTime: number = 0;
+    /**
+     * Class constructor
+     * @param  {OpeningGUIBehaviourData} data
+     */
     constructor(data: OpeningGUIBehaviourData) {
         super(data);
         this._actions = data.actions;
         this.subscribeAll();
     }
+    /**
+     * Updates the behaviour
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         this._totalTime += delta;
         super.update(delta);
     }
+    /**
+     * Called when the behaviour recieves a message.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         if (this._actions.get(message.code) === undefined) {
             return;
@@ -41,12 +55,20 @@ export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
             }
         }
     }
+    /**
+     * Subscribes to all messages in the actions map.
+     * @returns void
+     */
     private subscribeAll(): void {
         this._actions.forEach((key, value) => {
             log(LogLevel.debug, `GUIBehaviour sub: ${key}, ${value}`);
             Message.subscribe(value, this);
         });
     }
+    /**
+     * Unsubscribes from all messages in the actions map.
+     * @returns void
+     */
     private unsubscribeAll(): void {
         this._actions.forEach((key, value) => {
             log(LogLevel.debug, `GUIBehaviour unsub: ${key}, ${value}`);

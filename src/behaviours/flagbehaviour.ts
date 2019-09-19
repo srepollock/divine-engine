@@ -17,12 +17,19 @@ export class FlagBehaviour extends Behaviour implements IMessageHandler {
         this._playerCollisionComponent = data.playerCollisionComponent;
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
-    public setOwner(owner: Entity): void {
-        this._owner = owner;
-    }
+    /**
+     * Updates the behaviour
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         super.update(delta);
     }
+    /**
+     * Called when the behaviour handles a message
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         log(LogLevel.debug, `${this.name} Collision`);
         let data: CollisionData = (message.context as CollisionData);

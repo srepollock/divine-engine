@@ -8,9 +8,18 @@ export class SpriteComponentData implements IComponentData {
     public origin: Vector3 = new Vector3(0.5, 0.5);
     public width!: number;
     public height!: number;
+    /**
+     * Class constructor
+     * @param  {any} json
+     */
     constructor(json: any) {
         this.setFromJson(json);
     }
+    /**
+     * Builds the component from JSON.
+     * @param  {any} json
+     * @returns IComponent
+     */
     public setFromJson(json: any): void {
         if (json.name !== undefined) {
             this.name = json.name;

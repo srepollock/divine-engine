@@ -1,17 +1,14 @@
-import { ErrorCode, log, LogLevel } from "de-loggingsystem";
-import { IBehaviourData } from "./ibehaviourdata";
+import { Behaviour } from "./behaviour";
+import { GUIButtonBehaviourData } from "./guibuttonbehaviourdata";
 
-export class GUIButtonBehaviourData implements IBehaviourData {
-    public name!: string;
-    public zoneName!: string;
-    public setFromJson(json: any): void {
-        if (json.name === undefined) {
-            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
-        }
-        this.name = String(json.name);
-        if (json.zoneName === undefined) {
-            log(LogLevel.error, `ZoneName must be defined in behaviour data.`, ErrorCode.NoName);
-        }
-        this.zoneName = String(json.zoneName);
+export class GUIButtonBehaviour extends Behaviour {
+    public zoneName: string;
+    /**
+     * Class constructor
+     * @param  {GUIButtonBehaviourData} data
+     */
+    constructor(data: GUIButtonBehaviourData) {
+        super(data);
+        this.zoneName = data.zoneName;
     }
 }

@@ -1,10 +1,17 @@
 import { Shader } from "./shader";
 
 export class BasicShader extends Shader {
+    /**
+     * Class constructor.
+     */
     public constructor() {
         super("basic");
         this.load(this.getVertexSource(), this.getFragmentSource());
     }
+    /**
+     * Gets the vertex shader source.
+     * @returns string
+     */
     private getVertexSource(): string {
         return `
         attribute vec3 a_position; 
@@ -18,6 +25,10 @@ export class BasicShader extends Shader {
             v_texCoord = a_texCoord; 
         }`;
     }
+    /**
+     * Gets the fragment shader source.
+     * @returns string
+     */
     private getFragmentSource(): string {
         return `
         precision mediump float; 

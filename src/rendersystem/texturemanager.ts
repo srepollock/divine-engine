@@ -2,9 +2,17 @@ import { Texture, TextureReferenceNode } from "src";
 
 export class TextureManager {
     private static _textures: Map<string, TextureReferenceNode> = new Map();
+    /**
+     * Class constructor.
+     */
     private constructor() {
 
     }
+    /**
+     * Gets the texture by name from the manager.
+     * @param  {string} textureName
+     * @returns Texture
+     */
     public static getTexture(textureName: string): Texture {
         if (TextureManager._textures.get(textureName) === undefined) {
             let texture = new Texture(textureName);
@@ -14,6 +22,11 @@ export class TextureManager {
         }
         return TextureManager._textures.get(textureName)!.texture;
     }
+    /**
+     * Releases a texture from the manager.
+     * @param  {string} textureName
+     * @returns void
+     */
     public static releaseTexture(textureName: string): void {
         if (TextureManager._textures.get(textureName) === undefined) {
             console.warn(`Texture ${textureName} was undefined and cannot be released.`);

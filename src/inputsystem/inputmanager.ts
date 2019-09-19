@@ -12,9 +12,16 @@ export class InputManager {
     private static _previousMouseY: number;
     private static _mouseLeft: boolean = false;
     private static _mouseRight: boolean = false;
+    /**
+     * Class constructor.
+     */
     private constructor() {
 
     }
+    /**
+     * Initializes the list of keys to false and sets up the listeners for the engine.
+     * @returns void
+     */
     public static initialize(): void {
         for (let i = 0; i < 255; i++) {
             InputManager._keys.set(i, false);
@@ -25,12 +32,26 @@ export class InputManager {
         window.addEventListener("mousedown", InputManager.onMouseDown);
         window.addEventListener("mouseup", InputManager.onMouseUp);
     }
+    /**
+     * Get's if the key is down in the InputManager.
+     * @param  {Keys} key
+     * @returns boolean
+     */
     public static isKeyDown(key: Keys): boolean {
         return InputManager._keys.get(key)!;
     }
+    /**
+     * Gets the current mouse position based on the last updates.
+     * @returns Vector2
+     */
     public static getMousePosition(): Vector2 {
         return new Vector2(InputManager._mouseX, InputManager._mouseY);
     }
+    /**
+     * Handler for key down messages from the window class.
+     * @param  {KeyboardEvent} ev
+     * @returns boolean
+     */
     private static onKeyDown(ev: KeyboardEvent): boolean {
         InputManager._keys.set(ev.keyCode, true);
         Message.send(MessageType.KEY_DOWN, this, ev.keyCode);
@@ -38,6 +59,11 @@ export class InputManager {
         // ev.stopPropagation();
         return true;
     }
+    /**
+     * Handler for key up messages from the window class.
+     * @param  {KeyboardEvent} ev
+     * @returns boolean
+     */
     private static onKeyUp(ev: KeyboardEvent): boolean {
         InputManager._keys.set(ev.keyCode, false);
         Message.send(MessageType.KEY_UP, this, ev.keyCode);
@@ -45,12 +71,22 @@ export class InputManager {
         // ev.stopPropagation();
         return true;
     }
+    /**
+     * Handler for mouse movement messages from the window class.
+     * @param  {KeyboardEvent} ev
+     * @returns boolean
+     */
     private static onMouseMove(ev: MouseEvent): void {
         InputManager._previousMouseX = InputManager._mouseX;
         InputManager._previousMouseY = InputManager._mouseY;
         InputManager._mouseX = ev.clientX;
         InputManager._mouseY = ev.clientY;
     }
+    /**
+     * Handler for mouse button down messages from the window class.
+     * @param  {KeyboardEvent} ev
+     * @returns boolean
+     */
     private static onMouseDown(ev: MouseEvent): void {
         if (ev.button === 0) {
             InputManager._mouseLeft = true;
@@ -60,6 +96,11 @@ export class InputManager {
         Message.send("MOUSE_DOWN", this, new MouseContext(InputManager.getMousePosition(), InputManager._mouseLeft, 
             InputManager._mouseRight));
     }
+    /**
+     * Handler for mouse button up messages from the window class.
+     * @param  {KeyboardEvent} ev
+     * @returns boolean
+     */
     private static onMouseUp(ev: MouseEvent): void {
         if (ev.button === 0) {
             InputManager._mouseLeft = false;

@@ -21,6 +21,11 @@ export class EnemyBehaviourData implements IBehaviourData {
     public direction: Vector2 = new Vector2();
     public jumping: boolean = false;
     public rotate: boolean = true;
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

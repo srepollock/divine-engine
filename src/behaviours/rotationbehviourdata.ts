@@ -5,6 +5,11 @@ import { IBehaviourData } from "./ibehaviourdata";
 export class RotationBehaviourData implements IBehaviourData {
     public name!: string;
     public rotation: Vector3 = new Vector3();
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
