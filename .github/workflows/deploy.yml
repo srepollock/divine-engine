@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12
-        run: |
+      - run: |
           npm install
           npm run docs
       - name: GitHub Pages Deploy
