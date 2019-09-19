@@ -36,7 +36,7 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12
-        run: |
+      - run: |
           npm install
           npm run docs
           git add docs
@@ -53,7 +53,7 @@ jobs:
         run: |
             brew install wine
       - name: Conigure Git
-        run: |
+      - run: |
           git config --global user.email "spencer@spollock.ca"
           git config --global user.name "Spencer Pollock"
       - uses: actions/setup-node@v1
@@ -75,7 +75,7 @@ jobs:
         with:
             fetch-level: 1
       - name: Conigure Git
-        run: |
+      - run: |
           git config --global user.email "spencer@spollock.ca"
           git config --global user.name "Spencer Pollock"
       - uses: actions/setup-node@v1
