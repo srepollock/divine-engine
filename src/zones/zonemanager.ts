@@ -51,6 +51,11 @@ export class ZoneManager implements IMessageHandler {
             log(LogLevel.error, `Zone ID ${index} does not exist.`, ErrorCode.ZoneDoesNotExist);
         }
     }
+    public static changeNextZone(): void {
+        if (this.activeZone !== undefined) {
+            this.changeZone(this.activeZoneIndex + 1);
+        }
+    }
     public static update(delta: number): void {
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.update(delta);

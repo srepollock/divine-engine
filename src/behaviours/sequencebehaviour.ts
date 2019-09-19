@@ -15,7 +15,6 @@ export class Action {
 }
 
 export class SequenceBehaviour extends Behaviour {
-    public static SEQUENCE_COMPLETE: boolean = false;
     private _animatedSpriteName: string;
     private _attackSpriteName: string;
     private _hitSpriteName: string;
@@ -65,18 +64,25 @@ export class SequenceBehaviour extends Behaviour {
     }
     public update(delta: number): void {
         this._timeCount += delta;
-        if (this._timeCount >= this._actions[this._actionIndex].time) {
+        if (this._timeCount >= this.currentAction().time) {
             this._timeCount = 0;
             this._actionIndex += 1;
         }
-        if (this._actionIndex > this._actions.length - 1 && !SequenceBehaviour.SEQUENCE_COMPLETE) {
-            SequenceBehaviour.SEQUENCE_COMPLETE = true;
-            ZoneManager.changeZone(ZoneManager.activeZoneIndex + 1);
+        if (this._actionIndex > this._actions.length - 1) {
+            ZoneManager.changeNextZone(); // REVIEW: There is a race condition here
+            // TODO: Should be changed with a semaphore
             return;
         }
-        let direction: Vector3 = this._actions[this._actionIndex].end.clone().subtract(
-            this._actions[this._actionIndex].start);
-        if (direction.x < 0) {
+        let direction: Vector3 = this.currentAction().end.clone().subtract(
+            this.currentAction().start);
+        let previousDirection: Vector3;
+        if (this._actionIndex === 0) {
+            previousDirection = this.currentAction().end.clone().subtract(this.currentAction().start);
+        } else {
+            previousDirection = this._actions[this._actionIndex - 1].end.clone().subtract(
+                this._actions[this._actionIndex - 1].start);
+        }
+        if (direction.x < 0 || previousDirection.x < 0) {
             this._owner!.transform.rotation.y = 3.14159;
         } else {
             this._owner!.transform.rotation.y = 0;

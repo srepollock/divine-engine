@@ -52,7 +52,8 @@ export class DialogBehaviour extends Behaviour {
     public update(delta: number): void {
         this._totalTime += delta;
         this._timeCount += delta;
-        if (this._dialogIndex !== -1 && Math.round(this._totalTime) >= this._dialogs[this._dialogIndex].startTime) {
+        if (this._dialogIndex !== -1 && !(this._dialogIndex === this._dialogs.length)
+            && this._totalTime >= this._dialogs[this._dialogIndex].startTime) {
             this._owner!.isVisible = true;
             this.changeSprite(this._dialogs[this._dialogIndex].materialName);
             this._running = true;
@@ -65,7 +66,7 @@ export class DialogBehaviour extends Behaviour {
             if (this._dialogIndex >= this._dialogs.length) {
                 this._owner!.isVisible = false;
                 this._running = false;
-                this._dialogIndex = -1;
+                this._dialogIndex = this._dialogs.length - 1;
                 this._timeCount = 0;
             }
         }
