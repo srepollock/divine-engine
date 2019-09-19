@@ -6,9 +6,18 @@ export class CollisionComponentData implements IComponentData {
     public name!: string;
     public shape!: IShape2D;
     public static: boolean = false;
+    /**
+     * Class constructor
+     * @param  {any} json
+     */
     constructor(json: any) {
         this.setFromJson(json);
     }
+    /**
+     * Builds the component from JSON.
+     * @param  {any} json
+     * @returns IComponent
+     */
     public setFromJson(json: any): void {
         if (json.name !== undefined) {
             this.name = json.name;

@@ -113,6 +113,11 @@ export class Vector2 {
     public magnitude(): number {
         return Math.sqrt((this.x * this.x) + (this.y * this.y));
     }
+    /**
+     * Sets a Vector2 object with json data.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.x !== undefined) {
             this.x = Number(json.x);
@@ -125,9 +130,17 @@ export class Vector2 {
             this.y = 0;
         }
     }
+    /**
+     * Gets the Vector2 object and returns it as a numbers array.
+     * @returns Array
+     */
     public toArray(): Array<number> {
         return [this.x, this.y];
     }
+    /**
+     * Gets the Vector2 object and returns it as a float32 array.
+     * @returns Float32Array
+     */
     public toFloat32Array(): Float32Array {
         return new Float32Array(this.toArray());
     }

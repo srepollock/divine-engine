@@ -6,7 +6,7 @@ export * from "./behaviourmanager";
 export * from "./ibehaviour";
 export * from "./ibehaviourbuilder";
 export * from "./ibehaviourdata";
-export * from "./keyboardbehaviourdata";
+export * from "./keyboardmovementbehaviourdata";
 export * from "./keyboardmovementbehaviour";
 export * from "./keyboardmovementbehaviourbuilder";
 export * from "./playerbehaviour";

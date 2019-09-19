@@ -9,9 +9,18 @@ export class MessageBus {
     private static _normalMessagePerUpdate: number = 10;
     private static _normalMessageQueue: Array<MessageSubscriptionMode> = new Array();
     private static _priorityQueueMessagePerUpdate: number = 10;
+    /**
+     * Class constructor.
+     */
     private constructor() {
         
     }
+    /**
+     * Adds a subscription to the message bus's subscriptions.
+     * @param  {string} code
+     * @param  {IMessageHandler} handler
+     * @returns void
+     */
     public static addSubscription(code: string, handler: IMessageHandler): void {
         if (MessageBus._subscriptions.get(code) === undefined) {
             MessageBus._subscriptions.set(code, new Array());
@@ -22,6 +31,12 @@ export class MessageBus {
             MessageBus._subscriptions.get(code)!.push(handler);
         }
     }
+    /**
+     * Removes a subscription from the message bus subscriptions with a matching code and handler.
+     * @param  {string} code
+     * @param  {IMessageHandler} handler
+     * @returns void
+     */
     public static removeSubscription(code: string, handler: IMessageHandler): void {
         if (MessageBus._subscriptions.get(code) === undefined) {
             log(LogLevel.warning, `Cannot unsubscribe from code: ${code} because the code is not subscribed to.`);
@@ -32,6 +47,11 @@ export class MessageBus {
             MessageBus._subscriptions.get(code)!.splice(nodeIndex, 1);
         }
     }
+    /**
+     * Removes a handler from all subscribed codes.
+     * @param  {IMessageHandler} handler
+     * @returns void
+     */
     public static removeHandlerFromAll(handler: IMessageHandler): void {
         MessageBus._subscriptions.forEach((key) => {
             let nodeIndex = key.indexOf(handler);
@@ -40,6 +60,11 @@ export class MessageBus {
             }
         });
     }
+    /**
+     * Posts the message to the message bus.
+     * @param  {Message} message
+     * @returns void
+     */
     public static post(message: Message): void {
         let handlers = MessageBus._subscriptions.get(message.code);
         if (handlers === undefined) {
@@ -53,6 +78,11 @@ export class MessageBus {
             }
         });
     }
+    /**
+     * Updates the message bus to handle messages.
+     * @param  {number} delta
+     * @returns void
+     */
     public static update(delta: number): void {
         if (MessageBus._normalMessageQueue.length === 0) {
             return;

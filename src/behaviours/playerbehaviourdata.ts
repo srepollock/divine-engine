@@ -19,6 +19,11 @@ export class PlayerBehaviourData implements IBehaviourData {
     public jumpSpriteName!: string;
     public maxVelocityX: number = 5;
     public maxVelocityY: number = 15;
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
     public setFromJson(json: any): void {
         if (json.name === undefined) {
             log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);

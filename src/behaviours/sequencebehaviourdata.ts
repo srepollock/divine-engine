@@ -80,8 +80,7 @@ export class SequenceBehaviourData implements IBehaviourData {
                 let end = new Vector3();
                 end.setFromJson(element.end);
                 let time = (element.time !== undefined) ? Number(element.time) : 0;
-                let skip = (element.skip !== undefined) ? Boolean(element.skip) : false;
-                this.actions.push({start, end, time, skip});
+                this.actions.push({start, end, time});
             });
         }
     }

@@ -13,30 +13,34 @@ import { Behaviour } from "./behaviour";
 import { EnemyBehaviourData } from "./enemybehaviourdata";
 
 export class EnemyBehaviour extends Behaviour implements IMessageHandler {
-    private _hitPoints: number = 1;
-    private _startingHitPoints: number = this._hitPoints;
-    private _lives: number = 1;
-    private _acceleration: Vector2 = new Vector2(0, 0);
-    private _velocity: Vector2 = new Vector2();
-    private _isAlive: boolean = true;
-    private _isJumping: boolean = false;
-    private _enemyCollisionComponent: string;
-    private _groundCollisionComponent: string;
-    private _animatedSpriteName: string;
-    private _attackSpriteName: string;
-    private _hitSpriteName: string;
-    private _dieSpriteName: string;
-    private _walkSpriteName: string;
-    private _idleSpriteName: string;
-    private _jumpSpriteName: string;
-    private _sprite: AnimatedSpriteComponent | undefined;
-    private _maxVelocityX: number;
-    private _maxVelocityY: number;
-    private _start: Vector2;
-    private _end: Vector2;
-    private _direction: Vector2;
-    private _jumping: boolean;
-    private _rotate: boolean = true;
+    protected _hitPoints: number = 1;
+    protected _startingHitPoints: number = this._hitPoints;
+    protected _lives: number = 1;
+    protected _acceleration: Vector2 = new Vector2(0, 0);
+    protected _velocity: Vector2 = new Vector2();
+    protected _isAlive: boolean = true;
+    protected _isJumping: boolean = false;
+    protected _enemyCollisionComponent: string;
+    protected _groundCollisionComponent: string;
+    protected _animatedSpriteName: string;
+    protected _attackSpriteName: string;
+    protected _hitSpriteName: string;
+    protected _dieSpriteName: string;
+    protected _walkSpriteName: string;
+    protected _idleSpriteName: string;
+    protected _jumpSpriteName: string;
+    protected _sprite: AnimatedSpriteComponent | undefined;
+    protected _maxVelocityX: number;
+    protected _maxVelocityY: number;
+    protected _start: Vector2;
+    protected _end: Vector2;
+    protected _direction: Vector2;
+    protected _jumping: boolean;
+    protected _rotate: boolean = true;
+    /**
+     * Class constructor
+     * @param  {EnemyBehaviourData} data
+     */
     constructor(data: EnemyBehaviourData) {
         super(data);
         this._acceleration = data.acceleration;
@@ -60,6 +64,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
 
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
+    /**
+     * Checks if the behaviour is ready to update.
+     * @returns void
+     */
     public updateReady(): void {
         super.updateReady();
         this._sprite = this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent;
@@ -69,6 +77,11 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
                 ErrorCode.SpriteNotAttached);
         }
     }
+    /**
+     * Updates the behaviour.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         if (!this._isAlive) {
             return;
@@ -104,6 +117,11 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         }
         super.update(delta); 
     }
+    /**
+     * Called when the behaviour handles a message.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         switch (message.code) {
             case MessageType.COLLISION_ENTRY:
@@ -132,6 +150,10 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
                 }
         }
     }
+    /**
+     * Has the owner of the behaviour take damage.
+     * @returns void
+     */
     public takeDamage(): void {
         AudioManager.playSound("enemyhit");
         this._owner!.transform.position.add(new Vector3(-3, 0, 0));
@@ -140,7 +162,14 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
             this.die();
         }
     }
-    private changeSprite(materialName: string, frameSequence: Array<number>): void {
+    /**
+     * Changes the sprtie of the owner based on the material and frameSequence.
+     * *NOTE*: This can only change to animated sprite materials.
+     * @param  {string} materialName
+     * @param  {Array<number>} frameSequence
+     * @returns void
+     */
+    protected changeSprite(materialName: string, frameSequence: Array<number>): void {
         if (this._sprite!.sprite.materialName !== materialName) {
             let frameWidth = (
                 this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent)!.sprite.width;
@@ -164,14 +193,22 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
             Message.subscribe(MessageType.ANIMATION_COMPLETE, this);
         }
     }
-    private die(): void {
+    /**
+     * Kills the owner object.
+     * @returns void
+     */
+    protected die(): void {
         this._isAlive = false;
         this.changeSprite(this._dieSpriteName, [0, 1, 2, 3, 4]);
         this._acceleration = new Vector2();
         this._velocity = new Vector2();
         (this._owner!.getComponentByName(this._enemyCollisionComponent) as CollisionComponent).isStatic = true;
     }
-    private onJump(): void {
+    /**
+     * Causes the owner to perform a jump.
+     * @returns void
+     */
+    protected onJump(): void {
         if (this._isAlive && !this._isJumping) {
             this._isJumping = true;
             this._velocity.y = -(this._maxVelocityY);

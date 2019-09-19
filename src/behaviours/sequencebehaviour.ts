@@ -1,10 +1,7 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
-import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
-import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
-import { Message } from "../core/messagesystem/message";
-import { MessageType } from "../core/messagesystem/messagetype";
 import { Vector3 } from "../math/vector3";
+import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { SequenceBehaviourData } from "./sequencebehaviourdata";
 
@@ -12,13 +9,12 @@ export class Action {
     constructor(
         public start: Vector3 = new Vector3(), 
         public end: Vector3 = new Vector3(), 
-        public time: number = 0, 
-        public skip: boolean = false) {
+        public time: number = 0) {
         
     }
 }
 
-export class SequenceBehaviour extends Behaviour implements IMessageHandler {
+export class SequenceBehaviour extends Behaviour {
     private _animatedSpriteName: string;
     private _attackSpriteName: string;
     private _hitSpriteName: string;
@@ -32,7 +28,6 @@ export class SequenceBehaviour extends Behaviour implements IMessageHandler {
     private _timeCount: number = 0;
     private _actionIndex: number = 0;
     private _actions: Array<Action> = new Array();
-    private _skip: boolean = false;
     public get actionIndex(): number {
         return this._actionIndex;
     }
@@ -54,8 +49,6 @@ export class SequenceBehaviour extends Behaviour implements IMessageHandler {
         this._maxVelocityX = data.maxVelocityX;
         this._maxVelocityY = data.maxVelocityY;
         this._actions = data.actions;
-        Message.subscribe(MessageType.KEY_DOWN, this);
-        Message.subscribe(MessageType.KEY_UP, this);
     }
     public currentAction(): Action {
         return this._actions[this._actionIndex];
@@ -70,49 +63,33 @@ export class SequenceBehaviour extends Behaviour implements IMessageHandler {
         }
     }
     public update(delta: number): void {
-        // this._timeCount += delta;
-        // if (this._timeCount > this._actions[this._actionIndex].time) {
-        //     this._timeCount = 0;
-        //     this._actionIndex++;
-        // }
-        // let interprolation: number = (delta / this._actions[this._actionIndex].time);
-        // let step: Vector3 = new Vector3().copy(this._actions[this._actionIndex].start.multiply(
-        //     new Vector3(interprolation, interprolation, interprolation)).add((
-        //     this._actions[this._actionIndex].end.multiply(new Vector3((1 - interprolation), (1 - interprolation), 
-        //         (1 - interprolation)))))); 
-        //     // REVIEW: Update or change this
-        // this._owner!.transform.position.add(step);
+        this._timeCount += delta;
+        if (this._timeCount >= this.currentAction().time) {
+            this._timeCount = 0;
+            this._actionIndex += 1;
+        }
+        if (this._actionIndex > this._actions.length - 1) {
+            ZoneManager.changeNextZone(); // REVIEW: There is a race condition here
+            // TODO: Should be changed with a semaphore
+            return;
+        }
+        let direction: Vector3 = this.currentAction().end.clone().subtract(
+            this.currentAction().start);
+        let previousDirection: Vector3;
+        if (this._actionIndex === 0) {
+            previousDirection = this.currentAction().end.clone().subtract(this.currentAction().start);
+        } else {
+            previousDirection = this._actions[this._actionIndex - 1].end.clone().subtract(
+                this._actions[this._actionIndex - 1].start);
+        }
+        if (direction.x < 0 || previousDirection.x < 0) {
+            this._owner!.transform.rotation.y = 3.14159;
+        } else {
+            this._owner!.transform.rotation.y = 0;
+        }
+        let interprolation: number = (delta / this._actions[this._actionIndex].time);
+        let step: Vector3 = direction.multiply(new Vector3(interprolation, interprolation, interprolation));
+        this._owner!.transform.position.add(step);
         super.update(delta); 
-    }
-    public onMessage(message: Message): void {
-        let skippable = this._actions[this._actionIndex].skip;
-        switch (message.code) {
-            case MessageType.KEY_UP:
-            case MessageType.KEY_DOWN:
-                if (skippable) {
-                    // works on any key
-                }
-                break;
-        }
-    }
-    private changeSprite(materialName: string, frameSequence: Array<number>): void {
-        if (this._sprite!.sprite.materialName !== materialName) {
-            let newSpriteComponent = new AnimatedSpriteComponent(
-                new AnimatedSpriteComponentData(JSON.parse(JSON.stringify({
-                    name: this._animatedSpriteName,
-                    type: "animatedsprite",
-                    materialName: materialName,
-                    frameHeight: 72,
-                    frameWidth: 72,
-                    frameCount: frameSequence.length,
-                    frameSequence: frameSequence
-                })))
-            );
-            this._owner!.removeComponent(this._sprite!.name);
-            this._owner!.addComponent(newSpriteComponent);
-            this._sprite = this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent;
-            this._sprite.load();
-            Message.subscribe(MessageType.ANIMATION_COMPLETE, this);
-        }
     }
 }

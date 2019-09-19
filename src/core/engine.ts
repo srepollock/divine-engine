@@ -2,6 +2,8 @@ import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { BossBehaviourBuilder } from "../behaviours/bosscontrollerbehavoiur";
+import { DialogBehaviourBuilder } from "../behaviours/dialogbehaviour";
 import { EnemyBehaviourBuilder } from "../behaviours/enemybehaviourbuilder";
 import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
 import { GUIBehaviourBuilder } from "../behaviours/guibehaviourbuilder";
@@ -10,6 +12,7 @@ import { KeyboardMovementBehaviourBuilder } from "../behaviours/keyboardmovement
 import { OpeningGUIBehaviourBuilder } from "../behaviours/openingguibehaviourbuilder";
 import { PlayerBehaviourBuilder } from "../behaviours/playerbehaviourbuilder";
 import { RotationBehaviourBuilder } from "../behaviours/rotationbehaviourbuilder";
+import { SequenceBehaviourBuilder } from "../behaviours/sequencebehaviourbuilder";
 import { SoundBehaviourBuilder } from "../behaviours/soundbehaviourbuilder";
 import { AnimatedSpriteComponentBuilder } from "../components/animatedspritecomponentbuilder";
 import { CollisionComponentBuilder } from "../components/collisioncomponentbuilder";
@@ -26,7 +29,6 @@ import { BasicShader } from "../rendersystem/basicshader";
 import { Color } from "../rendersystem/color";
 import { GLUtility } from "../rendersystem/glutility";
 import { MaterialManager } from "../rendersystem/materialmanager";
-import { Sprite } from "../rendersystem/sprite";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { MessageType } from "./messagesystem/messagetype";
@@ -36,17 +38,23 @@ export class Engine implements IMessageHandler {
     private _last: number = 0;
     private _startTime: number = 0;
     private _elapsed: number = 0;
-    private _fps: number = 60;
-    private _frameCount: number = 0;
     private _running: boolean = false;
     private _basicShader: BasicShader | null = null;
-    private _sprite: Sprite | undefined;
     private _projection: Matrix4 | undefined;
     private _gameWidth?: number;
     private _gameHeight?: number;
+    /**
+     * Gets the singleton object instance.
+     * @returns Engine
+     */
     public static get instance(): Engine {
         return Engine._instance;
     }
+    /**
+     * Class constructor.
+     * @param  {number} width?
+     * @param  {number} height?
+     */
     private constructor(width?: number, height?: number) {
         GLUtility.initialize();
         if (!GLUtility.instance) {
@@ -63,6 +71,7 @@ export class Engine implements IMessageHandler {
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
         ComponentManager.registerBuilder(new AnimatedSpriteComponentBuilder());
         ComponentManager.registerBuilder(new CollisionComponentBuilder());
+
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
         BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());
         BehaviourManager.registerBuilder(new AIMovementBehaviourBuilder());
@@ -72,9 +81,25 @@ export class Engine implements IMessageHandler {
         BehaviourManager.registerBuilder(new OpeningGUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIBehaviourBuilder());
         BehaviourManager.registerBuilder(new GUIButtonBehaviourBuilder());
+        BehaviourManager.registerBuilder(new SequenceBehaviourBuilder());
         BehaviourManager.registerBuilder(new SoundBehaviourBuilder());
+        BehaviourManager.registerBuilder(new DialogBehaviourBuilder());
+        BehaviourManager.registerBuilder(new BossBehaviourBuilder());
         Engine._instance = this;
     }
+    /**
+     * Exits from the engine.
+     * @returns void
+     */
+    public static exit(): void {
+        Engine._instance.shutdown();
+        window.close();
+        // REVIEW: Close the engine and the window.
+    }
+    /**
+     * Plays the engine. Can be called after stop.
+     * @returns void
+     */
     public static play(): void {
         Engine._instance._running = true;
         GLUtility.gl.clearColor(146 / 255, 206 / 255, 247 / 255, 1);
@@ -84,6 +109,14 @@ export class Engine implements IMessageHandler {
         Engine._instance!._startTime = Date.now();
         Engine._instance.loop();
     }
+    /**
+     * Starts the engine and begins playing right away.
+     * Given in a destructured format.
+     * @param  {} assets JSON assets to load. Can only be labels of materials, sounds and/or zones.
+     * @param  {number} height>
+     * @param  {number} width?
+     * @returns void
+     */
     public static start({assets, width, height}: {assets: any, width?: number, height?: number} = {assets: {}}): void {
         new Engine(width, height);
         Engine.instance._basicShader = new BasicShader();
@@ -95,10 +128,17 @@ export class Engine implements IMessageHandler {
         Message.subscribe(MessageType.MOUSE_DOWN, Engine.instance);
         Engine.play();
     }
+    /**
+     * Stops the engine from running. No updates will be performed, must be handled by external Javascript or handlers.
+     * @returns void
+     */
     public static stop(): void {
         Engine._instance._running = false;
-        Engine._instance.shutdown();
     }
+    /**
+     * Resizes the WebGL canvas.
+     * @returns void
+     */
     public resize(): void {
         if (GLUtility.instance.canvas !== undefined) {
             GLUtility.instance.canvas.width = (this._gameWidth !== undefined) ? this._gameWidth : window.innerWidth;
@@ -110,6 +150,11 @@ export class Engine implements IMessageHandler {
                 GLUtility.instance.canvas.height, 0, -100.0, 100.0);
         }
     }
+    /**
+     * Loads the assets given at engine instantiation.
+     * @param  {any} assets
+     * @returns void
+     */
     public loadAssets(assets: any): void {
         if (assets.zones === undefined) {
             log(LogLevel.error, `No zones given. There were no zones given and therefore none to load.`, 
@@ -156,6 +201,11 @@ export class Engine implements IMessageHandler {
         Engine._instance.update(delta);
         requestAnimationFrame(this.loop.bind(this));
     }
+    /**
+     * Updates the engine and the current zone.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         // log(LogLevel.debug, `Delta: ${delta}`);
         GLUtility.gl.clear(GLUtility.gl.COLOR_BUFFER_BIT);
@@ -164,12 +214,28 @@ export class Engine implements IMessageHandler {
         GLUtility.gl.uniformMatrix4fv(projectionPosition, false, new Float32Array(this._projection!.matrix));
         
     }
+    /**
+     * Engine message handler.
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
-        // AudioManager.playSound("zone1");
+        if (message.code === MessageType.EXIT) {
+            Engine.exit();
+        }
     }
+    /**
+     * Cleansup the engine.
+     * @returns void
+     */
     private cleanup(): void  {
-        this._sprite!.destroy();
+        this._running = false;
+        setTimeout(() => {}, 5000);
     }
+    /**
+     * Shutsdown the engine. Called on exit.
+     * @returns void
+     */
     private shutdown(): void {
         this.cleanup();
     }

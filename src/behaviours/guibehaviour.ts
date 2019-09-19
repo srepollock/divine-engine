@@ -4,13 +4,17 @@ import { IMessageHandler, Message, MessageType } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
 import { GUIBehaviourData } from "./guibehaviourdata";
-import { GUIButtonBehaviour } from "./guibuttonbehaviourdata";
+import { GUIButtonBehaviour } from "./guibuttonbehaviour";
 
 export class GUIBehaviour extends Behaviour implements IMessageHandler {
     private _actions: Map<string, Map<number, string>> = new Map();
     private _cursorIndex: number = 0;
     private _cursor: string;
     private _buttons: Array<string> = new Array();
+    /**
+     * Class constructor.
+     * @param  {GUIBehaviourData} data
+     */
     constructor(data: GUIBehaviourData) {
         super(data);
         this._actions = data.actions;
@@ -21,9 +25,19 @@ export class GUIBehaviour extends Behaviour implements IMessageHandler {
         }
         this.subscribeAll();
     }
+    /**
+     * Updates the behaviour.
+     * @param  {number} delta
+     * @returns void
+     */
     public update(delta: number): void {
         super.update(delta);
     }
+    /**
+     * Called when the behaviour handles a message
+     * @param  {Message} message
+     * @returns void
+     */
     public onMessage(message: Message): void {
         if (this._actions.get(message.code) === undefined) {
             return;
@@ -77,12 +91,20 @@ export class GUIBehaviour extends Behaviour implements IMessageHandler {
             }
         }
     }
+    /**
+     * Subscribes to all messages in the actions map.
+     * @returns void
+     */
     private subscribeAll(): void {
         this._actions.forEach((key, value) => {
             log(LogLevel.debug, `GUIBehaviour sub: ${key}, ${value}`);
             Message.subscribe(value, this);
         });
     }
+    /**
+     * Unsubscribes from all messages in the actions map.
+     * @returns void
+     */
     private unsubscribeAll(): void {
         this._actions.forEach((key, value) => {
             log(LogLevel.debug, `GUIBehaviour unsub: ${key}, ${value}`);
