@@ -36,12 +36,14 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 12
-        run: |
+      - run: |
           npm install
           npm run docs
           git add docs
           git commit -m "docs: Updated documentation in Deploy workflow"
           git push master
+        env:
+          NPM_TOKEN: ${{secrets.npm_token}}
 
   release_gh:
     runs-on: macos-latest
