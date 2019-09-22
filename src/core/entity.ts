@@ -94,6 +94,13 @@ export class Entity {
         return this._localMatrix;
     }
     /**
+     * Gets the scene that the entity is attached to.
+     * @returns Scene
+     */
+    public get scene(): Scene {
+        return this._scene!;
+    }
+    /**
      * Gets the world matrix of the entity, based on the parent matrix.
      * @returns Matrix4
      */

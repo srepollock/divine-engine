@@ -2,6 +2,8 @@ import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
 import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
 import { CollisionComponent } from "../components/collisioncomponent";
+import { CollisionComponentData } from "../components/collisioncomponentdata";
+import { Entity } from "../core/entity";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
@@ -14,6 +16,8 @@ import { Behaviour } from "./behaviour";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";
 import { IBehaviourData } from "./ibehaviourdata";
+import { ProjectileBehaviour, ProjectileBehaviourData } from "./projectilebehaviour";
+import { PlayerBehaviour } from "./playerbehaviour";
 
 export class ActionLoop {
     constructor(public type: string = "",
@@ -32,6 +36,7 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
     protected _velocity: Vector2 = new Vector2();
     protected _isAlive: boolean = true;
     protected _isJumping: boolean = false;
+    protected _invulnerable: boolean = false;
     protected _enemyCollisionComponent: string;
     protected _playerCollisionComponent: string;
     protected _groundCollisionComponent: string;
@@ -42,6 +47,7 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
     protected _walkSpriteName: string;
     protected _idleSpriteName: string;
     protected _jumpSpriteName: string;
+    protected _projectileSpriteComponent: string;
     protected _sprite: AnimatedSpriteComponent | undefined;
     protected _maxVelocityX: number;
     protected _maxVelocityY: number;
@@ -54,12 +60,24 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
     protected _actionIndex: number = 0;
     protected _loopIndex: number = 0;
     protected _timeCount: number = 0;
+    /**
+     * Gets the action index.
+     * @returns number
+     */
     public get actionIndex(): number {
         return this._actionIndex;
     }
+    /**
+     * Sets the action index.
+     * @param  {number} value
+     */
     public set actionIndex(value: number) {
         this._actionIndex = value;
     }
+    /**
+     * Gets all actions and loops.
+     * @returns Array
+     */
     public get actionLoops(): Array<Array<ActionLoop>> {
         return this._actionLoops;
     }
@@ -80,6 +98,7 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         this._walkSpriteName = data.walkSpriteName;
         this._idleSpriteName = data.idleSpriteName;
         this._jumpSpriteName = data.jumpSpriteName;
+        this._projectileSpriteComponent = data.projectileSpriteComponent;
         this._maxVelocityX = data.maxVelocityX;
         this._maxVelocityY = data.maxVelocityY;
         this._start = data.start;
@@ -92,9 +111,17 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
 
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
+    /**
+     * Gets the current action.
+     * @returns ActionLoop
+     */
     public currentAction(): ActionLoop {
         return this._actionLoops[this._loopIndex][this._actionIndex];
     }
+    /**
+     * Gets the current loop.
+     * @returns Array
+     */
     public currentLoop(): Array<ActionLoop> {
         return this._actionLoops[this._actionIndex];
     }
@@ -120,76 +147,51 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         if (!this._isAlive) {
             return;
         }
+        this._timeCount += delta;
         if (this._loopIndex >= this.actionLoops.length) {
             this._loopIndex = 0;
             this._actionIndex = 0;
+        }
+        if (this._timeCount >= this.currentAction().duration && !(this.currentAction().type.includes("action"))) {
+            // NOTE: "action_X" handles the action index.
+            this._timeCount = 0;
+            this._actionIndex += 1;
             if (this._actionLoops[this._loopIndex][this._actionIndex].type === "movement") {
                 this._owner!.transform.position.set(this.currentAction().start);
             }
-        }
-        this._timeCount += delta;
-        if (this._timeCount >= this.currentAction().duration) {
-            this._timeCount = 0;
-            this._actionIndex += 1;
         }
         if (this._actionIndex >= this._actionLoops[this._loopIndex].length) {
             this._actionIndex = 0;
-            if (this._actionLoops[this._loopIndex][this._actionIndex].type === "movement") {
-                this._owner!.transform.position.set(this.currentAction().start);
-            }
         }
-        if (this._actionLoops[this._loopIndex][this._actionIndex].type === "movement" || 
-            this._actionLoops[this._loopIndex][this._actionIndex].type === "action_2") {
-            let direction: Vector3 = this.currentAction().end!.clone().subtract(
-                this.currentAction().start!);
-            let previousDirection: Vector3;
-            if (this._actionIndex === 0) {
-                previousDirection = this.currentAction().end!.clone().subtract(this.currentAction().start!);
-            } else {
-                previousDirection = this._actionLoops[this._loopIndex][this._actionIndex - 1].end!.clone().subtract(
-                    this._actionLoops[this._loopIndex][this._actionIndex - 1].start!);
-            }
-            if (direction.x < 0 || previousDirection.x < 0) {
-                this._owner!.transform.rotation.y = 3.14159;
-            } else {
-                this._owner!.transform.rotation.y = 0;
-            }
-            let interprolation: number = (delta / this._actionLoops[this._loopIndex][this._actionIndex].duration!);
-            let step: Vector3 = direction.multiply(new Vector3(interprolation, interprolation, interprolation));
-            this._owner!.transform.position.add(step);
-            
-        } else if (this._actionLoops[this._loopIndex][this._actionIndex].type === "action_1") { // TODO: projecticle
-            // TODO:
-            /**
-             * Add a projectile to the dragon
-             * If hits player && player not attacking : player takes damage
-             * If hits player && player is attacking : projecticle is removed.
-             *  Setup projectile behaviour for collision
-             */
-            this._velocity.add(this._acceleration.clone().scale(delta));
-            if (this._velocity.x > this._maxVelocityX) {
-                this._velocity.x = this._maxVelocityX;
-            } else if (this._velocity.x < -this._maxVelocityX) {
-                this._velocity.x = -this._maxVelocityX;
-            } else if (this._velocity.y < -this._maxVelocityY) {
-                this._velocity.y = -this._maxVelocityY;
-            } else if (this._velocity.y > this._maxVelocityY) {
-                this._velocity.y = this._maxVelocityY;
-            }
-            this._owner!.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
-            if (!(this._owner!.transform.position.x > this._start.x &&
-                this._end.x > this._owner!.transform.position.x)) {
-                this._acceleration.x = -(this._acceleration.x);
-                this._velocity.x = -(this._velocity.x);
-                if (this._rotate) {
-                    this._owner!.transform.rotation.y = (this._owner!.transform.rotation.y === 3.14159) ? 0 : 3.14159;
+        let direction: Vector3 = new Vector3();
+        switch (this._actionLoops[this._loopIndex][this._actionIndex].type) {
+            case "movement":
+                direction = this.currentAction().end!.clone().subtract(
+                    this.currentAction().start!);
+                let previousDirection: Vector3;
+                if (this._actionIndex === 0) {
+                    previousDirection = this.currentAction().end!.clone().subtract(this.currentAction().start!);
+                } else {
+                    previousDirection = this._actionLoops[this._loopIndex][this._actionIndex - 1].end!.clone().subtract(
+                        this._actionLoops[this._loopIndex][this._actionIndex - 1].start!);
                 }
-            }
-            if (!(this._owner!.transform.position.y > this._start.y &&
-                this._end.y > this._owner!.transform.position.y)) {
-                this._acceleration.y = -(this._acceleration.y);
-                this._velocity.y = -(this._velocity.y);
-            }
+                if (direction.x < 0 || previousDirection.x < 0) {
+                    this._owner!.transform.rotation.y = 3.14159;
+                } else {
+                    this._owner!.transform.rotation.y = 0;
+                }
+                let interprolation: number = (delta / this._actionLoops[this._loopIndex][this._actionIndex].duration!);
+                let step: Vector3 = direction.multiply(new Vector3(interprolation, interprolation, interprolation));
+                this._owner!.transform.position.add(step);
+                break;
+            case "action_1":
+                (this._owner!.transform.rotation.y > 0) ? direction.x = -1 : direction.x = 1;
+                this.shootProjectile(direction);
+                this._actionIndex += 1; // NOTE: action handles the action index.
+                break;
+            case "action_2":
+                this._actionIndex += 1; // NOTE: action handles the action index.
+                break;
         }
         super.update(delta); 
     }
@@ -202,18 +204,22 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         switch (message.code) {
             case MessageType.COLLISION_ENTRY:
                 let data: CollisionData = (message.context as CollisionData);
-                if (data.a.name.includes(this._groundCollisionComponent) && 
-                    data.b.name === this._enemyCollisionComponent || 
-                    data.b.name === this._enemyCollisionComponent && 
-                    data.a.name.includes(this._groundCollisionComponent)) {
+                if ((data.a.name.includes(this._groundCollisionComponent) && 
+                    data.b.name === this._enemyCollisionComponent) || 
+                    (data.b.name === this._enemyCollisionComponent && 
+                    data.a.name.includes(this._groundCollisionComponent))) {
                     this._isJumping = false;
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
                 }
-                if (data.a.name.includes(this._playerCollisionComponent) && 
-                    data.b.name === this._enemyCollisionComponent || 
-                    data.b.name === this._enemyCollisionComponent && 
-                    data.a.name.includes(this._playerCollisionComponent)) {
+                if ((data.a.name.includes(this._playerCollisionComponent) && 
+                    data.b.name === this._enemyCollisionComponent) || 
+                    (data.b.name === this._enemyCollisionComponent && 
+                    data.a.name.includes(this._playerCollisionComponent)) &&
+                    (this._owner!.parent!.getObjectByName(
+                                data.a.owner!.name)!.getBehaviourByName(
+                                    "playercontroller")! as PlayerBehaviour).isAttacking &&
+                    !this._invulnerable) {
                         this.takeDamage();
                     }
                 break;
@@ -235,6 +241,50 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
                 }
         }
     }
+    public shootProjectile(direction: Vector3): void {
+        let projectile: Entity = new Entity({name: "bossprojectile"});
+        let animatedSpriteData = new AnimatedSpriteComponentData(JSON.parse(JSON.stringify({
+            name: "projectilesprite",
+            type: "animatedsprite",
+            materialName: "fireball",
+            frameHeight: 32,
+            frameWidth: 32,
+            frameCount: 3,
+            frameSequence: [0, 1, 2],
+            origin: {
+                x: 0.5,
+                y: 0.5
+            }
+        })));
+        projectile.addComponent(new AnimatedSpriteComponent(animatedSpriteData));
+        let collisionComponentData = new CollisionComponentData(JSON.parse(JSON.stringify({
+            name: "projectilecollision",
+            type: "collision",
+            shape: {
+                type: "rectangle",
+                width: 30,
+                height: 30
+            }
+        })));
+        projectile.addComponent(new CollisionComponent(collisionComponentData));
+        let projectileBD = new ProjectileBehaviourData();
+        projectileBD.setFromJson(JSON.parse(JSON.stringify({
+            name: "projectilecollision",
+            playerCollisionComponent: this._playerCollisionComponent,
+            projectileCollisionComponent: "projectilecollision",
+            animatedSpriteName: this._projectileSpriteComponent,
+            projectileSprite: "fireball",
+            hitSpriteName: "fireball_impact",
+            direction: {
+                x: direction.x,
+                y: direction.y
+            }
+        })));
+        projectile.addBehaviour(new ProjectileBehaviour(projectileBD)); // NOTE: this should set the owner
+        projectile.load();
+        projectile.transform.position.copy(this._owner!.transform.position.clone());
+        this._owner!.scene.addEntity(projectile);
+    }
     /**
      * Has the owner of the behaviour take damage.
      * @returns void
@@ -244,8 +294,15 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         this._owner!.transform.position.add(new Vector3(-3, 0, 0));
         this.changeSprite(this._hitSpriteName, [0, 1, 0, 1]);
         this._loopIndex += 1;
+        this._actionIndex = 0;
+        this._invulnerable = true;
         if (--this._hitPoints <= 0) {
             this.die();
+        }
+        if (this._isAlive) {
+            setTimeout(() => {
+                this._invulnerable = false;
+            }, 1000);
         }
     }
     /**
@@ -289,6 +346,7 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         this._acceleration = new Vector2();
         this._velocity = new Vector2();
         (this._owner!.getComponentByName(this._enemyCollisionComponent) as CollisionComponent).isStatic = true;
+        AudioManager.stopAll();
         AudioManager.playSound("win");
         setTimeout(() => {
             ZoneManager.changeNextZone();
@@ -320,6 +378,7 @@ export class BossBehaviourData implements IBehaviourData {
     public walkSpriteName!: string;
     public idleSpriteName!: string;
     public jumpSpriteName!: string;
+    public projectileSpriteComponent!: string;
     public maxVelocityX: number = 2;
     public maxVelocityY: number = 15;
     public start: Vector2 = new Vector2();
@@ -340,6 +399,12 @@ export class BossBehaviourData implements IBehaviourData {
         this.name = String(json.name);
         if (json.acceleration !== undefined) {
             this.acceleration.setFromJson(json.acceleration);
+        }
+        if (json.playerCollisionComponent === undefined) {
+            log(LogLevel.error, `playerCollisionComponent must be defined for enemy controller.`, 
+                ErrorCode.NoPlayerCollisionComponentName);
+        } else {
+            this.playerCollisionComponent = json.playerCollisionComponent;
         }
         if (json.groundCollisionComponent === undefined) {
             log(LogLevel.error, `groundCollisionComponent must be defined for enemy controller.`, 
@@ -394,6 +459,12 @@ export class BossBehaviourData implements IBehaviourData {
                 ErrorCode.NoAnimatedSpriteName);
         } else {
             this.jumpSpriteName = String(json.jumpSpriteName);
+        }
+        if (json.projectileSpriteComponent === undefined) {
+            log(LogLevel.error, `projectileSpriteComponent must be defined for enemy controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.projectileSpriteComponent = String(json.projectileSpriteComponent);
         }
         if (json.maxVelocityX !== undefined) {
             this.maxVelocityX = Number(json.maxVelocityX);

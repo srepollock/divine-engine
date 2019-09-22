@@ -1,5 +1,6 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { Message, MessageType } from "../core/messagesystem";
 import { ComponentManager } from "../components/componentmanager";
 import { Entity } from "../core/entity";
 import { guid } from "../helper";
@@ -84,6 +85,7 @@ export class Zone {
      * @returns void
      */
     public load(): void {
+        Message.sendPriority(MessageType.ZONE_LOADED, undefined);
         this._state = ZoneState.LOADING;
         this._scene.load();
         this._scene.root.updateReady();
