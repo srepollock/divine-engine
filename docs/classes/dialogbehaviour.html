@@ -1,0 +1,656 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>DialogBehaviour | Divine Engine API</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script>
+        var test = 0
+        function openNav(e) {
+            document.getElementById("global-nav").style.width   = "250px";
+            document.getElementById("global-nav").style.padding = "25px";
+            e.stopPropagation()
+        }
+
+        function closeNav(e) {
+            if (!document.getElementById("global-nav").contains(e.target)) {
+                document.getElementById("global-nav").style.width   = "0";
+                document.getElementById("global-nav").style.padding = "0";
+            }
+        }
+    </script>
+</head>
+<body onclick="closeNav(event)">
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Divine Engine API</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" checked />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../index.html">Globals</a>
+				</li>
+				<li>
+					<a href="dialogbehaviour.html">DialogBehaviour</a>
+				</li>
+			</ul>
+			<h1>Class DialogBehaviour</h1>
+		</div>
+	</div>
+</header>
+<nav id="global-nav" class="tsd-navigation sidenav">
+	<ul>
+		<li class=" ">
+			<a href="../index.html">Globals</a>
+	</li>    </ul>
+</nav>
+<div id="main" class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="behaviour.html" class="tsd-signature-type">Behaviour</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">DialogBehaviour</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/ibehaviour.html" class="tsd-signature-type">IBehaviour</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="dialogbehaviour.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="dialogbehaviour.html#_data" class="tsd-kind-icon">_data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_dialogindex" class="tsd-kind-icon">_dialog<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_dialogs" class="tsd-kind-icon">_dialogs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="dialogbehaviour.html#_owner" class="tsd-kind-icon">_owner</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_running" class="tsd-kind-icon">_running</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_sprite" class="tsd-kind-icon">_sprite</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_spritename" class="tsd-kind-icon">_sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_started" class="tsd-kind-icon">_started</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_timecount" class="tsd-kind-icon">_time<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#_totaltime" class="tsd-kind-icon">_total<wbr>Time</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="dialogbehaviour.html#name" class="tsd-kind-icon">name</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-accessor tsd-parent-kind-class"><a href="dialogbehaviour.html#dialogindex" class="tsd-kind-icon">dialog<wbr>Index</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="dialogbehaviour.html#dialogs" class="tsd-kind-icon">dialogs</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="dialogbehaviour.html#apply" class="tsd-kind-icon">apply</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="dialogbehaviour.html#changesprite" class="tsd-kind-icon">change<wbr>Sprite</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="dialogbehaviour.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="dialogbehaviour.html#getowner" class="tsd-kind-icon">get<wbr>Owner</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="dialogbehaviour.html#setfromjson" class="tsd-kind-icon">set<wbr>From<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="dialogbehaviour.html#setowner" class="tsd-kind-icon">set<wbr>Owner</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="dialogbehaviour.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="dialogbehaviour.html#updateready" class="tsd-kind-icon">update<wbr>Ready</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Dialog<wbr>Behaviour<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="dialogbehaviourdata.html" class="tsd-signature-type">DialogBehaviourData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dialogbehaviour.html" class="tsd-signature-type">DialogBehaviour</a></li>
+					</ul>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">data</span>: <a href="dialogbehaviourdata.html" class="tsd-signature-type">DialogBehaviourData</a>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <a href="dialogbehaviour.html" class="tsd-signature-type">DialogBehaviour</a></h4>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#constructor">constructor</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L36">behaviours/dialogbehaviour.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_data" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _data</h3>
+					<div class="tsd-signature tsd-kind-icon">_data<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ibehaviourdata.html" class="tsd-signature-type">IBehaviourData</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#_data">_data</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L7">behaviours/behaviour.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_dialogindex" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _dialog<wbr>Index</h3>
+					<div class="tsd-signature tsd-kind-icon">_dialogIndex<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L25">behaviours/dialogbehaviour.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_dialogs" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _dialogs</h3>
+					<div class="tsd-signature tsd-kind-icon">_dialogs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="dialog.html" class="tsd-signature-type">Dialog</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L22">behaviours/dialogbehaviour.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_owner" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _owner</h3>
+					<div class="tsd-signature tsd-kind-icon">_owner<span class="tsd-signature-symbol">:</span> <a href="entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#_owner">_owner</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L8">behaviours/behaviour.ts:8</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_running" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _running</h3>
+					<div class="tsd-signature tsd-kind-icon">_running<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L27">behaviours/dialogbehaviour.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_sprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _sprite</h3>
+					<div class="tsd-signature tsd-kind-icon">_sprite<span class="tsd-signature-symbol">:</span> <a href="spritecomponent.html" class="tsd-signature-type">SpriteComponent</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L21">behaviours/dialogbehaviour.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_spritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_spriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L20">behaviours/dialogbehaviour.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_started" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _started</h3>
+					<div class="tsd-signature tsd-kind-icon">_started<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L26">behaviours/dialogbehaviour.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_timecount" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _time<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">_timeCount<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L24">behaviours/dialogbehaviour.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_totaltime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _total<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">_totalTime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L23">behaviours/dialogbehaviour.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#name">name</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L6">behaviours/behaviour.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-descriptions">
+					<a name="dialogindex" class="tsd-anchor"></a>
+					<h3>dialog<wbr>Index</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> dialogIndex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> dialogIndex<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">value</span>: <span class="tsd-signature-type">number</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L28">behaviours/dialogbehaviour.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L31">behaviours/dialogbehaviour.ts:31</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-descriptions">
+					<a name="dialogs" class="tsd-anchor"></a>
+					<h3>dialogs</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> dialogs<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="dialog.html" class="tsd-signature-type">Dialog</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="dialog.html" class="tsd-signature-type">Dialog</a><span class="tsd-signature-symbol">&gt;</span></h4>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L34">behaviours/dialogbehaviour.ts:34</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="apply" class="tsd-anchor"></a>
+					<h3>apply</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">apply<span class="tsd-signature-symbol">(</span>userData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Applies user data to the behaviour</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">userData</span>: <span class="tsd-signature-type">any</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#apply">apply</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#apply">apply</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L22">behaviours/behaviour.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="changesprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> change<wbr>Sprite</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">change<wbr>Sprite<span class="tsd-signature-symbol">(</span>materialName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">materialName</span>: <span class="tsd-signature-type">string</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L75">behaviours/dialogbehaviour.ts:75</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="destroy" class="tsd-anchor"></a>
+					<h3>destroy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Removes the owner from the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#destroy">destroy</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#destroy">destroy</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L29">behaviours/behaviour.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="getowner" class="tsd-anchor"></a>
+					<h3>get<wbr>Owner</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Owner<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the owner Entity of the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <a href="entity.html" class="tsd-signature-type">Entity</a>
+						<span class="tsd-signature-symbol"> | </span>
+						<span class="tsd-signature-type">undefined</span>
+					</h4>
+					<p>Entity</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#getowner">getOwner</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#getowner">getOwner</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L44">behaviours/behaviour.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="setfromjson" class="tsd-anchor"></a>
+					<h3>set<wbr>From<wbr>Json</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>From<wbr>Json<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the behaviour data from json format.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">json</span>: <span class="tsd-signature-type">any</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#setfromjson">setFromJson</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L37">behaviours/behaviour.ts:37</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="setowner" class="tsd-anchor"></a>
+					<h3>set<wbr>Owner</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Owner<span class="tsd-signature-symbol">(</span>owner<span class="tsd-signature-symbol">: </span><a href="entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the owner of the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">owner</span>: <a href="entity.html" class="tsd-signature-type">Entity</a>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#setowner">setOwner</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#setowner">setOwner</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L52">behaviours/behaviour.ts:52</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">delta</span>: <span class="tsd-signature-type">number</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#update">update</a></p>
+						<p>Overrides <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#update">update</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L52">behaviours/dialogbehaviour.ts:52</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="updateready" class="tsd-anchor"></a>
+					<h3>update<wbr>Ready</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Ready<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#updateready">updateReady</a></p>
+						<p>Overrides <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#updateready">updateReady</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/dialogbehaviour.ts#L42">behaviours/dialogbehaviour.ts:42</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<li>
+						📑
+						<span onclick="openNav(event)" style="cursor: pointer; padding-left: 10px">
+							Documentation
+						</span>
+					</li>
+				</ul>
+				<br>
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="dialogbehaviour.html" class="tsd-kind-icon">Dialog<wbr>Behaviour</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+								<a href="dialogbehaviour.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="dialogbehaviour.html#_data" class="tsd-kind-icon">_data</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_dialogindex" class="tsd-kind-icon">_dialog<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_dialogs" class="tsd-kind-icon">_dialogs</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="dialogbehaviour.html#_owner" class="tsd-kind-icon">_owner</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_running" class="tsd-kind-icon">_running</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_sprite" class="tsd-kind-icon">_sprite</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_spritename" class="tsd-kind-icon">_sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_started" class="tsd-kind-icon">_started</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_timecount" class="tsd-kind-icon">_time<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#_totaltime" class="tsd-kind-icon">_total<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="dialogbehaviour.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class">
+								<a href="dialogbehaviour.html#dialogindex" class="tsd-kind-icon">dialog<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="dialogbehaviour.html#dialogs" class="tsd-kind-icon">dialogs</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="dialogbehaviour.html#apply" class="tsd-kind-icon">apply</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="dialogbehaviour.html#changesprite" class="tsd-kind-icon">change<wbr>Sprite</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="dialogbehaviour.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="dialogbehaviour.html#getowner" class="tsd-kind-icon">get<wbr>Owner</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="dialogbehaviour.html#setfromjson" class="tsd-kind-icon">set<wbr>From<wbr>Json</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="dialogbehaviour.html#setowner" class="tsd-kind-icon">set<wbr>Owner</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="dialogbehaviour.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="dialogbehaviour.html#updateready" class="tsd-kind-icon">update<wbr>Ready</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+				<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+				<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+				<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+				<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+				<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

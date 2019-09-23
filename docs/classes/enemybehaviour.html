@@ -1,0 +1,980 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>EnemyBehaviour | Divine Engine API</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script>
+        var test = 0
+        function openNav(e) {
+            document.getElementById("global-nav").style.width   = "250px";
+            document.getElementById("global-nav").style.padding = "25px";
+            e.stopPropagation()
+        }
+
+        function closeNav(e) {
+            if (!document.getElementById("global-nav").contains(e.target)) {
+                document.getElementById("global-nav").style.width   = "0";
+                document.getElementById("global-nav").style.padding = "0";
+            }
+        }
+    </script>
+</head>
+<body onclick="closeNav(event)">
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Divine Engine API</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" checked />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../index.html">Globals</a>
+				</li>
+				<li>
+					<a href="enemybehaviour.html">EnemyBehaviour</a>
+				</li>
+			</ul>
+			<h1>Class EnemyBehaviour</h1>
+		</div>
+	</div>
+</header>
+<nav id="global-nav" class="tsd-navigation sidenav">
+	<ul>
+		<li class=" ">
+			<a href="../index.html">Globals</a>
+	</li>    </ul>
+</nav>
+<div id="main" class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="behaviour.html" class="tsd-signature-type">Behaviour</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">EnemyBehaviour</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/ibehaviour.html" class="tsd-signature-type">IBehaviour</a></li>
+					<li><a href="../interfaces/imessagehandler.html" class="tsd-signature-type">IMessageHandler</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="enemybehaviour.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_acceleration" class="tsd-kind-icon">_acceleration</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_animatedspritename" class="tsd-kind-icon">_animated<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_attackspritename" class="tsd-kind-icon">_attack<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="enemybehaviour.html#_data" class="tsd-kind-icon">_data</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_diespritename" class="tsd-kind-icon">_die<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_direction" class="tsd-kind-icon">_direction</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_end" class="tsd-kind-icon">_end</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_enemycollisioncomponent" class="tsd-kind-icon">_enemy<wbr>Collision<wbr>Component</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_groundcollisioncomponent" class="tsd-kind-icon">_ground<wbr>Collision<wbr>Component</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_hitpoints" class="tsd-kind-icon">_hit<wbr>Points</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_hitspritename" class="tsd-kind-icon">_hit<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_idlespritename" class="tsd-kind-icon">_idle<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_isalive" class="tsd-kind-icon">_is<wbr>Alive</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_isjumping" class="tsd-kind-icon">_is<wbr>Jumping</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_jumpspritename" class="tsd-kind-icon">_jump<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_jumping" class="tsd-kind-icon">_jumping</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_lives" class="tsd-kind-icon">_lives</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_maxvelocityx" class="tsd-kind-icon">_max<wbr>VelocityX</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_maxvelocityy" class="tsd-kind-icon">_max<wbr>VelocityY</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="enemybehaviour.html#_owner" class="tsd-kind-icon">_owner</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_playercollisioncomponent" class="tsd-kind-icon">_player<wbr>Collision<wbr>Component</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_rotate" class="tsd-kind-icon">_rotate</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_sprite" class="tsd-kind-icon">_sprite</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_start" class="tsd-kind-icon">_start</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_startinghitpoints" class="tsd-kind-icon">_starting<wbr>Hit<wbr>Points</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_velocity" class="tsd-kind-icon">_velocity</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#_walkspritename" class="tsd-kind-icon">_walk<wbr>Sprite<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="enemybehaviour.html#name" class="tsd-kind-icon">name</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="enemybehaviour.html#apply" class="tsd-kind-icon">apply</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#changesprite" class="tsd-kind-icon">change<wbr>Sprite</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="enemybehaviour.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#die" class="tsd-kind-icon">die</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="enemybehaviour.html#getowner" class="tsd-kind-icon">get<wbr>Owner</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="enemybehaviour.html#onjump" class="tsd-kind-icon">on<wbr>Jump</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="enemybehaviour.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="enemybehaviour.html#setfromjson" class="tsd-kind-icon">set<wbr>From<wbr>Json</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="enemybehaviour.html#setowner" class="tsd-kind-icon">set<wbr>Owner</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="enemybehaviour.html#takedamage" class="tsd-kind-icon">take<wbr>Damage</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="enemybehaviour.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="enemybehaviour.html#updateready" class="tsd-kind-icon">update<wbr>Ready</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Enemy<wbr>Behaviour<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><a href="enemybehaviourdata.html" class="tsd-signature-type">EnemyBehaviourData</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="enemybehaviour.html" class="tsd-signature-type">EnemyBehaviour</a></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Class constructor</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">data</span>: <a href="enemybehaviourdata.html" class="tsd-signature-type">EnemyBehaviourData</a>
+							<div class="tsd-comment">
+								<div class="lead">
+								</div>
+							</div>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <a href="enemybehaviour.html" class="tsd-signature-type">EnemyBehaviour</a></h4>
+					</ul>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#constructor">constructor</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L40">behaviours/enemybehaviour.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_acceleration" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _acceleration</h3>
+					<div class="tsd-signature tsd-kind-icon">_acceleration<span class="tsd-signature-symbol">:</span> <a href="vector2.html" class="tsd-signature-type">Vector2</a><span class="tsd-signature-symbol"> =&nbsp;new Vector2(0, 0)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L19">behaviours/enemybehaviour.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_animatedspritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _animated<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_animatedSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L26">behaviours/enemybehaviour.ts:26</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_attackspritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _attack<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_attackSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L27">behaviours/enemybehaviour.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_data" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _data</h3>
+					<div class="tsd-signature tsd-kind-icon">_data<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ibehaviourdata.html" class="tsd-signature-type">IBehaviourData</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#_data">_data</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L7">behaviours/behaviour.ts:7</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_diespritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _die<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_dieSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L29">behaviours/enemybehaviour.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_direction" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _direction</h3>
+					<div class="tsd-signature tsd-kind-icon">_direction<span class="tsd-signature-symbol">:</span> <a href="vector2.html" class="tsd-signature-type">Vector2</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L38">behaviours/enemybehaviour.ts:38</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_end" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _end</h3>
+					<div class="tsd-signature tsd-kind-icon">_end<span class="tsd-signature-symbol">:</span> <a href="vector2.html" class="tsd-signature-type">Vector2</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L37">behaviours/enemybehaviour.ts:37</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_enemycollisioncomponent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _enemy<wbr>Collision<wbr>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">_enemyCollisionComponent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L23">behaviours/enemybehaviour.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_groundcollisioncomponent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _ground<wbr>Collision<wbr>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">_groundCollisionComponent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L24">behaviours/enemybehaviour.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_hitpoints" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _hit<wbr>Points</h3>
+					<div class="tsd-signature tsd-kind-icon">_hitPoints<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L16">behaviours/enemybehaviour.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_hitspritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _hit<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_hitSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L28">behaviours/enemybehaviour.ts:28</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_idlespritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _idle<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_idleSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L31">behaviours/enemybehaviour.ts:31</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_isalive" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _is<wbr>Alive</h3>
+					<div class="tsd-signature tsd-kind-icon">_isAlive<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L21">behaviours/enemybehaviour.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_isjumping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _is<wbr>Jumping</h3>
+					<div class="tsd-signature tsd-kind-icon">_isJumping<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L22">behaviours/enemybehaviour.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_jumpspritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _jump<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_jumpSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L32">behaviours/enemybehaviour.ts:32</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_jumping" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _jumping</h3>
+					<div class="tsd-signature tsd-kind-icon">_jumping<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L39">behaviours/enemybehaviour.ts:39</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_lives" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _lives</h3>
+					<div class="tsd-signature tsd-kind-icon">_lives<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L18">behaviours/enemybehaviour.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_maxvelocityx" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _max<wbr>VelocityX</h3>
+					<div class="tsd-signature tsd-kind-icon">_maxVelocityX<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L34">behaviours/enemybehaviour.ts:34</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_maxvelocityy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _max<wbr>VelocityY</h3>
+					<div class="tsd-signature tsd-kind-icon">_maxVelocityY<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L35">behaviours/enemybehaviour.ts:35</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_owner" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _owner</h3>
+					<div class="tsd-signature tsd-kind-icon">_owner<span class="tsd-signature-symbol">:</span> <a href="entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#_owner">_owner</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L8">behaviours/behaviour.ts:8</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_playercollisioncomponent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _player<wbr>Collision<wbr>Component</h3>
+					<div class="tsd-signature tsd-kind-icon">_playerCollisionComponent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L25">behaviours/enemybehaviour.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_rotate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _rotate</h3>
+					<div class="tsd-signature tsd-kind-icon">_rotate<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L40">behaviours/enemybehaviour.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_sprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _sprite</h3>
+					<div class="tsd-signature tsd-kind-icon">_sprite<span class="tsd-signature-symbol">:</span> <a href="animatedspritecomponent.html" class="tsd-signature-type">AnimatedSpriteComponent</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L33">behaviours/enemybehaviour.ts:33</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_start" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _start</h3>
+					<div class="tsd-signature tsd-kind-icon">_start<span class="tsd-signature-symbol">:</span> <a href="vector2.html" class="tsd-signature-type">Vector2</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L36">behaviours/enemybehaviour.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_startinghitpoints" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _starting<wbr>Hit<wbr>Points</h3>
+					<div class="tsd-signature tsd-kind-icon">_startingHitPoints<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;this._hitPoints</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L17">behaviours/enemybehaviour.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_velocity" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _velocity</h3>
+					<div class="tsd-signature tsd-kind-icon">_velocity<span class="tsd-signature-symbol">:</span> <a href="vector2.html" class="tsd-signature-type">Vector2</a><span class="tsd-signature-symbol"> =&nbsp;new Vector2()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L20">behaviours/enemybehaviour.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="_walkspritename" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _walk<wbr>Sprite<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_walkSpriteName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L30">behaviours/enemybehaviour.ts:30</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#name">name</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L6">behaviours/behaviour.ts:6</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="apply" class="tsd-anchor"></a>
+					<h3>apply</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">apply<span class="tsd-signature-symbol">(</span>userData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Applies user data to the behaviour</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">userData</span>: <span class="tsd-signature-type">any</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#apply">apply</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#apply">apply</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L22">behaviours/behaviour.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="changesprite" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> change<wbr>Sprite</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">change<wbr>Sprite<span class="tsd-signature-symbol">(</span>materialName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, frameSequence<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Changes the sprtie of the owner based on the material and frameSequence.
+							<em>NOTE</em>: This can only change to animated sprite materials.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">materialName</span>: <span class="tsd-signature-type">string</span>
+						</li>
+						<li>
+							<span class="name">frameSequence</span>: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L183">behaviours/enemybehaviour.ts:183</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="destroy" class="tsd-anchor"></a>
+					<h3>destroy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Removes the owner from the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#destroy">destroy</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#destroy">destroy</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L29">behaviours/behaviour.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="die" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> die</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">die<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Kills the owner object.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L211">behaviours/enemybehaviour.ts:211</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="getowner" class="tsd-anchor"></a>
+					<h3>get<wbr>Owner</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Owner<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the owner Entity of the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <a href="entity.html" class="tsd-signature-type">Entity</a>
+						<span class="tsd-signature-symbol"> | </span>
+						<span class="tsd-signature-type">undefined</span>
+					</h4>
+					<p>Entity</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#getowner">getOwner</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#getowner">getOwner</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L44">behaviours/behaviour.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-descriptions">
+					<a name="onjump" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> on<wbr>Jump</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Jump<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Causes the owner to perform a jump.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L222">behaviours/enemybehaviour.ts:222</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="onmessage" class="tsd-anchor"></a>
+					<h3>on<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Message<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><a href="message.html" class="tsd-signature-type">Message</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Called when the behaviour handles a message.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">message</span>: <a href="message.html" class="tsd-signature-type">Message</a>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/imessagehandler.html">IMessageHandler</a>.<a href="../interfaces/imessagehandler.html#onmessage">onMessage</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L127">behaviours/enemybehaviour.ts:127</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="setfromjson" class="tsd-anchor"></a>
+					<h3>set<wbr>From<wbr>Json</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>From<wbr>Json<span class="tsd-signature-symbol">(</span>json<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the behaviour data from json format.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">json</span>: <span class="tsd-signature-type">any</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#setfromjson">setFromJson</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L37">behaviours/behaviour.ts:37</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="setowner" class="tsd-anchor"></a>
+					<h3>set<wbr>Owner</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Owner<span class="tsd-signature-symbol">(</span>owner<span class="tsd-signature-symbol">: </span><a href="entity.html" class="tsd-signature-type">Entity</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the owner of the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">owner</span>: <a href="entity.html" class="tsd-signature-type">Entity</a>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#setowner">setOwner</a></p>
+						<p>Inherited from <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#setowner">setOwner</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/behaviour.ts#L52">behaviours/behaviour.ts:52</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="takedamage" class="tsd-anchor"></a>
+					<h3>take<wbr>Damage</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">take<wbr>Damage<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Has the owner of the behaviour take damage.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L168">behaviours/enemybehaviour.ts:168</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Updates the behaviour.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">delta</span>: <span class="tsd-signature-type">number</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#update">update</a></p>
+						<p>Overrides <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#update">update</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L87">behaviours/enemybehaviour.ts:87</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="updateready" class="tsd-anchor"></a>
+					<h3>update<wbr>Ready</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Ready<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Checks if the behaviour is ready to update.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ibehaviour.html">IBehaviour</a>.<a href="../interfaces/ibehaviour.html#updateready">updateReady</a></p>
+						<p>Overrides <a href="behaviour.html">Behaviour</a>.<a href="behaviour.html#updateready">updateReady</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/behaviours/enemybehaviour.ts#L73">behaviours/enemybehaviour.ts:73</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<li>
+						📑
+						<span onclick="openNav(event)" style="cursor: pointer; padding-left: 10px">
+							Documentation
+						</span>
+					</li>
+				</ul>
+				<br>
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="enemybehaviour.html" class="tsd-kind-icon">Enemy<wbr>Behaviour</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+								<a href="enemybehaviour.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_acceleration" class="tsd-kind-icon">_acceleration</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_animatedspritename" class="tsd-kind-icon">_animated<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_attackspritename" class="tsd-kind-icon">_attack<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="enemybehaviour.html#_data" class="tsd-kind-icon">_data</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_diespritename" class="tsd-kind-icon">_die<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_direction" class="tsd-kind-icon">_direction</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_end" class="tsd-kind-icon">_end</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_enemycollisioncomponent" class="tsd-kind-icon">_enemy<wbr>Collision<wbr>Component</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_groundcollisioncomponent" class="tsd-kind-icon">_ground<wbr>Collision<wbr>Component</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_hitpoints" class="tsd-kind-icon">_hit<wbr>Points</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_hitspritename" class="tsd-kind-icon">_hit<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_idlespritename" class="tsd-kind-icon">_idle<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_isalive" class="tsd-kind-icon">_is<wbr>Alive</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_isjumping" class="tsd-kind-icon">_is<wbr>Jumping</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_jumpspritename" class="tsd-kind-icon">_jump<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_jumping" class="tsd-kind-icon">_jumping</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_lives" class="tsd-kind-icon">_lives</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_maxvelocityx" class="tsd-kind-icon">_max<wbr>VelocityX</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_maxvelocityy" class="tsd-kind-icon">_max<wbr>VelocityY</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="enemybehaviour.html#_owner" class="tsd-kind-icon">_owner</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_playercollisioncomponent" class="tsd-kind-icon">_player<wbr>Collision<wbr>Component</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_rotate" class="tsd-kind-icon">_rotate</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_sprite" class="tsd-kind-icon">_sprite</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_start" class="tsd-kind-icon">_start</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_startinghitpoints" class="tsd-kind-icon">_starting<wbr>Hit<wbr>Points</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_velocity" class="tsd-kind-icon">_velocity</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#_walkspritename" class="tsd-kind-icon">_walk<wbr>Sprite<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="enemybehaviour.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="enemybehaviour.html#apply" class="tsd-kind-icon">apply</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#changesprite" class="tsd-kind-icon">change<wbr>Sprite</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="enemybehaviour.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#die" class="tsd-kind-icon">die</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="enemybehaviour.html#getowner" class="tsd-kind-icon">get<wbr>Owner</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="enemybehaviour.html#onjump" class="tsd-kind-icon">on<wbr>Jump</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="enemybehaviour.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="enemybehaviour.html#setfromjson" class="tsd-kind-icon">set<wbr>From<wbr>Json</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="enemybehaviour.html#setowner" class="tsd-kind-icon">set<wbr>Owner</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="enemybehaviour.html#takedamage" class="tsd-kind-icon">take<wbr>Damage</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="enemybehaviour.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="enemybehaviour.html#updateready" class="tsd-kind-icon">update<wbr>Ready</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+				<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+				<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+				<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+				<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+				<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

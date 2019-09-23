@@ -15,10 +15,11 @@ coverage.lcov
 # Typescript build files
 build/
 dist/
-docs/
 lib/
 
 # Visual Studio Code
 .vscode/
 
 .cache/
+
+.DS_Store
