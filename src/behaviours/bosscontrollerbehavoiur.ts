@@ -18,6 +18,7 @@ import { IBehaviourBuilder } from "./ibehaviourbuilder";
 import { IBehaviourData } from "./ibehaviourdata";
 import { ProjectileBehaviour, ProjectileBehaviourData } from "./projectilebehaviour";
 import { PlayerBehaviour } from "./playerbehaviour";
+import { guid } from "src/helper";
 
 export class ActionLoop {
     constructor(public type: string = "",
@@ -164,27 +165,27 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
             this._actionIndex = 0;
         }
         let direction: Vector3 = new Vector3();
+        direction = this.currentAction().end!.clone().subtract(this.currentAction().start!);
+        let previousDirection: Vector3;
+        if (this._actionIndex === 0) {
+            previousDirection = this.currentAction().end!.clone().subtract(this.currentAction().start!);
+        } else {
+            previousDirection = this._actionLoops[this._loopIndex][this._actionIndex - 1].end!.clone().subtract(
+                this._actionLoops[this._loopIndex][this._actionIndex - 1].start!);
+        }
+        if (direction.x < 0 || previousDirection.x < 0) {
+            this._owner!.transform.rotation.y = 3.14159;
+        } else {
+            this._owner!.transform.rotation.y = 0;
+        }
         switch (this._actionLoops[this._loopIndex][this._actionIndex].type) {
             case "movement":
-                direction = this.currentAction().end!.clone().subtract(
-                    this.currentAction().start!);
-                let previousDirection: Vector3;
-                if (this._actionIndex === 0) {
-                    previousDirection = this.currentAction().end!.clone().subtract(this.currentAction().start!);
-                } else {
-                    previousDirection = this._actionLoops[this._loopIndex][this._actionIndex - 1].end!.clone().subtract(
-                        this._actionLoops[this._loopIndex][this._actionIndex - 1].start!);
-                }
-                if (direction.x < 0 || previousDirection.x < 0) {
-                    this._owner!.transform.rotation.y = 3.14159;
-                } else {
-                    this._owner!.transform.rotation.y = 0;
-                }
                 let interprolation: number = (delta / this._actionLoops[this._loopIndex][this._actionIndex].duration!);
                 let step: Vector3 = direction.multiply(new Vector3(interprolation, interprolation, interprolation));
                 this._owner!.transform.position.add(step);
                 break;
             case "action_1":
+                direction = new Vector3();
                 (this._owner!.transform.rotation.y > 0) ? direction.x = -1 : direction.x = 1;
                 this.shootProjectile(direction);
                 this._actionIndex += 1; // NOTE: action handles the action index.
@@ -242,7 +243,7 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         }
     }
     public shootProjectile(direction: Vector3): void {
-        let projectile: Entity = new Entity({name: "bossprojectile"});
+        let projectile: Entity = new Entity({name: "bossprojectile" + guid()});
         let animatedSpriteData = new AnimatedSpriteComponentData(JSON.parse(JSON.stringify({
             name: "projectilesprite",
             type: "animatedsprite",

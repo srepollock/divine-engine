@@ -5,6 +5,7 @@ import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { Shader } from "../rendersystem/shader";
 import { Zone } from "./zone";
+import { MessageType } from "src/core/messagesystem";
 
 export class ZoneManager implements IMessageHandler {
     private static _instance: ZoneManager;
@@ -60,6 +61,7 @@ export class ZoneManager implements IMessageHandler {
      * @returns void
      */
     public static changeZone(index: number): void {
+        Message.send(MessageType.ZONE_FINISHED, undefined);
         log(LogLevel.debug, `Changing zone to: ${ZoneManager._registeredZones.get(index)}.`);
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.onDeactivated(); // REVIEW: unsubscribe

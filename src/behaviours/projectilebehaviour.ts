@@ -162,7 +162,7 @@ export class ProjectileBehaviourData implements IBehaviourData {
     public animatedSpriteName!: string;
     public projectileSprite!: string;
     public hitSpriteName!: string;
-    public maxVelocityX: number = 2;
+    public maxVelocityX: number = 5;
     public maxVelocityY: number = 15;
     public start: Vector2 = new Vector2();
     public end: Vector2 = new Vector2();

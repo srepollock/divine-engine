@@ -22,6 +22,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     protected _isJumping: boolean = false;
     protected _enemyCollisionComponent: string;
     protected _groundCollisionComponent: string;
+    protected _playerCollisionComponent: string;
     protected _animatedSpriteName: string;
     protected _attackSpriteName: string;
     protected _hitSpriteName: string;
@@ -46,6 +47,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         this._acceleration = data.acceleration;
         this._groundCollisionComponent = data.groundCollisionComponent;
         this._enemyCollisionComponent = data.enemyCollisionComponent;
+        this._playerCollisionComponent = data.playerCollisionComponent;
         this._animatedSpriteName = data.animatedSpriteName;
         this._attackSpriteName = data.attackSpriteName;
         this._hitSpriteName = data.hitSpriteName;
@@ -133,6 +135,15 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
                     this._isJumping = false;
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
+                }
+                if ((data.a.name === this._playerCollisionComponent && 
+                    data.b.name === this._enemyCollisionComponent) || 
+                    (data.b.name === this._playerCollisionComponent && 
+                    data.a.name === this._enemyCollisionComponent)) {
+                    if (data.a.owner!.name === this._owner!.name ||
+                        data.b.owner!.name === this._owner!.name) {
+                        this.takeDamage();
+                    }
                 }
                 break;
             case MessageType.ANIMATION_COMPLETE:

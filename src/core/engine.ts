@@ -33,6 +33,7 @@ import { MaterialManager } from "../rendersystem/materialmanager";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { MessageType } from "./messagesystem/messagetype";
+import { ScoringComponentBuilder } from "src/components/scoringcomponent";
 
 export class Engine implements IMessageHandler {
     private static _instance: Engine;
@@ -72,6 +73,7 @@ export class Engine implements IMessageHandler {
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
         ComponentManager.registerBuilder(new AnimatedSpriteComponentBuilder());
         ComponentManager.registerBuilder(new CollisionComponentBuilder());
+        ComponentManager.registerBuilder(new ScoringComponentBuilder());
 
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
         BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());
@@ -126,7 +128,7 @@ export class Engine implements IMessageHandler {
         Engine.instance.loadAssets(assets);
         Engine.instance._projection = Matrix4.orthographic(0, GLUtility.instance.canvas.width, 0, 
             GLUtility.instance.canvas.height, -100.0, 100.0);
-        ZoneManager.changeZone(16); // NOTE: Change here for scene testing
+        ZoneManager.changeZone(0); // NOTE: Change here for scene testing
         Message.subscribe(MessageType.MOUSE_DOWN, Engine.instance);
         Engine.play();
     }

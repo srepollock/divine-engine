@@ -11,6 +11,7 @@ import { AudioManager } from "../soundsystem";
 import { ZoneState } from "./zonestate";
 
 export class Zone {
+    private _currentTime: number = 0;
     private _id: string;
     private _index: number;
     private _name: string;
