@@ -9,61 +9,44 @@ import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
 import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
+import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
-import { EnemyBehaviourData } from "./enemybehaviourdata";
+import { IBehaviour } from "./ibehaviour";
+import { IBehaviourBuilder } from "./ibehaviourbuilder";
+import { IBehaviourData } from "./ibehaviourdata";
+import { PlayerBehaviour } from "./playerbehaviour";
 
-export class EnemyBehaviour extends Behaviour implements IMessageHandler {
-    protected _hitPoints: number = 1;
-    protected _startingHitPoints: number = this._hitPoints;
-    protected _lives: number = 1;
+export class ProjectileBehaviour extends Behaviour implements IMessageHandler {
     protected _acceleration: Vector2 = new Vector2(0, 0);
     protected _velocity: Vector2 = new Vector2();
     protected _isAlive: boolean = true;
-    protected _isJumping: boolean = false;
-    protected _enemyCollisionComponent: string;
-    protected _groundCollisionComponent: string;
+    protected _projectileCollisionComponent: string;
     protected _playerCollisionComponent: string;
     protected _animatedSpriteName: string;
-    protected _attackSpriteName: string;
     protected _hitSpriteName: string;
-    protected _dieSpriteName: string;
-    protected _walkSpriteName: string;
-    protected _idleSpriteName: string;
-    protected _jumpSpriteName: string;
     protected _sprite: AnimatedSpriteComponent | undefined;
     protected _maxVelocityX: number;
     protected _maxVelocityY: number;
     protected _start: Vector2;
     protected _end: Vector2;
     protected _direction: Vector2;
-    protected _jumping: boolean;
-    protected _rotate: boolean = true;
     /**
      * Class constructor
-     * @param  {EnemyBehaviourData} data
+     * @param  {BossBehaviourData} data
      */
-    constructor(data: EnemyBehaviourData) {
+    constructor(data: ProjectileBehaviourData) {
         super(data);
         this._acceleration = data.acceleration;
-        this._groundCollisionComponent = data.groundCollisionComponent;
-        this._enemyCollisionComponent = data.enemyCollisionComponent;
+        this._projectileCollisionComponent = data.projectileCollisionComponent;
         this._playerCollisionComponent = data.playerCollisionComponent;
         this._animatedSpriteName = data.animatedSpriteName;
-        this._attackSpriteName = data.attackSpriteName;
         this._hitSpriteName = data.hitSpriteName;
-        this._dieSpriteName = data.dieSpriteName;
-        this._walkSpriteName = data.walkSpriteName;
-        this._idleSpriteName = data.idleSpriteName;
-        this._jumpSpriteName = data.jumpSpriteName;
         this._maxVelocityX = data.maxVelocityX;
         this._maxVelocityY = data.maxVelocityY;
         this._start = data.start;
         this._end = data.end;
         this._direction = data.direction;
         this._acceleration = this._direction;
-        this._jumping = data.jumping;
-        this._rotate = data.rotate;
-
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
     /**
@@ -84,15 +67,11 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
      * @param  {number} delta
      * @returns void
      */
-    public update(delta: number): void {
+    public update(delta: number): void { 
         if (!this._isAlive) {
             return;
         }
-        if (this._isJumping) {
-            this._acceleration.y += (9.75);
-        } else if (this._jumping) {
-            this.onJump();
-        }
+        this._owner!.transform.rotation.y = (this._direction.x > 0) ? 0 : 3.14159;
         this._velocity.add(this._acceleration.clone().scale(delta));
         if (this._velocity.x > this._maxVelocityX) {
             this._velocity.x = this._maxVelocityX;
@@ -104,19 +83,6 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
             this._velocity.y = this._maxVelocityY;
         }
         this._owner!.transform.position.add(new Vector3(this._velocity.x, this._velocity.y, 0));
-        if (!(this._owner!.transform.position.x > this._start.x &&
-            this._end.x > this._owner!.transform.position.x)) {
-            this._acceleration.x = -(this._acceleration.x);
-            this._velocity.x = -(this._velocity.x);
-            if (this._rotate) {
-                this._owner!.transform.rotation.y = (this._owner!.transform.rotation.y === 3.14159) ? 0 : 3.14159;
-            }
-        }
-        if (!(this._owner!.transform.position.y > this._start.y &&
-            this._end.y > this._owner!.transform.position.y)) {
-            this._acceleration.y = -(this._acceleration.y);
-            this._velocity.y = -(this._velocity.y);
-        }
         super.update(delta); 
     }
     /**
@@ -128,49 +94,17 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
         switch (message.code) {
             case MessageType.COLLISION_ENTRY:
                 let data: CollisionData = (message.context as CollisionData);
-                if (data.a.name.includes(this._groundCollisionComponent) && 
-                    data.b.name === this._enemyCollisionComponent || 
-                    data.b.name === this._enemyCollisionComponent && 
-                    data.a.name.includes(this._groundCollisionComponent)) {
-                    this._isJumping = false;
-                    this._velocity.y = 0;
-                    this._acceleration.y = 0;
-                }
                 if ((data.a.name === this._playerCollisionComponent && 
-                    data.b.name === this._enemyCollisionComponent) || 
+                    data.b.name === this._projectileCollisionComponent) || 
                     (data.b.name === this._playerCollisionComponent && 
-                    data.a.name === this._enemyCollisionComponent)) {
-                    if (data.a.owner!.name === this._owner!.name ||
-                        data.b.owner!.name === this._owner!.name) {
-                        this.takeDamage();
-                    }
+                    data.a.name === this._projectileCollisionComponent)) {
+                    this.die();
+                }
+                if ((data.a.name.includes("boundary") && data.b.name === this._playerCollisionComponent) ||
+                    ((data.b.name.includes("boundary") && data.a.name === this._playerCollisionComponent))) {
+                    this.die();
                 }
                 break;
-            case MessageType.ANIMATION_COMPLETE:
-                switch (message.context) {
-                    case this._dieSpriteName:
-                        this._sprite!.sprite.setFrameOnce(this._sprite!.sprite.frameCount - 2);
-                        this._sprite!.stop();
-                        Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
-                        break;
-                    case this._attackSpriteName:
-                    case this._jumpSpriteName:
-                        this.changeSprite(this._walkSpriteName, [0, 1, 2, 3, 4, 5, 6, 7]);
-                        Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
-                        break;
-                }
-        }
-    }
-    /**
-     * Has the owner of the behaviour take damage.
-     * @returns void
-     */
-    public takeDamage(): void {
-        AudioManager.playSound("enemyhit");
-        this._owner!.transform.position.add(new Vector3(-3, 0, 0));
-        this.changeSprite(this._hitSpriteName, [0, 1, 0, 1]);
-        if (--this._hitPoints <= 0) {
-            this.die();
         }
     }
     /**
@@ -181,6 +115,7 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
      * @returns void
      */
     protected changeSprite(materialName: string, frameSequence: Array<number>): void {
+        this._sprite = this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent;
         if (this._sprite!.sprite.materialName !== materialName) {
             let frameWidth = (
                 this._owner!.getComponentByName(this._animatedSpriteName) as AnimatedSpriteComponent)!.sprite.width;
@@ -210,20 +145,102 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
      */
     protected die(): void {
         this._isAlive = false;
-        this.changeSprite(this._dieSpriteName, [0, 1, 2, 3, 4]);
-        this._acceleration = new Vector2();
-        this._velocity = new Vector2();
-        (this._owner!.getComponentByName(this._enemyCollisionComponent) as CollisionComponent).isStatic = true;
+        this.changeSprite(this._hitSpriteName, [0, 1]);
+        AudioManager.playSound("fire");
+        (this._owner!.getComponentByName(this._projectileCollisionComponent) as CollisionComponent).isStatic = true;
+        setTimeout(() => {
+            this._owner!.isVisible = false;
+        }, 500);
     }
+}
+
+export class ProjectileBehaviourData implements IBehaviourData {
+    public name!: string;
+    public acceleration: Vector2 = new Vector2(0, 0);
+    public playerCollisionComponent!: string;
+    public projectileCollisionComponent!: string;
+    public animatedSpriteName!: string;
+    public projectileSprite!: string;
+    public hitSpriteName!: string;
+    public maxVelocityX: number = 5;
+    public maxVelocityY: number = 15;
+    public start: Vector2 = new Vector2();
+    public end: Vector2 = new Vector2();
+    public direction: Vector2 = new Vector2();
     /**
-     * Causes the owner to perform a jump.
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
      * @returns void
      */
-    protected onJump(): void {
-        if (this._isAlive && !this._isJumping) {
-            this._isJumping = true;
-            this._velocity.y = -(this._maxVelocityY);
-            this.changeSprite(this._jumpSpriteName, [0, 1, 2, 3, 3, 3, 3]);
+    public setFromJson(json: any): void {
+        if (json.name === undefined) {
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
         }
+        this.name = String(json.name);
+        if (json.acceleration !== undefined) {
+            this.acceleration.setFromJson(json.acceleration);
+        }
+        if (json.playerCollisionComponent === undefined) {
+            log(LogLevel.error, `playerCollisionComponent must be defined for projectile behaviour.`, 
+                ErrorCode.NoName);
+        } else {
+            this.playerCollisionComponent = String(json.playerCollisionComponent);
+        }
+        if (json.projectileCollisionComponent === undefined) {
+            log(LogLevel.error, `projectileCollisionComponent must be defined for projectile behaviour.`, 
+                ErrorCode.NoName);
+        } else {
+            this.projectileCollisionComponent = String(json.projectileCollisionComponent);
+        }
+        if (json.animatedSpriteName === undefined) {
+            log(LogLevel.error, `animatedSpriteName must be defined for projectile behaviour.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.animatedSpriteName = String(json.animatedSpriteName);
+        }
+        if (json.hitSpriteName === undefined) {
+            log(LogLevel.error, `hitSpriteName must be defined for projectile behaviour.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.hitSpriteName = String(json.hitSpriteName);
+        }
+        if (json.projectileSprite === undefined) {
+            log(LogLevel.error, `projectileSprite must be defined for projectile behaviour.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.projectileSprite = String(json.projectileSprite);
+        }
+        if (json.maxVelocityX !== undefined) {
+            this.maxVelocityX = Number(json.maxVelocityX);
+        }
+        if (json.maxVelocityY !== undefined) {
+            this.maxVelocityY = Number(json.maxVelocityY);
+        }
+        if (json.direction === undefined) {
+            log(LogLevel.error, `direction must be defined for projectile behaviour`, ErrorCode.NoName);
+        } else {
+            this.direction.setFromJson(json.direction);
+        }
+    }
+}
+
+export class ProjectileBehaviourBuilder implements IBehaviourBuilder {
+    public name!: string;
+    /**
+     * Type of behaviour
+     * @returns string
+     */
+    public get type(): string {
+        return "projectile";
+    }
+    /**
+     * Called on all builders (through IBehaviourBuilder interface).
+     * @param  {any} json
+     * @returns IBehaviour
+     */
+    public buildFromJson(json: any): IBehaviour {
+        let data = new ProjectileBehaviourData();
+        data.setFromJson(json);
+        return new ProjectileBehaviour(data);
     }
 }

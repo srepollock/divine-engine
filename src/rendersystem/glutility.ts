@@ -21,13 +21,13 @@ export class GLUtility {
         } else {
             this.canvas = (c as HTMLCanvasElement);
         }
-        if (this.canvas.getContext("experimental-webgl") === undefined || 
-            this.canvas.getContext("experimental-webgl") === null) {
-            log(LogLevel.error, `Unable to initialize Experimental WebGL.`, ErrorCode.WebGLNotInitialized);
+        if (this.canvas.getContext("webgl") === undefined || 
+            this.canvas.getContext("webgl") === null) {
+            log(LogLevel.error, `Unable to initialize WebGL.`, ErrorCode.WebGLNotInitialized);
         }
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
-        GLUtility.gl = this.canvas.getContext("experimental-webgl")!;
+        GLUtility.gl = this.canvas.getContext("webgl")!;
         GLUtility._instance = this;
     }
     /**

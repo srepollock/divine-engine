@@ -7,6 +7,7 @@ export class EnemyBehaviourData implements IBehaviourData {
     public acceleration: Vector2 = new Vector2(0, 0);
     public enemyCollisionComponent!: string;
     public groundCollisionComponent!: string;
+    public playerCollisionComponent!: string;
     public animatedSpriteName!: string;
     public attackSpriteName!: string;
     public hitSpriteName!: string;
@@ -45,6 +46,12 @@ export class EnemyBehaviourData implements IBehaviourData {
                 ErrorCode.NoEnemyCollisionComponentName);
         } else {
             this.enemyCollisionComponent = json.enemyCollisionComponent;
+        }
+        if (json.playerCollisionComponent === undefined) {
+            log(LogLevel.error, `playerCollisionComponent must be defined for enemy controller.`, 
+                ErrorCode.NoPlayerCollisionComponentName);
+        } else {
+            this.playerCollisionComponent = json.playerCollisionComponent;
         }
         if (json.animatedSpriteName === undefined) {
             log(LogLevel.error, `animatedSpriteName must be defined for enemy controller.`, 
