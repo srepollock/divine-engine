@@ -109,7 +109,6 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
         this._jumping = data.jumping;
         this._rotate = data.rotate;
         this._actionLoops = data.actionLoops;
-
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
     }
     /**
@@ -153,16 +152,19 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
             this._loopIndex = 0;
             this._actionIndex = 0;
         }
+        if (this._actionIndex >= this._actionLoops[this._loopIndex].length) {
+            this._actionIndex = 0;
+        }
         if (this._timeCount >= this.currentAction().duration && !(this.currentAction().type.includes("action"))) {
             // NOTE: "action_X" handles the action index.
             this._timeCount = 0;
             this._actionIndex += 1;
+            if (this._actionIndex >= this._actionLoops[this._loopIndex].length) {
+                this._actionIndex = 0; // NOTE: need this here again incase
+            }
             if (this._actionLoops[this._loopIndex][this._actionIndex].type === "movement") {
                 this._owner!.transform.position.set(this.currentAction().start);
             }
-        }
-        if (this._actionIndex >= this._actionLoops[this._loopIndex].length) {
-            this._actionIndex = 0;
         }
         let direction: Vector3 = new Vector3();
         direction = this.currentAction().end!.clone().subtract(this.currentAction().start!);
@@ -191,6 +193,12 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
                 this._actionIndex += 1; // NOTE: action handles the action index.
                 break;
             case "action_2":
+                this.shootProjectile(direction);
+                setTimeout(() => {}, 300);
+                this.shootProjectile(direction);
+                setTimeout(() => {}, 300);
+                this.shootProjectile(direction);
+                setTimeout(() => {}, 300);
                 this._actionIndex += 1; // NOTE: action handles the action index.
                 break;
         }
@@ -213,16 +221,20 @@ export class BossBehaviour extends Behaviour implements IMessageHandler {
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
                 }
-                if ((data.a.name.includes(this._playerCollisionComponent) && 
-                    data.b.name === this._enemyCollisionComponent) || 
-                    (data.b.name === this._enemyCollisionComponent && 
-                    data.a.name.includes(this._playerCollisionComponent)) &&
-                    (this._owner!.parent!.getObjectByName(
-                                data.a.owner!.name)!.getBehaviourByName(
-                                    "playercontroller")! as PlayerBehaviour).isAttacking &&
+                if ((data.a.name === this._playerCollisionComponent && 
+                    data.b.name === this._enemyCollisionComponent) &&
+                    (this._owner!.parent!.getObjectByName(data.a.owner!.name)!.getBehaviourByName(
+                        "playercontroller")! as PlayerBehaviour).isAttacking &&
                     !this._invulnerable) {
                         this.takeDamage();
-                    }
+                }
+                if ((data.b.name === this._playerCollisionComponent && 
+                    data.a.name === this._enemyCollisionComponent) &&
+                    (this._owner!.parent!.getObjectByName(data.b.owner!.name)!.getBehaviourByName(
+                        "playercontroller")! as PlayerBehaviour).isAttacking &&
+                    !this._invulnerable) {
+                        this.takeDamage();
+                }
                 break;
             case MessageType.ANIMATION_COMPLETE:
                 switch (message.context) {

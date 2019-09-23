@@ -11,7 +11,7 @@ import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
-import { BossBehaviour } from "./bosscontrollerbehavoiur";
+import { BossBehaviour } from "./bossbehavoiur";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
 

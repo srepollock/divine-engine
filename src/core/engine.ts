@@ -2,7 +2,7 @@ import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AssetManager } from "../assets/assetmanager";
 import { AIMovementBehaviourBuilder } from "../behaviours/aimovementbehaviourbuilder";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
-import { BossBehaviourBuilder } from "../behaviours/bosscontrollerbehavoiur";
+import { BossBehaviourBuilder } from "../behaviours/bossbehavoiur";
 import { DialogBehaviourBuilder } from "../behaviours/dialogbehaviour";
 import { EnemyBehaviourBuilder } from "../behaviours/enemybehaviourbuilder";
 import { FlagBehaviourBuilder } from "../behaviours/flagbehaviourbuilder";
@@ -34,6 +34,7 @@ import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { MessageType } from "./messagesystem/messagetype";
 import { ScoringComponentBuilder } from "src/components/scoringcomponent";
+import { TextComponentBuilder } from "src/components/textcomponent";
 
 export class Engine implements IMessageHandler {
     private static _instance: Engine;
@@ -74,6 +75,7 @@ export class Engine implements IMessageHandler {
         ComponentManager.registerBuilder(new AnimatedSpriteComponentBuilder());
         ComponentManager.registerBuilder(new CollisionComponentBuilder());
         ComponentManager.registerBuilder(new ScoringComponentBuilder());
+        ComponentManager.registerBuilder(new TextComponentBuilder());
 
         BehaviourManager.registerBuilder(new RotationBehaviourBuilder());
         BehaviourManager.registerBuilder(new KeyboardMovementBehaviourBuilder());

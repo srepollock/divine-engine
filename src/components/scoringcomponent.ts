@@ -6,6 +6,7 @@ import { IComponent } from "./icomponent";
 import { Message, MessageType, IMessageHandler } from "src/core/messagesystem";
 import { PlayerBehaviour } from "src/behaviours";
 import { log, LogLevel } from "de-loggingsystem";
+import { TextComponent } from "./textcomponent";
 
 export class ScoringComponent extends Component implements IMessageHandler {
     public static HIGHSCORE: number = 0;
@@ -60,6 +61,8 @@ export class ScoringComponent extends Component implements IMessageHandler {
         let score = this._zoneScore;
         score = this._zoneScore - (Math.round(this._timeCount) * 100);
         ScoringComponent.SCORE += score;
+        // TextComponent.TEXT.text = `Current Score: ${ScoringComponent.SCORE}`; 
+        // TODO: Add scoring component and update
     }
 }
 
