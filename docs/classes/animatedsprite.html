@@ -1,0 +1,1129 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>AnimatedSprite | Divine Engine API</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script>
+        var test = 0
+        function openNav(e) {
+            document.getElementById("global-nav").style.width   = "250px";
+            document.getElementById("global-nav").style.padding = "25px";
+            e.stopPropagation()
+        }
+
+        function closeNav(e) {
+            if (!document.getElementById("global-nav").contains(e.target)) {
+                document.getElementById("global-nav").style.width   = "0";
+                document.getElementById("global-nav").style.padding = "0";
+            }
+        }
+    </script>
+</head>
+<body onclick="closeNav(event)">
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Divine Engine API</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" checked />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../index.html">Globals</a>
+				</li>
+				<li>
+					<a href="animatedsprite.html">AnimatedSprite</a>
+				</li>
+			</ul>
+			<h1>Class AnimatedSprite</h1>
+		</div>
+	</div>
+</header>
+<nav id="global-nav" class="tsd-navigation sidenav">
+	<ul>
+		<li class=" ">
+			<a href="../index.html">Globals</a>
+	</li>    </ul>
+</nav>
+<div id="main" class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<a href="sprite.html" class="tsd-signature-type">Sprite</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">AnimatedSprite</span>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/imessagehandler.html" class="tsd-signature-type">IMessageHandler</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="animatedsprite.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_assetheight" class="tsd-kind-icon">_asset<wbr>Height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_assetloaded" class="tsd-kind-icon">_asset<wbr>Loaded</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_assetwidth" class="tsd-kind-icon">_asset<wbr>Width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_buffer" class="tsd-kind-icon">_buffer</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_currentframe" class="tsd-kind-icon">_current<wbr>Frame</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_currenttime" class="tsd-kind-icon">_current<wbr>Time</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_framecount" class="tsd-kind-icon">_frame<wbr>Count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_frameheight" class="tsd-kind-icon">_frame<wbr>Height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_framesequence" class="tsd-kind-icon">_frame<wbr>Sequence</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_frametime" class="tsd-kind-icon">_frame<wbr>Time</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_frameuv" class="tsd-kind-icon">_frameUV</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_framewidth" class="tsd-kind-icon">_frame<wbr>Width</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_height" class="tsd-kind-icon">_height</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#_isplaying" class="tsd-kind-icon">_is<wbr>Playing</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_material" class="tsd-kind-icon">_material</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_materialname" class="tsd-kind-icon">_material<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_name" class="tsd-kind-icon">_name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_origin" class="tsd-kind-icon">_origin</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_vertices" class="tsd-kind-icon">_vertices</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#_width" class="tsd-kind-icon">_width</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="animatedsprite.html#framecount" class="tsd-kind-icon">frame<wbr>Count</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="animatedsprite.html#height" class="tsd-kind-icon">height</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="animatedsprite.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="animatedsprite.html#materialname" class="tsd-kind-icon">material<wbr>Name</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="animatedsprite.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="animatedsprite.html#origin" class="tsd-kind-icon">origin</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="animatedsprite.html#width" class="tsd-kind-icon">width</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#calculateuv" class="tsd-kind-icon">calculateUV</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#calculatevertices" class="tsd-kind-icon">calculate<wbr>Vertices</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="animatedsprite.html#destroy" class="tsd-kind-icon">destroy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="animatedsprite.html#draw" class="tsd-kind-icon">draw</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="animatedsprite.html#load" class="tsd-kind-icon">load</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animatedsprite.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animatedsprite.html#play" class="tsd-kind-icon">play</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="animatedsprite.html#recalculatevertices" class="tsd-kind-icon">recalculate<wbr>Vertices</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animatedsprite.html#setframe" class="tsd-kind-icon">set<wbr>Frame</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animatedsprite.html#setframeonce" class="tsd-kind-icon">set<wbr>Frame<wbr>Once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="animatedsprite.html#setupfrommaterial" class="tsd-kind-icon">setup<wbr>From<wbr>Material</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animatedsprite.html#stop" class="tsd-kind-icon">stop</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite"><a href="animatedsprite.html#update" class="tsd-kind-icon">update</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="animatedsprite.html#updateverticies" class="tsd-kind-icon">update<wbr>Verticies</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Animated<wbr>Sprite<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, materialName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, frameWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, frameHeight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, frameCount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, frameSequence<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="animatedsprite.html" class="tsd-signature-type">AnimatedSprite</a></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Class constructor.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">name</span>: <span class="tsd-signature-type">string</span>
+						</li>
+						<li>
+							<span class="name">materialName</span>: <span class="tsd-signature-type">string</span>
+						</li>
+						<li>
+							<span class="tsd-flag ts-flagDefault value">Default value</span> <span class="name">width</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span>
+						</li>
+						<li>
+							<span class="tsd-flag ts-flagDefault value">Default value</span> <span class="name">height</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;100</span>
+						</li>
+						<li>
+							<span class="tsd-flag ts-flagDefault value">Default value</span> <span class="name">frameWidth</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;10</span>
+						</li>
+						<li>
+							<span class="tsd-flag ts-flagDefault value">Default value</span> <span class="name">frameHeight</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;10</span>
+						</li>
+						<li>
+							<span class="tsd-flag ts-flagDefault value">Default value</span> <span class="name">frameCount</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span>
+						</li>
+						<li>
+							<span class="tsd-flag ts-flagDefault value">Default value</span> <span class="name">frameSequence</span>: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array()</span>
+							<div class="tsd-comment">
+								<div class="lead">
+								</div>
+							</div>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <a href="animatedsprite.html" class="tsd-signature-type">AnimatedSprite</a></h4>
+					</ul>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="sprite.html">Sprite</a>.<a href="sprite.html#constructor">constructor</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L45">rendersystem/animatedsprite.ts:45</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_assetheight" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _asset<wbr>Height</h3>
+					<div class="tsd-signature tsd-kind-icon">_assetHeight<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L14">rendersystem/animatedsprite.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_assetloaded" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _asset<wbr>Loaded</h3>
+					<div class="tsd-signature tsd-kind-icon">_assetLoaded<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L23">rendersystem/animatedsprite.ts:23</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_assetwidth" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _asset<wbr>Width</h3>
+					<div class="tsd-signature tsd-kind-icon">_assetWidth<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L13">rendersystem/animatedsprite.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_buffer" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _buffer</h3>
+					<div class="tsd-signature tsd-kind-icon">_buffer<span class="tsd-signature-symbol">:</span> <a href="glbuffer.html" class="tsd-signature-type">GLBuffer</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_buffer">_buffer</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L17">rendersystem/sprite.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_currentframe" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _current<wbr>Frame</h3>
+					<div class="tsd-signature tsd-kind-icon">_currentFrame<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L21">rendersystem/animatedsprite.ts:21</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_currenttime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _current<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">_currentTime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L22">rendersystem/animatedsprite.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_framecount" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frame<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">_frameCount<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L17">rendersystem/animatedsprite.ts:17</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_frameheight" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frame<wbr>Height</h3>
+					<div class="tsd-signature tsd-kind-icon">_frameHeight<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L15">rendersystem/animatedsprite.ts:15</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_framesequence" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frame<wbr>Sequence</h3>
+					<div class="tsd-signature tsd-kind-icon">_frameSequence<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L18">rendersystem/animatedsprite.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_frametime" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frame<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">_frameTime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;10</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L19">rendersystem/animatedsprite.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_frameuv" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frameUV</h3>
+					<div class="tsd-signature tsd-kind-icon">_frameUV<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="uvinfo.html" class="tsd-signature-type">UVInfo</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L20">rendersystem/animatedsprite.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_framewidth" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _frame<wbr>Width</h3>
+					<div class="tsd-signature tsd-kind-icon">_frameWidth<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L16">rendersystem/animatedsprite.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_height" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _height</h3>
+					<div class="tsd-signature tsd-kind-icon">_height<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_height">_height</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L14">rendersystem/sprite.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="_isplaying" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _is<wbr>Playing</h3>
+					<div class="tsd-signature tsd-kind-icon">_isPlaying<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L24">rendersystem/animatedsprite.ts:24</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_material" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _material</h3>
+					<div class="tsd-signature tsd-kind-icon">_material<span class="tsd-signature-symbol">:</span> <a href="material.html" class="tsd-signature-type">Material</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_material">_material</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L19">rendersystem/sprite.ts:19</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_materialname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _material<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">_materialName<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_materialname">_materialName</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L18">rendersystem/sprite.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _name</h3>
+					<div class="tsd-signature tsd-kind-icon">_name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_name">_name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L13">rendersystem/sprite.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_origin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _origin</h3>
+					<div class="tsd-signature tsd-kind-icon">_origin<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3(0.5, 0.5)</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_origin">_origin</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L20">rendersystem/sprite.ts:20</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_vertices" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _vertices</h3>
+					<div class="tsd-signature tsd-kind-icon">_vertices<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;new Array()</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_vertices">_vertices</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L16">rendersystem/sprite.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="_width" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _width</h3>
+					<div class="tsd-signature tsd-kind-icon">_width<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#_width">_width</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L15">rendersystem/sprite.ts:15</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-descriptions">
+					<a name="framecount" class="tsd-anchor"></a>
+					<h3>frame<wbr>Count</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> frameCount<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the current frame count.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					<p>number</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L29">rendersystem/animatedsprite.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="height" class="tsd-anchor"></a>
+					<h3>height</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> height<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the height of the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					<p>number</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#height">height</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L47">rendersystem/sprite.ts:47</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-descriptions">
+					<a name="isplaying" class="tsd-anchor"></a>
+					<h3>is<wbr>Playing</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isPlaying<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets if the sprite is playing or not.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+					<p>boolean</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L36">rendersystem/animatedsprite.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-descriptions">
+					<a name="materialname" class="tsd-anchor"></a>
+					<h3>material<wbr>Name</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> materialName<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the material name.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					<p>string</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L43">rendersystem/animatedsprite.ts:43</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the name of the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					<p>string</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L25">rendersystem/sprite.ts:25</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="origin" class="tsd-anchor"></a>
+					<h3>origin</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> origin<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type">Vector3</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> origin<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the origin of the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <a href="vector3.html" class="tsd-signature-type">Vector3</a></h4>
+					<p>Vector3</p>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the origin of the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">value</span>: <a href="vector3.html" class="tsd-signature-type">Vector3</a>
+							<div class="tsd-comment">
+								<div class="lead">
+								</div>
+							</div>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>Vector3</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#origin">origin</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L32">rendersystem/sprite.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L39">rendersystem/sprite.ts:39</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="width" class="tsd-anchor"></a>
+					<h3>width</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> width<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Gets the width of the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+					<p>number</p>
+					<div class="tsd-comment">
+					</div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#width">width</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L54">rendersystem/sprite.ts:54</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="calculateuv" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> calculateUV</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">calculateUV<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Calculates the (u,v) textuer coordinates.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L187">rendersystem/animatedsprite.ts:187</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="calculatevertices" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> calculate<wbr>Vertices</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Vertices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Calculates the sprites verticies.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#calculatevertices">calculateVertices</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L135">rendersystem/sprite.ts:135</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="destroy" class="tsd-anchor"></a>
+					<h3>destroy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">destroy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Destroys the animated sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="sprite.html">Sprite</a>.<a href="sprite.html#destroy">destroy</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L70">rendersystem/animatedsprite.ts:70</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-descriptions">
+					<a name="draw" class="tsd-anchor"></a>
+					<h3>draw</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">draw<span class="tsd-signature-symbol">(</span>shader<span class="tsd-signature-symbol">: </span><a href="shader.html" class="tsd-signature-type">Shader</a>, model<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Draws the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">shader</span>: <a href="shader.html" class="tsd-signature-type">Shader</a>
+						</li>
+						<li>
+							<span class="name">model</span>: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#draw">draw</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L87">rendersystem/sprite.ts:87</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="load" class="tsd-anchor"></a>
+					<h3>load</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">load<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Loads the animated sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="sprite.html">Sprite</a>.<a href="sprite.html#load">load</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L77">rendersystem/animatedsprite.ts:77</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="onmessage" class="tsd-anchor"></a>
+					<h3>on<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Message<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><a href="message.html" class="tsd-signature-type">Message</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Handles messages sent to the animated sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">message</span>: <a href="message.html" class="tsd-signature-type">Message</a>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/imessagehandler.html">IMessageHandler</a>.<a href="../interfaces/imessagehandler.html#onmessage">onMessage</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L88">rendersystem/animatedsprite.ts:88</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="play" class="tsd-anchor"></a>
+					<h3>play</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">play<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Plays the animated sprite component.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L101">rendersystem/animatedsprite.ts:101</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-descriptions">
+					<a name="recalculatevertices" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> recalculate<wbr>Vertices</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">recalculate<wbr>Vertices<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Recalculates the sprites verticies fully.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="sprite.html">Sprite</a>.<a href="sprite.html#recalculatevertices">recalculateVertices</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/sprite.ts#L154">rendersystem/sprite.ts:154</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="setframe" class="tsd-anchor"></a>
+					<h3>set<wbr>Frame</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Frame<span class="tsd-signature-symbol">(</span>frameNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the frame number to play the animation at.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">frameNumber</span>: <span class="tsd-signature-type">number</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L109">rendersystem/animatedsprite.ts:109</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="setframeonce" class="tsd-anchor"></a>
+					<h3>set<wbr>Frame<wbr>Once</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Frame<wbr>Once<span class="tsd-signature-symbol">(</span>frameNumber<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets the frame number to play the animation at one time.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">frameNumber</span>: <span class="tsd-signature-type">number</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L121">rendersystem/animatedsprite.ts:121</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private tsd-descriptions">
+					<a name="setupfrommaterial" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> setup<wbr>From<wbr>Material</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">setup<wbr>From<wbr>Material<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Sets up the material from loaded assets.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L209">rendersystem/animatedsprite.ts:209</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="stop" class="tsd-anchor"></a>
+					<h3>stop</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">stop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Stops running the sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L136">rendersystem/animatedsprite.ts:136</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-descriptions">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>update</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+						<li class="tsd-signature tsd-kind-icon">update<span class="tsd-signature-symbol">(</span>delta<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Updates the animated sprite.</p>
+						</div>
+					</div>
+					<h4 class="tsd-parameters-title">Parameters</h4>
+					<ul class="tsd-parameters">
+						<li>
+							<span class="name">delta</span>: <span class="tsd-signature-type">number</span>
+						</li>
+					</ul>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="sprite.html">Sprite</a>.<a href="sprite.html#update">update</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L144">rendersystem/animatedsprite.ts:144</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-descriptions">
+					<a name="updateverticies" class="tsd-anchor"></a>
+					<h3>update<wbr>Verticies</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Verticies<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Updates the sprite&#39;s vertex coordinates.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					<p>void</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/rendersystem/animatedsprite.ts#L169">rendersystem/animatedsprite.ts:169</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<li>
+						📑
+						<span onclick="openNav(event)" style="cursor: pointer; padding-left: 10px">
+							Documentation
+						</span>
+					</li>
+				</ul>
+				<br>
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class">
+						<a href="animatedsprite.html" class="tsd-kind-icon">Animated<wbr>Sprite</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
+								<a href="animatedsprite.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_assetheight" class="tsd-kind-icon">_asset<wbr>Height</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_assetloaded" class="tsd-kind-icon">_asset<wbr>Loaded</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_assetwidth" class="tsd-kind-icon">_asset<wbr>Width</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_buffer" class="tsd-kind-icon">_buffer</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_currentframe" class="tsd-kind-icon">_current<wbr>Frame</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_currenttime" class="tsd-kind-icon">_current<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_framecount" class="tsd-kind-icon">_frame<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_frameheight" class="tsd-kind-icon">_frame<wbr>Height</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_framesequence" class="tsd-kind-icon">_frame<wbr>Sequence</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_frametime" class="tsd-kind-icon">_frame<wbr>Time</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_frameuv" class="tsd-kind-icon">_frameUV</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_framewidth" class="tsd-kind-icon">_frame<wbr>Width</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_height" class="tsd-kind-icon">_height</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#_isplaying" class="tsd-kind-icon">_is<wbr>Playing</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_material" class="tsd-kind-icon">_material</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_materialname" class="tsd-kind-icon">_material<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_name" class="tsd-kind-icon">_name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_origin" class="tsd-kind-icon">_origin</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_vertices" class="tsd-kind-icon">_vertices</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#_width" class="tsd-kind-icon">_width</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="animatedsprite.html#framecount" class="tsd-kind-icon">frame<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="animatedsprite.html#height" class="tsd-kind-icon">height</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="animatedsprite.html#isplaying" class="tsd-kind-icon">is<wbr>Playing</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="animatedsprite.html#materialname" class="tsd-kind-icon">material<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="animatedsprite.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
+								<a href="animatedsprite.html#origin" class="tsd-kind-icon">origin</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="animatedsprite.html#width" class="tsd-kind-icon">width</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#calculateuv" class="tsd-kind-icon">calculateUV</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#calculatevertices" class="tsd-kind-icon">calculate<wbr>Vertices</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="animatedsprite.html#destroy" class="tsd-kind-icon">destroy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="animatedsprite.html#draw" class="tsd-kind-icon">draw</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="animatedsprite.html#load" class="tsd-kind-icon">load</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="animatedsprite.html#onmessage" class="tsd-kind-icon">on<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="animatedsprite.html#play" class="tsd-kind-icon">play</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
+								<a href="animatedsprite.html#recalculatevertices" class="tsd-kind-icon">recalculate<wbr>Vertices</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="animatedsprite.html#setframe" class="tsd-kind-icon">set<wbr>Frame</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="animatedsprite.html#setframeonce" class="tsd-kind-icon">set<wbr>Frame<wbr>Once</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="animatedsprite.html#setupfrommaterial" class="tsd-kind-icon">setup<wbr>From<wbr>Material</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="animatedsprite.html#stop" class="tsd-kind-icon">stop</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite">
+								<a href="animatedsprite.html#update" class="tsd-kind-icon">update</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="animatedsprite.html#updateverticies" class="tsd-kind-icon">update<wbr>Verticies</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+				<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+				<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+				<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+				<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+				<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
