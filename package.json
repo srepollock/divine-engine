@@ -1,6 +1,6 @@
 {
   "name": "divine-engine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The Divine Engine is a Typescript game engine. Built on latest technologies, it allows users to develop and deploy lightweight games in a modern development standard environment. The engine is focused to be modular and lightweight, all while allowing developers to quickly build projects and applications and reuse previous assets swiftly.",
   "main": "./lib/divine.umd.js",
   "module": "./lib/divine.es.js",
