@@ -1,4 +1,4 @@
-import { log, LogLevel } from "de-loggingsystem";
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IMessageHandler, Message } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
@@ -6,6 +6,7 @@ import { OpeningGUIBehaviourData } from "./openingguibehaviourdata";
 
 export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
     private _actions: Map<string, string> = new Map();
+    private _totalTime: number = 0;
     /**
      * Class constructor
      * @param  {OpeningGUIBehaviourData} data
@@ -21,6 +22,7 @@ export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
      * @returns void
      */
     public update(delta: number): void {
+        this._totalTime += delta;
         super.update(delta);
     }
     /**
@@ -35,9 +37,21 @@ export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
         if (this._actions.get(message.code) !== undefined) {
             switch (this._actions.get(message.code)) {
                 case "nextScene":
-                    ZoneManager.changeZone(ZoneManager.activeZoneIndex + 1);
-                    this.unsubscribeAll();
+                    if (this._totalTime > 2 && ZoneManager.activeZone !== undefined) {
+                        ZoneManager.changeZone(ZoneManager.activeZoneIndex + 1);
+                        this.unsubscribeAll();
+                    }
                     break;
+                case "titlescreen":
+                    if (this._totalTime > 2 && ZoneManager.activeZone !== undefined) {
+                        let zoneIndex = ZoneManager.getRegisteredZoneIndex("titlescreen");
+                        if (zoneIndex === undefined) {
+                            log(LogLevel.error, `The Zone index of titlescreen could not be found!`, 
+                                ErrorCode.ZoneDoesNotExist);
+                        }
+                        ZoneManager.changeZone(zoneIndex!);
+                        this.unsubscribeAll();
+                    }
             }
         }
     }

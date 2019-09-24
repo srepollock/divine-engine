@@ -11,6 +11,14 @@ export class AnimatedSpriteComponentData extends SpriteComponentData implements 
     public autoPlay: boolean = true;
     public origin: Vector3 = new Vector3();
     /**
+     * Class constructor
+     * @param  {any} json
+     */
+    constructor(json: any) {
+        super(json);
+        this.setFromJson(json);
+    }
+    /**
      * Builds the component from JSON.
      * @param  {any} json
      * @returns IComponent

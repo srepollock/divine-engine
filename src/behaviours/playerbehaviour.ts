@@ -1,5 +1,4 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
-import { CollisionComponent } from "../components";
 import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
 import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
@@ -12,14 +11,15 @@ import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
+import { BossBehaviour } from "./bossbehavoiur";
 import { EnemyBehaviour } from "./enemybehaviour";
 import { PlayerBehaviourData } from "./playerbehaviourdata";
 import { Entity } from "src/core";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
-    private _hitPoints: number = 3;
-    private _startingHitPoints: number = this._hitPoints;
-    private _lives: number = 3;
+    public static lives: number = 3; // TODO: Change these to options
+    public static hitPoints: number = 2;
+    private _startingHitPoints: number = 2;
     private _acceleration: Vector2 = new Vector2(0, 0);
     private _velocity: Vector2 = new Vector2();
     private _isAlive: boolean = true;
@@ -28,6 +28,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _isBouncingLeft: boolean = false;
     private _isBouncingRight: boolean = false;
     private _isBouncingUp: boolean = false;
+    private _invulnerable: boolean = false;
+    private _zoneLoading: boolean = false;
     private _playerCollisionComponent: string;
     private _groundCollisionComponent: string;
     private _enemyCollisionComponent: string;
@@ -44,6 +46,13 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _bounceFactor: number = 0.8;
     private _maxVelocityX: number;
     private _maxVelocityY: number;
+    /**
+     * Gets if the player is attacking.
+     * @returns boolean
+     */
+    public get isAttacking(): boolean {
+        return this._isAttacking;
+    }
     /**
      * Class constructor.
      * @param  {PlayerBehaviourData} data
@@ -70,6 +79,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         Message.subscribe(MessageType.COLLISION_ENTRY, this);
         Message.subscribe(MessageType.COLLISION_UPDATE, this);
         Message.subscribe(MessageType.COLLISION_EXIT, this);
+        Message.subscribe(MessageType.ZONE_LOADED, this);
     }
     /**
      * Checks if the behaviour is ready to update.
@@ -95,6 +105,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         }
         if (this._isJumping) {
             this._acceleration.y += (9.75);
+        } else {
+            this._acceleration.y = 0;
         }
         if (this._isBouncingLeft) {
             this._velocity.x = -this._maxVelocityX;
@@ -133,8 +145,8 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         switch (message.code) {
             case MessageType.KEY_UP:
                 switch (message.context) {
-                    case Keys.LeftArrow:
-                    case Keys.RightArrow:
+                    case Keys.A:
+                    case Keys.D:
                         this._velocity = new Vector3(0, this._velocity.y, 0);
                     case Keys.Space:
                         this._acceleration = new Vector3(0, this._velocity.y, 0);
@@ -144,21 +156,25 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 break;
             case MessageType.KEY_DOWN:
                 switch (message.context) {
-                    case Keys.LeftArrow:
+                    case Keys.A:
                         this._acceleration.add(new Vector3(-this._maxVelocityX, 0, 0));
                         this.changeSprite(this._walkSpriteName, [0, 1, 2, 3, 4, 5, 6, 7]);
                         this._owner!.transform.rotation.y = 3.14159;
                         break;
-                    case Keys.RightArrow:
+                    case Keys.D:
                         this._acceleration.add(new Vector3(this._maxVelocityX, 0, 0));
                         this.changeSprite(this._walkSpriteName, [0, 1, 2, 3, 4, 5, 6, 7]);
                         this._owner!.transform.rotation.y = 0;
                         break;
-                    case Keys.Space:
+                    case Keys.K:
                         this.onJump();
                         break;
-                    case Keys.Z:
+                    case Keys.L:
                         this.onAttack();
+                        break;
+                    case Keys.I:
+                        log(LogLevel.debug, `${this._owner!.getWorldPosition().x}, \
+                            ${this._owner!.getWorldPosition().y}, ${this._owner!.getWorldPosition().z}`);
                         break;
                 }
                 break;
@@ -167,37 +183,32 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                 if (data.a.name.includes(this._groundCollisionComponent) && 
                     data.b.name === this._playerCollisionComponent || 
                     data.b.name === this._playerCollisionComponent && 
-                    data.a.name.includes(this._groundCollisionComponent)) {
+                    data.a.name.includes(this._groundCollisionComponent) &&
+                    !this._zoneLoading) {
                     this._isJumping = false;
                     this._velocity.y = 0;
                     this._acceleration.y = 0;
                 }
-                if ((data.a.name === this._enemyCollisionComponent && 
-                    data.b.name === this._playerCollisionComponent) ||
+                if (((data.a.name === this._enemyCollisionComponent && 
+                        data.b.name === this._playerCollisionComponent) ||
                     (data.a.name === this._playerCollisionComponent && 
-                    data.b.name === this._enemyCollisionComponent)) {
-                    if (!this._isAttacking) {
-                        this.onTakeDamage();
-                        if (this._isAlive) {
-                            this.die();
-                            Message.send(MessageType.PLAYER_DIED, this);
+                        data.b.name === this._enemyCollisionComponent)
+                    ) && !this._invulnerable) { // NOTE: Invulnerable is only for enemies
+                        if (!this._isAttacking) {
+                            this.onTakeDamage();
                         }
-                    } else {
-                        (this._owner!.parent!.getObjectByName(
-                            data.a.owner!.name)!.getBehaviourByName("enemycontroller")! as EnemyBehaviour).takeDamage();
-                    }
-                }
-                if (data.a.name === "platformcollision" && 
-                    data.b.name === this._playerCollisionComponent ||
-                    data.b.name === "platformcollision" &&
-                    data.a.name === this._playerCollisionComponent) {
-                    this._isBouncingUp = true;
                 }
                 if (data.a.name === this._deathCollisionComponent && 
                     data.b.name === this._playerCollisionComponent || 
                     data.b.name === this._playerCollisionComponent && 
                     data.a.name === this._deathCollisionComponent) {
                     this.die();
+                }
+                if (data.a.name === "platformcollision" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "platformcollision" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingUp = true;
                 }
                 if (data.a.name === "leftboundary" && 
                     data.b.name === this._playerCollisionComponent ||
@@ -211,13 +222,39 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                     data.a.name === this._playerCollisionComponent) {
                     this._isBouncingRight = true;
                 }
+                if (data.a.name === "rightboundary" && 
+                    data.b.name === this._playerCollisionComponent ||
+                    data.b.name === "rightboundary" &&
+                    data.a.name === this._playerCollisionComponent) {
+                    this._isBouncingRight = true;
+                }
+                if ((data.a.name === "projectilecollision" && 
+                    data.b.name === this._playerCollisionComponent) || 
+                    (data.b.name === "projectilecollision" && 
+                    data.a.name === this._playerCollisionComponent) && 
+                    !this._invulnerable && 
+                    !this._isAttacking) {
+                    this.onTakeDamage();
+                }
+                break;
+            case MessageType.COLLISION_UPDATE:
+                data = (message.context as CollisionData);
+                if (data.a.name.includes(this._groundCollisionComponent) && 
+                    data.b.name === this._playerCollisionComponent || 
+                    data.b.name === this._playerCollisionComponent && 
+                    data.a.name.includes(this._groundCollisionComponent)) {
+                    this._isJumping = false;
+                    this._acceleration.y = 0;
+                }
                 break;
             case MessageType.COLLISION_EXIT:
                 data = (message.context as CollisionData);
-                if (data.a.name === this._groundCollisionComponent && 
-                    data.b.name === this._playerCollisionComponent || 
-                    data.b.name === this._playerCollisionComponent && 
-                    data.a.name === this._groundCollisionComponent) {
+                if ((
+                    (data.a.name === this._groundCollisionComponent && 
+                        data.b.name === this._playerCollisionComponent) || 
+                    (data.b.name === this._playerCollisionComponent && 
+                        data.a.name === this._groundCollisionComponent)) 
+                    && !this._zoneLoading) {
                     this._isJumping = true; // NOTE: Triggers falling
                 }
                 if (data.a.name === "platformcollision" && 
@@ -247,6 +284,7 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                         this._sprite!.stop();
                         Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
                         break;
+                    case this._hitSpriteName:
                     case this._attackSpriteName:
                     case this._jumpSpriteName:
                         this._isAttacking = false;
@@ -254,20 +292,36 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
                         Message.unsubscribe(MessageType.ANIMATION_COMPLETE, this);
                         break;
                 }
+                break;
+            case MessageType.ZONE_LOADED:
+                PlayerBehaviour.hitPoints = this._startingHitPoints;
+                this._isJumping = false;
+                this._zoneLoading = true;
+                this._invulnerable = true;
+                setTimeout(() => {
+                    this._zoneLoading = false;
+                    this._invulnerable = false;
+                }, 200);
+                break;
         }
     }
     /**
      * Called when the owner takes damage. Usually collided with an enemy.
+     * If not dead (hp < 0), will turn the player static for 1 second (invulnerable from attacts)
      * @returns void
      */
-    private onTakeDamage(): void {
-        this._owner!.transform.position.add(new Vector3(-20, 0, 0));
-        if (!this._isAttacking) {
-            AudioManager.playSound("playerhit");
-            this.changeSprite(this._hitSpriteName, [0, 1, 0, 1]);
-            if (--this._hitPoints <= -1) {
-                this.die();
-            }
+    public onTakeDamage(): void {
+        AudioManager.playSound("playerhit");
+        this.changeSprite(this._hitSpriteName, [0, 1, 0, 1]);
+        Message.subscribe(MessageType.ANIMATION_COMPLETE, this);
+        this._invulnerable = true;
+        if (--PlayerBehaviour.hitPoints <= -1) {
+            this.die();
+        } 
+        if (this._isAlive) {
+            setTimeout(() => {
+                this._invulnerable = false;
+            }, 1000);
         }
     }
     /**
@@ -303,21 +357,31 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
      */
     private die(): void {
         this._isAlive = false;
+        this._invulnerable = true;
         this.changeSprite(this._dieSpriteName, [0, 1, 2, 3, 4]);
+        Message.unsubscribe(MessageType.KEY_DOWN, this);
+        Message.unsubscribe(MessageType.KEY_UP, this);
         AudioManager.stopAll();
         AudioManager.playSound("death");
         AudioManager.playSound("deathmusic");
-        (this._owner!.getComponentByName(this._playerCollisionComponent) as CollisionComponent).isStatic = true;
-        Message.unsubscribe(MessageType.KEY_DOWN, this);
-        Message.unsubscribe(MessageType.KEY_UP, this);
-        setTimeout(() => {
-            let zoneIndex = ZoneManager.getRegisteredZoneIndex("deathscreen.sequence");
-            if (zoneIndex === undefined) {
-                log(LogLevel.error, `The Zone index of deathscreen.sequence could not be found!`, 
-                    ErrorCode.ZoneDoesNotExist);
-            }
-            ZoneManager.changeZone(zoneIndex!);
-        }, 10000);
+        if (PlayerBehaviour.lives <= 0) {
+            Message.send(MessageType.PLAYER_DIED, this);
+            // NOTE: if lives <= 0; game over
+            setTimeout(() => {
+                let zoneIndex = ZoneManager.getRegisteredZoneIndex("deathscreen.sequence");
+                if (zoneIndex === undefined) {
+                    log(LogLevel.error, `The Zone index of deathscreen.sequence could not be found!`, 
+                        ErrorCode.ZoneDoesNotExist);
+                }
+                ZoneManager.changeZone(zoneIndex!);
+            }, 5000);
+        } else {
+            // NOTE: else, reload this zone, decrement life.
+            PlayerBehaviour.lives -= 1;
+            setTimeout(() => {
+                ZoneManager.changeZone(ZoneManager.activeZoneIndex);
+            }, 5000);
+        }
     }
     /**
      * Causes the owner to perform a jump.

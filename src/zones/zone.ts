@@ -1,5 +1,6 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { BehaviourManager } from "../behaviours/behaviourmanager";
+import { Message, MessageType } from "../core/messagesystem";
 import { ComponentManager } from "../components/componentmanager";
 import { Entity } from "../core/entity";
 import { guid } from "../helper";
@@ -10,6 +11,7 @@ import { AudioManager } from "../soundsystem";
 import { ZoneState } from "./zonestate";
 
 export class Zone {
+    private _currentTime: number = 0;
     private _id: string;
     private _index: number;
     private _name: string;
@@ -56,6 +58,8 @@ export class Zone {
      * @param  {number} index
      * @param  {string} description
      * @param  {string} name
+     * *NOTE*: Zone names (in file) must match their file names up to json exactly.
+     * @param param0 
      */
     constructor({ index, name, description }: { index: number, name: string; description: string; }) {
         this._id = guid();
@@ -82,6 +86,7 @@ export class Zone {
      * @returns void
      */
     public load(): void {
+        Message.sendPriority(MessageType.ZONE_LOADED, undefined);
         this._state = ZoneState.LOADING;
         this._scene.load();
         this._scene.root.updateReady();

@@ -1,0 +1,678 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Divine Engine API</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script>
+        var test = 0
+        function openNav(e) {
+            document.getElementById("global-nav").style.width   = "250px";
+            document.getElementById("global-nav").style.padding = "25px";
+            e.stopPropagation()
+        }
+
+        function closeNav(e) {
+            if (!document.getElementById("global-nav").contains(e.target)) {
+                document.getElementById("global-nav").style.width   = "0";
+                document.getElementById("global-nav").style.padding = "0";
+            }
+        }
+    </script>
+</head>
+<body onclick="closeNav(event)">
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Divine Engine API</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" checked />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="index.html">Globals</a>
+				</li>
+			</ul>
+			<h1> Divine Engine API</h1>
+		</div>
+	</div>
+</header>
+<nav id="global-nav" class="tsd-navigation sidenav">
+	<ul>
+		<li class="current ">
+			<a href="index.html">Globals</a>
+	</li>    </ul>
+</nav>
+<div id="main" class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Enumerations</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-enum"><a href="enums/keys.html" class="tsd-kind-icon">Keys</a></li>
+								<li class="tsd-kind-enum"><a href="enums/messagepriority.html" class="tsd-kind-icon">Message<wbr>Priority</a></li>
+								<li class="tsd-kind-enum"><a href="enums/messagetype.html" class="tsd-kind-icon">Message<wbr>Type</a></li>
+								<li class="tsd-kind-enum"><a href="enums/zonestate.html" class="tsd-kind-icon">Zone<wbr>State</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Classes</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-class"><a href="classes/aimovementbehaviour.html" class="tsd-kind-icon">AIMovement<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/aimovementbehaviourbuilder.html" class="tsd-kind-icon">AIMovement<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/aimovementbehaviourdata.html" class="tsd-kind-icon">AIMovement<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/action.html" class="tsd-kind-icon">Action</a></li>
+								<li class="tsd-kind-class"><a href="classes/actionloop.html" class="tsd-kind-icon">Action<wbr>Loop</a></li>
+								<li class="tsd-kind-class"><a href="classes/animatedsprite.html" class="tsd-kind-icon">Animated<wbr>Sprite</a></li>
+								<li class="tsd-kind-class"><a href="classes/animatedspritecomponent.html" class="tsd-kind-icon">Animated<wbr>Sprite<wbr>Component</a></li>
+								<li class="tsd-kind-class"><a href="classes/animatedspritecomponentbuilder.html" class="tsd-kind-icon">Animated<wbr>Sprite<wbr>Component<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/animatedspritecomponentdata.html" class="tsd-kind-icon">Animated<wbr>Sprite<wbr>Component<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/assetmanager.html" class="tsd-kind-icon">Asset<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/attributeinfo.html" class="tsd-kind-icon">Attribute<wbr>Info</a></li>
+								<li class="tsd-kind-class"><a href="classes/audiomanager.html" class="tsd-kind-icon">Audio<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/basicshader.html" class="tsd-kind-icon">Basic<wbr>Shader</a></li>
+								<li class="tsd-kind-class"><a href="classes/behaviour.html" class="tsd-kind-icon">Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/behaviourmanager.html" class="tsd-kind-icon">Behaviour<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/bossbehaviour.html" class="tsd-kind-icon">Boss<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/bossbehaviourbuilder.html" class="tsd-kind-icon">Boss<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/bossbehaviourdata.html" class="tsd-kind-icon">Boss<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/circle2d.html" class="tsd-kind-icon">Circle2D</a></li>
+								<li class="tsd-kind-class"><a href="classes/collisioncomponent.html" class="tsd-kind-icon">Collision<wbr>Component</a></li>
+								<li class="tsd-kind-class"><a href="classes/collisioncomponentbuilder.html" class="tsd-kind-icon">Collision<wbr>Component<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/collisioncomponentdata.html" class="tsd-kind-icon">Collision<wbr>Component<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/collisiondata.html" class="tsd-kind-icon">Collision<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/collisionmanager.html" class="tsd-kind-icon">Collision<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/color.html" class="tsd-kind-icon">Color</a></li>
+								<li class="tsd-kind-class"><a href="classes/component.html" class="tsd-kind-icon">Component</a></li>
+								<li class="tsd-kind-class"><a href="classes/componentmanager.html" class="tsd-kind-icon">Component<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/dialog.html" class="tsd-kind-icon">Dialog</a></li>
+								<li class="tsd-kind-class"><a href="classes/dialogbehaviour.html" class="tsd-kind-icon">Dialog<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/dialogbehaviourbuilder.html" class="tsd-kind-icon">Dialog<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/dialogbehaviourdata.html" class="tsd-kind-icon">Dialog<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/enemybehaviour.html" class="tsd-kind-icon">Enemy<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/enemybehaviourbuilder.html" class="tsd-kind-icon">Enemy<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/enemybehaviourdata.html" class="tsd-kind-icon">Enemy<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/engine.html" class="tsd-kind-icon">Engine</a></li>
+								<li class="tsd-kind-class"><a href="classes/entity.html" class="tsd-kind-icon">Entity</a></li>
+								<li class="tsd-kind-class"><a href="classes/flagbehaviour.html" class="tsd-kind-icon">Flag<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/flagbehaviourbuilder.html" class="tsd-kind-icon">Flag<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/flagbehaviourdata.html" class="tsd-kind-icon">Flag<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/glbuffer.html" class="tsd-kind-icon">GLBuffer</a></li>
+								<li class="tsd-kind-class"><a href="classes/glutility.html" class="tsd-kind-icon">GLUtility</a></li>
+								<li class="tsd-kind-class"><a href="classes/guibehaviour.html" class="tsd-kind-icon">GUIBehaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/guibehaviourbuilder.html" class="tsd-kind-icon">GUIBehaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/guibehaviourdata.html" class="tsd-kind-icon">GUIBehaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/guibuttonbehaviour.html" class="tsd-kind-icon">GUIButton<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/guibuttonbehaviourbuilder.html" class="tsd-kind-icon">GUIButton<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/guibuttonbehaviourdata.html" class="tsd-kind-icon">GUIButton<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/imageasset.html" class="tsd-kind-icon">Image<wbr>Asset</a></li>
+								<li class="tsd-kind-class"><a href="classes/imageassetloader.html" class="tsd-kind-icon">Image<wbr>Asset<wbr>Loader</a></li>
+								<li class="tsd-kind-class"><a href="classes/inputmanager.html" class="tsd-kind-icon">Input<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/jsonasset.html" class="tsd-kind-icon">Json<wbr>Asset</a></li>
+								<li class="tsd-kind-class"><a href="classes/jsonassetloader.html" class="tsd-kind-icon">Json<wbr>Asset<wbr>Loader</a></li>
+								<li class="tsd-kind-class"><a href="classes/keyboardmovementbehaviour.html" class="tsd-kind-icon">Keyboard<wbr>Movement<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/keyboardmovementbehaviourbuilder.html" class="tsd-kind-icon">Keyboard<wbr>Movement<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/keyboardmovementbehaviourdata.html" class="tsd-kind-icon">Keyboard<wbr>Movement<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/material.html" class="tsd-kind-icon">Material</a></li>
+								<li class="tsd-kind-class"><a href="classes/materialmanager.html" class="tsd-kind-icon">Material<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/materialreferencenode.html" class="tsd-kind-icon">Material<wbr>Reference<wbr>Node</a></li>
+								<li class="tsd-kind-class"><a href="classes/matrix4.html" class="tsd-kind-icon">Matrix4</a></li>
+								<li class="tsd-kind-class"><a href="classes/message.html" class="tsd-kind-icon">Message</a></li>
+								<li class="tsd-kind-class"><a href="classes/messagebus.html" class="tsd-kind-icon">Message<wbr>Bus</a></li>
+								<li class="tsd-kind-class"><a href="classes/messagesubscriptionmode.html" class="tsd-kind-icon">Message<wbr>Subscription<wbr>Mode</a></li>
+								<li class="tsd-kind-class"><a href="classes/mousecontext.html" class="tsd-kind-icon">Mouse<wbr>Context</a></li>
+								<li class="tsd-kind-class"><a href="classes/openingguibehaviour.html" class="tsd-kind-icon">OpeningGUIBehaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/openingguibehaviourbuilder.html" class="tsd-kind-icon">OpeningGUIBehaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/openingguibehaviourdata.html" class="tsd-kind-icon">OpeningGUIBehaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/playerbehaviour.html" class="tsd-kind-icon">Player<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/playerbehaviourbuilder.html" class="tsd-kind-icon">Player<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/playerbehaviourdata.html" class="tsd-kind-icon">Player<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/projectilebehaviour.html" class="tsd-kind-icon">Projectile<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/projectilebehaviourbuilder.html" class="tsd-kind-icon">Projectile<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/projectilebehaviourdata.html" class="tsd-kind-icon">Projectile<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/rectangle2d.html" class="tsd-kind-icon">Rectangle2D</a></li>
+								<li class="tsd-kind-class"><a href="classes/rotationbehaviour.html" class="tsd-kind-icon">Rotation<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/rotationbehaviourbuilder.html" class="tsd-kind-icon">Rotation<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/rotationbehaviourdata.html" class="tsd-kind-icon">Rotation<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/scene.html" class="tsd-kind-icon">Scene</a></li>
+								<li class="tsd-kind-class"><a href="classes/scoringcomponent.html" class="tsd-kind-icon">Scoring<wbr>Component</a></li>
+								<li class="tsd-kind-class"><a href="classes/scoringcomponentbuilder.html" class="tsd-kind-icon">Scoring<wbr>Component<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/scoringcomponentdata.html" class="tsd-kind-icon">Scoring<wbr>Component<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/sequencebehaviour.html" class="tsd-kind-icon">Sequence<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/sequencebehaviourbuilder.html" class="tsd-kind-icon">Sequence<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/sequencebehaviourdata.html" class="tsd-kind-icon">Sequence<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/shader.html" class="tsd-kind-icon">Shader</a></li>
+								<li class="tsd-kind-class"><a href="classes/soundbehaviour.html" class="tsd-kind-icon">Sound<wbr>Behaviour</a></li>
+								<li class="tsd-kind-class"><a href="classes/soundbehaviourbuilder.html" class="tsd-kind-icon">Sound<wbr>Behaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/soundbehaviourdata.html" class="tsd-kind-icon">Sound<wbr>Behaviour<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/soundeffect.html" class="tsd-kind-icon">Sound<wbr>Effect</a></li>
+								<li class="tsd-kind-class"><a href="classes/sprite.html" class="tsd-kind-icon">Sprite</a></li>
+								<li class="tsd-kind-class"><a href="classes/spritecomponent.html" class="tsd-kind-icon">Sprite<wbr>Component</a></li>
+								<li class="tsd-kind-class"><a href="classes/spritecomponentbuilder.html" class="tsd-kind-icon">Sprite<wbr>Component<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/spritecomponentdata.html" class="tsd-kind-icon">Sprite<wbr>Component<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/text.html" class="tsd-kind-icon">Text</a></li>
+								<li class="tsd-kind-class"><a href="classes/textcomponent.html" class="tsd-kind-icon">Text<wbr>Component</a></li>
+								<li class="tsd-kind-class"><a href="classes/textcomponentbuilder.html" class="tsd-kind-icon">Text<wbr>Component<wbr>Builder</a></li>
+								<li class="tsd-kind-class"><a href="classes/textcomponentdata.html" class="tsd-kind-icon">Text<wbr>Component<wbr>Data</a></li>
+								<li class="tsd-kind-class"><a href="classes/texture.html" class="tsd-kind-icon">Texture</a></li>
+								<li class="tsd-kind-class"><a href="classes/texturemanager.html" class="tsd-kind-icon">Texture<wbr>Manager</a></li>
+								<li class="tsd-kind-class"><a href="classes/texturereferencenode.html" class="tsd-kind-icon">Texture<wbr>Reference<wbr>Node</a></li>
+								<li class="tsd-kind-class"><a href="classes/transform.html" class="tsd-kind-icon">Transform</a></li>
+								<li class="tsd-kind-class"><a href="classes/uvinfo.html" class="tsd-kind-icon">UVInfo</a></li>
+								<li class="tsd-kind-class"><a href="classes/vector2.html" class="tsd-kind-icon">Vector2</a></li>
+								<li class="tsd-kind-class"><a href="classes/vector3.html" class="tsd-kind-icon">Vector3</a></li>
+								<li class="tsd-kind-class"><a href="classes/vertex.html" class="tsd-kind-icon">Vertex</a></li>
+								<li class="tsd-kind-class"><a href="classes/zone.html" class="tsd-kind-icon">Zone</a></li>
+								<li class="tsd-kind-class"><a href="classes/zonemanager.html" class="tsd-kind-icon">Zone<wbr>Manager</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Interfaces</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/iasset.html" class="tsd-kind-icon">IAsset</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/iassetloader.html" class="tsd-kind-icon">IAsset<wbr>Loader</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ibehaviour.html" class="tsd-kind-icon">IBehaviour</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ibehaviourbuilder.html" class="tsd-kind-icon">IBehaviour<wbr>Builder</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ibehaviourdata.html" class="tsd-kind-icon">IBehaviour<wbr>Data</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/icomponent.html" class="tsd-kind-icon">IComponent</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/icomponentbuilder.html" class="tsd-kind-icon">IComponent<wbr>Builder</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/icomponentdata.html" class="tsd-kind-icon">IComponent<wbr>Data</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/imessagehandler.html" class="tsd-kind-icon">IMessage<wbr>Handler</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/ishape2d.html" class="tsd-kind-icon">IShape2D</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/math.html" class="tsd-kind-icon">Math</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function"><a href="index.html#guid" class="tsd-kind-icon">guid</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-descriptions">
+					<a name="guid" class="tsd-anchor"></a>
+					<h3>guid</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">guid<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<div class="tsd-comment">
+						<div class="lead">
+							<p>Creates a unique string ID and returns it.</p>
+						</div>
+					</div>
+					<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					<p>string</p>
+					</ul>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/srepollock/divine-engine/blob/f0d4af7/src/helper/guid.ts#L5">helper/guid.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul>
+					<li>
+						📑
+						<span onclick="openNav(event)" style="cursor: pointer; padding-left: 10px">
+							Documentation
+						</span>
+					</li>
+				</ul>
+				<br>
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/keys.html" class="tsd-kind-icon">Keys</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/messagepriority.html" class="tsd-kind-icon">Message<wbr>Priority</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/messagetype.html" class="tsd-kind-icon">Message<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum">
+						<a href="enums/zonestate.html" class="tsd-kind-icon">Zone<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/aimovementbehaviour.html" class="tsd-kind-icon">AIMovement<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/aimovementbehaviourbuilder.html" class="tsd-kind-icon">AIMovement<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/aimovementbehaviourdata.html" class="tsd-kind-icon">AIMovement<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/action.html" class="tsd-kind-icon">Action</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/actionloop.html" class="tsd-kind-icon">Action<wbr>Loop</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/animatedsprite.html" class="tsd-kind-icon">Animated<wbr>Sprite</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/animatedspritecomponent.html" class="tsd-kind-icon">Animated<wbr>Sprite<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/animatedspritecomponentbuilder.html" class="tsd-kind-icon">Animated<wbr>Sprite<wbr>Component<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/animatedspritecomponentdata.html" class="tsd-kind-icon">Animated<wbr>Sprite<wbr>Component<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/assetmanager.html" class="tsd-kind-icon">Asset<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/attributeinfo.html" class="tsd-kind-icon">Attribute<wbr>Info</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/audiomanager.html" class="tsd-kind-icon">Audio<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/basicshader.html" class="tsd-kind-icon">Basic<wbr>Shader</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/behaviour.html" class="tsd-kind-icon">Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/behaviourmanager.html" class="tsd-kind-icon">Behaviour<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/bossbehaviour.html" class="tsd-kind-icon">Boss<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/bossbehaviourbuilder.html" class="tsd-kind-icon">Boss<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/bossbehaviourdata.html" class="tsd-kind-icon">Boss<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/circle2d.html" class="tsd-kind-icon">Circle2D</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/collisioncomponent.html" class="tsd-kind-icon">Collision<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/collisioncomponentbuilder.html" class="tsd-kind-icon">Collision<wbr>Component<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/collisioncomponentdata.html" class="tsd-kind-icon">Collision<wbr>Component<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/collisiondata.html" class="tsd-kind-icon">Collision<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/collisionmanager.html" class="tsd-kind-icon">Collision<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/color.html" class="tsd-kind-icon">Color</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/component.html" class="tsd-kind-icon">Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/componentmanager.html" class="tsd-kind-icon">Component<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/dialog.html" class="tsd-kind-icon">Dialog</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/dialogbehaviour.html" class="tsd-kind-icon">Dialog<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/dialogbehaviourbuilder.html" class="tsd-kind-icon">Dialog<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/dialogbehaviourdata.html" class="tsd-kind-icon">Dialog<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/enemybehaviour.html" class="tsd-kind-icon">Enemy<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/enemybehaviourbuilder.html" class="tsd-kind-icon">Enemy<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/enemybehaviourdata.html" class="tsd-kind-icon">Enemy<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/engine.html" class="tsd-kind-icon">Engine</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/entity.html" class="tsd-kind-icon">Entity</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/flagbehaviour.html" class="tsd-kind-icon">Flag<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/flagbehaviourbuilder.html" class="tsd-kind-icon">Flag<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/flagbehaviourdata.html" class="tsd-kind-icon">Flag<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/glbuffer.html" class="tsd-kind-icon">GLBuffer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/glutility.html" class="tsd-kind-icon">GLUtility</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/guibehaviour.html" class="tsd-kind-icon">GUIBehaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/guibehaviourbuilder.html" class="tsd-kind-icon">GUIBehaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/guibehaviourdata.html" class="tsd-kind-icon">GUIBehaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/guibuttonbehaviour.html" class="tsd-kind-icon">GUIButton<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/guibuttonbehaviourbuilder.html" class="tsd-kind-icon">GUIButton<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/guibuttonbehaviourdata.html" class="tsd-kind-icon">GUIButton<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/imageasset.html" class="tsd-kind-icon">Image<wbr>Asset</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/imageassetloader.html" class="tsd-kind-icon">Image<wbr>Asset<wbr>Loader</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/inputmanager.html" class="tsd-kind-icon">Input<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/jsonasset.html" class="tsd-kind-icon">Json<wbr>Asset</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/jsonassetloader.html" class="tsd-kind-icon">Json<wbr>Asset<wbr>Loader</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/keyboardmovementbehaviour.html" class="tsd-kind-icon">Keyboard<wbr>Movement<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/keyboardmovementbehaviourbuilder.html" class="tsd-kind-icon">Keyboard<wbr>Movement<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/keyboardmovementbehaviourdata.html" class="tsd-kind-icon">Keyboard<wbr>Movement<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/material.html" class="tsd-kind-icon">Material</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/materialmanager.html" class="tsd-kind-icon">Material<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/materialreferencenode.html" class="tsd-kind-icon">Material<wbr>Reference<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/matrix4.html" class="tsd-kind-icon">Matrix4</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/message.html" class="tsd-kind-icon">Message</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/messagebus.html" class="tsd-kind-icon">Message<wbr>Bus</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/messagesubscriptionmode.html" class="tsd-kind-icon">Message<wbr>Subscription<wbr>Mode</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/mousecontext.html" class="tsd-kind-icon">Mouse<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/openingguibehaviour.html" class="tsd-kind-icon">OpeningGUIBehaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/openingguibehaviourbuilder.html" class="tsd-kind-icon">OpeningGUIBehaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/openingguibehaviourdata.html" class="tsd-kind-icon">OpeningGUIBehaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/playerbehaviour.html" class="tsd-kind-icon">Player<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/playerbehaviourbuilder.html" class="tsd-kind-icon">Player<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/playerbehaviourdata.html" class="tsd-kind-icon">Player<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/projectilebehaviour.html" class="tsd-kind-icon">Projectile<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/projectilebehaviourbuilder.html" class="tsd-kind-icon">Projectile<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/projectilebehaviourdata.html" class="tsd-kind-icon">Projectile<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rectangle2d.html" class="tsd-kind-icon">Rectangle2D</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rotationbehaviour.html" class="tsd-kind-icon">Rotation<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rotationbehaviourbuilder.html" class="tsd-kind-icon">Rotation<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/rotationbehaviourdata.html" class="tsd-kind-icon">Rotation<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/scene.html" class="tsd-kind-icon">Scene</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/scoringcomponent.html" class="tsd-kind-icon">Scoring<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/scoringcomponentbuilder.html" class="tsd-kind-icon">Scoring<wbr>Component<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/scoringcomponentdata.html" class="tsd-kind-icon">Scoring<wbr>Component<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sequencebehaviour.html" class="tsd-kind-icon">Sequence<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sequencebehaviourbuilder.html" class="tsd-kind-icon">Sequence<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sequencebehaviourdata.html" class="tsd-kind-icon">Sequence<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/shader.html" class="tsd-kind-icon">Shader</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/soundbehaviour.html" class="tsd-kind-icon">Sound<wbr>Behaviour</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/soundbehaviourbuilder.html" class="tsd-kind-icon">Sound<wbr>Behaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/soundbehaviourdata.html" class="tsd-kind-icon">Sound<wbr>Behaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/soundeffect.html" class="tsd-kind-icon">Sound<wbr>Effect</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/sprite.html" class="tsd-kind-icon">Sprite</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/spritecomponent.html" class="tsd-kind-icon">Sprite<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/spritecomponentbuilder.html" class="tsd-kind-icon">Sprite<wbr>Component<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/spritecomponentdata.html" class="tsd-kind-icon">Sprite<wbr>Component<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/text.html" class="tsd-kind-icon">Text</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/textcomponent.html" class="tsd-kind-icon">Text<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/textcomponentbuilder.html" class="tsd-kind-icon">Text<wbr>Component<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/textcomponentdata.html" class="tsd-kind-icon">Text<wbr>Component<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/texture.html" class="tsd-kind-icon">Texture</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/texturemanager.html" class="tsd-kind-icon">Texture<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/texturereferencenode.html" class="tsd-kind-icon">Texture<wbr>Reference<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/transform.html" class="tsd-kind-icon">Transform</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/uvinfo.html" class="tsd-kind-icon">UVInfo</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/vector2.html" class="tsd-kind-icon">Vector2</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/vector3.html" class="tsd-kind-icon">Vector3</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/vertex.html" class="tsd-kind-icon">Vertex</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/zone.html" class="tsd-kind-icon">Zone</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/zonemanager.html" class="tsd-kind-icon">Zone<wbr>Manager</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iasset.html" class="tsd-kind-icon">IAsset</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/iassetloader.html" class="tsd-kind-icon">IAsset<wbr>Loader</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ibehaviour.html" class="tsd-kind-icon">IBehaviour</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ibehaviourbuilder.html" class="tsd-kind-icon">IBehaviour<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ibehaviourdata.html" class="tsd-kind-icon">IBehaviour<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponent.html" class="tsd-kind-icon">IComponent</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentbuilder.html" class="tsd-kind-icon">IComponent<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/icomponentdata.html" class="tsd-kind-icon">IComponent<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/imessagehandler.html" class="tsd-kind-icon">IMessage<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/ishape2d.html" class="tsd-kind-icon">IShape2D</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/math.html" class="tsd-kind-icon">Math</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="index.html#guid" class="tsd-kind-icon">guid</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object</span></li>
+				<li class="tsd-kind-property"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type</span></li>
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enum</span></li>
+				<li class="tsd-kind-constructor"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-accessor"><span class="tsd-kind-icon">Getter/Setter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-is-inherited"><span class="tsd-kind-icon">Inherited</span></li>
+				<li class="tsd-is-protected"><span class="tsd-kind-icon">Protected</span></li>
+				<li class="tsd-is-private"><span class="tsd-kind-icon">Private</span></li>
+				<li class="tsd-is-static"><span class="tsd-kind-icon">Static</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Made with ❤️ by <a href="https://github.com/pirix-gh/eledoc" target="_blank">pirix-gh</a>. Documentation generated by <a href="http://typedoc.org/" target="_blank">TypeDoc.</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

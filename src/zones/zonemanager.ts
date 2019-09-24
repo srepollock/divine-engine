@@ -5,13 +5,16 @@ import { IMessageHandler } from "../core/messagesystem/imessagehandler";
 import { Message } from "../core/messagesystem/message";
 import { Shader } from "../rendersystem/shader";
 import { Zone } from "./zone";
+import { MessageType } from "src/core/messagesystem";
 
 export class ZoneManager implements IMessageHandler {
     private static _instance: ZoneManager;
     private static _registeredZonesCount: number = -1;
-    private static _zoneCounter: number = -1;
     private static _registeredZones: Map<number, string> = new Map();
     private static _activeZone: Zone | undefined;
+    public static get activeZone(): Zone | undefined {
+        return ZoneManager._activeZone;
+    }
     /**
      * Gets the current activated zone index.
      * @returns number
@@ -58,6 +61,7 @@ export class ZoneManager implements IMessageHandler {
      * @returns void
      */
     public static changeZone(index: number): void {
+        Message.send(MessageType.ZONE_FINISHED, undefined);
         log(LogLevel.debug, `Changing zone to: ${ZoneManager._registeredZones.get(index)}.`);
         if (ZoneManager._activeZone !== undefined) {
             ZoneManager._activeZone.onDeactivated(); // REVIEW: unsubscribe
@@ -75,6 +79,11 @@ export class ZoneManager implements IMessageHandler {
             }
         } else {
             log(LogLevel.error, `Zone ID ${index} does not exist.`, ErrorCode.ZoneDoesNotExist);
+        }
+    }
+    public static changeNextZone(): void {
+        if (this.activeZone !== undefined) {
+            this.changeZone(this.activeZoneIndex + 1);
         }
     }
     /**
@@ -112,7 +121,16 @@ export class ZoneManager implements IMessageHandler {
      */
     private static loadZone(asset: JsonAsset): void {
         let zoneData = asset.data;
-        let zoneIndex: number = ++ZoneManager._zoneCounter;
+        let zoneIndex: number = -1;
+        ZoneManager._registeredZones.forEach((value, key) => {
+            if (value.includes(asset.data.name)) {
+                zoneIndex = key;
+            }
+        });
+        if (zoneIndex === -1) {
+            log(LogLevel.critical, 
+                `No zone was found with the name ${asset.data.name} loaded in the ZoneManager.`, ErrorCode.ZoneID);
+        }
         if (zoneData.index !== undefined) {
             zoneIndex = Number(zoneData.index);
         }
