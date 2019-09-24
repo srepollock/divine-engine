@@ -41,6 +41,8 @@ jobs:
           npm run docs
           git add docs
           git commit -m "docs: Updated documentation in Deploy workflow"
+          git config --global user.email "spencer@spollock.ca"
+          git config --global user.name "Spencer Pollock"
           git push master
         env:
           NPM_TOKEN: ${{secrets.npm_token}}
