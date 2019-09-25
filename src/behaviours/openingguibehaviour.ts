@@ -2,7 +2,9 @@ import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { IMessageHandler, Message } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
-import { OpeningGUIBehaviourData } from "./openingguibehaviourdata";
+import { IBehaviourData } from "./ibehaviourdata";
+import { IBehaviour } from "./ibehaviour";
+import { IBehaviourBuilder } from "./ibehaviourbuilder";
 
 export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
     private _actions: Map<string, string> = new Map();
@@ -74,5 +76,51 @@ export class OpeningGUIBehaviour extends Behaviour implements IMessageHandler {
             log(LogLevel.debug, `GUIBehaviour unsub: ${key}, ${value}`);
             Message.unsubscribe(value, this);
         });
+    }
+}
+
+export class OpeningGUIBehaviourData implements IBehaviourData {
+    public name!: string;
+    public actions: Map<string, string> = new Map();
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
+    public setFromJson(json: any): void {
+        if (json.name === undefined) {
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
+        }
+        this.name = String(json.name);
+        if (json.actions === undefined) {
+            log(LogLevel.error, `Actions must be defined in MouseBehaviours`, ErrorCode.NoActions);
+        } else {
+            json.actions.forEach((action: {listen: string, response: string}) => {
+                if (action.listen !== undefined && action.response !== undefined) {
+                    this.actions.set(String(action.listen), String(action.response));
+                }
+            });
+        }
+    }
+}
+
+export class OpeningGUIBehaviourBuilder implements IBehaviourBuilder {
+    public name!: string;
+    /**
+     * Type of behaviour
+     * @returns string
+     */
+    public get type(): string {
+        return "openingguibehaviour";
+    }
+    /**
+     * Called on all builders (through IBehaviourBuilder interface).
+     * @param  {any} json
+     * @returns IBehaviour
+     */
+    public buildFromJson(json: any): IBehaviour {
+        let data = new OpeningGUIBehaviourData();
+        data.setFromJson(json);
+        return new OpeningGUIBehaviour(data);
     }
 }

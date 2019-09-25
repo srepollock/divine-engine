@@ -1,6 +1,6 @@
 import { Component } from "./component";
 import { Text } from "src/rendersystem/text";
-import { IComponent, IComponentBuilder, SpriteComponent, SpriteComponentData } from ".";
+import { IComponent, IComponentBuilder } from ".";
 import { IComponentData } from "./icomponentdata";
 
 

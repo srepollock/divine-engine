@@ -1,6 +1,6 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { SpriteComponent } from "../components/spritecomponent";
-import { SpriteComponentData } from "../components/spritecomponentdata";
+import { SpriteComponentData } from "../components/spritecomponent";
 import { Behaviour } from "./behaviour";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";

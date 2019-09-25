@@ -1,12 +1,10 @@
+import { log, LogLevel } from "de-loggingsystem";
+import { Message, MessageType, IMessageHandler } from "../core/messagesystem";
 import { Component } from "./component";
-import { Shader, Sprite, Vector3 } from "src";
 import { IComponentData } from "./icomponentdata";
 import { IComponentBuilder } from "./icomponentbuilder";
 import { IComponent } from "./icomponent";
-import { Message, MessageType, IMessageHandler } from "src/core/messagesystem";
 import { PlayerBehaviour } from "src/behaviours";
-import { log, LogLevel } from "de-loggingsystem";
-import { TextComponent } from "./textcomponent";
 
 export class ScoringComponent extends Component implements IMessageHandler {
     public static HIGHSCORE: number = 0;

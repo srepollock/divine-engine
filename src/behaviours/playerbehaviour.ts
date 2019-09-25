@@ -1,6 +1,5 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
-import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
-import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
+import { AnimatedSpriteComponent, AnimatedSpriteComponentData } from "../components/animatedspritecomponent";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";
 import { MessageType } from "../core/messagesystem/messagetype";
@@ -11,10 +10,9 @@ import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
 import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
-import { BossBehaviour } from "./bossbehavoiur";
-import { EnemyBehaviour } from "./enemybehaviour";
-import { PlayerBehaviourData } from "./playerbehaviourdata";
-import { Entity } from "src/core";
+import { IBehaviour } from "./ibehaviour";
+import { IBehaviourBuilder } from "./ibehaviourbuilder";
+import { IBehaviourData } from "./ibehaviourdata";
 
 export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     public static lives: number = 3; // TODO: Change these to options
@@ -33,7 +31,6 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
     private _playerCollisionComponent: string;
     private _groundCollisionComponent: string;
     private _enemyCollisionComponent: string;
-    private _flagCollisionComponent: string;
     private _deathCollisionComponent: string = "";
     private _animatedSpriteName: string;
     private _attackSpriteName: string;
@@ -63,7 +60,6 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
         this._playerCollisionComponent = data.playerCollisionComponent;
         this._groundCollisionComponent = data.groundCollisionComponent;
         this._enemyCollisionComponent = data.enemyCollisionComponent;
-        this._flagCollisionComponent = data.flagCollisionComponent;
         this._deathCollisionComponent = data.deathCollisionComponent;
         this._animatedSpriteName = data.animatedSpriteName;
         this._attackSpriteName = data.attackSpriteName;
@@ -407,5 +403,135 @@ export class PlayerBehaviour extends Behaviour implements IMessageHandler {
             this.changeSprite(this._attackSpriteName, [0, 1, 2]);
             AudioManager.playSound("playerattack");
         }
+    }
+}
+
+export class PlayerBehaviourData implements IBehaviourData {
+    public name!: string;
+    public acceleration: Vector2 = new Vector2(0, 0);
+    public playerCollisionComponent!: string;
+    public groundCollisionComponent!: string;
+    public enemyCollisionComponent!: string;
+    public flagCollisionComponent!: string;
+    public deathCollisionComponent: string = "";
+    public animatedSpriteName!: string;
+    public attackSpriteName!: string;
+    public hitSpriteName!: string;
+    public dieSpriteName!: string;
+    public walkSpriteName!: string;
+    public idleSpriteName!: string;
+    public jumpSpriteName!: string;
+    public maxVelocityX: number = 5;
+    public maxVelocityY: number = 15;
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
+    public setFromJson(json: any): void {
+        if (json.name === undefined) {
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
+        }
+        this.name = String(json.name);
+        if (json.acceleration !== undefined) {
+            this.acceleration.setFromJson(json.acceleration);
+        }
+        if (json.playerCollisionComponent === undefined) {
+            log(LogLevel.error, `playerCollisionComponent must be defined for player controller.`, 
+                ErrorCode.NoPlayerCollisionComponentName);
+        } else {
+            this.playerCollisionComponent = json.playerCollisionComponent;
+        }
+        if (json.groundCollisionComponent === undefined) {
+            log(LogLevel.error, `groundCollisionComponent must be defined for player controller.`, 
+                ErrorCode.NoGroundCollisionComponentName);
+        } else {
+            this.groundCollisionComponent = json.groundCollisionComponent;
+        }
+        if (json.enemyCollisionComponent === undefined) {
+            log(LogLevel.error, `enemyCollisionComponent must be defined for player controller.`, 
+                ErrorCode.NoEnemyCollisionComponentName);
+        } else {
+            this.enemyCollisionComponent = json.enemyCollisionComponent;
+        }
+        if (json.flagCollisionComponent === undefined) {
+            log(LogLevel.error, 
+                `flagCollisionComponent must be defined for player controller. This is for scene exiting.`, 
+                ErrorCode.NoFlagCollisionComponentName);
+        } else {
+            this.flagCollisionComponent = json.flagCollisionComponent;
+        }
+        if (json.deathCollisionComponent !== undefined) {
+            this.deathCollisionComponent = String(json.deathCollisionComponent);
+        }
+        if (json.animatedSpriteName === undefined) {
+            log(LogLevel.error, `animatedSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.animatedSpriteName = String(json.animatedSpriteName);
+        }
+        if (json.attackSpriteName === undefined) {
+            log(LogLevel.error, `attackSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.attackSpriteName = String(json.attackSpriteName);
+        }
+        if (json.dieSpriteName === undefined) {
+            log(LogLevel.error, `dieSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.dieSpriteName = String(json.dieSpriteName);
+        }
+        if (json.hitSpriteName === undefined) {
+            log(LogLevel.error, `hitSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.hitSpriteName = String(json.hitSpriteName);
+        }
+        if (json.walkSpriteName === undefined) {
+            log(LogLevel.error, `walkSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.walkSpriteName = String(json.walkSpriteName);
+        }
+        if (json.idleSpriteName === undefined) {
+            log(LogLevel.error, `idleSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.idleSpriteName = String(json.idleSpriteName);
+        }
+        if (json.jumpSpriteName === undefined) {
+            log(LogLevel.error, `jumpSpriteName must be defined for player controller.`, 
+                ErrorCode.NoAnimatedSpriteName);
+        } else {
+            this.jumpSpriteName = String(json.jumpSpriteName);
+        }
+        if (json.maxVelocityX !== undefined) {
+            this.maxVelocityX = Number(json.maxVelocityX);
+        }
+        if (json.maxVelocityY !== undefined) {
+            this.maxVelocityY = Number(json.maxVelocityY);
+        }
+    }
+}
+
+export class PlayerBehaviourBuilder implements IBehaviourBuilder {
+    public name!: string;
+    /**
+     * Type of behaviour
+     * @returns string
+     */
+    public get type(): string {
+        return "player";
+    }
+    /**
+     * Called on all builders (through IBehaviourBuilder interface).
+     * @param  {any} json
+     * @returns IBehaviour
+     */
+    public buildFromJson(json: any): IBehaviour {
+        let data = new PlayerBehaviourData();
+        data.setFromJson(json);
+        return new PlayerBehaviour(data);
     }
 }

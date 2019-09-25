@@ -1,6 +1,5 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
-import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
-import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
+import { AnimatedSpriteComponent, AnimatedSpriteComponentData } from "../components/animatedspritecomponent";
 import { CollisionComponent } from "../components/collisioncomponent";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";
@@ -9,12 +8,10 @@ import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
 import { CollisionData } from "../physicssystem/collisiondata";
 import { AudioManager } from "../soundsystem/audiomanager";
-import { ZoneManager } from "../zones/zonemanager";
 import { Behaviour } from "./behaviour";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";
 import { IBehaviourData } from "./ibehaviourdata";
-import { PlayerBehaviour } from "./playerbehaviour";
 
 export class ProjectileBehaviour extends Behaviour implements IMessageHandler {
     protected _acceleration: Vector2 = new Vector2(0, 0);

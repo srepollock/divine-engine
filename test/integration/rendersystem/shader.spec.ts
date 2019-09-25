@@ -1,3 +1,0 @@
-describe("Shader Unit Tests", () => {
-    
-});

@@ -1,8 +1,8 @@
 import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { AnimatedSpriteComponent } from "../components/animatedspritecomponent";
-import { AnimatedSpriteComponentData } from "../components/animatedspritecomponentdata";
+import { AnimatedSpriteComponentData } from "../components/animatedspritecomponent";
 import { CollisionComponent } from "../components/collisioncomponent";
-import { CollisionComponentData } from "../components/collisioncomponentdata";
+import { CollisionComponentData } from "../components/collisioncomponent";
 import { Entity } from "../core/entity";
 import { IMessageHandler } from "../core/messagesystem/imessagehandler"; 
 import { Message } from "../core/messagesystem/message";

@@ -1,7 +1,10 @@
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Vector2 } from "../math/vector2";
 import { Vector3 } from "../math/vector3";
-import { AIMovementBehaviourData } from "./aimovementbehaviourdata";
 import { Behaviour } from "./behaviour";
+import { IBehaviour } from "./ibehaviour";
+import { IBehaviourBuilder } from "./ibehaviourbuilder";
+import { IBehaviourData } from "./ibehaviourdata";
 export class AIMovementBehaviour extends Behaviour {
     private _start: Vector2;
     private _end: Vector2;
@@ -54,5 +57,57 @@ export class AIMovementBehaviour extends Behaviour {
             this._velocity.y = -(this._velocity.y);
         }
         super.update(delta);
+    }
+}
+
+export class AIMovementBehaviourData implements IBehaviourData {
+    public name!: string;
+    public start: Vector2 = new Vector2();
+    public end: Vector2 = new Vector2();
+    public direction: Vector2 = new Vector2(1, 0);
+    public rotate: boolean = true;
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
+    public setFromJson(json: any): void {
+        if (json.name === undefined) {
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
+        }
+        this.name = String(json.name);
+        if (json.start !== undefined) {
+            this.start.setFromJson(json.start);
+        }
+        if (json.end !== undefined) {
+            this.end.setFromJson(json.end);
+        }
+        if (json.direction !== undefined) {
+            this.direction.setFromJson(json.direction);
+        }
+        if (json.rotate !== undefined) {
+            this.rotate = Boolean(json.rotate);
+        }
+    }
+}
+
+export class AIMovementBehaviourBuilder implements IBehaviourBuilder {
+    public name!: string;
+    /**
+     * Type of behaviour
+     * @returns string
+     */
+    public get type(): string {
+        return "aimovement";
+    }
+    /**
+     * Called on all builders (through IBehaviourBuilder interface).
+     * @param  {any} json
+     * @returns IBehaviour
+     */
+    public buildFromJson(json: any): IBehaviour {
+        let data = new AIMovementBehaviourData();
+        data.setFromJson(json);
+        return new AIMovementBehaviour(data);
     }
 }

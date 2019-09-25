@@ -60,7 +60,8 @@ describe("Sequence Unit Tests", () => {
     });    
     it("should run actions on update", () => {
         sequence.update(1); // 1 is Δ time
-        expect(sequence.currentAction().time).toBe(1);
+        let time = sequence.currentAction().time;
+        expect(time).toBe(2);
     });
     // it("should allow actions to, after a set time, count on the engine", () => {
     //     sequence.actionIndex = 0;

@@ -3,7 +3,9 @@ import { Entity } from "../core/entity";
 import { IMessageHandler, Message, MessageType } from "../core/messagesystem";
 import { ZoneManager } from "../zones";
 import { Behaviour } from "./behaviour";
-import { GUIBehaviourData } from "./guibehaviourdata";
+import { IBehaviour } from "./ibehaviour";
+import { IBehaviourBuilder } from "./ibehaviourbuilder";
+import { IBehaviourData } from "./ibehaviourdata";
 import { GUIButtonBehaviour } from "./guibuttonbehaviour";
 
 export class GUIBehaviour extends Behaviour implements IMessageHandler {
@@ -110,5 +112,70 @@ export class GUIBehaviour extends Behaviour implements IMessageHandler {
             log(LogLevel.debug, `GUIBehaviour unsub: ${key}, ${value}`);
             Message.unsubscribe(value, this);
         });
+    }
+}
+
+export class GUIBehaviourData implements IBehaviourData {
+    public name!: string;
+    public actions: Map<string, Map<number, string>> = new Map();
+    public cursor!: string;
+    public buttons: Array<string> = new Array();
+    /**
+     * Sets this classes data from a JSON object.
+     * @param  {any} json
+     * @returns void
+     */
+    public setFromJson(json: any): void {
+        if (json.name === undefined) {
+            log(LogLevel.error, `Name must be defined in behaviour data.`, ErrorCode.NoName);
+        }
+        this.name = String(json.name);
+        if (json.cursor === undefined ) {
+            log(LogLevel.error, `Cursor must be defined for behaviour data.`, ErrorCode.NoCursor);
+        } else {
+            this.cursor = String(json.cursor);
+        }
+        if (json.buttons === undefined) {
+            log(LogLevel.error, `Buttons string array must be defined for behaviour data.`, ErrorCode.NoButtons);
+        } else {
+            json.buttons.forEach((button: any) => {
+                this.buttons.push(String(button));
+            });
+        }
+        if (json.actions === undefined) {
+            log(LogLevel.error, `Actions must be defined in MouseBehaviours`, ErrorCode.NoActions);
+        } else {
+            json.actions.forEach((action: {listen: string, key: number, response: string}) => {
+                if (action.listen !== undefined && action.key !== undefined && action.response !== undefined) {
+                    if (this.actions.get(String(action.listen)) !== undefined) {
+                        this.actions.get(String(action.listen))!.set(action.key, action.response);
+                    } else {
+                        this.actions.set(String(action.listen), 
+                            new Map().set(Number(action.key), String(action.response)));
+                    }
+                }
+            });
+        }
+    }
+}
+
+export class GUIBehaviourBuilder implements IBehaviourBuilder {
+    public name!: string;
+    /**
+     * Type of behaviour
+     * @returns string
+     */
+    public get type(): string {
+        return "guibehaviour";
+    }
+    /**
+     * Called on all builders (through IBehaviourBuilder interface).
+     * @param  {any} json
+     * @returns IBehaviour
+     */
+    public buildFromJson(json: any): IBehaviour {
+        let data = new GUIBehaviourData();
+        data.setFromJson(json);
+        return new GUIBehaviour(data);
     }
 }
