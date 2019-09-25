@@ -7,3 +7,4 @@ export * from "./icomponentbuilder";
 export * from "./icomponentdata";
 export * from "./scoringcomponent";
 export * from "./spritecomponent";
+export * from "./textcomponent";

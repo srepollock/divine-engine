@@ -23,6 +23,13 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
     private _assetLoaded: boolean = false;
     private _isPlaying: boolean = true;
     /**
+     * Gets the current frame
+     * @returns number
+     */
+    public get currentFrame(): number {
+        return this._currentFrame;
+    }
+    /**
      * Gets the current frame count.
      * @returns number
      */
@@ -37,7 +44,7 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         return this._isPlaying;
     }
     /**
-     * Gets the material name.
+ * Gets the material name.
      * @returns string
      */
     public get materialName(): string {
