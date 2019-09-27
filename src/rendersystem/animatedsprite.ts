@@ -44,7 +44,7 @@ export class AnimatedSprite extends Sprite implements IMessageHandler {
         return this._isPlaying;
     }
     /**
- * Gets the material name.
+     * Gets the material name.
      * @returns string
      */
     public get materialName(): string {

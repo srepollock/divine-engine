@@ -2,10 +2,10 @@ import { Color } from "../../../src";
 
 describe("Color Unit Test", () => {
     it("should check r, g, b, a on white to be 255", () => {
-        expect(Color.white.r).toMatchObject(255);
-        expect(Color.white.g).toMatchObject(255);
-        expect(Color.white.b).toMatchObject(255);
-        expect(Color.white.a).toMatchObject(255);
+        expect(Color.white.r).toBe(255);
+        expect(Color.white.g).toBe(255);
+        expect(Color.white.b).toBe(255);
+        expect(Color.white.a).toBe(255);
     });
     it("should return a static white color", () => {
         expect(Color.white).toMatchObject({"_r": 255, "_g": 255, "_b": 255, "_a": 255});
