@@ -12,6 +12,7 @@ import { Behaviour } from "./behaviour";
 import { IBehaviour } from "./ibehaviour";
 import { IBehaviourBuilder } from "./ibehaviourbuilder";
 import { IBehaviourData } from "./ibehaviourdata";
+import { PlayerBehaviour } from "./playerbehaviour";
 
 export class EnemyBehaviour extends Behaviour implements IMessageHandler {
     protected _hitPoints: number = 1;
@@ -138,13 +139,21 @@ export class EnemyBehaviour extends Behaviour implements IMessageHandler {
                     this._acceleration.y = 0;
                 }
                 if ((data.a.name === this._playerCollisionComponent && 
-                    data.b.name === this._enemyCollisionComponent) || 
-                    (data.b.name === this._playerCollisionComponent && 
-                    data.a.name === this._enemyCollisionComponent)) {
-                    if (data.a.owner!.name === this._owner!.name ||
-                        data.b.owner!.name === this._owner!.name) {
-                        this.takeDamage();
-                    }
+                    data.b.name === this._enemyCollisionComponent) &&
+                    (this._owner!.parent!.getObjectByName(data.a.owner!.name)!.getBehaviourByName(
+                        "playercontroller")! as PlayerBehaviour).isAttacking) {
+                            if (data.a.owner!.name === this._owner!.name ||
+                                data.b.owner!.name === this._owner!.name) {
+                                    this.takeDamage();
+                                }
+                } else if ((data.b.name === this._playerCollisionComponent && 
+                    data.a.name === this._enemyCollisionComponent) &&
+                    (this._owner!.parent!.getObjectByName(data.b.owner!.name)!.getBehaviourByName(
+                        "playercontroller")! as PlayerBehaviour).isAttacking) {
+                            if (data.a.owner!.name === this._owner!.name ||
+                                data.b.owner!.name === this._owner!.name) {
+                                    this.takeDamage();
+                                }
                 }
                 break;
             case MessageType.ANIMATION_COMPLETE:
