@@ -1,12 +1,10 @@
+import { log, LogLevel } from "de-loggingsystem";
+import { Message, MessageType, IMessageHandler } from "../core/messagesystem";
 import { Component } from "./component";
-import { Shader, Sprite, Vector3 } from "src";
 import { IComponentData } from "./icomponentdata";
 import { IComponentBuilder } from "./icomponentbuilder";
 import { IComponent } from "./icomponent";
-import { Message, MessageType, IMessageHandler } from "src/core/messagesystem";
 import { PlayerBehaviour } from "src/behaviours";
-import { log, LogLevel } from "de-loggingsystem";
-import { TextComponent } from "./textcomponent";
 
 export class ScoringComponent extends Component implements IMessageHandler {
     public static HIGHSCORE: number = 0;
@@ -20,6 +18,7 @@ export class ScoringComponent extends Component implements IMessageHandler {
     public constructor(data: ScoringComponentData) {
         super(data);
         Message.subscribe(MessageType.ZONE_FINISHED, this);
+        Message.subscribe(MessageType.GAME_OVER, this);
     }
     /**
      * Loads the component.
@@ -35,6 +34,7 @@ export class ScoringComponent extends Component implements IMessageHandler {
             log(LogLevel.info, `Current Score: ${ScoringComponent.SCORE}`);
         }
         if (message.code === MessageType.GAME_OVER) {
+            this.addScore({lives: PlayerBehaviour.lives});
             if (ScoringComponent.HIGHSCORE < ScoringComponent.SCORE) {
                 ScoringComponent.HIGHSCORE = ScoringComponent.SCORE;
                 ScoringComponent.SCORE = 0;
@@ -58,8 +58,8 @@ export class ScoringComponent extends Component implements IMessageHandler {
      * @returns void
      */
     private addScore({lives}: {lives?: number} = {}): void {
-        let score = this._zoneScore;
-        score = this._zoneScore - (Math.round(this._timeCount) * 100);
+        lives = (lives !== undefined) ? lives : 0;
+        let score = this._zoneScore - (Math.round(this._timeCount) * 100) + (100 * lives);
         ScoringComponent.SCORE += score;
         // TextComponent.TEXT.text = `Current Score: ${ScoringComponent.SCORE}`; 
         // TODO: Add scoring component and update

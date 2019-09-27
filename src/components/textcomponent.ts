@@ -1,25 +1,24 @@
 import { Component } from "./component";
 import { Text } from "src/rendersystem/text";
-import { IComponent, IComponentBuilder, SpriteComponent, SpriteComponentData } from ".";
+import { IComponent, IComponentBuilder } from ".";
 import { IComponentData } from "./icomponentdata";
 
-
 export class TextComponent extends Component {
-    public static TEXT: Text;
+    public text: string;
     /**
      * Class constructor.
      * @param  {TextComponentData} data
      */
     public constructor(data: TextComponentData) {
         super(data);
-        TextComponent.TEXT = new Text(data.name);
+        this.text = data.text;
     }
     /**
      * Loads the component.
      * @returns void
      */
     public load(): void {
-        TextComponent.TEXT.load();
+        
     }
     /**
      * Updates the component.
@@ -27,7 +26,6 @@ export class TextComponent extends Component {
      * @returns void
      */
     public update(delta: number): void {
-        TextComponent.TEXT.update(delta);
         super.update(delta);
     }
 }

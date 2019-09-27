@@ -18,7 +18,7 @@ export class CollisionManager {
      * @returns void
      */
     public static initialize(): void {
-        
+        new CollisionManager();
     }
     /**
      * Registers a collision component to the manager.

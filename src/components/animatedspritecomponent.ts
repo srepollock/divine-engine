@@ -1,8 +1,12 @@
+import { ErrorCode, log, LogLevel } from "de-loggingsystem";
 import { Vector3 } from "../math/vector3";
 import { AnimatedSprite } from "../rendersystem/animatedsprite";
 import { Shader } from "../rendersystem/shader";
-import { AnimatedSpriteComponentData } from "./animatedspritecomponentdata";
 import { Component } from "./component";
+import { IComponentData } from "./icomponentdata";
+import { SpriteComponentData } from "./spritecomponent";
+import { IComponent } from "./icomponent";
+import { IComponentBuilder } from "./icomponentbuilder";
 
 export class AnimatedSpriteComponent extends Component {
     private _autoPlay: boolean;
@@ -86,5 +90,75 @@ export class AnimatedSpriteComponent extends Component {
         if (!this._autoPlay) {
             this._sprite.stop();
         }
+    }
+}
+
+export class AnimatedSpriteComponentData extends SpriteComponentData implements IComponentData {
+    public frameWidth!: number;
+    public frameHeight!: number;
+    public frameCount!: number;
+    public frameSequence!: Array<number>;
+    public autoPlay: boolean = true;
+    /**
+     * Class constructor
+     * @param  {any} json
+     */
+    constructor(json: any) {
+        super(json);
+        this.setFromJson(json);
+    }
+    /**
+     * Builds the component from JSON.
+     * @param  {any} json
+     * @returns IComponent
+     */
+    public setFromJson(json: any): void {
+        super.setFromJson(json);
+        if (json.frameWidth === undefined) {
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameWidth to be defined.`, 
+                ErrorCode.NoFrameWidth);
+        } else {
+            this.frameWidth = Number(json.frameWidth);
+        }
+        if (json.frameHeight === undefined) {
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameHeight to be defined.`,
+                ErrorCode.NoFrameHeight);
+        } else {
+            this.frameHeight = Number(json.frameHeight);
+        }
+        if (json.frameCount === undefined) {
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameCount to be defined.`,
+                ErrorCode.NoFrameCount);
+        } else {
+            this.frameCount = Number(json.frameCount);
+        }
+        if (json.frameSequence === undefined) {
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameSequence to be defined.`,
+                ErrorCode.NoFrameSequence);
+        } else {
+            this.frameSequence = json.frameSequence;
+        }
+        if (json.autoPlay !== undefined) {
+            this.autoPlay = Boolean(json.autoPlay);
+        }
+    }
+}
+
+export class AnimatedSpriteComponentBuilder implements IComponentBuilder {
+    /**
+     * Gets the type of animated sprite.
+     * @returns string
+     */
+    public get type(): string {
+        return "animatedsprite";
+    }
+    /**
+     * Builds the component from JSON.
+     * @param  {any} json
+     * @returns IComponent
+     */
+    public buildFromJson(json: any): IComponent {
+        let data: AnimatedSpriteComponentData = new AnimatedSpriteComponentData(json);
+        return new AnimatedSpriteComponent(data);
     }
 }
