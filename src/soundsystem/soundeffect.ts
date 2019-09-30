@@ -37,9 +37,6 @@ export class SoundEffect {
      * @returns void
      */
     public play(): void {
-        if (!this._player!.paused) {
-            this.stop();
-        }
         this._player!.play();
     }
     /**

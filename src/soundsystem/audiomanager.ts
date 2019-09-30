@@ -13,7 +13,7 @@ export class AudioManager {
      * @returns void
      */
     public static initialize(): void {
-
+        new AudioManager();
     }
     /**
      * Loads a sound file into the manager.
