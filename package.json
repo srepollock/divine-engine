@@ -100,7 +100,7 @@
         "statements": 100
       }
     },
-    "preset": "jest-puppeteer",
+    "preset": "ts-jest",
     "moduleFileExtensions": [
       "js",
       "ts",
