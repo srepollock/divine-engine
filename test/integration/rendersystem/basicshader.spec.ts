@@ -5,4 +5,7 @@ describe("BasicShader Unit Tests", () => {
     // it("should take a name", () => {
     //     expect(shader.name).toBeInstanceOf(String);
     // });
+    it("should pass", () => {
+        expect(true).toBeTruthy;
+    });
 });
