@@ -13,4 +13,7 @@ describe('Engine Functional Tests on Puppeteer', () => {
     // it('should be titled "Divine Engine on Puppeteer"', async () => {
     //     await expect(page.title()).resolves.toMatch("Divine Engine on Puppeteer");
     // }, timeout);
+    it("should pass", () => {
+        expect(true).toBeTruthy;
+    });
 });
