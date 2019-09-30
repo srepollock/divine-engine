@@ -1,4 +1,4 @@
-import { Entity, Matrix4, Vector3, Behaviour, FlagBehaviour, FlagBehaviourData, SpriteComponent, SpriteComponentData } from "../../../src";
+import { Entity, Matrix4, Vector3 } from "../../../src";
 
 describe("Entity Unit Test", () => {
     let e = new Entity({name: "test"})
@@ -19,39 +19,6 @@ describe("Entity Unit Test", () => {
     });
     it("should get the local matrix", () => {
         expect(e.localMatrix).toBeInstanceOf(Matrix4);
-    });
-    it("should add a behaviour and should get a behaviour by name", () => {
-        let bd = new FlagBehaviourData();
-        bd.setFromJson(JSON.parse(JSON.stringify({
-            name: "flag",
-            zonename: "",
-            flagcollision: "",
-            playercollision: ""
-        })));
-        let b = new FlagBehaviour(bd);
-
-        e.addBehaviour(b);
-        e.getBehaviourByName(b.name)
-        expect(e.getBehaviourByName(b.name)).not.toBeUndefined;
-        expect(e.getBehaviourByName(b.name)!.name).toBe(b.name);
-    });
-    it("should add a component and should get a component by name", () => {
-        let cd = new SpriteComponentData(JSON.parse(JSON.stringify({
-            name: "sprite",
-            materialName: "",
-            origin: {
-                x: 0,
-                y: 0
-            },
-            width: 10,
-            height: 10
-        })));
-        let c = new SpriteComponent(cd);
-
-        e.addComponent(c);
-        e.getComponentByName(c.name)
-        expect(e.getBehaviourByName(c.name)).not.toBeUndefined;
-        expect(e.getComponentByName(c.name)!.name).toBe(c.name);
     });
     it("should remove a component by name", () => {
         e.removeComponent("sprite")
@@ -75,5 +42,10 @@ describe("Entity Unit Test", () => {
     it("should be able to set isVisible to false", () => {
         e.isVisible = false;
         expect(e.isVisible).not.toBeTruthy;
+    });
+    it("should die when isAlive is false", () => {
+        e.isAlive = false;
+        e.update(0);
+        expect(e.update).toBeFalsy;
     });
 });
