@@ -47,6 +47,17 @@ jobs:
         env:
           NPM_TOKEN: ${{secrets.npm_token}}
 
+  publish_unit_tests:
+    name: Sends Unit Tests to CodeCov
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-level: 1
+      - uses: codecov/codecov-action@v1.0.2
+        with:
+          token: ${{secrets.codecov_token}}
+
   release_gh:
     runs-on: macos-latest
     steps:
