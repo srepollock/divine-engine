@@ -1,5 +1,8 @@
 import { ImageAssetLoader, AssetManager } from "../../../src";
 
+/**
+ * @jest-environment jsdom
+ */
 describe("ImageAssetLoader Integration Test", () => {
     let ial = new ImageAssetLoader();
     AssetManager.initialize();

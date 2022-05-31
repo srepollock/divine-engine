@@ -12,7 +12,7 @@ export class AnimatedSpriteComponent extends Component {
     private _autoPlay: boolean;
     private _sprite: AnimatedSprite;
     /**
-     * Gets the document 
+     * Gets the document
      * @returns AnimatedSprite
      */
     public get sprite(): AnimatedSprite {
@@ -25,7 +25,7 @@ export class AnimatedSpriteComponent extends Component {
     public constructor(data: AnimatedSpriteComponentData) {
         super(data);
         this._autoPlay = data.autoPlay;
-        this._sprite = new AnimatedSprite(name, data.materialName, data.frameWidth, data.frameHeight, data.frameWidth, 
+        this._sprite = new AnimatedSprite(this.name, data.materialName, data.frameWidth, data.frameHeight, data.frameWidth,
             data.frameHeight, data.frameCount, data.frameSequence);
     }
     /**
@@ -115,7 +115,7 @@ export class AnimatedSpriteComponentData extends SpriteComponentData implements 
     public setFromJson(json: any): void {
         super.setFromJson(json);
         if (json.frameWidth === undefined) {
-            log(LogLevel.error, `AnimatedSpriteComponent requires frameWidth to be defined.`, 
+            log(LogLevel.error, `AnimatedSpriteComponent requires frameWidth to be defined.`,
                 ErrorCode.NoFrameWidth);
         } else {
             this.frameWidth = Number(json.frameWidth);
