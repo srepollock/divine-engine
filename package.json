@@ -68,6 +68,22 @@
     "typedoc": "^0.15.0",
     "typescript": "^3.8.0"
   },
+  "override": {
+    "cryptiles": ">=4.1.2",
+    "highlight.js": ">=10.4.1",
+    "merge": ">=2.1.1",
+    "lodash": ">=4.17.21",
+    "trim-newlines": ">=3.0.1",
+    "json-schema": ">=0.4.0",
+    "marked": ">=4.0.11",
+    "ajv": ">=6.12.3",
+    "minimist": ">=1.2.6",
+    "mem": ">=4.0.0",
+    "kind-of": ">=6.0.3",
+    "yargs-parser": ">=13.1.2",
+    "ansi-regex": ">=5.0.1",
+    "hawk": ">=9.0.1"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
