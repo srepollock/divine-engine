@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12
       - run: |
-          npm install
+          npm ci
           npm run docs
       - name: GitHub Pages Deploy
         uses: maxheld83/ghpages@master
@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: 12
       - run: |
-          npm install
+          npm ci
           npm run docs
           git add docs
           git commit -m "docs: Updated documentation in Deploy workflow"
@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: 12
       - run: |
-          npm install
+          npm ci
           npm run build
           npm run test
         env:
@@ -84,14 +84,14 @@ jobs:
         with:
           node-version: 12
       - run: |
-          npm install
+          npm ci
           npm run bundle
           npm run release
         env:
           GH_TOKEN: ${{secrets.gh_token}}
           GITHUB_TOKEN: ${{secrets.gh_token}}
           NPM_TOKEN: ${{secrets.npm_token}}
-  
+
   publish_npm:
     runs-on: ubuntu-latest
     steps:
@@ -106,7 +106,7 @@ jobs:
         with:
             node-version: 12
       - run: |
-          npm install
+          npm ci
           npm run bundle
           npm run release
           npm publish
