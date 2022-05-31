@@ -23,9 +23,9 @@ jobs:
         env:
           BUILD_DIR: "."
           GH_PAT: ${{secrets.GITHUB_TOKEN}}
-          GH_TOKEN: ${{secrets.gh_token}}
-          GITHUB_TOKEN: ${{secrets.gh_token}}
-          NPM_TOKEN: ${{secrets.npm_token}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish_docs:
     name: Builds the project documentation
@@ -45,7 +45,7 @@ jobs:
           git commit -m "docs: Updated documentation in Deploy workflow"
           git push origin master
         env:
-          NPM_TOKEN: ${{secrets.npm_token}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish_unit_tests:
     name: Sends Unit Tests to CodeCov
@@ -65,7 +65,7 @@ jobs:
           NPM_TOKEN: ${{secrets.npm_token}}
       - uses: codecov/codecov-action@v1.0.2
         with:
-          token: ${{secrets.codecov_token}}
+          token: ${{secrets.CODECOV_TOKEN}}
 
   release_gh:
     runs-on: macos-latest
@@ -88,9 +88,9 @@ jobs:
           npm run bundle
           npm run release
         env:
-          GH_TOKEN: ${{secrets.gh_token}}
-          GITHUB_TOKEN: ${{secrets.gh_token}}
-          NPM_TOKEN: ${{secrets.npm_token}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish_npm:
     runs-on: ubuntu-latest
@@ -111,5 +111,5 @@ jobs:
           npm run release
           npm publish
         env:
-          GITHUB_TOKEN: ${{secrets.gh_token}}
-          NPM_TOKEN: ${{secrets.npm_token}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
