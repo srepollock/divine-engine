@@ -73,9 +73,9 @@ jobs:
       - uses: actions/checkout@master
         with:
             fetch-level: 1
-      - name: Install Wine
-        run: |
-            brew install wine
+      # - name: Install Wine
+      #   run: |
+      #       brew install wine
       - name: Conigure Git
         run: |
           git config --global user.email "spencer@spollock.ca"
