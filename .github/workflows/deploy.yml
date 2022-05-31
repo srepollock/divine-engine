@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12
       - run: |
-          npm config set '//registry.npmjs.org/:_authToken' "${env.NPM_TOKEN}"
+          npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
           npm ci
           npm run docs
       - name: GitHub Pages Deploy
