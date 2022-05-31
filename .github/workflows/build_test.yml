@@ -1,6 +1,6 @@
 name: Build and Test Workflow
 
-on: 
+on:
   pull_request
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         with:
           node_version: ${{ matrix.node_version }}
       - run: |
-          npm install
+          npm ci
           npm run build
           npm run test
         env:
