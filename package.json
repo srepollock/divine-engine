@@ -69,7 +69,7 @@
     "rollup-plugin-typescript2": "^0.31.2",
     "standard-version": ">=8.0.1",
     "ts-jest": "^28.0.3",
-    "tslint-to-eslint-config": "^2.13.0",
+    "tslint-to-eslint-config": "^2.13.4",
     "typedoc": "^0.22.16",
     "typescript": ">=3.8.0"
   },
